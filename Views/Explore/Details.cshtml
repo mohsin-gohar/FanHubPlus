@@ -1,0 +1,203 @@
+@model ContentDetailViewModel
+@{
+    ViewData["Title"] = Model.Content.Title;
+    ViewData["fhpBanner"] = true;
+
+    var item = Model.Content;
+    var poster = string.IsNullOrWhiteSpace(item.ThumbnailUrl)
+        ? $"/assets/images/videos/video{(item.ContentId % 34) + 1}.jpg"
+        : item.ThumbnailUrl;
+    // Trailer wins over a plain video, and a self-hosted file is played by the
+    // browser while an external link is embedded - either way it plays on-site.
+    var trailer = MediaUrl.Primary(Model.Media);
+    var trailerUrl = trailer is null ? null : MediaUrl.Normalize(trailer.EmbedUrl);
+    var trailerTitle = trailer is null
+        ? item.Title
+        : $"{item.Title} — {trailer.Tag ?? "trailer"}";
+    var trail = new List<BreadcrumbItem>
+    {
+        new("Explore", Url.Action("Index", "Explore")),
+        new(item.Category?.Name ?? "Library", Url.Action("Index", "Explore", new { categoryId = item.CategoryId })),
+        new(item.Title),
+    };
+    var year = item.ReleaseDate?.ToString("yyyy") ?? item.CreatedAt.ToString("yyyy");
+    var starsFilled = Model.RatingCount > 0 ? (int)Math.Round(Model.AverageRating) : 0;
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<section class="fhp-section">
+    <div class="container">
+        <div class="fhp-layout">
+
+            @* ============================ primary column ============================ *@
+            <div>
+                @* ---- media: player or poster + the black metadata bar ---- *@
+                <div class="fhp-media">
+                    @if (trailer is not null)
+                    {
+                        <partial name="_MediaPlayer" model="new MediaPlayerViewModel {
+                            Url = trailer.EmbedUrl,
+                            Poster = poster,
+                            Title = trailerTitle
+                        }" />
+                    }
+                    else
+                    {
+                        <img src="@poster" class="fhp-media__poster" alt="@item.Title" width="960" height="540" />
+                    }
+                    <div class="fhp-media__bar">
+                        <div class="fhp-media__meta">
+                            <span><i class="ri-eye-line" aria-hidden="true"></i> @item.ViewCount views</span>
+                            <span class="fhp-media__sep" aria-hidden="true"></span>
+                            <a asp-controller="Explore" asp-action="Index" asp-route-categoryId="@item.CategoryId">@(item.Category?.Name ?? "Library")</a>
+                            <span class="fhp-media__sep" aria-hidden="true"></span>
+                            <span>@item.Type</span>
+                            <span class="fhp-media__sep" aria-hidden="true"></span>
+                            <span>@(item.ReleaseDate?.ToString("dd MMM yyyy") ?? year)</span>
+                            @if (trailer is not null)
+                            {
+                                <span class="fhp-media__sep" aria-hidden="true"></span>
+                                <a href="@trailerUrl" target="_blank" rel="noopener" class="fhp-media__play" aria-label="Open the video in a new tab">
+                                    <i class="ri-play-fill" aria-hidden="true"></i>
+                                </a>
+                            }
+                        </div>
+                        <div class="fhp-media__foot">
+                            <div class="fhp-media__who">
+                                <img src="/assets/images/users/user1.jpg" class="fhp-media__avatar" alt="" width="45" height="45" loading="lazy" decoding="async" />
+                                <div>
+                                    <span class="fhp-media__name">FanHubPlus Editorial</span>
+                                    <span class="fhp-media__role">Tracking this title for the @year community</span>
+                                </div>
+                            </div>
+                            <div class="fhp-media__tools">
+                                <button type="button" class="fhp-icon-btn bookmark-btn @(Model.IsBookmarked ? "is-saved" : "")"
+                                        title="@(Model.IsBookmarked ? "Remove from your list" : "Save to your list")"
+                                        aria-pressed="@(Model.IsBookmarked ? "true" : "false")"
+                                        aria-label="Save @item.Title to your list"
+                                        data-type="@((int)BookmarkType.Content)" data-id="@item.ContentId">
+                                    <i class="@(Model.IsBookmarked ? "ri-heart-fill" : "ri-heart-line")" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="fhp-icon-btn fhp-share" title="Share"
+                                        aria-label="Share @item.Title"
+                                        data-share-title="@item.Title"
+                                        data-share-url="@Url.Action("Details", "Explore", new { id = item.ContentId })">
+                                    <i class="ri-share-line" aria-hidden="true"></i>
+                                </button>
+                                <a class="fhp-link-strong" asp-controller="Explore" asp-action="Index" asp-route-categoryId="@item.CategoryId">More @item.Category?.Name</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @* ---- panel: audience score, description, tags, your rating ---- *@
+                <div class="fhp-panel">
+                    <h2 class="fhp-panel__title">Audience Score</h2>
+                    <div class="fhp-score-row">
+                        <div class="fhp-stars" id="ratingStars" aria-label="Average rating @Model.AverageRating out of 5">
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                <i class="ri-star-fill" style="opacity: @(i <= starsFilled ? "1" : ".35")" aria-hidden="true"></i>
+                            }
+                            <span class="fhp-stars__count">(<span class="text-primary">@Model.RatingCount</span> ratings)</span>
+                        </div>
+                        <span class="fhp-score">
+                            <i class="ri-star-fill" aria-hidden="true"></i>
+                            <b id="ratingAvg">@Model.AverageRating.ToString("0.0")</b>/5 fan score
+                        </span>
+                    </div>
+                    <hr class="fhp-rule" />
+                    <h2 class="fhp-panel__label">Description</h2>
+                    <p>@(string.IsNullOrWhiteSpace(item.Description)
+                        ? "The editorial desk has not written a synopsis for this title yet."
+                        : item.Description)</p>
+
+                    @if (item.ContentTags.Count > 0)
+                    {
+                        <div class="fhp-chips fhp-mt-20">
+                            @foreach (var link in item.ContentTags)
+                            {
+                                <a class="fhp-chip" asp-controller="Explore" asp-action="Index" asp-route-search="@link.Tag.Name">@link.Tag.Name</a>
+                            }
+                        </div>
+                    }
+
+                    <hr class="fhp-rule" />
+                    <h2 class="fhp-panel__label">Your Rating</h2>
+                    <div class="fhp-rate-row">
+                        <div class="fhp-rate" id="ratingWidget"
+                             data-content-id="@item.ContentId"
+                             data-my-stars="@(Model.MyStars ?? 0)"
+                             role="group"
+                             aria-label="Rate @item.Title from one to five stars">
+                            @for (var i = 1; i <= 5; i++)
+                            {
+                                <button type="button" data-star="@i" class="@(Model.MyStars >= i ? "is-on" : "")"
+                                        aria-label="@i of 5 stars">&#9733;</button>
+                            }
+                        </div>
+                        <span class="fhp-hint" id="ratingCount">(@Model.RatingCount ratings)</span>
+                    </div>
+                    @if (User.Identity?.IsAuthenticated != true)
+                    {
+                        <p class="fhp-hint fhp-mt-10">Sign in to keep your rating and build your fan lists.</p>
+                    }
+                </div>
+
+                @* ---- extra media (trailers / audio) ---- *@
+                @if (Model.Media.Count > 1)
+                {
+                    <div class="fhp-chips fhp-mt-25">
+                        @foreach (var media in Model.Media.Where(m => m.MediaId != trailer?.MediaId))
+                        {
+                            <a class="fhp-chip fhp-chip--quiet" href="@media.EmbedUrl" target="_blank" rel="noopener">
+                                <i class="ri-play-circle-line" aria-hidden="true"></i> @(media.Tag ?? media.MediaType.ToString())
+                            </a>
+                        }
+                    </div>
+                }
+
+                @* ---- related titles ---- *@
+                @if (Model.Related.Count > 0)
+                {
+                    <h2 class="fhp-panel__title fhp-mt-45">More in @(item.Category?.Name ?? "this fandom")</h2>
+                    <div class="fhp-grid fhp-grid--3">
+                        @foreach (var related in Model.Related)
+                        {
+                            <partial name="_ContentCard" model="related" />
+                        }
+                    </div>
+                }
+            </div>
+
+            @* ============================ sidebar ============================= *@
+            <aside class="fhp-aside" aria-label="Library navigation">
+                <div class="fhp-panel fhp-panel--flush">
+                    <h2 class="fhp-side-title">Search the library</h2>
+                    <form class="fhp-search fhp-mb-25" method="get" asp-controller="Explore" asp-action="Index" role="search">
+                        <label class="fhp-sr" for="detailSearch">Search titles</label>
+                        <input id="detailSearch" type="search" name="search" placeholder="Title, genre or keyword" />
+                        <button type="submit"><i class="ri-search-line" aria-hidden="true"></i><span class="fhp-sr">Search</span></button>
+                    </form>
+
+                    <h2 class="fhp-side-title">All fandoms</h2>
+                    <ul class="fhp-list">
+                        @foreach (var category in Model.Categories)
+                        {
+                            <li>
+                                <a asp-controller="Explore" asp-action="Index" asp-route-categoryId="@category.CategoryId"
+                                   class="@(category.CategoryId == item.CategoryId ? "is-active" : "")">
+                                    @category.Name
+                                    <i class="ri-arrow-right-line" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<partial name="_JoinNow" />

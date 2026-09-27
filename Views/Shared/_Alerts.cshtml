@@ -1,0 +1,24 @@
+@* TempData flash messages. One shape for every notice on the site:
+   tinted block, icon, copy, close. Dismissing is handled once in site.js. *@
+@if (TempData["StatusMessage"] is string ok)
+{
+    <div class="fhp-alert fhp-alert--success" role="status">
+        <i class="ri-check-line" aria-hidden="true"></i> @ok
+        <button type="button" class="fhp-alert__close" aria-label="Dismiss">&times;</button>
+    </div>
+}
+@if (TempData["StatusError"] is string err)
+{
+    <div class="fhp-alert fhp-alert--warning" role="alert">
+        <i class="ri-alert-line" aria-hidden="true"></i> @err
+        <button type="button" class="fhp-alert__close" aria-label="Dismiss">&times;</button>
+    </div>
+}
+@if (TempData["PasswordError"] is string perr)
+{
+    <div class="fhp-alert fhp-alert--warning" role="alert">
+        <i class="ri-lock-line" aria-hidden="true"></i> @perr
+        <button type="button" class="fhp-alert__close" aria-label="Dismiss">&times;</button>
+    </div>
+}
+

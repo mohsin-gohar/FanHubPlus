@@ -1,0 +1,127 @@
+@model ChatHistoryViewModel
+@{
+    ViewData["Title"] = "FanBot";
+    ViewData["fhpBanner"] = true;
+    var trail = new List<BreadcrumbItem> { new("FanBot") };
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<section class="fhp-section">
+    <div class="container">
+        <div class="fhp-layout">
+
+            <div>
+                <div class="fhp-chat">
+                    <div class="fhp-chat__head">
+                        <span class="fhp-chat__dot" aria-hidden="true"></span>
+                        <span class="fhp-chat__name">FanBot</span>
+                        <span class="fhp-chat__state">@Model.Turns.Count saved conversation(s)</span>
+                    </div>
+
+                    <div class="fhp-chat__log" id="pageChatBody" role="log" aria-live="polite">
+                        @foreach (var turn in Model.Turns)
+                        {
+                            <div class="fhp-chat__bubble fhp-chat__bubble--user">@turn.Question</div>
+                            <div class="fhp-chat__bubble fhp-chat__bubble--bot">@turn.Answer</div>
+                        }
+                        @if (Model.Turns.Count == 0)
+                        {
+                            <div class="fhp-chat__bubble fhp-chat__bubble--bot">
+                                Hello! I am FanBot. Try &quot;categories&quot;, &quot;search anime&quot; or
+                                &quot;upcoming events&quot; and I will pull real data out of the database.
+                            </div>
+                        }
+                    </div>
+
+                    <form id="pageChatForm" class="fhp-chat__composer">
+                        @Html.AntiForgeryToken()
+                        <label class="fhp-sr" for="pageChatText">Ask FanBot a question</label>
+                        <input type="text" id="pageChatText" name="message" maxlength="1000"
+                               placeholder="Ask FanBot anything..." autocomplete="off" required />
+                        <button class="fhp-btn fhp-btn--primary" type="submit">Send</button>
+                    </form>
+                </div>
+            </div>
+
+            <aside class="fhp-aside" aria-label="About FanBot">
+                <div class="fhp-panel fhp-panel--flush">
+                    <span class="fhp-eyebrow">Under the hood</span>
+                    <h2 class="fhp-panel__title">How FanBot answers</h2>
+                    <div class="fhp-prose">
+                        <ol>
+                            <li>Built-in intents detect greetings, searches and navigation requests.</li>
+                            <li>Keyword scoring matches your question against the admin-managed FAQ table.</li>
+                            <li>Live database search finds real titles as a fallback.</li>
+                            <li>Every question is stored for analytics so answers keep improving.</li>
+                        </ol>
+                    </div>
+
+                    <hr class="fhp-rule" />
+                    <h3 class="fhp-side-title">Try one of these</h3>
+                    <div class="fhp-chips">
+                        <button type="button" class="fhp-chip chat-suggestion">categories</button>
+                        <button type="button" class="fhp-chip chat-suggestion">search anime</button>
+                        <button type="button" class="fhp-chip chat-suggestion">upcoming events</button>
+                        <button type="button" class="fhp-chip chat-suggestion">how do ratings work?</button>
+                    </div>
+
+                    <hr class="fhp-rule" />
+                    <p class="fhp-hint">
+                        Prefer a smaller footprint? The speech bubble in the corner opens the same assistant
+                        on every page.
+                    </p>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<partial name="_JoinNow" />
+
+@section Scripts {
+    <script>
+        (function () {
+            var body = document.getElementById('pageChatBody');
+            var form = document.getElementById('pageChatForm');
+            var input = document.getElementById('pageChatText');
+
+            function token() {
+                var el = document.querySelector('input[name="__RequestVerificationToken"]');
+                return el ? el.value : '';
+            }
+            function add(text, who) {
+                var d = document.createElement('div');
+                d.className = 'fhp-chat__bubble fhp-chat__bubble--' + who;
+                d.textContent = text;
+                body.appendChild(d);
+                body.scrollTop = body.scrollHeight;
+                return d;
+            }
+            function send(text) {
+                if (!text) return;
+                add(text, 'user');
+                var pending = add('typing...', 'bot fhp-chat__bubble--typing');
+                var fd = new FormData();
+                fd.append('message', text);
+                fd.append('__RequestVerificationToken', token());
+                fetch('/Chatbot/Ask', { method: 'POST', body: fd, credentials: 'same-origin' })
+                    .then(function (r) { return r.json(); })
+                    .then(function (res) {
+                        pending.remove();
+                        add(res.reply || '(empty)', 'bot');
+                    })
+                    .catch(function () { pending.remove(); add('Could not reach the server.', 'bot'); });
+            }
+
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                send(input.value.trim());
+                input.value = '';
+            });
+            Array.prototype.forEach.call(document.querySelectorAll('.chat-suggestion'), function (chip) {
+                chip.addEventListener('click', function () { send(chip.textContent.trim()); });
+            });
+        })();
+    </script>
+}

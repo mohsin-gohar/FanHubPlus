@@ -1,0 +1,140 @@
+@model EventsViewModel
+@{
+    ViewData["Title"] = "Events";
+    ViewData["fhpBanner"] = true;
+    var trail = new List<BreadcrumbItem> { new("Events") };
+    var now = DateTime.Now;
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<section class="fhp-section">
+    <div class="container">
+        <div class="fhp-panel fhp-panel--flush">
+            <h1 class="fhp-panel__title">Conventions, meets and fan nights</h1>
+            <form method="get" class="fhp-form" role="search">
+                <div class="fhp-grid fhp-grid--3">
+                    <div class="fhp-field">
+                        <label class="fhp-field__label" for="eventCity">City</label>
+                        <select id="eventCity" name="city" class="form-select form-input">
+                            <option value="">Everywhere</option>
+                            @foreach (var city in Model.Cities)
+                            {
+                                <option value="@city" selected="@(Model.City == city)">@city</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="fhp-field">
+                        <span class="fhp-field__label">Timeline</span>
+                        <label class="fhp-switch">
+                            <input type="checkbox" name="past" value="true" checked="@Model.Past" />
+                            <span>Show past events</span>
+                        </label>
+                    </div>
+                    <div class="fhp-field fhp-field--action">
+                        <button type="submit" class="fhp-btn fhp-btn--primary fhp-btn--block">Apply</button>
+                    </div>
+                </div>
+            </form>
+            <p class="fhp-hint">
+                @Model.Items.Count event@(Model.Items.Count == 1 ? "" : "s")
+                @(Model.Past ? "in the archive" : "coming up")
+            </p>
+        </div>
+
+        <div class="fhp-layout fhp-mt-25">
+            <div>
+                <div class="fhp-map">
+                    <div id="eventMap" class="fhp-map__canvas" role="application" aria-label="Map of fandom events"></div>
+                    <div class="fhp-map__bar">
+                        <span><i class="ri-map-pin-line" aria-hidden="true"></i> @Model.Items.Count pinned location(s)</span>
+                        <span>Powered by the <a href="/Events/Feed">events feed</a></span>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                @if (Model.Items.Count == 0)
+                {
+                    <div class="fhp-empty">
+                        <h2 class="fhp-empty__title">Nothing on the calendar</h2>
+                        <p>No events match this filter. Try another city or switch back to upcoming events.</p>
+                        <a class="fhp-btn fhp-btn--primary" asp-controller="Events" asp-action="Index">Show upcoming</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="fhp-panel fhp-panel--flush">
+                        @foreach (var e in Model.Items)
+                        {
+                            var past = e.EventDate < now;
+                            <article class="fhp-evrow">
+                                <div class="fhp-evrow__date">
+                                    <b>@e.EventDate.ToString("dd")</b>
+                                    <span>@e.EventDate.ToString("MMM")</span>
+                                </div>
+                                <div class="fhp-evrow__main">
+                                    <h3 class="fhp-evrow__name">@e.Title</h3>
+                                    <p class="fhp-evrow__meta">
+                                        <i class="ri-map-pin-line" aria-hidden="true"></i> @e.City
+                                        @if (e.Type is { Length: > 0 })
+                                        {
+                                            <span>&middot; @e.Type</span>
+                                        }
+                                    </p>
+                                    @if (!string.IsNullOrEmpty(e.Story))
+                                    {
+                                        <p class="fhp-evrow__body">@e.Story</p>
+                                    }
+                                </div>
+                                <div class="fhp-evrow__side">
+                                    @if (past)
+                                    {
+                                        <span class="fhp-chip fhp-chip--quiet">Archived</span>
+                                    }
+                                    @if (!string.IsNullOrEmpty(e.TicketUrl))
+                                    {
+                                        <a class="fhp-btn fhp-btn--primary fhp-btn--sm" href="@e.TicketUrl" target="_blank" rel="noopener">
+                                            Tickets
+                                        </a>
+                                    }
+                                </div>
+                            </article>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<partial name="_JoinNow" />
+
+@section Scripts {
+    @* Leaflet from CDN (only used on this page) *@
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        (function () {
+            var map = L.map('eventMap', { scrollWheelZoom: false }).setView([20, 0], 2);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            fetch('/Events/Feed')
+                .then(function (r) { return r.json(); })
+                .then(function (events) {
+                    events.forEach(function (e) {
+                        if (!e.lat && !e.lng) return;
+                        L.marker([e.lat, e.lng]).addTo(map)
+                            .bindPopup('<strong>' + e.title + '</strong><br>' + e.city + '<br>' + e.date);
+                    });
+                    if (events.length) {
+                        var group = new L.featureGroup(events.map(function (e) { return L.marker([e.lat, e.lng]); }));
+                        map.fitBounds(group.getBounds().pad(0.2));
+                    }
+                });
+        })();
+    </script>
+}

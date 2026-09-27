@@ -1,0 +1,134 @@
+@model ArticleDetailViewModel
+@inject FanHubPlus.Repositories.IRepository<Category> CategoryRepo
+@{
+    var a = Model.Article;
+    ViewData["Title"] = a.Title;
+    ViewData["fhpBanner"] = true;
+
+    var trail = new List<BreadcrumbItem>
+    {
+        new("News & Timeline", Url.Action("Index", "News")),
+        new(a.Category?.Name ?? "Story", Url.Action("Index", "News", new { categoryId = a.CategoryId })),
+        new(a.Title)
+    };
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<section class="fhp-section">
+    <div class="container">
+        <div class="fhp-layout">
+            <article class="fhp-main-col">
+                <div class="fhp-panel fhp-panel--flush">
+                    <div class="fhp-detail-head">
+                        <div class="fhp-chips fhp-mb-15">
+                            <span class="fhp-chip fhp-chip--yellow">@(a.IsTimeline ? "Timeline Story" : "News Bulletin")</span>
+                            @if (a.Category is not null)
+                            {
+                                <a class="fhp-chip" asp-controller="News" asp-action="Index" asp-route-categoryId="@a.CategoryId">
+                                    @a.Category.Name
+                                </a>
+                            }
+                        </div>
+
+                        <h1 class="fhp-title">@a.Title</h1>
+
+                        <div class="fhp-meta-rail">
+                            <div class="fhp-meta-item">
+                                <span class="fhp-meta-label">Published</span>
+                                <span class="fhp-meta-value">@a.PublishedAt.ToString("MMMM dd, yyyy")</span>
+                            </div>
+                            @if (a.Author is not null)
+                            {
+                                <div class="fhp-meta-item">
+                                    <span class="fhp-meta-label">Author</span>
+                                    <span class="fhp-meta-value">@a.Author.Name</span>
+                                </div>
+                            }
+                            <div class="fhp-meta-item">
+                                <span class="fhp-meta-label">Fandom</span>
+                                <span class="fhp-meta-value">@(a.Category?.Name ?? "Universal")</span>
+                            </div>
+                        </div>
+
+                        <div class="fhp-action-bar fhp-mt-20">
+                            <button type="button"
+                                    class="fhp-btn fhp-btn--ghost bookmark-btn @(Model.IsBookmarked ? "is-saved" : "")"
+                                    data-type="@((int)BookmarkType.Article)"
+                                    data-id="@a.ArticleId"
+                                    aria-label="Bookmark this article">
+                                <i class="@(Model.IsBookmarked ? "ri-heart-fill text-danger" : "ri-heart-line")" aria-hidden="true"></i>
+                                <span>@(Model.IsBookmarked ? "Saved" : "Save story")</span>
+                            </button>
+                            <button type="button"
+                                    class="fhp-btn fhp-btn--ghost fhp-share"
+                                    data-share-title="@a.Title"
+                                    data-share-url="@Url.Action("Details", "News", new { id = a.ArticleId })"
+                                    aria-label="Share this story">
+                                <i class="ri-share-forward-line" aria-hidden="true"></i>
+                                <span>Share</span>
+                            </button>
+                            <a class="fhp-btn fhp-btn--ghost" asp-controller="News" asp-action="Index">
+                                <i class="ri-arrow-left-line" aria-hidden="true"></i>
+                                <span>All stories</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="fhp-prose fhp-mt-30">
+                        @Html.Raw(a.Body)
+                    </div>
+                </div>
+
+                @if (Model.Related.Count > 0)
+                {
+                    <div class="fhp-mt-40">
+                        <div class="fhp-section-head">
+                            <div class="fhp-section-head__title fhp-section-head__title--stack">
+                                <span class="fhp-eyebrow">Keep reading</span>
+                                <h2>Related stories</h2>
+                            </div>
+                        </div>
+                        <div class="fhp-grid fhp-grid--2 fhp-mt-20">
+                            @foreach (var related in Model.Related)
+                            {
+                                <partial name="_ArticleCard" model="related" />
+                            }
+                        </div>
+                    </div>
+                }
+            </article>
+
+            <aside class="fhp-aside" aria-label="News navigation">
+                <div class="fhp-panel fhp-panel--flush">
+                    <h2 class="fhp-side-title">Search stories</h2>
+                    <form class="fhp-search fhp-mb-25" method="get" asp-controller="News" asp-action="Index" role="search">
+                        <label class="fhp-sr" for="newsSearch">Search news</label>
+                        <input id="newsSearch" type="search" name="search" placeholder="Headline, keyword..." />
+                        <button type="submit"><i class="ri-search-line" aria-hidden="true"></i><span class="fhp-sr">Search</span></button>
+                    </form>
+
+                    <h2 class="fhp-side-title">Fandom desks</h2>
+                    <ul class="fhp-list">
+                        <li>
+                            <a asp-controller="News" asp-action="Index">
+                                All coverage <i class="ri-arrow-right-line" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        @foreach (var cat in await CategoryRepo.Query().OrderBy(c => c.Name).ToListAsync())
+                        {
+                            <li>
+                                <a asp-controller="News" asp-action="Index" asp-route-categoryId="@cat.CategoryId"
+                                   class="@(a.CategoryId == cat.CategoryId ? "is-active" : "")">
+                                    @cat.Name <i class="ri-arrow-right-line" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<partial name="_JoinNow" />

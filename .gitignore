@@ -1,0 +1,80 @@
+# ---------------------------------------------------------------------------
+#  FanHubPlus - files that must never be committed, zipped or handed in
+# ---------------------------------------------------------------------------
+
+# Build output. The patterns match any folder depth and any casing, so they
+# also cover tests/FanHubPlus.Tests/bin and tests/FanHubPlus.Tests/obj.
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+artifacts/
+TestResults/
+*.binlog
+*.trx
+*.coverage
+coverage*.json
+*.coveragexml
+
+# Packaged copies of the project / stray archives ("a zip inside the zip")
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+*.tgz
+*.gz
+
+# Visual Studio / VS Code / Rider / ReSharper user state
+.vs/
+.vscode/
+.idea/
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.DotSettings.user
+
+# .NET / NuGet restore artifacts
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+packages/
+.nuget/
+
+# Scratch files left behind by error/emitted by ad-hoc tooling
+*.err
+*.log
+
+# Machine-local secrets and configuration overrides.
+#   Credentials for the demo accounts are supplied through environment
+#   variables or user-secrets (see README.md) - never through a committed file.
+appsettings.Production.json
+appsettings.Local.json
+appsettings.*.Local.json
+appsettings.Development.local.json
+secrets.json
+*.pfx
+*.snk
+
+# User uploads are runtime data, not source (folders are recreated on demand)
+wwwroot/uploads/**
+!wwwroot/uploads/.gitkeep
+
+# OS / editor junk
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*~
+*.swp
+*.tmp
+*.bak
+
+# Local agent/editor worktrees
+.kilo/
+.kilocode/
+.worktrees/

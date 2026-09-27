@@ -1,0 +1,87 @@
+@model SupportViewModel
+@{
+    ViewData["Title"] = "Support & FAQ";
+    ViewData["fhpBanner"] = true;
+    var trail = new List<BreadcrumbItem> { new("Support & FAQ") };
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<section class="fhp-section">
+    <div class="container">
+        <div class="fhp-layout">
+            <div>
+                <div class="fhp-panel fhp-panel--flush">
+                    <h1 class="fhp-panel__title">Frequently asked questions</h1>
+                    @if (!Model.Faqs.Any())
+                    {
+                        <p class="mb-0">Our help desk is preparing answers. Send us a message in the meantime and we will reply by e-mail.</p>
+                    }
+                    else
+                    {
+                        <div id="accordion">
+                            @foreach (var faq in Model.Faqs)
+                            {
+                                <div class="fhp-accordion__item">
+                                    <button type="button" class="fhp-accordion__btn" aria-expanded="false">
+                                        <span>@faq.Question</span>
+                                        <i class="ri-arrow-down-s-line" aria-hidden="true"></i>
+                                    </button>
+                                    <div class="fhp-accordion__panel is-hidden">
+                                        <p class="mb-0">@faq.Answer</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <div class="fhp-panel">
+                    <h2 class="fhp-panel__title">Prefer the chatbot?</h2>
+                    <p class="mb-0">The assistant answers the most common questions instantly, and you can hand over to a human at any time.</p>
+                    <a class="fhp-btn fhp-btn--ghost fhp-mt-20" asp-controller="Chatbot" asp-action="Index">
+                        <i class="ri-robot-2-line" aria-hidden="true"></i> Open the chatbot
+                    </a>
+                </div>
+            </div>
+
+            <aside class="fhp-aside" aria-label="Contact form">
+                <div class="fhp-panel fhp-panel--flush">
+                    <h2 class="fhp-panel__title">Send us a message</h2>
+                    <p class="mb-0 fhp-mb-25">Bugs, ideas or a question about your account &mdash; a human reads every message.</p>
+
+                    @if (Model.FeedbackSent)
+                    {
+                        <div class="alert alert-success" role="status">Thank you! Your message reached our admins.</div>
+                    }
+
+                    <form asp-action="Feedback" method="post" class="fhp-form">
+                        @Html.AntiForgeryToken()
+                        <div class="fhp-field">
+                            <label asp-for="FeedbackForm.Type" class="fhp-field__label"></label>
+                            <select asp-for="FeedbackForm.Type" asp-items="Html.GetEnumSelectList<FeedbackType>()" class="form-select form-input"></select>
+                        </div>
+                        <div class="fhp-field">
+                            <label asp-for="FeedbackForm.Message" class="fhp-field__label"></label>
+                            <textarea asp-for="FeedbackForm.Message" rows="6" class="form-control form-input"
+                                      placeholder="Describe the issue or idea..."></textarea>
+                            <span asp-validation-for="FeedbackForm.Message" class="fhp-field__error"></span>
+                        </div>
+                        <div class="fhp-field">
+                            <label asp-for="FeedbackForm.ContactEmail" class="fhp-field__label"></label>
+                            <input asp-for="FeedbackForm.ContactEmail" class="form-control form-input" placeholder="Optional &mdash; so we can reply" />
+                            <span asp-validation-for="FeedbackForm.ContactEmail" class="fhp-field__error"></span>
+                        </div>
+                        <button type="submit" class="fhp-btn fhp-btn--primary fhp-btn--block">Send message</button>
+                        @if (User.Identity?.IsAuthenticated != true)
+                        {
+                            <p class="fhp-hint fhp-mt-10">You do not need an account to send feedback.</p>
+                        }
+                    </form>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<partial name="_JoinNow" />

@@ -1,0 +1,175 @@
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["fhpBanner"] = true;
+    var trail = new List<BreadcrumbItem> { new("Profile") };
+    var initial = string.IsNullOrWhiteSpace(User.Identity?.Name) ? "?" : User.Identity.Name[..1].ToUpperInvariant();
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<section class="fhp-section">
+    <div class="container">
+        <div class="fhp-layout">
+
+            <div>
+                <div class="fhp-panel fhp-panel--flush">
+                    <div class="fhp-grid fhp-grid--2 fhp-detail-head">
+                        <div class="fhp-avatar">
+                            @if (!string.IsNullOrWhiteSpace(Model.CurrentAvatarUrl))
+                            {
+                                <img src="@Model.CurrentAvatarUrl" alt="Your avatar" width="96" height="96" />
+                            }
+                            else
+                            {
+                                <span>@initial</span>
+                            }
+                        </div>
+                        <div>
+                            <span class="fhp-eyebrow">Signed in as</span>
+                            <h1 class="fhp-title">@(string.IsNullOrWhiteSpace(Model.Name) ? User.Identity?.Name : Model.Name)</h1>
+                            <p class="fhp-hint fhp-mt-10">
+                                Your display settings are stored with the account, so they follow you to every device.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fhp-panel">
+                    <span class="fhp-eyebrow">Display settings</span>
+                    <h2 class="fhp-panel__title">Profile &amp; preferences</h2>
+
+                    <form asp-action="Profile" method="post" enctype="multipart/form-data" class="fhp-form">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="fhp-field__error"></div>
+
+                        <div class="fhp-field">
+                            <label asp-for="AvatarFile" class="fhp-field__label"></label>
+                            <input asp-for="AvatarFile" class="form-control form-input" />
+                            <span asp-validation-for="AvatarFile" class="fhp-field__error"></span>
+                        </div>
+
+                        <div class="fhp-field">
+                            <label asp-for="Name" class="fhp-field__label"></label>
+                            <input asp-for="Name" class="form-control form-input" />
+                            <span asp-validation-for="Name" class="fhp-field__error"></span>
+                        </div>
+
+                        <div class="fhp-grid fhp-grid--2">
+                            <div class="fhp-field">
+                                <label asp-for="FontSize" class="fhp-field__label"></label>
+                                <select asp-for="FontSize" class="form-select form-input"
+                                        asp-items="Enumerable.Range(14, 9).Select(i => new SelectListItem(i.ToString(), i.ToString()))">
+                                </select>
+                                <span class="fhp-field__hint">Scales the whole site, header included.</span>
+                            </div>
+                            <div class="fhp-field">
+                                <span class="fhp-field__label">Theme</span>
+                                <label class="fhp-switch">
+                                    <input asp-for="DarkMode" type="checkbox" />
+                                    <span>@Html.DisplayNameFor(m => m.DarkMode)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="fhp-field">
+                            <p class="fhp-legend">Favourite fandoms</p>
+                            <div class="fhp-picks">
+                                @foreach (var category in Model.AllCategories)
+                                {
+                                    var isFavourite = Model.FavoriteCategoryIds.Contains(category.CategoryId);
+                                    <label class="fhp-pick">
+                                        <input type="checkbox" name="FavoriteCategoryIds"
+                                               value="@category.CategoryId"
+                                               id="fav_@category.CategoryId"
+                                               checked="@isFavourite" />
+                                        <span>@category.Name</span>
+                                    </label>
+                                }
+                            </div>
+                        </div>
+
+                        <button type="submit" class="fhp-btn fhp-btn--primary">Save profile</button>
+                    </form>
+                </div>
+
+                @if (Model.FavoriteCategoryIds.Count > 0)
+                {
+                    <div class="fhp-panel">
+                        <h2 class="fhp-panel__title">Your fandoms</h2>
+                        <p class="fhp-hint fhp-mb-25">
+                            Titles from these fandoms are given priority when you land on the home page.
+                        </p>
+                        <div class="fhp-chips">
+                            @foreach (var id in Model.FavoriteCategoryIds)
+                            {
+                                var category = Model.AllCategories.FirstOrDefault(c => c.CategoryId == id);
+                                if (category is not null)
+                                {
+                                    <a class="fhp-chip" asp-controller="Explore" asp-action="Index" asp-route-categoryId="@category.CategoryId">
+                                        @category.Name <i class="ri-arrow-right-line" aria-hidden="true"></i>
+                                    </a>
+                                }
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <aside class="fhp-aside" aria-label="Account settings">
+                <div class="fhp-panel fhp-panel--flush">
+                    <span class="fhp-eyebrow">Security</span>
+                    <h2 class="fhp-panel__title">Change password</h2>
+
+                    @if (TempData["PasswordError"] is string passwordError)
+                    {
+                        <div class="fhp-alert fhp-alert--warning" role="alert">@passwordError</div>
+                    }
+
+                    @* Plain named inputs on purpose: this form binds to
+                       ChangePasswordViewModel, not the page model. *@
+                    <form asp-action="ChangePassword" method="post" class="fhp-form">
+                        @Html.AntiForgeryToken()
+                        <div class="fhp-field">
+                            <label class="fhp-field__label" for="OldPassword">Current password</label>
+                            <input class="form-control form-input" type="password" name="OldPassword" id="OldPassword"
+                                   autocomplete="current-password" required />
+                        </div>
+                        <div class="fhp-field">
+                            <label class="fhp-field__label" for="NewPassword">New password</label>
+                            <input class="form-control form-input" type="password" name="NewPassword" id="NewPassword"
+                                   autocomplete="new-password" required minlength="8" />
+                            <span class="fhp-field__hint">At least 8 characters.</span>
+                        </div>
+                        <div class="fhp-field">
+                            <label class="fhp-field__label" for="ConfirmPassword">Confirm new password</label>
+                            <input class="form-control form-input" type="password" name="ConfirmPassword" id="ConfirmPassword"
+                                   autocomplete="new-password" required />
+                        </div>
+                        <button type="submit" class="fhp-btn fhp-btn--primary fhp-btn--block">Update password</button>
+                    </form>
+
+                    <hr class="fhp-rule" />
+                    <h3 class="fhp-side-title">Your activity</h3>
+                    <ul class="fhp-list">
+                        <li>
+                            <a asp-controller="Bookmarks" asp-action="Index">My bookmarks <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a asp-controller="FanArt" asp-action="Index">My fan art <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a asp-controller="Support" asp-action="Index">Support &amp; FAQ <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<partial name="_JoinNow" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

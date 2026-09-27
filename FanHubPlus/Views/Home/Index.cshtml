@@ -1,0 +1,501 @@
+﻿@model FanHubPlus.ViewModels.HomeIndexViewModel
+@{
+    ViewData["Title"] = "FanHub Plus - Watch Unlimited Movies, Shows & Live Events";
+
+    // Helper functions for poster art styling
+    Func<string, string> getPosterBg = (theme) => theme switch {
+        "t1" => "bg-gradient-to-tr from-rose-900 via-red-800 to-amber-700",
+        "t2" => "bg-gradient-to-tr from-indigo-950 via-purple-900 to-slate-900",
+        "t3" => "bg-gradient-to-tr from-cyan-950 via-teal-900 to-emerald-950",
+        "t4" => "bg-gradient-to-tr from-amber-950 via-orange-900 to-red-950",
+        "t5" => "bg-gradient-to-tr from-blue-950 via-indigo-900 to-cyan-950",
+        "t6" => "bg-gradient-to-tr from-fuchsia-950 via-rose-950 to-pink-900",
+        "t7" => "bg-gradient-to-tr from-zinc-900 via-stone-900 to-neutral-800",
+        _    => "bg-gradient-to-tr from-slate-900 via-gray-900 to-black"
+    };
+
+    Func<string, string> getGenreBadge = (theme) => theme switch {
+        "t1" => "bg-red-500/20 text-red-400 border-red-500/30",
+        "t2" => "bg-purple-500/20 text-purple-400 border-purple-500/30",
+        "t3" => "bg-teal-500/20 text-teal-400 border-teal-500/30",
+        "t4" => "bg-amber-500/20 text-amber-400 border-amber-500/30",
+        "t5" => "bg-blue-500/20 text-blue-400 border-blue-500/30",
+        "t6" => "bg-pink-500/20 text-pink-400 border-pink-500/30",
+        _    => "bg-gray-500/20 text-gray-400 border-gray-500/30"
+    };
+}
+
+<!-- HERO BANNER SWIPER -->
+<section class="relative w-full overflow-hidden">
+    <div class="swiper hero-swiper">
+        <div class="swiper-wrapper">
+            @foreach (var item in Model.FeaturedHero)
+            {
+                <div class="swiper-slide hero-slide @getPosterBg(item.PosterTheme) min-h-[70vh] lg:min-h-[85vh] flex items-center">
+                    <div class="hero-overlay absolute inset-0 z-10"></div>
+                    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+                        <div class="max-w-2xl space-y-5">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/10 text-white backdrop-blur-md border border-white/15">
+                                <span class="w-2 h-2 rounded-full bg-[#f41b3b] animate-pulse"></span>
+                                FanHub Original &bull; @item.Genre
+                            </div>
+                            <h1 class="text-4xl sm:text-5xl lg:text-7xl font-black text-white tracking-tight leading-none font-['Montserrat']">
+                                @item.Title
+                            </h1>
+                            <div class="flex flex-wrap items-center gap-4 text-sm text-gray-300">
+                                @if (item.ImdbRating > 0)
+                                {
+                                    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#ffea00]/20 text-[#ffea00] border border-[#ffea00]/30 font-bold">
+                                        <i class="ri-star-fill text-[#ffea00]"></i> @item.ImdbRating.ToString("0.0")
+                                    </span>
+                                }
+                                <span class="px-2 py-0.5 rounded border border-white/20 text-xs font-semibold text-gray-300">4K ULTRA HD</span>
+                                <span class="px-2 py-0.5 rounded border border-white/20 text-xs font-semibold text-gray-300">5.1 AUDIO</span>
+                                <span>@item.Year</span>
+                                <span>&bull;</span>
+                                <span>@item.Duration</span>
+                            </div>
+                            <p class="text-gray-300 text-sm sm:text-base leading-relaxed line-clamp-3">
+                                @item.Description
+                            </p>
+                            <div class="flex flex-wrap items-center gap-4 pt-2">
+                                <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#f41b3b] hover:bg-[#d01431] text-white font-bold text-sm shadow-xl shadow-red-600/30 transition-all transform hover:scale-105">
+                                    <i class="ri-play-fill text-xl"></i> Watch Now
+                                </a>
+                                <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-semibold text-sm backdrop-blur-md border border-white/20 transition-all">
+                                    <i class="ri-information-line text-lg"></i> Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="swiper-pagination hero-pagination !bottom-8 z-30"></div>
+        <div class="swiper-button-prev hero-prev !hidden sm:!flex !left-6 z-30"></div>
+        <div class="swiper-button-next hero-next !hidden sm:!flex !right-6 z-30"></div>
+    </div>
+</section>
+<!-- CATEGORIES PILLS SECTION -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 relative z-30">
+    <div class="bg-[#14161d]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-4 sm:p-6 shadow-2xl">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-[#f41b3b]"></span> Popular Categories
+            </h2>
+            <a asp-controller="Home" asp-action="Movies" class="text-xs text-gray-400 hover:text-[#f41b3b] font-medium transition-colors">
+                View All Categories &rarr;
+            </a>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+            @foreach (var cat in Model.Categories)
+            {
+                <a asp-controller="Home" asp-action="Movies" asp-route-genre="@cat.Name" 
+                   class="category-pill group flex flex-col items-center justify-center p-3 sm:p-4 rounded-xl bg-white/5 hover:bg-[#f41b3b] border border-white/5 hover:border-transparent text-center transition-all">
+                    <span class="text-2xl mb-1.5 group-hover:scale-110 transition-transform">@cat.Icon</span>
+                    <span class="text-xs font-bold text-gray-200 group-hover:text-white truncate w-full">@cat.Name</span>
+                    <span class="text-[10px] text-gray-400 group-hover:text-white/80">@cat.VideoCount.ToString("N0")+</span>
+                </a>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- TRENDING NOW SLIDER -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+    <div class="flex items-end justify-between mb-6">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#f41b3b] mb-1">
+                <i class="ri-fire-fill"></i> Stream Today
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-white font-['Montserrat']">Trending Now</h2>
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="trending-prev w-10 h-10 rounded-full bg-[#14161d] hover:bg-[#f41b3b] border border-white/10 flex items-center justify-center text-white transition-all">
+                <i class="ri-arrow-left-s-line text-lg"></i>
+            </button>
+            <button class="trending-next w-10 h-10 rounded-full bg-[#14161d] hover:bg-[#f41b3b] border border-white/10 flex items-center justify-center text-white transition-all">
+                <i class="ri-arrow-right-s-line text-lg"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="swiper trending-swiper">
+        <div class="swiper-wrapper">
+            @foreach (var item in Model.TrendingVideos)
+            {
+                <div class="swiper-slide">
+                    <div class="movie-card group">
+                        <div class="relative aspect-[2/3] w-full @getPosterBg(item.PosterTheme) flex flex-col justify-between p-4 overflow-hidden">
+                            <div class="flex items-center justify-between z-10">
+                                <span class="text-[11px] font-bold px-2 py-0.5 rounded border @getGenreBadge(item.PosterTheme)">
+                                    @item.Genre
+                                </span>
+                                @if (item.ImdbRating > 0)
+                                {
+                                    <span class="text-[11px] font-bold px-1.5 py-0.5 rounded bg-black/60 text-[#ffea00] flex items-center gap-1 backdrop-blur-sm">
+                                        <i class="ri-star-fill text-[10px]"></i> @item.ImdbRating.ToString("0.0")
+                                    </span>
+                                }
+                            </div>
+                            
+                            <!-- Play button hover overlay -->
+                            <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                                <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="w-14 h-14 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 hover:scale-110 transition-transform">
+                                    <i class="ri-play-fill text-2xl ml-1"></i>
+                                </a>
+                            </div>
+
+                            <div class="z-10 bg-gradient-to-t from-black/90 via-black/50 to-transparent -mx-4 -mb-4 p-4 pt-8">
+                                <h3 class="text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">
+                                    <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
+                                </h3>
+                                <div class="flex items-center justify-between text-[11px] text-gray-400 mt-1">
+                                    <span>@item.Year</span>
+                                    <span>@item.Duration</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<!-- LIVE STREAMING & EVENTS CAROUSEL -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+    <div class="flex items-end justify-between mb-6">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-400 mb-1">
+                <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
+                <span class="text-[#f41b3b]">ON AIR NOW</span>
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-white font-['Montserrat']">Live Sports & Broadcasts</h2>
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="tvshows-prev w-10 h-10 rounded-full bg-[#14161d] hover:bg-[#f41b3b] border border-white/10 flex items-center justify-center text-white transition-all">
+                <i class="ri-arrow-left-s-line text-lg"></i>
+            </button>
+            <button class="tvshows-next w-10 h-10 rounded-full bg-[#14161d] hover:bg-[#f41b3b] border border-white/10 flex items-center justify-center text-white transition-all">
+                <i class="ri-arrow-right-s-line text-lg"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="swiper tvshows-swiper">
+        <div class="swiper-wrapper">
+            @foreach (var item in Model.LiveNow)
+            {
+                <div class="swiper-slide">
+                    <div class="movie-card group">
+                        <div class="relative aspect-video w-full @getPosterBg(item.PosterTheme) flex flex-col justify-between p-4 overflow-hidden">
+                            <div class="flex items-center justify-between z-10">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-600/90 text-white text-[10px] font-black tracking-wider uppercase">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> LIVE
+                                </span>
+                                <span class="text-[11px] font-semibold text-gray-300 bg-black/60 px-2 py-0.5 rounded backdrop-blur-sm">
+                                    <i class="ri-eye-line"></i> @item.WatchingDisplay
+                                </span>
+                            </div>
+
+                            <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                                <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="w-12 h-12 rounded-full bg-red-600 text-white flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                                    <i class="ri-play-fill text-xl ml-0.5"></i>
+                                </a>
+                            </div>
+
+                            <div class="z-10 bg-gradient-to-t from-black/90 via-black/60 to-transparent -mx-4 -mb-4 p-4 pt-6">
+                                <span class="text-[10px] text-[#f41b3b] font-bold uppercase tracking-wider">@item.Genre</span>
+                                <h3 class="text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors mt-0.5">
+                                    <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- TOP RATED BLOCKBUSTERS SLIDER -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+    <div class="flex items-end justify-between mb-6">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#ffea00] mb-1">
+                <i class="ri-medal-fill"></i> Highly Acclaimed
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-white font-['Montserrat']">Top Rated Titles</h2>
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="movies-prev w-10 h-10 rounded-full bg-[#14161d] hover:bg-[#f41b3b] border border-white/10 flex items-center justify-center text-white transition-all">
+                <i class="ri-arrow-left-s-line text-lg"></i>
+            </button>
+            <button class="movies-next w-10 h-10 rounded-full bg-[#14161d] hover:bg-[#f41b3b] border border-white/10 flex items-center justify-center text-white transition-all">
+                <i class="ri-arrow-right-s-line text-lg"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="swiper movies-swiper">
+        <div class="swiper-wrapper">
+            @foreach (var item in Model.TopRated)
+            {
+                <div class="swiper-slide">
+                    <div class="movie-card group">
+                        <div class="relative aspect-[2/3] w-full @getPosterBg(item.PosterTheme) flex flex-col justify-between p-4 overflow-hidden">
+                            <div class="flex items-center justify-between z-10">
+                                <span class="text-[11px] font-bold px-2 py-0.5 rounded border @getGenreBadge(item.PosterTheme)">
+                                    @item.Genre
+                                </span>
+                                <span class="text-[11px] font-bold px-1.5 py-0.5 rounded bg-black/60 text-[#ffea00] flex items-center gap-1 backdrop-blur-sm">
+                                    <i class="ri-star-fill text-[10px]"></i> @item.ImdbRating.ToString("0.0")
+                                </span>
+                            </div>
+
+                            <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                                <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="w-14 h-14 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 hover:scale-110 transition-transform">
+                                    <i class="ri-play-fill text-2xl ml-1"></i>
+                                </a>
+                            </div>
+
+                            <div class="z-10 bg-gradient-to-t from-black/90 via-black/50 to-transparent -mx-4 -mb-4 p-4 pt-8">
+                                <h3 class="text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">
+                                    <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id">@item.Title</a>
+                                </h3>
+                                <div class="flex items-center justify-between text-[11px] text-gray-400 mt-1">
+                                    <span>@item.Year</span>
+                                    <span>@item.Duration</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+<!-- SUBSCRIPTION PRICING PLANS -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#f41b3b]">Choose Your Access</span>
+        <h2 class="text-3xl sm:text-4xl font-black text-white mt-1 font-['Montserrat']">Simple, Transparent Pricing</h2>
+        <p class="text-gray-400 text-sm mt-3">Cancel anytime. Stream on TV, phone, tablet, or laptop without commercials.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Standard -->
+        <div class="pricing-card bg-[#14161d] border border-white/10 rounded-2xl p-8 flex flex-col justify-between">
+            <div>
+                <span class="text-xs font-bold uppercase text-gray-400 tracking-wider">Basic</span>
+                <h3 class="text-xl font-black text-white mt-1">Standard HD</h3>
+                <div class="mt-4 flex items-baseline">
+                    <span class="text-4xl font-black text-white">$8.99</span>
+                    <span class="text-gray-400 text-xs ml-1">/ month</span>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">Perfect for single viewers streaming on mobile and laptop.</p>
+                
+                <ul class="mt-6 space-y-3 text-xs sm:text-sm text-gray-300">
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Full HD 1080p Quality</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Watch on 1 device at a time</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Unlimited movies & TV shows</li>
+                    <li class="flex items-center gap-2 text-gray-500"><i class="ri-close-line text-gray-500 text-base"></i> 4K Ultra HD & HDR</li>
+                    <li class="flex items-center gap-2 text-gray-500"><i class="ri-close-line text-gray-500 text-base"></i> Live Sports Broadcasts</li>
+                </ul>
+            </div>
+            <a asp-controller="Home" asp-action="Pricing" class="mt-8 block text-center py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/10 transition-all">
+                Select Standard
+            </a>
+        </div>
+
+        <!-- Premium VIP (Featured) -->
+        <div class="pricing-card featured bg-[#14161d] rounded-2xl p-8 flex flex-col justify-between relative transform lg:-translate-y-4">
+            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#f41b3b] text-white text-[11px] font-black uppercase tracking-wider px-4 py-1 rounded-full shadow-lg">
+                Most Popular
+            </div>
+            <div>
+                <span class="text-xs font-bold uppercase text-[#f41b3b] tracking-wider">FanHub Pro</span>
+                <h3 class="text-xl font-black text-white mt-1">Premium 4K UHD</h3>
+                <div class="mt-4 flex items-baseline">
+                    <span class="text-4xl font-black text-white">$14.99</span>
+                    <span class="text-gray-400 text-xs ml-1">/ month</span>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">The ultimate cinematic streaming experience for families.</p>
+                
+                <ul class="mt-6 space-y-3 text-xs sm:text-sm text-gray-200">
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> 4K UHD + HDR10 + Dolby Vision</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Dolby Atmos Spatial Audio</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Stream on 4 devices simultaneously</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> All Live Sports & Pay-Per-View</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Download to watch offline</li>
+                </ul>
+            </div>
+            <a asp-controller="Home" asp-action="Pricing" class="mt-8 block text-center py-3.5 rounded-full bg-[#f41b3b] hover:bg-[#d01431] text-white font-bold text-sm shadow-xl shadow-red-600/40 transition-all">
+                Start 7-Day Free Trial
+            </a>
+        </div>
+
+        <!-- Annual Pass -->
+        <div class="pricing-card bg-[#14161d] border border-white/10 rounded-2xl p-8 flex flex-col justify-between">
+            <div>
+                <span class="text-xs font-bold uppercase text-amber-400 tracking-wider">Save 35%</span>
+                <h3 class="text-xl font-black text-white mt-1">Annual VIP</h3>
+                <div class="mt-4 flex items-baseline">
+                    <span class="text-4xl font-black text-white">$119.99</span>
+                    <span class="text-gray-400 text-xs ml-1">/ year</span>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">Billed annually. Includes all Pro features with 4 months free.</p>
+                
+                <ul class="mt-6 space-y-3 text-xs sm:text-sm text-gray-300">
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Everything in Premium 4K UHD</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Stream on unlimited devices</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Early access to Original premieres</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> VIP Concierge Customer Support</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Exclusive festival & concert passes</li>
+                </ul>
+            </div>
+            <a asp-controller="Home" asp-action="Pricing" class="mt-8 block text-center py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/10 transition-all">
+                Select Annual
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- LATEST RELEASES -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+    <div class="flex items-end justify-between mb-6">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#f41b3b] mb-1">
+                <i class="ri-sparkling-2-fill"></i> Fresh on FanHub
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-white font-['Montserrat']">Latest Releases</h2>
+        </div>
+        <div class="flex items-center gap-2">
+            <button class="movies-prev w-10 h-10 rounded-full bg-[#14161d] hover:bg-[#f41b3b] border border-white/10 flex items-center justify-center text-white transition-all">
+                <i class="ri-arrow-left-s-line text-lg"></i>
+            </button>
+            <button class="movies-next w-10 h-10 rounded-full bg-[#14161d] hover:bg-[#f41b3b] border border-white/10 flex items-center justify-center text-white transition-all">
+                <i class="ri-arrow-right-s-line text-lg"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="swiper movies-swiper !pb-2">
+        <div class="swiper-wrapper">
+            @foreach (var item in Model.LatestReleases)
+            {
+                <div class="swiper-slide">
+                    <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="group block">
+                        <div class="relative aspect-[2/3] w-full @getPosterBg(item.PosterTheme) rounded-xl overflow-hidden border border-white/5">
+                            <div class="poster-art"></div>
+                            <i class="ri-play-circle-fill poster-glyph"></i>
+
+                            <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                                <span class="text-[10px] font-bold px-2 py-0.5 rounded border @getGenreBadge(item.PosterTheme)">@item.Genre</span>
+                                @if (item.IsTopRated)
+                                {
+                                    <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-black/60 text-[#ffea00] flex items-center gap-1 backdrop-blur-sm">
+                                        <i class="ri-star-fill text-[10px]"></i> @item.ImdbRating.ToString("0.0")
+                                    </span>
+                                }
+                            </div>
+
+                            <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                                <span class="w-14 h-14 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                    <i class="ri-play-fill text-2xl ml-1"></i>
+                                </span>
+                            </div>
+
+                            <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-4 pt-8">
+                                <h3 class="text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">@item.Title</h3>
+                                <div class="flex items-center justify-between text-[11px] text-gray-400 mt-1">
+                                    <span>@item.Year</span>
+                                    <span>@item.Duration</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
+    <div class="text-center max-w-2xl mx-auto mb-10">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#f41b3b]">Subscriber Stories</span>
+        <h2 class="text-3xl sm:text-4xl font-black text-white mt-1 font-['Montserrat']">Loved by Movie Lovers</h2>
+        <p class="text-gray-400 text-sm mt-3">Over 2.4 million households stream with FanHub Plus every month.</p>
+    </div>
+
+    @if (Model.Testimonials.Any())
+    {
+        <div class="swiper testimonial-swiper !pb-12">
+            <div class="swiper-wrapper">
+                @foreach (var t in Model.Testimonials)
+                {
+                    <div class="swiper-slide">
+                        <div class="h-full bg-[#14161d] border border-white/10 rounded-2xl p-6 flex flex-col justify-between">
+                            <div>
+                                <div class="text-[#ffea00] text-sm tracking-widest mb-3">
+                                    <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
+                                </div>
+                                <p class="text-sm text-gray-300 leading-relaxed">&ldquo;@t.Quote&rdquo;</p>
+                            </div>
+                            <div class="flex items-center gap-3 mt-6 pt-4 border-t border-white/5">
+                                <span class="w-11 h-11 rounded-full bg-gradient-to-tr from-[#f41b3b] to-[#ffea00] flex items-center justify-center text-white font-black">
+                                    @(t.Name.Length > 0 ? t.Name.Substring(0, 1) : "?")
+                                </span>
+                                <div>
+                                    <div class="text-sm font-bold text-white">@t.Name</div>
+                                    <div class="text-[11px] text-gray-500">@t.Role &bull; @t.ReviewCount.ToString("N0") reviews</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="swiper-pagination testimonial-pagination !bottom-0"></div>
+        </div>
+    }
+</section>
+
+
+<!-- BLOG / EDITORIAL -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-24">
+    <div class="flex items-end justify-between mb-6">
+        <div>
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#f41b3b] mb-1">
+                <i class="ri-quote-text"></i> Editorial
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-black text-white font-['Montserrat']">From the FanHub Blog</h2>
+        </div>
+        <a href="#" class="text-xs text-gray-400 hover:text-[#f41b3b] font-medium transition-colors">All articles &rarr;</a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        @foreach (var post in Model.BlogPosts)
+        {
+            <article class="group bg-[#14161d] border border-white/10 rounded-2xl overflow-hidden hover:border-[#f41b3b]/40 transition-colors">
+                <div class="relative h-36 @getPosterBg(post.PosterTheme) overflow-hidden">
+                    <div class="poster-art"></div>
+                    <i class="ri-film-fill poster-glyph !text-[6rem]"></i>
+                </div>
+                <div class="p-5">
+                    <div class="flex items-center gap-2 text-[11px] text-gray-500 mb-2">
+                        <span class="text-[#f41b3b] font-bold uppercase">@post.Author</span>
+                        <span>&bull;</span>
+                        <span>@post.DateDisplay</span>
+                    </div>
+                    <h3 class="text-sm font-bold text-white leading-snug group-hover:text-[#f41b3b] transition-colors line-clamp-2">@post.Title</h3>
+                    <p class="text-xs text-gray-400 mt-2 line-clamp-3">@post.Excerpt</p>
+                    <a href="#" class="inline-flex items-center gap-1.5 text-xs font-bold text-white mt-4 hover:text-[#f41b3b] transition-colors">
+                        Read more <i class="ri-arrow-right-line"></i>
+                    </a>
+                </div>
+            </article>
+        }
+    </div>
+</section>
+

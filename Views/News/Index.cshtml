@@ -1,0 +1,100 @@
+@model NewsViewModel
+@{
+    ViewData["Title"] = "News";
+    ViewData["fhpBanner"] = true;
+    var trail = new List<BreadcrumbItem> { new("News & Timeline") };
+
+    static string Excerpt(string html, int max = 150)
+    {
+        var plain = System.Net.WebUtility.HtmlDecode(
+            System.Text.RegularExpressions.Regex.Replace(html ?? string.Empty, "<[^>]+>", " ")).Trim();
+        return plain.Length > max ? plain[..max].TrimEnd() + "\u2026" : plain;
+    }
+
+    string TabUrl(bool? timeline) => Url.Action("Index", "News", new
+    {
+        timeline,
+        categoryId = Model.CategoryId,
+    }) ?? "#";
+    var showTimeline = Model.Items.Count > 0 && Model.Items.All(a => a.IsTimeline) && Model.Items.Count <= 6;
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<section class="fhp-section">
+    <div class="container">
+        <div class="fhp-layout">
+            <div>
+                <nav class="fhp-tabs fhp-mb-25" aria-label="Story filters">
+                    <a class="fhp-tabs__link @(Model.IsTimeline is null ? "is-active" : "")" href="@TabUrl(null)">All stories</a>
+                    <a class="fhp-tabs__link @(Model.IsTimeline == false ? "is-active" : "")" href="@TabUrl(false)">News</a>
+                    <a class="fhp-tabs__link @(Model.IsTimeline == true ? "is-active" : "")" href="@TabUrl(true)">Timeline</a>
+                </nav>
+
+                @if (Model.Items.Count == 0)
+                {
+                    <div class="fhp-empty">
+                        <h2 class="fhp-empty__title">No stories published yet</h2>
+                        <p>When the editorial desk posts an update, it will appear here.</p>
+                        <a class="fhp-btn fhp-btn--primary" asp-controller="News" asp-action="Index">Show all stories</a>
+                    </div>
+                }
+                else if (showTimeline)
+                {
+                    <ol class="fhp-timeline">
+                        @foreach (var story in Model.Items)
+                        {
+                            <li class="fhp-timeline__item">
+                                <span class="fhp-timeline__date">@story.PublishedAt.ToString("dd MMM yyyy")</span>
+                                <h2 class="fhp-timeline__title">
+                                    <a asp-controller="News" asp-action="Details" asp-route-id="@story.ArticleId">@story.Title</a>
+                                </h2>
+                                <p class="fhp-timeline__excerpt">@Excerpt(story.Body, 180)</p>
+                                <a class="fhp-link-strong" asp-controller="News" asp-action="Details" asp-route-id="@story.ArticleId">
+                                    Read the full story <i class="ri-arrow-right-line" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                        }
+                    </ol>
+                }
+                else
+                {
+                    <div class="fhp-grid fhp-grid--2">
+                        @foreach (var story in Model.Items)
+                        {
+                            <partial name="_ArticleCard" model="story" />
+                        }
+                    </div>
+                }
+            </div>
+
+            <aside class="fhp-aside" aria-label="News navigation">
+                <div class="fhp-panel fhp-panel--flush">
+                    <h2 class="fhp-side-title">Fandoms we cover</h2>
+                    <ul class="fhp-list">
+                        <li>
+                            <a asp-controller="News" asp-action="Index"
+                               asp-route-timeline="@Model.IsTimeline"
+                               class="@(Model.CategoryId is null ? "is-active" : "")">
+                                Every fandom <i class="ri-arrow-right-line" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <li>
+                                <a asp-controller="News" asp-action="Index"
+                                   asp-route-categoryId="@category.CategoryId"
+                                   asp-route-timeline="@Model.IsTimeline"
+                                   class="@(Model.CategoryId == category.CategoryId ? "is-active" : "")">
+                                    @category.Name <i class="ri-arrow-right-line" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<partial name="_JoinNow" />

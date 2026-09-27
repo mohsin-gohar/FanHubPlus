@@ -1,0 +1,159 @@
+@model FanHubPlus.Models.VideoItem
+@{
+    ViewData["Title"] = Model.Title;
+    var related = ViewBag.Related as List<VideoItem> ?? new List<VideoItem>();
+    Func<string, string> posterBg = theme => theme switch
+    {
+        "t1" => "bg-gradient-to-tr from-rose-900 via-red-800 to-amber-700",
+        "t2" => "bg-gradient-to-tr from-indigo-950 via-purple-900 to-slate-900",
+        "t3" => "bg-gradient-to-tr from-cyan-950 via-teal-900 to-emerald-950",
+        "t4" => "bg-gradient-to-tr from-amber-950 via-orange-900 to-red-950",
+        "t5" => "bg-gradient-to-tr from-blue-950 via-indigo-900 to-cyan-950",
+        "t6" => "bg-gradient-to-tr from-fuchsia-950 via-rose-950 to-pink-900",
+        _    => "bg-gradient-to-tr from-slate-900 via-gray-900 to-black"
+    };
+}
+
+<!-- BACKDROP -->
+<section class="relative w-full overflow-hidden">
+    <div class="absolute inset-0 @posterBg(Model.PosterTheme)"></div>
+    <div class="hero-overlay absolute inset-0"></div>
+    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+        <nav class="text-xs text-gray-400 mb-8 flex items-center gap-2">
+            <a asp-controller="Home" asp-action="Index" class="hover:text-[#f41b3b] transition-colors">Home</a>
+            <i class="ri-arrow-right-s-line"></i>
+            <a asp-controller="Home" asp-action="Movies" asp-route-genre="@Model.Genre" class="hover:text-[#f41b3b] transition-colors">@Model.Genre</a>
+            <i class="ri-arrow-right-s-line"></i>
+            <span class="text-gray-200">@Model.Title</span>
+        </nav>
+
+        <div class="flex flex-col lg:flex-row gap-10 lg:gap-14 items-start">
+            <div class="w-full max-w-[280px] sm:max-w-[320px] shrink-0">
+                <div class="relative aspect-[2/3] w-full @posterBg(Model.PosterTheme) rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+                    <div class="poster-art"></div>
+                    <i class="ri-play-circle-fill poster-glyph"></i>
+                    <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-5">
+                        <div class="text-[11px] font-bold uppercase text-white/70">FanHub Original</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-1 max-w-3xl">
+                <div class="flex flex-wrap items-center gap-3 text-xs">
+                    @if (Model.IsLive)
+                    {
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#f41b3b]/20 text-[#f41b3b] border border-[#f41b3b]/40 font-bold uppercase">
+                            <span class="w-2 h-2 rounded-full bg-[#f41b3b] animate-pulse"></span> Live Now
+                        </span>
+                    }
+                    <span class="px-2.5 py-1 rounded bg-white/10 text-gray-200 font-semibold border border-white/10">@Model.Genre</span>
+                    <span class="px-2.5 py-1 rounded bg-[#ffea00]/15 text-[#ffea00] border border-[#ffea00]/30 font-bold">
+                        <i class="ri-star-fill"></i> @Model.ImdbRating.ToString("0.0")
+                    </span>
+                    <span class="px-2.5 py-1 rounded border border-white/15 text-gray-300">@Model.Year</span>
+                    <span class="px-2.5 py-1 rounded border border-white/15 text-gray-300">@Model.Duration</span>
+                    <span class="px-2.5 py-1 rounded border border-white/15 text-gray-300">4K UHD</span>
+                </div>
+
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white mt-4 leading-tight font-['Montserrat']">@Model.Title</h1>
+                <p class="text-gray-300 mt-5 text-sm sm:text-base leading-relaxed">@Model.Description</p>
+
+                <div class="flex flex-wrap items-center gap-3 mt-8">
+                    <a asp-controller="Home" asp-action="Details" asp-route-id="@Model.Id"
+                       class="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-[#f41b3b] hover:bg-[#d01431] text-white font-bold text-sm shadow-xl shadow-red-600/40 transition-all">
+                        <i class="ri-play-fill text-lg"></i> Watch Now
+                    </a>
+                    <button type="button" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/10 transition-all">
+                        <i class="ri-add-line text-lg"></i> My List
+                    </button>
+                    <button type="button" class="inline-flex items-center gap-2 px-6 py-3.5 rounded-full bg-white/5 hover:bg-white/15 text-white font-bold text-sm border border-white/10 transition-all">
+                        <i class="ri-share-forward-line text-lg"></i> Share
+                    </button>
+                </div>
+
+                <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+                    <div class="bg-[#14161d] border border-white/10 rounded-xl p-4">
+                        <div class="text-gray-500 uppercase tracking-wider text-[10px]">Released</div>
+                        <div class="text-white font-bold mt-1">@Model.ReleaseDate.ToString("dd MMM, yyyy")</div>
+                    </div>
+                    <div class="bg-[#14161d] border border-white/10 rounded-xl p-4">
+                        <div class="text-gray-500 uppercase tracking-wider text-[10px]">Runtime</div>
+                        <div class="text-white font-bold mt-1">@Model.Duration</div>
+                    </div>
+                    <div class="bg-[#14161d] border border-white/10 rounded-xl p-4">
+                        <div class="text-gray-500 uppercase tracking-wider text-[10px]">Availability</div>
+                        <div class="text-white font-bold mt-1">@Model.WatchingDisplay</div>
+                    </div>
+                </div>
+
+<!-- SYNOPSIS + INFO -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <div class="lg:col-span-2">
+            <h2 class="text-xl font-black text-white font-['Montserrat']">Synopsis</h2>
+            <p class="text-sm text-gray-400 mt-3 leading-relaxed">@Model.Description</p>
+
+            <h2 class="text-xl font-black text-white font-['Montserrat'] mt-10">Storyline</h2>
+            <p class="text-sm text-gray-400 mt-3 leading-relaxed">
+                @Model.Title streams exclusively on FanHub Plus in 4K HDR with Dolby Atmos audio.
+                Watch @Model.Title and the rest of the @Model.Genre collection on up to four screens at once,
+                with offline downloads available on mobile devices.
+            </p>
+        </div>
+
+        <aside class="bg-[#14161d] border border-white/10 rounded-2xl p-6 h-fit">
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider">Cast &amp; Crew</h3>
+            <ul class="mt-4 space-y-3 text-xs text-gray-400">
+                <li class="flex items-center gap-3"><i class="ri-movie-line text-[#f41b3b] text-base"></i> Director &bull; A. R. Kumble</li>
+                <li class="flex items-center gap-3"><i class="ri-user-3-line text-[#f41b3b] text-base"></i> Starring &bull; N. Sharma, K. Iyer</li>
+                <li class="flex items-center gap-3"><i class="ri-palette-line text-[#f41b3b] text-base"></i> Cinematography &bull; L. Dsouza</li>
+                <li class="flex items-center gap-3"><i class="ri-music-2-line text-[#f41b3b] text-base"></i> Music &bull; R. Menon</li>
+            </ul>
+
+            <h3 class="text-sm font-bold text-white uppercase tracking-wider mt-8">Languages</h3>
+            <div class="flex flex-wrap gap-2 mt-3 text-[11px]">
+                <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-gray-300">English</span>
+                <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-gray-300">Hindi</span>
+                <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-gray-300">Tamil</span>
+                <span class="px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-gray-300">Telugu</span>
+            </div>
+        </aside>
+    </div>
+</section>
+
+<!-- RELATED TITLES -->
+@if (related.Any())
+{
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-20">
+        <h2 class="text-2xl font-black text-white font-['Montserrat'] mb-6">More in @Model.Genre</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+            @foreach (var item in related)
+            {
+                <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="group block">
+                    <div class="relative aspect-[2/3] w-full @posterBg(item.PosterTheme) rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+                        <span class="absolute top-0 left-0 m-3 text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">@item.Genre</span>
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-4 pt-8">
+                            <h3 class="text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">@item.Title</h3>
+                            <div class="flex items-center justify-between text-[11px] text-gray-400 mt-1">
+                                <span>@item.Year</span>
+                                <span class="text-[#ffea00] font-bold"><i class="ri-star-fill"></i> @item.ImdbRating.ToString("0.0")</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            }
+        </div>
+    </section>
+}
+
+            </div>
+        </div>
+    </div>
+</section>

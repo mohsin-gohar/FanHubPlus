@@ -1,0 +1,68 @@
+@* Content card - the video-details card, used by Explore, related rows,
+   bookmarks and the home page. One component, one source of truth.
+   Fallback art is derived from the id, so a card always looks intentional
+   even when an admin has not uploaded a cover yet. *@
+@model FanHubPlus.Models.Entities.Content
+@{
+    var cover = string.IsNullOrWhiteSpace(Model.ThumbnailUrl)
+        ? $"/assets/images/movies/movie{(Model.ContentId % 24) + 1}.jpg"
+        : Model.ThumbnailUrl;
+    var year = Model.ReleaseDate?.ToString("yyyy") ?? Model.CreatedAt.ToString("yyyy");
+    var views = Model.ViewCount >= 1000
+        ? (Model.ViewCount / 1000d).ToString("0.#") + "k"
+        : Model.ViewCount.ToString();
+    var dark = (bool?)ViewData["fhpDark"] == true;
+
+    // When the page loaded this item's media rows the play button can start the
+    // video right here; otherwise it simply opens the detail page, where the
+    // full player lives.
+    var trailer = MediaUrl.Primary(Model.MediaItems);
+}
+<article class="fhp-vcard @(dark ? "fhp-vcard--dark" : "")">
+    <div class="fhp-vcard__frame">
+        <a asp-controller="Explore" asp-action="Details" asp-route-id="@Model.ContentId" tabindex="-1" aria-hidden="true">
+            <img src="@cover" class="fhp-vcard__img" alt="@Model.Title" loading="lazy" decoding="async" width="400" height="250" />
+        </a>
+
+        <div class="fhp-vcard__tools">
+            <button type="button" class="fhp-icon-btn bookmark-btn" title="Save to your list"
+                    aria-pressed="false" aria-label="Save @Model.Title to your list"
+                    data-type="@((int)BookmarkType.Content)" data-id="@Model.ContentId">
+                <i class="ri-heart-line" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="fhp-icon-btn fhp-share" title="Share"
+                    aria-label="Share @Model.Title"
+                    data-share-title="@Model.Title"
+                    data-share-url="@Url.Action("Details", "Explore", new { id = Model.ContentId })">
+                <i class="ri-share-line" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        @if (trailer is not null)
+        {
+            <button type="button" class="fhp-vcard__play fhp-vcard__play--inline" data-fhp-video
+                    data-kind="@MediaUrl.Kind(trailer.EmbedUrl)" data-src="@trailer.EmbedUrl"
+                    data-poster="@cover" data-title="@($"{Model.Title} — {trailer.Tag ?? "trailer"}")"
+                    aria-label="Play the @(trailer.Tag ?? "trailer") of @Model.Title here">
+                <i class="ri-play-fill" aria-hidden="true"></i>
+            </button>
+        }
+        else
+        {
+            <a asp-controller="Explore" asp-action="Details" asp-route-id="@Model.ContentId"
+               class="fhp-vcard__play" aria-label="Open @Model.Title">
+                <i class="ri-play-fill" aria-hidden="true"></i>
+            </a>
+        }
+        <span class="fhp-vcard__badge">@views views</span>
+    </div>
+
+    <h3 class="fhp-vcard__title">
+        <a asp-controller="Explore" asp-action="Details" asp-route-id="@Model.ContentId">@Model.Title</a>
+    </h3>
+    <ul class="fhp-rail">
+        <li>@year</li>
+        <li><span class="fhp-rail__sep" aria-hidden="true"></span></li>
+        <li><a asp-controller="Explore" asp-action="Index" asp-route-categoryId="@Model.CategoryId">@(Model.Category?.Name ?? "Fandom")</a></li>
+    </ul>
+</article>

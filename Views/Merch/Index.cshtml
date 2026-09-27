@@ -1,0 +1,94 @@
+@model MerchViewModel
+@{
+    ViewData["Title"] = "Merchandise";
+    ViewData["fhpBanner"] = true;
+    var trail = new List<BreadcrumbItem> { new("Merchandise") };
+    var activeTag = Model.Tag;
+    var activeCategory = Model.CategoryId;
+    var onlyUpcoming = Model.Upcoming == true;
+    string LinkTo(MerchTag? tag, int? categoryId, bool? upcoming) => Url.Action("Index", "Merch", new
+    {
+        tag,
+        categoryId,
+        upcoming,
+    }) ?? "#";
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<section class="fhp-section">
+    <div class="container">
+        <div class="fhp-layout">
+            <div>
+                <div class="fhp-panel fhp-panel--flush">
+                    <div>
+                        <h1 class="fhp-panel__title">Official drops &amp; collectibles</h1>
+                        <p class="fhp-hint">A display-only showcase &mdash; no cart, no checkout.</p>
+                    </div>
+                    <div class="fhp-chips">
+                        <a class="fhp-chip @(activeTag is null && activeCategory is null && !onlyUpcoming ? "is-active" : "")"
+                           href="@LinkTo(null, null, null)">Everything</a>
+                        @foreach (var tag in Enum.GetValues<MerchTag>())
+                        {
+                            <a class="fhp-chip @(activeTag == tag ? "is-active" : "")" href="@LinkTo(tag, activeCategory, onlyUpcoming ? true : null)">@tag</a>
+                        }
+                        <a class="fhp-chip @(onlyUpcoming ? "is-active" : "")" href="@LinkTo(activeTag, activeCategory, onlyUpcoming ? null : true)">Pre-orders</a>
+                    </div>
+                </div>
+
+                @if (Model.Items.Count == 0)
+                {
+                    <div class="fhp-empty">
+                        <h2 class="fhp-empty__title">Nothing on this shelf</h2>
+                        <p>No merchandise matches those filters right now.</p>
+                        <a class="fhp-btn fhp-btn--primary" asp-controller="Merch" asp-action="Index">Show everything</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="fhp-grid fhp-grid--2 fhp-mt-25">
+                        @foreach (var item in Model.Items)
+                        {
+                            <partial name="_MerchCard" model="item" />
+                        }
+                    </div>
+                }
+            </div>
+
+            <aside class="fhp-aside" aria-label="Merchandise filters">
+                <div class="fhp-panel fhp-panel--flush">
+                    <h2 class="fhp-side-title">Search the store</h2>
+                    <form class="fhp-search fhp-mb-25" method="get" asp-controller="Merch" asp-action="Index" role="search">
+                        <label class="fhp-sr" for="merchSearch">Search merchandise</label>
+                        <input id="merchSearch" type="search" name="search" placeholder="Product name" />
+                        <button type="submit"><i class="ri-search-line" aria-hidden="true"></i><span class="fhp-sr">Search</span></button>
+                    </form>
+
+                    <h2 class="fhp-side-title">Fandoms</h2>
+                    <ul class="fhp-list">
+                        <li>
+                            <a asp-controller="Merch" asp-action="Index"
+                               asp-route-tag="@activeTag" asp-route-upcoming="@(onlyUpcoming ? true : null)"
+                               class="@(activeCategory is null ? "is-active" : "")">
+                                All fandoms <i class="ri-arrow-right-line" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        @foreach (var category in Model.Categories)
+                        {
+                            <li>
+                                <a asp-controller="Merch" asp-action="Index"
+                                   asp-route-categoryId="@category.CategoryId"
+                                   asp-route-tag="@activeTag" asp-route-upcoming="@(onlyUpcoming ? true : null)"
+                                   class="@(activeCategory == category.CategoryId ? "is-active" : "")">
+                                    @category.Name <i class="ri-arrow-right-line" aria-hidden="true"></i>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<partial name="_JoinNow" />

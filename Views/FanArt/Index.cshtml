@@ -1,0 +1,119 @@
+@model FanArtViewModel
+@{
+    ViewData["Title"] = "Fan Art Gallery";
+    ViewData["fhpBanner"] = true;
+    var isAuth = User.Identity?.IsAuthenticated == true;
+    var trail = new List<BreadcrumbItem> { new("Fan Art Gallery") };
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<section class="fhp-section">
+    <div class="container">
+        <div class="fhp-layout">
+
+            <div>
+                <div class="fhp-section-head">
+                    <div class="fhp-section-head__title">
+                        <h2>Community gallery</h2>
+                    </div>
+                    <span class="fhp-hint">@Model.Approved.Count published piece(s)</span>
+                </div>
+
+                @if (Model.Approved.Count == 0)
+                {
+                    <div class="fhp-empty">
+                        <h2 class="fhp-empty__title">The wall is waiting</h2>
+                        <p>No artwork has been approved yet &mdash; be the first to put something on it.</p>
+                        @if (isAuth)
+                        {
+                            <a class="fhp-btn fhp-btn--primary" href="#submitArt">Submit your piece</a>
+                        }
+                        else
+                        {
+                            <a class="fhp-btn fhp-btn--primary" asp-controller="Account" asp-action="Login" asp-route-returnUrl="/FanArt">Sign in to submit</a>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="fhp-grid fhp-grid--2">
+                        @foreach (var piece in Model.Approved)
+                        {
+                            <partial name="_ArtworkCard" model="piece" />
+                        }
+                    </div>
+                }
+            </div>
+
+            @* ---------------- Submit form / my submissions ---------------- *@
+            <aside class="fhp-aside" aria-label="Submit fan art" id="submitArt">
+                <div class="fhp-panel fhp-panel--flush">
+                    <span class="fhp-eyebrow">Contribute</span>
+                    @if (isAuth)
+                    {
+                        <h2 class="fhp-panel__title">Submit your work</h2>
+                        <form asp-action="Submit" method="post" enctype="multipart/form-data" class="fhp-form">
+                            @Html.AntiForgeryToken()
+                            <div asp-validation-summary="ModelOnly" class="fhp-field__error"></div>
+
+                            <div class="fhp-field">
+                                <label asp-for="Form.Title" class="fhp-field__label"></label>
+                                <input asp-for="Form.Title" class="form-control form-input" placeholder="Title of your piece" />
+                                <span asp-validation-for="Form.Title" class="fhp-field__error"></span>
+                            </div>
+                            <div class="fhp-field">
+                                <label asp-for="Form.Body" class="fhp-field__label"></label>
+                                <textarea asp-for="Form.Body" class="form-control form-input" rows="5"
+                                          placeholder="Tell the story behind your fan art..."></textarea>
+                                <span asp-validation-for="Form.Body" class="fhp-field__error"></span>
+                            </div>
+                            <div class="fhp-field">
+                                <label asp-for="Form.ImageFile" class="fhp-field__label"></label>
+                                <input asp-for="Form.ImageFile" class="form-control form-input" />
+                                <span asp-validation-for="Form.ImageFile" class="fhp-field__error"></span>
+                            </div>
+                            <button type="submit" class="fhp-btn fhp-btn--primary fhp-btn--block">Send for review</button>
+                            <p class="fhp-hint fhp-mt-10">An admin reviews every submission before it reaches the gallery.</p>
+                        </form>
+
+                        @if (Model.MySubmissions.Count > 0)
+                        {
+                            <hr class="fhp-rule" />
+                            <h3 class="fhp-side-title">My submissions</h3>
+                            <ul class="fhp-list fhp-list--status">
+                                @foreach (var submission in Model.MySubmissions)
+                                {
+                                    <li>
+                                        <span class="fhp-saved__title">@submission.Title</span>
+                                        <span class="fhp-status fhp-status--@submission.Status.ToString().ToLowerInvariant()">@submission.Status</span>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    }
+                    else
+                    {
+                        <h2 class="fhp-panel__title">Show us your work</h2>
+                        <p class="fhp-hint fhp-mb-25">
+                            Sign in and your art joins the community wall alongside cosplay studies, fan stories and doodles.
+                        </p>
+                        <a class="fhp-btn fhp-btn--primary fhp-btn--block"
+                           asp-controller="Account" asp-action="Login" asp-route-returnUrl="/FanArt">
+                            Sign in to submit
+                        </a>
+                        <a class="fhp-btn fhp-btn--ghost fhp-btn--block fhp-mt-15" asp-controller="Account" asp-action="Register">
+                            Create an account
+                        </a>
+                    }
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<partial name="_JoinNow" />
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
