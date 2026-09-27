@@ -1,6 +1,48 @@
-﻿@{
+@{
     ViewData["Title"] = "Privacy Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#0b0c0f] via-[#0b0c0f] to-[#140b0d]"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 py-16">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#f41b3b]">Legal</span>
+        <h1 class="text-3xl sm:text-4xl font-black text-white mt-1 font-['Montserrat']">Privacy Policy</h1>
+        <p class="text-gray-400 text-xs mt-3">Last updated: @DateTime.Now.ToString("dd MMMM, yyyy")</p>
+    </div>
+</section>
+
+<section class="max-w-3xl mx-auto px-4 sm:px-6 pb-20 -mt-6">
+    <div class="bg-[#14161d] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-6 text-sm text-gray-400 leading-relaxed">
+        <p>
+            FanHub Plus is a demonstration streaming front-end built for an academic project. This page explains,
+            in plain language, what information the application handles and why.
+        </p>
+
+        <h2 class="text-base font-bold text-white">Information we collect</h2>
+        <p>
+            The application stores its catalogue (titles, genres, ratings, testimonials and blog posts) in an
+            in-memory database, so no catalogue data is persisted. Contact form submissions are validated and
+            acknowledged, but are not stored anywhere after the page is rendered.
+        </p>
+
+        <h2 class="text-base font-bold text-white">How data is used</h2>
+        <p>
+            Data submitted through the contact form is only used to reply to your enquiry. No analytics,
+            advertising or third-party tracking scripts are embedded in this project.
+        </p>
+
+        <h2 class="text-base font-bold text-white">Cookies</h2>
+        <p>
+            The demo does not set tracking cookies. It relies solely on local static assets (Tailwind CSS browser
+            build, Swiper and Remix Icon) served from the application's own <code>wwwroot</code> folder.
+        </p>
+
+        <h2 class="text-base font-bold text-white">Your rights</h2>
+        <p>
+            Because no personal data is retained, there is nothing stored that requires deletion. If you have a
+            question about this policy, reach us through the
+            <a asp-controller="Home" asp-action="Contact" class="text-[#f41b3b] hover:underline">contact page</a>.
+        </p>
+    </div>
+</section>
+

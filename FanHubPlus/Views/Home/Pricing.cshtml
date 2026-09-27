@@ -1,0 +1,105 @@
+@{
+    ViewData["Title"] = "Pricing";
+}
+
+<section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#1a0b12] via-[#0b0c0f] to-[#0b0c0f]"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 py-16 text-center">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#f41b3b]">Subscribe &amp; Save</span>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white mt-1 font-['Montserrat']">Pick the Plan That Fits You</h1>
+        <p class="text-gray-400 text-sm mt-4">Every plan unlocks the full FanHub library in 4K, with new originals added every week. Cancel any time.</p>
+    </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 pb-20">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="pricing-card bg-[#14161d] border border-white/10 rounded-2xl p-8 flex flex-col justify-between">
+            <div>
+                <span class="text-xs font-bold uppercase text-gray-400 tracking-wider">Basic</span>
+                <h2 class="text-xl font-black text-white mt-1">Standard HD</h2>
+                <div class="mt-4 flex items-baseline">
+                    <span class="text-4xl font-black text-white">$8.99</span>
+                    <span class="text-gray-400 text-xs ml-1">/ month</span>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">Perfect for single viewers streaming on mobile and laptop.</p>
+                <ul class="mt-6 space-y-3 text-xs sm:text-sm text-gray-300">
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Full HD 1080p quality</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Watch on 1 device at a time</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Unlimited movies &amp; TV shows</li>
+                    <li class="flex items-center gap-2 text-gray-500"><i class="ri-close-line text-gray-500 text-base"></i> 4K Ultra HD &amp; HDR</li>
+                    <li class="flex items-center gap-2 text-gray-500"><i class="ri-close-line text-gray-500 text-base"></i> Live sports broadcasts</li>
+                </ul>
+            </div>
+            <a asp-controller="Home" asp-action="Contact" class="mt-8 block text-center py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/10 transition-all">
+                Select Standard
+            </a>
+        </div>
+
+        <div class="pricing-card featured bg-[#14161d] rounded-2xl p-8 flex flex-col justify-between relative transform lg:-translate-y-4">
+            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#f41b3b] text-white text-[11px] font-black uppercase tracking-wider px-4 py-1 rounded-full shadow-lg">
+                Most Popular
+            </div>
+            <div>
+                <span class="text-xs font-bold uppercase text-[#f41b3b] tracking-wider">FanHub Pro</span>
+                <h2 class="text-xl font-black text-white mt-1">Premium 4K UHD</h2>
+                <div class="mt-4 flex items-baseline">
+                    <span class="text-4xl font-black text-white">$14.99</span>
+                    <span class="text-gray-400 text-xs ml-1">/ month</span>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">The ultimate cinematic streaming experience for families.</p>
+                <ul class="mt-6 space-y-3 text-xs sm:text-sm text-gray-200">
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> 4K UHD + HDR10 + Dolby Vision</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Dolby Atmos spatial audio</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Stream on 4 devices simultaneously</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> All live sports &amp; pay-per-view</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Download to watch offline</li>
+                </ul>
+            </div>
+            <a asp-controller="Home" asp-action="Contact" class="mt-8 block text-center py-3.5 rounded-full bg-[#f41b3b] hover:bg-[#d01431] text-white font-bold text-sm shadow-xl shadow-red-600/40 transition-all">
+                Start 7-Day Free Trial
+            </a>
+        </div>
+
+        <div class="pricing-card bg-[#14161d] border border-white/10 rounded-2xl p-8 flex flex-col justify-between">
+            <div>
+                <span class="text-xs font-bold uppercase text-amber-400 tracking-wider">Save 35%</span>
+                <h2 class="text-xl font-black text-white mt-1">Annual VIP</h2>
+                <div class="mt-4 flex items-baseline">
+                    <span class="text-4xl font-black text-white">$119.99</span>
+                    <span class="text-gray-400 text-xs ml-1">/ year</span>
+                </div>
+                <p class="text-xs text-gray-400 mt-2">Billed annually. Includes all Pro features with 4 months free.</p>
+                <ul class="mt-6 space-y-3 text-xs sm:text-sm text-gray-300">
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Everything in Premium 4K UHD</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Stream on unlimited devices</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Early access to original premieres</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> VIP concierge customer support</li>
+                    <li class="flex items-center gap-2"><i class="ri-check-line text-emerald-400 text-base"></i> Exclusive festival &amp; concert passes</li>
+                </ul>
+            </div>
+            <a asp-controller="Home" asp-action="Contact" class="mt-8 block text-center py-3 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-sm border border-white/10 transition-all">
+                Select Annual
+            </a>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="mt-20 max-w-3xl mx-auto">
+        <h2 class="text-2xl font-black text-white text-center font-['Montserrat']">Frequently Asked Questions</h2>
+        <div class="mt-8 space-y-3">
+            <div class="bg-[#14161d] border border-white/10 rounded-xl p-5">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2"><i class="ri-question-line text-[#f41b3b]"></i> Can I cancel anytime?</h3>
+                <p class="text-xs text-gray-400 mt-2">Yes. Cancel from your account settings in two clicks and keep access until the end of the current billing period.</p>
+            </div>
+            <div class="bg-[#14161d] border border-white/10 rounded-xl p-5">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2"><i class="ri-question-line text-[#f41b3b]"></i> How many devices can watch at once?</h3>
+                <p class="text-xs text-gray-400 mt-2">Standard HD supports 1 screen, Premium 4K UHD supports 4 screens, and Annual VIP supports unlimited devices.</p>
+            </div>
+            <div class="bg-[#14161d] border border-white/10 rounded-xl p-5">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2"><i class="ri-question-line text-[#f41b3b]"></i> Is there a free trial?</h3>
+                <p class="text-xs text-gray-400 mt-2">Premium 4K UHD includes a 7-day free trial. No card is charged until the trial ends and you can cancel at any point.</p>
+            </div>
+        </div>
+    </div>
+</section>
+

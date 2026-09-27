@@ -1,0 +1,87 @@
+@model FanHubPlus.ViewModels.ContactViewModel
+@{
+    ViewData["Title"] = "Contact Us";
+    var success = TempData["SuccessMessage"] as string;
+}
+
+<section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#0d1220] via-[#0b0c0f] to-[#0b0c0f]"></div>
+    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 py-16 text-center">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#f41b3b]">Support</span>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white mt-1 font-['Montserrat']">We're Here to Help</h1>
+        <p class="text-gray-400 text-sm mt-4">Billing, playback or account questions? Send us a note and our team replies within 24 hours.</p>
+    </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-4 pb-20">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+        <!-- INFO -->
+        <div class="space-y-4">
+            <div class="bg-[#14161d] border border-white/10 rounded-2xl p-6">
+                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Contact details</h2>
+                <ul class="mt-4 space-y-3 text-xs text-gray-400">
+                    <li class="flex items-start gap-3"><i class="ri-map-pin-line text-[#f41b3b] text-base"></i> FanHub Plus HQ, 4K Avenue, Mumbai 400001</li>
+                    <li class="flex items-start gap-3"><i class="ri-mail-line text-[#f41b3b] text-base"></i> support@fanhubplus.demo</li>
+                    <li class="flex items-start gap-3"><i class="ri-phone-line text-[#f41b3b] text-base"></i> +91 00000 00000 (9am - 9pm IST)</li>
+                    <li class="flex items-start gap-3"><i class="ri-time-line text-[#f41b3b] text-base"></i> Mon - Sat, 9am to 9pm</li>
+                </ul>
+            </div>
+
+            <div class="bg-[#14161d] border border-white/10 rounded-2xl p-6">
+                <h2 class="text-sm font-bold text-white uppercase tracking-wider">Quick links</h2>
+                <div class="mt-4 flex flex-col gap-2 text-xs">
+                    <a asp-controller="Home" asp-action="Pricing" class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-white/5 hover:bg-[#f41b3b] transition-colors text-white">Manage subscription <i class="ri-arrow-right-line"></i></a>
+                    <a asp-controller="Home" asp-action="Privacy" class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-white/5 hover:bg-[#f41b3b] transition-colors text-white">Privacy policy <i class="ri-arrow-right-line"></i></a>
+                    <a asp-controller="Home" asp-action="Movies" class="flex items-center justify-between px-3 py-2.5 rounded-lg bg-white/5 hover:bg-[#f41b3b] transition-colors text-white">Browse the library <i class="ri-arrow-right-line"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM -->
+        <div class="lg:col-span-2 bg-[#14161d] border border-white/10 rounded-2xl p-6 sm:p-8">
+            @if (!string.IsNullOrEmpty(success))
+            {
+                <div class="mb-6 flex items-center gap-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 px-4 py-3 text-sm text-emerald-300">
+                    <i class="ri-check-circle-fill text-lg"></i>
+                    <span>@success</span>
+                </div>
+            }
+
+            <h2 class="text-lg font-black text-white font-['Montserrat']">Send us a message</h2>
+
+            <form method="post" asp-controller="Home" asp-action="Contact" class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-input" placeholder="Your full name" />
+                    <span asp-validation-for="Name" class="form-error"></span>
+                </div>
+                <div>
+                    <label asp-for="Email" class="form-label"></label>
+                    <input asp-for="Email" class="form-input" placeholder="you@example.com" />
+                    <span asp-validation-for="Email" class="form-error"></span>
+                </div>
+                <div class="sm:col-span-2">
+                    <label asp-for="Subject" class="form-label"></label>
+                    <input asp-for="Subject" class="form-input" placeholder="How can we help?" />
+                    <span asp-validation-for="Subject" class="form-error"></span>
+                </div>
+                <div class="sm:col-span-2">
+                    <label asp-for="Message" class="form-label"></label>
+                    <textarea asp-for="Message" rows="6" class="form-input" placeholder="Tell us a little more..."></textarea>
+                    <span asp-validation-for="Message" class="form-error"></span>
+                </div>
+                <div class="sm:col-span-2 flex flex-wrap items-center gap-4">
+                    <button type="submit" class="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#f41b3b] hover:bg-[#d01431] text-white font-bold text-sm shadow-xl shadow-red-600/30 transition-all">
+                        <i class="ri-send-plane-line"></i> Send message
+                    </button>
+                    <p class="text-[11px] text-gray-500">We never share your details with third parties.</p>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

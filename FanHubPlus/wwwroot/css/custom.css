@@ -73,7 +73,10 @@ body {
 /* Hero Carousel Custom Styles */
 .hero-swiper {
     width: 100%;
-    min-height: 85vh;
+    min-height: 560px;
+}
+@media (min-width: 64rem) {
+    .hero-swiper { min-height: 640px; }
 }
 .hero-slide {
     position: relative;

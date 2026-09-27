@@ -124,6 +124,37 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Carousel for Latest Releases
+    if (document.querySelector('.latest-swiper')) {
+        new Swiper('.latest-swiper', {
+            slidesPerView: 1.2,
+            spaceBetween: 16,
+            loop: false,
+            navigation: {
+                nextEl: '.latest-next',
+                prevEl: '.latest-prev',
+            },
+            breakpoints: {
+                480: {
+                    slidesPerView: 2.2,
+                    spaceBetween: 18,
+                },
+                768: {
+                    slidesPerView: 3.2,
+                    spaceBetween: 20,
+                },
+                1024: {
+                    slidesPerView: 4.2,
+                    spaceBetween: 24,
+                },
+                1280: {
+                    slidesPerView: 5,
+                    spaceBetween: 24,
+                }
+            }
+        });
+    }
+
     // Carousel for Testimonials
     if (document.querySelector('.testimonial-swiper')) {
         new Swiper('.testimonial-swiper', {
