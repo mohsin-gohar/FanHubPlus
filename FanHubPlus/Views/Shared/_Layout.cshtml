@@ -15,75 +15,250 @@
 </head>
 <body class="bg-[#0b0c0f] text-gray-200 antialiased selection:bg-red-600 selection:text-white">
 
-    <header class="navbar-glass sticky top-0 z-50 w-full transition-all duration-300">
+    @{
+        // Active-link helpers for the navbar (mirrors the reference template's .active state)
+        var currentAction = ViewContext.RouteData.Values["action"] as string ?? "Index";
+        var currentGenre = ViewContext.RouteData.Values["genre"] as string ?? string.Empty;
+        bool NavActive(string action, string? genre = null) =>
+            string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase)
+            && (genre == null || string.Equals(currentGenre, genre, StringComparison.OrdinalIgnoreCase));
+        bool NavGenreActive(params string[] genres) =>
+            string.Equals(currentAction, "Movies", StringComparison.OrdinalIgnoreCase)
+            && genres.Any(g => string.Equals(currentGenre, g, StringComparison.OrdinalIgnoreCase));
+    }
+    <!-- ================================================================
+         MISAO STYLE NAVBAR - reference: templates.envytheme.com/misao
+         ================================================================ -->
+    <header id="navbar" class="navbar-glass sticky top-0 z-50 w-full transition-all duration-300 ease-in-out">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center gap-8">
-                    <a asp-controller="Home" asp-action="Index" class="flex items-center gap-2 group">
+            <div class="relative flex items-center flex-wrap xl:flex-nowrap justify-between xl:justify-start">
+
+                <!-- Logo -->
+                <a asp-controller="Home" asp-action="Index" class="flex-none inline-block py-3 xl:py-0" aria-label="FanHub Plus - Home">
+                    <span class="flex items-center gap-2 group">
                         <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f41b3b] to-[#ffea00] flex items-center justify-center text-white font-black text-xl shadow-lg shadow-red-600/30 group-hover:scale-105 transition-transform">
                             <i class="ri-play-fill text-2xl"></i>
                         </span>
-                        <div class="flex flex-col">
-                            <span class="text-2xl font-black tracking-tight text-white font-['Montserrat']">
-                                FAN<span class="text-[#f41b3b]">HUB</span><span class="text-xs ml-1 px-1.5 py-0.5 rounded bg-[#f41b3b]/20 text-[#f41b3b] font-bold">PLUS</span>
-                            </span>
-                        </div>
-                    </a>
-
-                    <nav class="hidden md:flex items-center space-x-1 lg:space-x-3 shrink-0">
-                        <a asp-controller="Home" asp-action="Index" class="px-2.5 py-2 rounded-md text-sm font-medium text-white hover:text-[#f41b3b] transition-colors whitespace-nowrap">Home</a>
-                        <a asp-controller="Home" asp-action="Movies" class="px-2.5 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-[#f41b3b] transition-colors whitespace-nowrap">Movies</a>
-                        <a asp-controller="Home" asp-action="Movies" asp-route-genre="Horror" class="px-2.5 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-[#f41b3b] transition-colors whitespace-nowrap">TV Shows</a>
-                        <a asp-controller="Home" asp-action="Movies" asp-route-genre="Sports" class="px-2.5 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-[#f41b3b] transition-colors whitespace-nowrap">Live Sports</a>
-                        <a asp-controller="Home" asp-action="Pricing" class="px-2.5 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-[#f41b3b] transition-colors whitespace-nowrap">Pricing</a>
-                        <a asp-controller="Home" asp-action="Contact" class="px-2.5 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-[#f41b3b] transition-colors whitespace-nowrap">Contact</a>
-                    </nav>
-                </div>
-
-                <div class="hidden md:flex items-center space-x-4">
-                    <form asp-controller="Home" asp-action="Movies" method="get" class="relative">
-                        <input type="text" name="search" placeholder="Search titles..." 
-                               class="bg-[#14161d] border border-white/10 text-xs sm:text-sm rounded-full pl-10 pr-4 py-2 w-44 lg:w-60 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-[#f41b3b] transition-all" />
-                        <i class="ri-search-line absolute left-3.5 top-2.5 text-gray-400"></i>
-                    </form>
-
-                    <span class="inline-flex items-center gap-1 text-xs uppercase px-2.5 py-1 rounded bg-[#ffea00]/10 text-[#ffea00] border border-[#ffea00]/20 font-bold">
-                        <i class="ri-vip-crown-fill"></i> 4K UHD
+                        <span class="text-2xl font-black tracking-tight text-white font-['Montserrat']">
+                            FAN<span class="text-[#f41b3b]">HUB</span><span class="text-xs ml-1 px-1.5 py-0.5 rounded bg-[#f41b3b]/20 text-[#f41b3b] font-bold">PLUS</span>
+                        </span>
                     </span>
+                </a>
 
-                    <a asp-controller="Home" asp-action="Pricing" class="bg-[#f41b3b] hover:bg-[#d01431] text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg shadow-red-600/30 transition-all transform hover:-translate-y-0.5 inline-flex items-center gap-2">
-                        <span>Subscribe</span>
-                        <i class="ri-arrow-right-line"></i>
-                    </a>
-                </div>
-
-                <div class="md:hidden flex items-center space-x-3">
-                    <button type="button" id="mobileMenuBtn" class="text-gray-300 hover:text-white p-2 rounded-lg bg-[#14161d] border border-white/10" aria-label="Open menu">
-                        <i class="ri-menu-4-line text-2xl"></i>
+                <!-- Burger / mobile toggle -->
+                <div class="flex-none xl:hidden">
+                    <button type="button" id="navbarBurgerToggle" class="navbar-burger-toggle inline-block leading-none"
+                            aria-label="Open menu" aria-expanded="false" aria-controls="navbarSidebar">
+                        <span class="h-[3px] w-[30px] my-[5px] block bg-white"></span>
+                        <span class="h-[3px] w-[30px] my-[5px] block bg-white"></span>
+                        <span class="h-[3px] w-[30px] my-[5px] block bg-white"></span>
                     </button>
                 </div>
-            </div>
-        </div>
 
-        <div id="mobileMenu" class="hidden md:hidden bg-[#0b0c0f]/95 backdrop-blur-lg border-b border-white/10 px-4 pt-2 pb-6 space-y-3">
-            <form asp-controller="Home" asp-action="Movies" method="get" class="relative mb-3">
-                <input type="text" name="search" placeholder="Search titles..." 
-                       class="w-full bg-[#14161d] border border-white/10 text-sm rounded-lg pl-10 pr-4 py-2.5 text-gray-200" />
-                <i class="ri-search-line absolute left-3.5 top-3 text-gray-400"></i>
-            </form>
-            <a asp-controller="Home" asp-action="Index" class="block py-2 text-base font-medium text-white hover:text-[#f41b3b]">Home</a>
-            <a asp-controller="Home" asp-action="Movies" class="block py-2 text-base font-medium text-gray-300 hover:text-[#f41b3b]">Browse All Movies</a>
-            <a asp-controller="Home" asp-action="Movies" asp-route-genre="Horror" class="block py-2 text-base font-medium text-gray-300 hover:text-[#f41b3b]">TV Shows</a>
-            <a asp-controller="Home" asp-action="Movies" asp-route-genre="Sports" class="block py-2 text-base font-medium text-gray-300 hover:text-[#f41b3b]">Live Sports</a>
-            <a asp-controller="Home" asp-action="Pricing" class="block py-2 text-base font-medium text-gray-300 hover:text-[#f41b3b]">Pricing Plans</a>
-            <a asp-controller="Home" asp-action="Contact" class="block py-2 text-base font-medium text-gray-300 hover:text-[#f41b3b]">Contact Support</a>
-            <div class="pt-2">
-                <a asp-controller="Home" asp-action="Pricing" class="w-full text-center block bg-[#f41b3b] text-white font-bold py-2.5 rounded-lg shadow-lg">
-                    Join VIP Now
-                </a>
+                <!-- Desktop menu -->
+                <div class="hidden xl:flex items-center grow basis-auto gap-[35px] xl:pl-[35px]">
+                    <ul class="navbar-nav flex items-center flex-row gap-[30px] mx-auto">
+
+                        <!-- Home -->
+                        <li class="nav-item relative">
+                            <a asp-controller="Home" asp-action="Index" class="nav-link dropdown-toggle @(NavActive("Index") ? "active" : "")">Home</a>
+                            <ul class="dropdown-menu absolute">
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="trending" class="nav-link">Trending Now</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="live" class="nav-link">Live TV &amp; Sports</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="top-rated" class="nav-link">Top Rated Titles</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="latest" class="nav-link">Latest Releases</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Movies -->
+                        <li class="nav-item relative">
+                            <a asp-controller="Home" asp-action="Movies" class="nav-link dropdown-toggle @(NavActive("Movies", "") ? "active" : "")">Movies</a>
+                            <ul class="dropdown-menu absolute">
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" class="nav-link">All Movies</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Action" class="nav-link">Action &amp; Sci-Fi</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Drama" class="nav-link">Drama &amp; Crime</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Horror" class="nav-link">Horror &amp; Thriller</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Romance" class="nav-link">Romance</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Comedy" class="nav-link">Comedy</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Documentary" class="nav-link">Documentaries</a></li>
+                            </ul>
+                        </li>
+                        <!-- TV Shows -->
+                        <li class="nav-item relative">
+                            <a asp-controller="Home" asp-action="Movies" asp-route-genre="Drama" class="nav-link dropdown-toggle @(NavGenreActive("Drama", "Anime", "Comedy") ? "active" : "")">TV Shows</a>
+                            <ul class="dropdown-menu absolute">
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-sortBy="year" class="nav-link">Browse TV Shows</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Drama" class="nav-link">Drama Series</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Anime" class="nav-link">Anime</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Comedy" class="nav-link">Comedy Series</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Live Sports -->
+                        <li class="nav-item relative">
+                            <a asp-controller="Home" asp-action="Movies" asp-route-genre="Sports" class="nav-link @(NavActive("Movies", "Sports") ? "active" : "")">Live Sports</a>
+                        </li>
+
+                        <!-- Pages -->
+                        <li class="nav-item relative">
+                            <a asp-controller="Home" asp-action="Pricing" class="nav-link dropdown-toggle @(NavActive("Pricing") ? "active" : "")">Pages</a>
+                            <ul class="dropdown-menu absolute">
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Pricing" class="nav-link">Pricing Plan</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Privacy" class="nav-link">Privacy Policy</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Error" class="nav-link">404 Error Page</a></li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link dropdown-toggle">My Account</a>
+                                    <ul class="dropdown-menu absolute">
+                                        <li class="nav-item"><a href="#" class="nav-link">Sign In</a></li>
+                                        <li class="nav-item"><a href="#" class="nav-link">Sign Up</a></li>
+                                        <li class="nav-item"><a href="#" class="nav-link">Forgot Password</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- Contact Us -->
+                        <li class="nav-item relative">
+                            <a asp-controller="Home" asp-action="Contact" class="nav-link @(NavActive("Contact") ? "active" : "")">Contact Us</a>
+                        </li>
+                    </ul>
+
+                    <!-- Right side : search / watchlist / account -->
+                    <div class="flex items-center gap-[25px] xl:gap-[35px]">
+                        <div class="flex items-center gap-[13px]">
+                            <div class="relative">
+                                <button type="button" id="searchBtn" class="text-xl relative inline-block text-white transition-all duration-300 ease-in-out hover:text-[#ffea00]" aria-label="Search" aria-expanded="false">
+                                    <i class="ri-search-line"></i>
+                                </button>
+                                <div id="searchBox" class="absolute mt-[28px] xl:mt-[36px] top-full right-0 w-[290px] sm:w-[380px] bg-black p-[25px] border border-white/10 invisible opacity-0 transition-all duration-300 ease-in-out">
+                                    <form asp-controller="Home" asp-action="Movies" method="get" class="relative">
+                                        <input type="text" name="search" class="form-input" placeholder="Search for anything" />
+                                        <button class="absolute top-1/2 -translate-y-1/2 right-[20px] text-xl leading-none hover:text-[#f41b3b]" type="submit" aria-label="Submit search">
+                                            <i class="ri-search-line"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="w-px bg-white/20 h-[20px]"></div>
+                            <a asp-controller="Home" asp-action="Movies" class="text-xl relative inline-block text-white transition-all duration-300 ease-in-out hover:text-[#ffea00]" title="My Watchlist">
+                                <i class="ri-shopping-cart-2-line"></i>
+                                <span class="flex items-center justify-center absolute top-0 -right-[5px] w-[12px] h-[12px] text-[9px] font-bold text-black bg-[#ffea00] rounded-full">0</span>
+                            </a>
+                            <div class="w-px bg-white/20 h-[20px] xl:hidden"></div>
+                            <a href="#" class="text-xl relative inline-block xl:hidden text-white transition-all duration-300 ease-in-out hover:text-[#ffea00]" title="Sign in (coming soon)">
+                                <i class="ri-user-3-line"></i>
+                            </a>
+                        </div>
+                        <a asp-controller="Home" asp-action="Pricing" class="primary-btn hidden xl:inline-block">Subscribe Now</a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
+
+    <!-- ============ Sidebar modal (mobile navigation) ============ -->
+    <div id="navbarSidebar" class="sidebar-modal" role="dialog" aria-modal="true" aria-label="Mobile navigation">
+        <div class="p-[20px] md:p-[30px] flex items-center justify-between bg-black border-b border-white/10">
+            <a asp-controller="Home" asp-action="Index" class="flex-none inline-block" aria-label="FanHub Plus - Home">
+                <span class="flex items-center gap-2">
+                    <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#f41b3b] to-[#ffea00] flex items-center justify-center text-white font-black text-lg">
+                        <i class="ri-play-fill text-xl"></i>
+                    </span>
+                    <span class="text-xl font-black tracking-tight text-white font-['Montserrat']">
+                        FAN<span class="text-[#f41b3b]">HUB</span><span class="text-[10px] ml-1 px-1.5 py-0.5 rounded bg-[#f41b3b]/20 text-[#f41b3b] font-bold">PLUS</span>
+                    </span>
+                </span>
+            </a>
+            <button type="button" id="navbarSidebarClose" class="inline-block text-xl leading-none text-white hover:text-[#ffea00]" aria-label="Close menu">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+
+        <div class="overflow-y-auto flex-1">
+            <ul class="sidebar-navbar-nav p-[20px] md:p-[30px]">
+
+                <li class="nav-item mb-[20px] last:mb-0">
+                    <a asp-controller="Home" asp-action="Index" class="nav-link dropdown-toggle @(NavActive("Index") ? "active" : "")">Home</a>
+                    <ul class="dropdown-menu hidden mt-[15px] py-[10px] border-l border-white/15">
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="trending" class="nav-link">Trending Now</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="live" class="nav-link">Live TV &amp; Sports</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="top-rated" class="nav-link">Top Rated Titles</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="latest" class="nav-link">Latest Releases</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item mb-[20px] last:mb-0">
+                    <a asp-controller="Home" asp-action="Pricing" class="nav-link dropdown-toggle @(NavActive("Pricing") ? "active" : "")">Pages</a>
+                    <ul class="dropdown-menu hidden mt-[15px] py-[10px] border-l border-white/15">
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Pricing" class="nav-link">Pricing Plan</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Privacy" class="nav-link">Privacy Policy</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Error" class="nav-link">404 Error Page</a></li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link dropdown-toggle">My Account</a>
+                            <ul class="dropdown-menu hidden mt-[15px] py-[10px] border-l border-white/15">
+                                <li class="nav-item"><a href="#" class="nav-link">Sign In</a></li>
+                                <li class="nav-item"><a href="#" class="nav-link">Sign Up</a></li>
+                                <li class="nav-item"><a href="#" class="nav-link">Forgot Password</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item mb-[20px] last:mb-0">
+                    <a asp-controller="Home" asp-action="Movies" class="nav-link dropdown-toggle @(NavActive("Movies", "") ? "active" : "")">Movies</a>
+                    <ul class="dropdown-menu hidden mt-[15px] py-[10px] border-l border-white/15">
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" class="nav-link">All Movies</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Action" class="nav-link">Action &amp; Sci-Fi</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Drama" class="nav-link">Drama &amp; Crime</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Horror" class="nav-link">Horror &amp; Thriller</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Romance" class="nav-link">Romance</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Comedy" class="nav-link">Comedy</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Documentary" class="nav-link">Documentaries</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item mb-[20px] last:mb-0">
+                    <a asp-controller="Home" asp-action="Movies" asp-route-genre="Drama" class="nav-link dropdown-toggle @(NavGenreActive("Drama", "Anime", "Comedy") ? "active" : "")">TV Shows</a>
+                    <ul class="dropdown-menu hidden mt-[15px] py-[10px] border-l border-white/15">
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-sortBy="year" class="nav-link">Browse TV Shows</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Drama" class="nav-link">Drama Series</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Anime" class="nav-link">Anime</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Comedy" class="nav-link">Comedy Series</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item mb-[20px] last:mb-0">
+                    <a asp-controller="Home" asp-action="Movies" asp-route-genre="Sports" class="nav-link @(NavActive("Movies", "Sports") ? "active" : "")">Live Sports</a>
+                </li>
+
+                <li class="nav-item mb-[20px] last:mb-0">
+                    <a asp-controller="Home" asp-action="Contact" class="nav-link @(NavActive("Contact") ? "active" : "")">Contact Us</a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="p-[20px] md:p-[30px] bg-black border-t border-white/10">
+            <div class="flex items-center gap-[25px] md:gap-[30px] mb-[20px] md:mb-[25px]">
+                <a asp-controller="Home" asp-action="Movies" class="text-xl relative inline-block text-white hover:text-[#ffea00]" title="My Watchlist">
+                    <i class="ri-shopping-cart-2-line"></i>
+                    <span class="flex items-center justify-center absolute top-0 -right-[5px] w-[12px] h-[12px] text-[9px] font-bold text-black bg-[#ffea00] rounded-full">0</span>
+                </a>
+                <a asp-controller="Home" asp-action="Pricing" class="primary-btn">Subscribe Now</a>
+            </div>
+            <form asp-controller="Home" asp-action="Movies" method="get" class="relative">
+                <input type="text" name="search" class="form-input" placeholder="Search for anything" />
+                <button class="absolute top-1/2 -translate-y-1/2 right-[20px] text-xl leading-none hover:text-[#f41b3b]" type="submit" aria-label="Submit search">
+                    <i class="ri-search-line"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div id="navbarBackdrop" class="navbar-backdrop"></div>
+
+
+
 
     <main role="main">
         @RenderBody()
