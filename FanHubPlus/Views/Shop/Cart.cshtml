@@ -1,0 +1,137 @@
+@model FanHubPlus.ViewModels.CartViewModel
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Store", Title = "Your bag", Subtitle = Model.IsEmpty ? "Your bag is empty." : "You have " + Model.ItemCount + " item(s) ready to check out.", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("Store", "/Shop/Index"), ("Cart", null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<section class="fh-wrap pb-20">
+    @if (Model.IsEmpty)
+    {
+        <div class="fh-empty">
+            <i class="ri-shopping-bag-3-line"></i>
+            <h2 class="fh-h2 mt-5" style="font-size:1.5rem">Nothing in your bag yet</h2>
+            <p class="fh-lead mt-3 max-w-md mx-auto">Browse the store for limited merch, soundtracks and streaming devices.</p>
+            <a asp-controller="Shop" asp-action="Index" class="fh-btn fh-btn-primary fh-btn-lg mt-7">
+                <i class="ri-arrow-right-line"></i> Continue shopping
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="grid lg:grid-cols-[1fr_360px] gap-8 items-start">
+
+            <!-- ============ LINE ITEMS ============ -->
+            <div class="fh-panel-flush fh-panel overflow-x-auto">
+                <table class="fh-table">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th class="is-right">Price</th>
+                            <th class="is-right">Quantity</th>
+                            <th class="is-right">Total</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var line in Model.Lines)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="flex items-center gap-4 min-w-[240px]">
+                                        <a asp-controller="Shop" asp-action="Product" asp-route-id="@line.Product.Id" class="fh-still !w-14 !h-16 flex-none" data-theme="@line.Product.ArtTheme">
+                                            <i class="@line.Product.ArtGlyph fh-art-glyph-sm !text-2xl"></i>
+                                        </a>
+                                        <div>
+                                            <a asp-controller="Shop" asp-action="Product" asp-route-id="@line.Product.Id" class="text-sm font-bold text-white hover:text-[#f41b3b] transition-colors">@line.Product.Name</a>
+                                            <div class="text-[11px] text-gray-500 mt-1">@line.Product.Category &bull; SKU @line.Product.Sku</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="is-right whitespace-nowrap">$@line.Product.PriceDisplay</td>
+                                <td class="is-right">
+                                    <form method="post" asp-controller="Shop" asp-action="UpdateCart" class="inline-flex items-center gap-2">
+                                        <input type="hidden" name="id" value="@line.Product.Id" />
+                                        <div class="fh-stepper">
+                                            <button type="button" data-fh-step="-1" aria-label="Decrease">-</button>
+                                            <input type="number" name="quantity" value="@line.Quantity" min="0" max="99" aria-label="Quantity for @line.Product.Name" />
+                                            <button type="button" data-fh-step="1" aria-label="Increase">+</button>
+                                        </div>
+                                        <button type="submit" class="fh-btn fh-btn-outline fh-btn-sm">Update</button>
+                                    </form>
+                                </td>
+                                <td class="is-right font-bold text-white whitespace-nowrap">$@line.LineTotal.ToString("0.00")</td>
+                                <td class="is-right">
+                                    <form method="post" asp-controller="Shop" asp-action="RemoveFromCart">
+                                        <input type="hidden" name="id" value="@line.Product.Id" />
+                                        <button type="submit" class="fh-icon-btn !w-9 !h-9" aria-label="Remove @line.Product.Name">
+                                            <i class="ri-delete-bin-line text-base"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ============ SUMMARY ============ -->
+            <aside class="space-y-6">
+                <div class="fh-panel">
+                    <h2 class="fh-widget-title">Order summary</h2>
+
+                    <form method="get" asp-controller="Shop" asp-action="Cart" class="mt-5">
+                        <label class="fh-label" for="coupon">Coupon code</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="coupon" name="coupon" value="@Model.CouponCode" class="fh-input" placeholder="Try FANHUB10" />
+                            <button type="submit" class="fh-btn fh-btn-outline flex-none">Apply</button>
+                        </div>
+                        @if (Model.Discount > 0)
+                        {
+                            <p class="text-[11px] text-emerald-400 mt-2"><i class="ri-check-line"></i> FANHUB10 applied - 10% off.</p>
+                        }
+                        else
+                        {
+                            <p class="text-[11px] text-gray-500 mt-2">Use <code>FANHUB10</code> for 10% off your order.</p>
+                        }
+                    </form>
+
+                    <div class="fh-divider mt-6 pt-5 space-y-3 text-sm">
+                        <div class="flex justify-between"><span class="text-gray-400">Subtotal</span><span class="text-white font-bold">$@Model.Subtotal.ToString("0.00")</span></div>
+                        @if (Model.Discount > 0)
+                        {
+                            <div class="flex justify-between"><span class="text-gray-400">Discount</span><span class="text-emerald-400 font-bold">-$@Model.Discount.ToString("0.00")</span></div>
+                        }
+                        <div class="flex justify-between"><span class="text-gray-400">Shipping</span><span class="text-white font-bold">@(Model.Shipping > 0 ? "$" + Model.Shipping.ToString("0.00") : "Free")</span></div>
+                        <div class="flex justify-between"><span class="text-gray-400">Tax (5%)</span><span class="text-white font-bold">$@Model.Tax.ToString("0.00")</span></div>
+                        <div class="fh-divider flex justify-between pt-4 text-base">
+                            <span class="text-white font-bold">Total</span>
+                            <span class="text-[#f41b3b] font-black text-xl">$@Model.Total.ToString("0.00")</span>
+                        </div>
+                    </div>
+
+                    <a asp-controller="Shop" asp-action="Checkout" asp-route-coupon="@Model.CouponCode" class="fh-btn fh-btn-primary fh-btn-block mt-6">
+                        <i class="ri-lock-line"></i> Proceed to checkout
+                    </a>
+                    <a asp-controller="Shop" asp-action="Index" class="fh-btn fh-btn-outline fh-btn-block mt-3">Continue shopping</a>
+                </div>
+
+                <div class="fh-panel">
+                    <h2 class="fh-widget-title">Payment methods</h2>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="fh-chip"><i class="ri-visa-line"></i> Visa</span>
+                        <span class="fh-chip"><i class="ri-mastercard-line"></i> Mastercard</span>
+                        <span class="fh-chip"><i class="ri-amecard-line"></i> Amex</span>
+                        <span class="fh-chip">UPI</span>
+                        <span class="fh-chip">Net Banking</span>
+                        <span class="fh-chip"><i class="ri-wallet-3-line"></i> Wallet</span>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    }
+</section>
+

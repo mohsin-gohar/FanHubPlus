@@ -1,0 +1,34 @@
+@model FanHubPlus.ViewModels.PageHeaderViewModel
+
+<!-- Shared inner-page header band -->
+<section class="fh-wash fh-pagehead">
+    <div class="fh-wrap">
+        @if (Model.Breadcrumbs.Count > 0)
+        {
+            <nav class="fh-crumb mb-5" aria-label="Breadcrumb">
+                @foreach (var crumb in Model.Breadcrumbs)
+                {
+                    if (crumb.Url != null)
+                    {
+                        <a href="@crumb.Url">@crumb.Label</a>
+                    }
+                    else
+                    {
+                        <span class="fh-crumb-current">@crumb.Label</span>
+                    }
+                    <i class="ri-arrow-right-s-line"></i>
+                }
+            </nav>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.Eyebrow))
+        {
+            <span class="fh-eyebrow">@Model.Eyebrow</span>
+        }
+        <h1 class="fh-h1 mt-2">@Model.Title</h1>
+        @if (!string.IsNullOrWhiteSpace(Model.Subtitle))
+        {
+            <p class="fh-lead mt-4 max-w-3xl">@Model.Subtitle</p>
+        }
+    </div>
+</section>

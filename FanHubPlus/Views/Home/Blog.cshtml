@@ -1,0 +1,82 @@
+@model FanHubPlus.ViewModels.BlogListViewModel
+@{
+    ViewData["Title"] = "Blog";
+    var mode = Model.Layout == "grid" ? "grid" : "list";
+    ViewData["BlogCardMode"] = mode;      // read by _BlogCard to switch list/grid layout
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Editorial", Title = "The FanHub blog", Subtitle = "Release notes, behind-the-scenes reporting and practical guides for getting more out of your subscription.", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("Blog", null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<section class="fh-wrap pb-20">
+    <div class="grid lg:grid-cols-[1fr_320px] gap-9 items-start">
+
+        <!-- ============ POSTS ============ -->
+        <div>
+            <div class="flex flex-wrap items-center justify-between gap-4 pb-5 mb-7 border-b border-white/10">
+                <p class="text-sm text-gray-400">
+                    <span class="text-white font-bold">@Model.TotalCount</span> article(s)
+                    @if (!string.IsNullOrWhiteSpace(Model.Category) && Model.Category != "All")
+                    {
+                        <span>in <span class="text-[#f41b3b]">@Model.Category</span></span>
+                    }
+                </p>
+                <div class="fh-tabs !border-0 !pb-0">
+                    <a asp-controller="Home" asp-action="Blog" asp-route-layout="list" asp-route-category="@Model.Category" class="fh-tab @(mode == "list" ? "is-active" : "")">List</a>
+                    <a asp-controller="Home" asp-action="Blog" asp-route-layout="grid" asp-route-category="@Model.Category" class="fh-tab @(mode == "grid" ? "is-active" : "")">Grid</a>
+                </div>
+            </div>
+
+            @if (Model.Posts.Count == 0)
+            {
+                <div class="fh-empty">
+                    <i class="ri-article-line"></i>
+                    <h2 class="fh-h3 mt-4">No articles in this category yet</h2>
+                    <a asp-controller="Home" asp-action="Blog" class="fh-btn fh-btn-primary mt-6">Show all articles</a>
+                </div>
+            }
+            else
+            {
+                <div class="@(mode == "grid" ? "grid sm:grid-cols-2 gap-5" : "space-y-5")">
+                    @foreach (var post in Model.Posts)
+                    {
+                        <partial name="_BlogCard" model="post" />
+                    }
+                </div>
+
+                @if (Model.TotalPages > 1)
+                {
+                    <nav class="fh-pager" aria-label="Pagination">
+                        @if (Model.Page > 1)
+                        {
+                            <a asp-controller="Home" asp-action="Blog" asp-route-layout="@mode" asp-route-category="@Model.Category" asp-route-page="@(Model.Page - 1)" aria-label="Previous page"><i class="ri-arrow-left-s-line"></i></a>
+                        }
+                        @for (var i = 1; i <= Model.TotalPages; i++)
+                        {
+                            if (i == Model.Page)
+                            {
+                                <span class="is-active">@i</span>
+                            }
+                            else
+                            {
+                                <a asp-controller="Home" asp-action="Blog" asp-route-layout="@mode" asp-route-category="@Model.Category" asp-route-page="@i">@i</a>
+                            }
+                        }
+                        @if (Model.Page < Model.TotalPages)
+                        {
+                            <a asp-controller="Home" asp-action="Blog" asp-route-layout="@mode" asp-route-category="@Model.Category" asp-route-page="@(Model.Page + 1)" aria-label="Next page"><i class="ri-arrow-right-s-line"></i></a>
+                        }
+                    </nav>
+                }
+            }
+        </div>
+
+        <!-- ============ SIDEBAR ============ -->
+        @{
+    var blogSidebar = new FanHubPlus.ViewModels.BlogSidebarViewModel { Latest = Model.Latest, Popular = Model.Popular, Categories = Model.Categories, Tags = Model.Tags, ActiveCategory = Model.Category  };
+}
+<partial name="_BlogSidebar" model="blogSidebar" />
+    </div>
+</section>

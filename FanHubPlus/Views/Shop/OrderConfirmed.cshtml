@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = "Order Confirmed";
+    var orderId = ViewBag.OrderId as string ?? "FH000000";
+    var total = ViewBag.Total is decimal t ? t : 0m;
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Thank you", Title = "Order confirmed", Subtitle = $"Order {orderId} for {total:0.00} has been placed. This is a demonstration store, so no payment was taken.", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("Store", "/Shop/Index"), ("Confirmed", null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<section class="fh-wrap pb-24">
+    <div class="grid lg:grid-cols-[1fr_360px] gap-8 items-start">
+        <div>
+            <div class="fh-panel text-center py-12">
+                <span class="fh-avatar fh-avatar-lg mx-auto !bg-emerald-500/20 !text-emerald-400"><i class="ri-check-line"></i></span>
+                <h2 class="fh-h2 mt-6" style="font-size:1.6rem">We have your order</h2>
+                <p class="fh-lead mt-3 max-w-lg mx-auto">
+                    A confirmation would normally land in your inbox within a minute. Orders placed before 4pm are
+                    dispatched the same working day with tracking.
+                </p>
+                <div class="flex flex-wrap items-center justify-center gap-3 mt-8">
+                    <a asp-controller="Shop" asp-action="Index" class="fh-btn fh-btn-primary">Continue shopping</a>
+                    <a asp-controller="Home" asp-action="Index" class="fh-btn fh-btn-ghost">Back to home</a>
+                </div>
+            </div>
+
+            <div class="fh-panel mt-6">
+                <h2 class="fh-h3">What happens next</h2>
+                <div class="fh-timeline mt-7">
+                    @foreach (var step in new[]
+                    {
+                        new { Title = "Order received", Body = "We have emailed a receipt and saved your order in My Account." },
+                        new { Title = "Packed and dispatched", Body = "Your items are picked, checked and handed to the courier." },
+                        new { Title = "Out for delivery", Body = "Tracking updates land in your inbox and in My Account." }
+                    })
+                    {
+                        <div class="fh-timeline-item">
+                            <h3 class="fh-h3">@step.Title</h3>
+                            <p class="text-sm text-gray-400 mt-1.5">@step.Body</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <aside class="space-y-6">
+            <div class="fh-panel">
+                <h2 class="fh-widget-title">Order details</h2>
+                <dl class="space-y-3.5 text-sm">
+                    <div class="flex justify-between gap-4"><dt class="text-gray-500">Order number</dt><dd class="text-white font-bold">@orderId</dd></div>
+                    <div class="flex justify-between gap-4"><dt class="text-gray-500">Placed on</dt><dd class="text-white font-bold">@DateTime.Now.ToString("dd MMM yyyy, hh tt")</dd></div>
+                    <div class="flex justify-between gap-4"><dt class="text-gray-500">Total</dt><dd class="text-[#ffea00] font-bold">$@total.ToString("0.00")</dd></div>
+                    <div class="flex justify-between gap-4"><dt class="text-gray-500">Payment</dt><dd class="text-white font-bold">Demo store</dd></div>
+                    <div class="flex justify-between gap-4"><dt class="text-gray-500">Status</dt><dd><span class="fh-chip fh-chip-primary">Processing</span></dd></div>
+                </dl>
+            </div>
+
+            <div class="fh-panel">
+                <h2 class="fh-widget-title">Need help with this order?</h2>
+                <p class="text-sm text-gray-400 mt-4">Quote order number <span class="text-white font-bold">@orderId</span> and our team will pick it up straight away.</p>
+                <a asp-controller="Home" asp-action="Contact" class="fh-btn fh-btn-primary fh-btn-block mt-5">Contact support</a>
+            </div>
+        </aside>
+    </div>
+</section>

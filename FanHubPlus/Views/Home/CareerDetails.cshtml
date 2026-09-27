@@ -1,0 +1,97 @@
+@model FanHubPlus.Models.JobOpening
+@{
+    ViewData["Title"] = Model.Title;
+    var others = ViewBag.Others as List<FanHubPlus.Models.JobOpening> ?? new();
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Career", Title = Model.Title, Subtitle = Model.Summary, Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("Careers", "/Home/Careers"), (Model.Title, null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<section class="fh-wrap pb-20">
+    <div class="grid lg:grid-cols-[1.4fr_0.6fr] gap-10 items-start">
+
+        <!-- ============ JOB BODY ============ -->
+        <article>
+            <div class="fh-panel flex flex-wrap items-center justify-between gap-5">
+                <div class="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-gray-400">
+                    <span><i class="ri-building-line text-[#f41b3b]"></i> @Model.Department</span>
+                    <span><i class="ri-map-pin-line text-[#f41b3b]"></i> @Model.Location</span>
+                    <span><i class="ri-time-line text-[#f41b3b]"></i> @Model.Type</span>
+                    <span><i class="ri-briefcase-line text-[#f41b3b]"></i> @Model.Experience</span>
+                </div>
+                @if (Model.IsUrgent)
+                {
+                    <span class="fh-chip fh-chip-live">Hiring urgently</span>
+                }
+            </div>
+
+            <div class="fh-panel mt-6">
+                <h2 class="fh-h3">What you will do</h2>
+                <ul class="mt-5 space-y-3">
+                    @foreach (var item in Model.ResponsibilityList)
+                    {
+                        <li class="fh-feat"><i class="ri-arrow-right-s-line text-[#f41b3b]"></i> @item</li>
+                    }
+                </ul>
+
+                <h2 class="fh-h3 mt-10">What we are looking for</h2>
+                <ul class="mt-5 space-y-3">
+                    @foreach (var item in Model.RequirementList)
+                    {
+                        <li class="fh-feat"><i class="ri-arrow-right-s-line text-[#f41b3b]"></i> @item</li>
+                    }
+                </ul>
+
+                <h2 class="fh-h3 mt-10">What we offer</h2>
+                <ul class="mt-5 space-y-3">
+                    @foreach (var item in Model.BenefitList)
+                    {
+                        <li class="fh-feat"><i class="ri-check-line text-emerald-400"></i> @item</li>
+                    }
+                </ul>
+            </div>
+
+            <div class="fh-panel mt-6 text-center py-10">
+                <h2 class="fh-h2" style="font-size:1.5rem">Interested?</h2>
+                <p class="fh-lead mt-3 max-w-lg mx-auto">Send your CV and, if you have one, something you are proud of. We reply to every application within a week.</p>
+                <a asp-controller="Home" asp-action="Contact" class="fh-btn fh-btn-primary fh-btn-lg mt-7">
+                    <i class="ri-send-plane-line"></i> Apply for this role
+                </a>
+            </div>
+        </article>
+
+        <!-- ============ SIDEBAR ============ -->
+        <aside class="space-y-6 lg:sticky lg:top-28">
+            <div class="fh-panel">
+                <h2 class="fh-widget-title">Role details</h2>
+                <dl class="space-y-3.5 text-sm">
+                    <div class="flex justify-between gap-4"><dt class="text-gray-500">Department</dt><dd class="text-white font-bold">@Model.Department</dd></div>
+                    <div class="flex justify-between gap-4"><dt class="text-gray-500">Location</dt><dd class="text-white font-bold text-right">@Model.Location</dd></div>
+                    <div class="flex justify-between gap-4"><dt class="text-gray-500">Type</dt><dd class="text-white font-bold">@Model.Type</dd></div>
+                    <div class="flex justify-between gap-4"><dt class="text-gray-500">Experience</dt><dd class="text-white font-bold">@Model.Experience</dd></div>
+                    <div class="flex justify-between gap-4"><dt class="text-gray-500">Salary</dt><dd class="text-[#ffea00] font-bold text-right">@Model.Salary</dd></div>
+                    <div class="flex justify-between gap-4"><dt class="text-gray-500">Posted</dt><dd class="text-white font-bold">@Model.PostedDisplay</dd></div>
+                </dl>
+            </div>
+
+            @if (others.Count > 0)
+            {
+                <div class="fh-widget">
+                    <h2 class="fh-widget-title">Other roles</h2>
+                    <div class="fh-linklist">
+                        @foreach (var job in others)
+                        {
+                            <a asp-controller="Home" asp-action="CareerDetails" asp-route-id="@job.Id">
+                                <span class="truncate">@job.Title</span>
+                                <i class="ri-arrow-right-s-line"></i>
+                            </a>
+                        }
+                    </div>
+                    <a asp-controller="Home" asp-action="Careers" class="fh-btn fh-btn-outline fh-btn-block mt-5">See all positions</a>
+                </div>
+            }
+        </aside>
+    </div>
+</section>

@@ -1,0 +1,123 @@
+@{
+    ViewData["Title"] = "About Us";
+    var stats = ViewBag.Stats as dynamic;
+    var milestones = ViewBag.Milestones as dynamic;
+    var team = ViewBag.Team as List<FanHubPlus.Models.Testimonial> ?? new();
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Who we are", Title = "We built FanHub Plus for people who love stories", Subtitle = "A subscription streaming service with an editorial spine: a curated library, a growing slate of originals and live sport that actually starts when it says it will.", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("About Us", null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<!-- ============ INTRO ============ -->
+<section class="fh-wrap pb-16">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+            <h2 class="fh-h2">Entertainment without the noise</h2>
+            <p class="fh-lead mt-5">
+                FanHub Plus began in 2019 as a hand-curated folder passed between friends. Today it is a full service with
+                films, series, anime, documentaries and live channels, and the rule has not changed: nothing gets into the
+                library unless an editor would happily watch it twice.
+            </p>
+            <p class="fh-lead mt-4">
+                We are a small team of editors, engineers and designers. We buy and commission the same way a good cinema
+                does, we build our own player rather than reselling someone else's, and we answer our own support mail.
+            </p>
+
+            <div class="flex flex-wrap gap-3 mt-8">
+                <a asp-controller="Home" asp-action="Pricing" class="fh-btn fh-btn-primary">See our plans <i class="ri-arrow-right-line"></i></a>
+                <a asp-controller="Home" asp-action="Careers" class="fh-btn fh-btn-outline">Join the team</a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            @if (stats != null)
+            {
+                foreach (var stat in stats)
+                {
+                    <div class="fh-panel text-center">
+                        <div class="fh-stat-num"><span data-fh-count="@stat.Value" data-fh-suffix="@(stat.Value < 100 ? "" : "+")">0</span></div>
+                        <div class="fh-stat-label">@stat.Label</div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+<!-- ============ MILESTONES ============ -->
+<section class="fh-wrap pb-20">
+    <div class="grid lg:grid-cols-[0.8fr_1.2fr] gap-12">
+        <div>
+            <span class="fh-eyebrow">Our journey</span>
+            <h2 class="fh-h2 mt-2">From one drive to 190 countries</h2>
+            <p class="fh-lead mt-4">Four milestones that changed what FanHub Plus could be.</p>
+        </div>
+
+        @if (milestones != null)
+        {
+            <div class="fh-timeline">
+                @foreach (var item in milestones)
+                {
+                    <div class="fh-timeline-item">
+                        <span class="fh-chip fh-chip-primary">@item.Year</span>
+                        <h3 class="fh-h3 mt-2.5">@item.Title</h3>
+                        <p class="text-sm text-gray-400 leading-relaxed mt-2">@item.Body</p>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ============ VALUES ============ -->
+<section class="fh-wrap pb-20">
+    <div class="fh-head fh-head-center">
+        <div>
+            <span class="fh-eyebrow fh-eyebrow-center">How we work</span>
+            <h2 class="fh-h2 mt-2">Four things we will not compromise on</h2>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        @foreach (var value in new[]
+        {
+            new { Icon = "ri-eye-line", Title = "Editorial honesty", Body = "Ratings come from real viewers, trailers are never stitched together to lie, and every title carries an honest certificate." },
+            new { Icon = "ri-flashlight-line", Title = "Speed first", Body = "Cold start under two seconds, instant seek, and playback that recovers before you notice the problem." },
+            new { Icon = "ri-shield-check-line", Title = "Respect the viewer", Body = "No ad targeting, no data resale, and a single switch that turns off anything you do not want to see." },
+            new { Icon = "ri-global-line", Title = "Access for everyone", Body = "Subtitles in five languages, audio in four, and a data saver that keeps a full episode under 200MB." }
+        })
+        {
+            <div class="fh-panel fh-reveal h-full">
+                <span class="w-12 h-12 rounded-xl bg-[#f41b3b]/15 text-[#f41b3b] flex items-center justify-center text-xl">
+                    <i class="@value.Icon"></i>
+                </span>
+                <h3 class="fh-h3 mt-5">@value.Title</h3>
+                <p class="text-sm text-gray-400 leading-relaxed mt-2.5">@value.Body</p>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ============ TEAM ============ -->
+<section class="fh-wrap pb-24">
+    <div class="fh-head fh-head-center">
+        <div>
+            <span class="fh-eyebrow fh-eyebrow-center">The people</span>
+            <h2 class="fh-h2 mt-2">Voices behind the service</h2>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        @foreach (var member in team)
+        {
+            <div class="fh-panel fh-reveal text-center">
+                <span class="fh-avatar fh-avatar-lg">@member.Name[..1]</span>
+                <h3 class="fh-h3 mt-4">@member.Name</h3>
+                <p class="text-xs text-[#f41b3b] mt-1">@member.Role</p>
+                <p class="text-sm text-gray-400 leading-relaxed mt-4">@member.Quote</p>
+            </div>
+        }
+    </div>
+</section>

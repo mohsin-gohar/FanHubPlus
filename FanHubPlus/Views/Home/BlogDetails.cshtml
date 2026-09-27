@@ -1,0 +1,146 @@
+@model FanHubPlus.ViewModels.BlogDetailsViewModel
+@{
+    var post = Model.Post;
+    ViewData["Title"] = post.Title;
+    var paragraphs = (post.Content ?? string.Empty)
+        .Split("||", StringSplitOptions.RemoveEmptyEntries)
+        .Select(p => p.Trim())
+        .ToList();
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = post.Category, Title = post.Title, Subtitle = post.Excerpt, Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("Blog", "/Home/Blog"), (post.Title, null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<section class="fh-wrap pb-20">
+    <div class="grid lg:grid-cols-[1fr_320px] gap-9 items-start">
+
+        <!-- ============ ARTICLE ============ -->
+        <article>
+            <div class="fh-still !aspect-[21/9]" data-theme="@post.PosterTheme">
+                <i class="@post.ArtGlyph fh-art-glyph-lg"></i>
+                <span class="fh-chip fh-chip-primary absolute top-4 left-4 z-[3]">@post.Category</span>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-4 mt-8 pb-6 border-b border-white/10">
+                <div class="flex items-center gap-3">
+                    <span class="fh-avatar">@post.Author[..1]</span>
+                    <div class="text-xs text-gray-400">
+                        <div class="text-white font-bold">@post.Author</div>
+                        <div>@post.DateDisplay &bull; @post.ReadDisplay</div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button type="button" class="fh-icon-btn" aria-label="Share on Facebook"><i class="ri-facebook-fill"></i></button>
+                    <button type="button" class="fh-icon-btn" aria-label="Share on X"><i class="ri-twitter-x-fill"></i></button>
+                    <button type="button" class="fh-icon-btn" aria-label="Copy link"><i class="ri-link"></i></button>
+                </div>
+            </div>
+
+            <div class="fh-article mt-8">
+                @for (var i = 0; i < paragraphs.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        <p class="fh-drop">@paragraphs[i]</p>
+                    }
+                    else if (i == 1)
+                    {
+                        <h2>In this piece</h2>
+                        <p>@paragraphs[i]</p>
+                        <blockquote>
+                            "The best streaming service is the one that disappears - you stop thinking about the app and
+                            start thinking about the story."
+                        </blockquote>
+                    }
+                    else
+                    {
+                        <p>@paragraphs[i]</p>
+                    }
+                }
+
+                @if (post.TagList.Any())
+                {
+                    <div class="fh-divider pt-7 mt-9">
+                        <h3 class="fh-h3">Tags</h3>
+                        <div class="fh-tagcloud mt-4">
+                            @foreach (var tag in post.TagList)
+                            {
+                                <a asp-controller="Home" asp-action="Blog" class="fh-tag">@tag</a>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- ============ COMMENTS ============ -->
+            <div class="fh-panel mt-10">
+                <h2 class="fh-h3">Comments (@Model.Comments.Count)</h2>
+
+                @if (Model.Comments.Count > 0)
+                {
+                    <div class="mt-4">
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <div class="fh-comment">
+                                <span class="fh-avatar">@comment.Initials</span>
+                                <div>
+                                    <div class="flex items-center gap-3">
+                                        <span class="text-sm font-bold text-white">@comment.Author</span>
+                                        <span class="text-[11px] text-gray-500">@comment.PostedDisplay</span>
+                                    </div>
+                                    <p class="text-sm text-gray-300 leading-relaxed mt-2">@comment.Body</p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="fh-lead mt-4">No comments yet. Be the first to share your thoughts.</p>
+                }
+
+                <form method="post" class="mt-7 grid sm:grid-cols-2 gap-4" onsubmit="event.preventDefault(); this.reset(); this.querySelector('.comment-ok').hidden = false;">
+                    <div>
+                        <label class="fh-label" for="cName">Name</label>
+                        <input type="text" id="cName" class="fh-input" placeholder="Your name" required />
+                    </div>
+                    <div>
+                        <label class="fh-label" for="cEmail">Email</label>
+                        <input type="email" id="cEmail" class="fh-input" placeholder="you@example.com" required />
+                    </div>
+                    <div class="sm:col-span-2">
+                        <label class="fh-label" for="cBody">Comment</label>
+                        <textarea id="cBody" rows="4" class="fh-input" placeholder="Join the discussion..." required></textarea>
+                    </div>
+                    <div class="sm:col-span-2 flex flex-wrap items-center gap-4">
+                        <button type="submit" class="fh-btn fh-btn-primary"><i class="ri-send-plane-line"></i> Post comment</button>
+                        <span class="comment-ok text-xs text-emerald-400" hidden>Thanks - your comment is queued for review.</span>
+                    </div>
+                </form>
+            </div>
+
+            <!-- ============ RELATED ============ -->
+            @if (Model.Related.Count > 0)
+            {
+                <div class="mt-12">
+                    <h2 class="fh-h3">Keep reading</h2>
+                    <div class="grid sm:grid-cols-3 gap-5 mt-6">
+                        @foreach (var item in Model.Related)
+                        {
+                            <partial name="_BlogCard" model="item" />
+                        }
+                    </div>
+                </div>
+            }
+        </article>
+
+        <!-- ============ SIDEBAR ============ -->
+        @{
+    var blogSidebar = new FanHubPlus.ViewModels.BlogSidebarViewModel { Latest = Model.Latest, Popular = Model.Popular  };
+}
+<partial name="_BlogSidebar" model="blogSidebar" />
+    </div>
+</section>
+

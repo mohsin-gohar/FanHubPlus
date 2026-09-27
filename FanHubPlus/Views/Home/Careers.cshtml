@@ -1,0 +1,107 @@
+@model List<FanHubPlus.Models.JobOpening>
+@{
+    ViewData["Title"] = "Careers";
+    var departments = Model.Select(j => j.Department).Distinct().ToList();
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Careers", Title = "Build the service people love to watch", Subtitle = "We are a small team of editors, engineers and designers. If you care about craft, we would like to meet you.", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("Careers", null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<!-- ============ CULTURE ============ -->
+<section class="fh-wrap pb-16">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+            <h2 class="fh-h2">A studio, not a factory</h2>
+            <p class="fh-lead mt-5">
+                Everyone here watches a lot of things. Editors argue in screenings, engineers argue about frame pacing, and
+                support reads the same forum threads the rest of us do. We hire for taste and curiosity first, and we pay
+                properly because the alternative is a worse product.
+            </p>
+            <ul class="mt-7 space-y-3">
+                @foreach (var perk in new[]
+                {
+                    new { Icon = "ri-time-line", Text = "Flexible hours with two studio days a week" },
+                    new { Icon = "ri-money-dollar-circle-line", Text = "Transparent bands, published internally" },
+                    new { Icon = "ri-book-2-line", Text = "Annual learning and festival budget" },
+                    new { Icon = "ri-crown-line", Text = "Premium plan for you and your family" }
+                })
+                {
+                    <li class="fh-feat"><i class="@perk.Icon text-[#f41b3b]"></i> @perk.Text</li>
+                }
+            </ul>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4">
+            @foreach (var stat in new[]
+            {
+                new { Value = 38d, Label = "People on the team" },
+                new { Value = 6d, Label = "Departments" },
+                new { Value = 190d, Label = "Countries served" },
+                new { Value = 4.6d, Label = "Employee rating" }
+            })
+            {
+                <div class="fh-panel text-center">
+                    <div class="fh-stat-num"><span data-fh-count="@stat.Value" data-fh-suffix="+">0</span></div>
+                    <div class="fh-stat-label">@stat.Label</div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- ============ OPEN ROLES ============ -->
+<section class="fh-wrap pb-20">
+    <div class="fh-head">
+        <div>
+            <span class="fh-eyebrow">Open roles</span>
+            <h2 class="fh-h2 mt-2">@Model.Count positions open</h2>
+        </div>
+        <div class="fh-tagcloud">
+            @foreach (var department in departments)
+            {
+                <span class="fh-tag">@department</span>
+            }
+        </div>
+    </div>
+
+    <div class="space-y-4">
+        @foreach (var job in Model)
+        {
+            <article class="fh-panel fh-hover-panel">
+                <div class="fh-job">
+                    <div class="min-w-0">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <h3 class="fh-h3">
+                                <a asp-controller="Home" asp-action="CareerDetails" asp-route-id="@job.Id" class="hover:text-[#f41b3b] transition-colors">@job.Title</a>
+                            </h3>
+                            @if (job.IsUrgent)
+                            {
+                                <span class="fh-chip fh-chip-live">Urgent</span>
+                            }
+                        </div>
+                        <p class="text-sm text-gray-400 mt-2">@job.Summary</p>
+                        <div class="flex flex-wrap items-center gap-x-5 gap-y-2 mt-3 text-[11px] text-gray-500">
+                            <span><i class="ri-building-line"></i> @job.Department</span>
+                            <span><i class="ri-map-pin-line"></i> @job.Location</span>
+                            <span><i class="ri-time-line"></i> @job.Type</span>
+                            <span><i class="ri-briefcase-line"></i> @job.Experience</span>
+                            <span><i class="ri-money-dollar-circle-line"></i> @job.Salary</span>
+                            <span><i class="ri-calendar-line"></i> Posted @job.PostedDisplay</span>
+                        </div>
+                    </div>
+                    <a asp-controller="Home" asp-action="CareerDetails" asp-route-id="@job.Id" class="fh-btn fh-btn-primary flex-none">
+                        View role <i class="ri-arrow-right-line"></i>
+                    </a>
+                </div>
+            </article>
+        }
+    </div>
+
+    <div class="fh-panel fh-wash mt-12 text-center py-12 px-6">
+        <h2 class="fh-h2" style="font-size:1.5rem">Nothing that fits today?</h2>
+        <p class="fh-lead mt-3 max-w-lg mx-auto">Send a speculative application. We read every one, and we hire ahead of the busy season.</p>
+        <a asp-controller="Home" asp-action="Contact" class="fh-btn fh-btn-primary mt-7">Send an application</a>
+    </div>
+</section>

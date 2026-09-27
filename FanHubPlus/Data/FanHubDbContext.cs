@@ -12,6 +12,12 @@ namespace FanHubPlus.Data
         public DbSet<BlogPost> BlogPosts => Set<BlogPost>();
         public DbSet<Testimonial> Testimonials => Set<Testimonial>();
         public DbSet<AppUser> Users => Set<AppUser>();
+        public DbSet<Episode> Episodes => Set<Episode>();
+        public DbSet<Comment> Comments => Set<Comment>();
+        public DbSet<Channel> Channels => Set<Channel>();
+        public DbSet<StoreProduct> Products => Set<StoreProduct>();
+        public DbSet<JobOpening> Jobs => Set<JobOpening>();
+        public DbSet<FaqItem> Faqs => Set<FaqItem>();
     }
 
     public class AppUser

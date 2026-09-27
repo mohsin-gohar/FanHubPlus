@@ -1,48 +1,82 @@
 @{
     ViewData["Title"] = "Privacy Policy";
+    var updated = DateTime.Now.ToString("dd MMMM, yyyy");
 }
 
-<section class="relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-[#0b0c0f] via-[#0b0c0f] to-[#140b0d]"></div>
-    <div class="relative z-10 max-w-3xl mx-auto px-4 sm:px-6 py-16">
-        <span class="text-xs font-bold uppercase tracking-wider text-[#f41b3b]">Legal</span>
-        <h1 class="text-3xl sm:text-4xl font-black text-white mt-1 font-['Montserrat']">Privacy Policy</h1>
-        <p class="text-gray-400 text-xs mt-3">Last updated: @DateTime.Now.ToString("dd MMMM, yyyy")</p>
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Legal", Title = "Privacy Policy", Subtitle = "Last updated " + updated + " - what FanHub Plus collects, why, and the choices you have.", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("Privacy Policy", null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<section class="fh-wrap pb-20">
+    <div class="grid lg:grid-cols-[0.3fr_0.7fr] gap-10 items-start">
+        <aside class="fh-widget lg:sticky lg:top-28">
+            <h2 class="fh-widget-title">On this page</h2>
+            <div class="fh-linklist">
+                <a href="#collect">Information we collect <i class="ri-arrow-right-s-line"></i></a>
+                <a href="#use">How we use it <i class="ri-arrow-right-s-line"></i></a>
+                <a href="#cookies">Cookies and local storage <i class="ri-arrow-right-s-line"></i></a>
+                <a href="#sharing">Sharing <i class="ri-arrow-right-s-line"></i></a>
+                <a href="#rights">Your rights <i class="ri-arrow-right-s-line"></i></a>
+                <a href="#children">Children <i class="ri-arrow-right-s-line"></i></a>
+                <a href="#contact">Contact <i class="ri-arrow-right-s-line"></i></a>
+            </div>
+        </aside>
+
+        <div class="fh-panel">
+            <div class="fh-article">
+                <p class="fh-drop">FanHub Plus is a demonstration streaming front-end built for an academic project. This page explains, in plain language, what information the application handles and why.</p>
+
+                <h2 id="collect">Information we collect</h2>
+                <p>
+                    The application stores its catalogue (titles, genres, ratings, testimonials, blog posts, store products and job
+                    listings) in an in-memory database, so no catalogue data is persisted. Contact form submissions are validated
+                    and acknowledged, but are not stored anywhere after the page is rendered.
+                </p>
+                <p>
+                    If you create an account, the name, email address and a hashed password are held in memory for the lifetime of
+                    the process so the sign-in flow can be demonstrated. Nothing is written to disk.
+                </p>
+
+                <h2 id="use">How we use it</h2>
+                <p>
+                    Data submitted through the contact form is only used to reply to your enquiry. There are no analytics,
+                    advertising or third-party tracking scripts embedded in this project, and we do not sell or rent personal data.
+                </p>
+
+                <h2 id="cookies">Cookies and local storage</h2>
+                <p>
+                    The demo sets exactly one cookie, <code>fanhub_cart</code>, which stores the product ids and quantities in your
+                    shopping bag so it survives a page reload. It is essential, HTTP only and expires after fourteen days. All other
+                    assets (Tailwind CSS, Swiper, Remix Icon and the FanHub design system) are served as static files from the
+                    application's own <code>wwwroot</code> folder.
+                </p>
+
+                <h2 id="sharing">Sharing</h2>
+                <p>
+                    We do not share personal information with third parties for their own purposes. In a production deployment the
+                    only sharing would be with payment processors for the minimum data needed to take a subscription.
+                </p>
+
+                <h2 id="rights">Your rights</h2>
+                <p>
+                    Because no personal data is retained, there is nothing stored that requires deletion or export. You can also
+                    clear everything at any time by closing the browser session. If you have a question about this policy, reach us
+                    through the <a asp-controller="Home" asp-action="Contact">contact page</a>.
+                </p>
+
+                <h2 id="children">Children</h2>
+                <p>
+                    Kid profiles in the interface are a design demonstration. The service does not knowingly collect data from
+                    children, and parental PIN controls shown in the account area are illustrative only.
+                </p>
+
+                <h2 id="contact">Contact</h2>
+                <p>
+                    Privacy questions go to <strong>privacy@fanhubplus.demo</strong>, or use the
+                    <a asp-controller="Home" asp-action="Contact">contact form</a> and pick "Something else".
+                </p>
+            </div>
+        </div>
     </div>
 </section>
-
-<section class="max-w-3xl mx-auto px-4 sm:px-6 pb-20 -mt-6">
-    <div class="bg-[#14161d] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-6 text-sm text-gray-400 leading-relaxed">
-        <p>
-            FanHub Plus is a demonstration streaming front-end built for an academic project. This page explains,
-            in plain language, what information the application handles and why.
-        </p>
-
-        <h2 class="text-base font-bold text-white">Information we collect</h2>
-        <p>
-            The application stores its catalogue (titles, genres, ratings, testimonials and blog posts) in an
-            in-memory database, so no catalogue data is persisted. Contact form submissions are validated and
-            acknowledged, but are not stored anywhere after the page is rendered.
-        </p>
-
-        <h2 class="text-base font-bold text-white">How data is used</h2>
-        <p>
-            Data submitted through the contact form is only used to reply to your enquiry. No analytics,
-            advertising or third-party tracking scripts are embedded in this project.
-        </p>
-
-        <h2 class="text-base font-bold text-white">Cookies</h2>
-        <p>
-            The demo does not set tracking cookies. It relies solely on local static assets (Tailwind CSS browser
-            build, Swiper and Remix Icon) served from the application's own <code>wwwroot</code> folder.
-        </p>
-
-        <h2 class="text-base font-bold text-white">Your rights</h2>
-        <p>
-            Because no personal data is retained, there is nothing stored that requires deletion. If you have a
-            question about this policy, reach us through the
-            <a asp-controller="Home" asp-action="Contact" class="text-[#f41b3b] hover:underline">contact page</a>.
-        </p>
-    </div>
-</section>
-

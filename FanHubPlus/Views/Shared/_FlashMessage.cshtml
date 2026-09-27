@@ -1,0 +1,12 @@
+@{
+    var message = TempData["SuccessMessage"] as string;
+}
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="fh-wrap pt-6">
+        <div class="flex items-start gap-3 rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-300">
+            <i class="ri-check-circle-fill text-lg leading-none mt-0.5"></i>
+            <span class="flex-1">@message</span>
+        </div>
+    </div>
+}

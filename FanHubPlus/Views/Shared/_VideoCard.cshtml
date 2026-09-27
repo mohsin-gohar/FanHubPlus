@@ -1,0 +1,51 @@
+@model FanHubPlus.Models.VideoItem
+@{
+    var showTitle = (ViewData["ShowCardTitle"] as bool?) ?? true;
+}
+
+<!-- Reusable poster card. All artwork is CSS generated, so no bitmaps are needed. -->
+<a asp-controller="Home" asp-action="Details" asp-route-id="@Model.Id" class="fh-card group">
+    <div class="fh-poster" data-theme="@Model.PosterTheme">
+        <i class="@(Model.IsLive ? "ri-broadcast-line" : "ri-film-line") fh-art-glyph"></i>
+
+        <div class="fh-art-meta">
+            <span class="fh-chip @(Model.IsLive ? "fh-chip-live" : "fh-chip-primary")">
+                @if (Model.IsLive)
+                {
+                    <span class="fh-dot-live"></span>
+                    <span>LIVE</span>
+                }
+                else
+                {
+                    <span>@Model.Genre</span>
+                }
+            </span>
+            @if (Model.ImdbRating > 0)
+            {
+                <span class="fh-chip fh-chip-rating"><i class="ri-star-fill"></i> @Model.ImdbRating.ToString("0.0")</span>
+            }
+        </div>
+
+        <span class="fh-play-orb"><i class="ri-play-fill"></i></span>
+
+        @if (showTitle)
+        {
+            <div class="absolute inset-x-0 bottom-0 z-[3] p-3">
+                <span class="fh-art-title block !p-0 !bg-none">@Model.Title</span>
+                <div class="fh-card-meta">
+                    <span>@Model.YearDisplay</span>
+                    <span>@Model.Duration</span>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (!showTitle)
+    {
+        <span class="fh-card-title mt-2.5 truncate">@Model.Title</span>
+        <div class="fh-card-meta">
+            <span>@Model.YearDisplay</span>
+            <span>@Model.Duration</span>
+        </div>
+    }
+</a>

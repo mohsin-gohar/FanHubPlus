@@ -1,0 +1,41 @@
+@model FanHubPlus.Models.StoreProduct
+
+<!-- Reusable store product card -->
+<article class="fh-panel fh-panel-flush fh-reveal group">
+    <a asp-controller="Shop" asp-action="Product" asp-route-id="@Model.Id" class="fh-still block rounded-none border-0 border-b" data-theme="@Model.ArtTheme">
+        <i class="@Model.ArtGlyph fh-art-glyph-sm"></i>
+        @if (!string.IsNullOrWhiteSpace(Model.Badge))
+        {
+            <span class="fh-chip @(Model.DiscountPercent > 0 ? "fh-chip-primary" : "fh-chip-rating") absolute top-3 left-3 z-[3]">@Model.Badge</span>
+        }
+        @if (!Model.InStock)
+        {
+            <span class="fh-chip absolute top-3 right-3 z-[3]">Sold out</span>
+        }
+    </a>
+    <div class="p-5">
+        <span class="text-[11px] uppercase tracking-wider text-gray-500">@Model.Category</span>
+        <h3 class="fh-h3 mt-1.5 leading-snug">
+            <a asp-controller="Shop" asp-action="Product" asp-route-id="@Model.Id" class="hover:text-[#f41b3b] transition-colors">@Model.Name</a>
+        </h3>
+        <div class="mt-2 flex items-center gap-2 text-[11px] text-gray-500">
+            <span class="text-[#ffea00]"><i class="ri-star-fill"></i> @Model.Rating.ToString("0.0")</span>
+            <span>&bull;</span>
+            <span>@Model.Reviews.ToString("N0") reviews</span>
+        </div>
+        <div class="mt-4 flex items-end justify-between gap-3">
+            <div>
+                <span class="text-xl font-black text-white">$@Model.PriceDisplay</span>
+                @if (Model.OldPrice.HasValue)
+                {
+                    <span class="text-xs text-gray-500 line-through ml-2">$@Model.OldPriceDisplay</span>
+                }
+            </div>
+            <form method="post" asp-controller="Shop" asp-action="AddToCart" asp-route-id="@Model.Id">
+                <button type="submit" class="fh-icon-btn" aria-label="Add @Model.Name to cart" disabled="@(!Model.InStock)">
+                    <i class="ri-shopping-bag-3-line"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</article>

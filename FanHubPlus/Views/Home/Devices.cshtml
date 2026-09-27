@@ -1,0 +1,95 @@
+@{
+    ViewData["Title"] = "Supported Devices";
+    var groups = new[]
+    {
+        new { Name = "Smart TVs", Icon = "ri-tv-line", Theme = "t1", Devices = new[] { "Android TV & Google TV", "Samsung Tizen", "LG webOS", "Sony Bravia", "Roku TV" } },
+        new { Name = "Streaming devices", Icon = "ri-cast-line", Theme = "t2", Devices = new[] { "Fire TV Stick", "Roku Ultra", "Apple TV 4K", "Chromecast", "FanHub dongle" } },
+        new { Name = "Phones & tablets", Icon = "ri-smartphone-line", Theme = "t3", Devices = new[] { "iPhone & iPad", "Android phones", "Android tablets", "Windows laptops", "Mac laptops" } },
+        new { Name = "Browsers", Icon = "ri-chrome-line", Theme = "t5", Devices = new[] { "Chrome", "Safari", "Edge", "Firefox", "Samsung Internet" } }
+    };
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Where to watch", Title = "Watch FanHub Plus on any screen", Subtitle = "Ten signed-in devices, four simultaneous streams and thirty days of offline downloads. Here is exactly what is supported.", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("Supported Devices", null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<!-- ============ DEVICE GROUPS ============ -->
+<section class="fh-wrap pb-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @foreach (var group in groups)
+        {
+            <article class="fh-panel fh-reveal">
+                <div class="flex items-center gap-4">
+                    <span class="fh-still !aspect-square !w-14 !h-14 flex-none" data-theme="@group.Theme">
+                        <i class="@group.Icon text-2xl !text-white/75 absolute inset-0 m-auto z-[3]"></i>
+                    </span>
+                    <h2 class="fh-h3">@group.Name</h2>
+                </div>
+                <ul class="mt-6 space-y-3">
+                    @foreach (var device in group.Devices)
+                    {
+                        <li class="fh-feat"><i class="ri-check-line text-emerald-400"></i> @device</li>
+                    }
+                </ul>
+            </article>
+        }
+    </div>
+</section>
+
+<!-- ============ REQUIREMENTS ============ -->
+<section class="fh-wrap pb-20">
+    <div class="grid lg:grid-cols-2 gap-8">
+        <div class="fh-panel">
+            <h2 class="fh-h3">What you need</h2>
+            <ul class="mt-5 space-y-3">
+                @foreach (var need in new[]
+                {
+                    "A broadband connection of 5 Mbps for HD, 25 Mbps for 4K",
+                    "The latest version of the app, or a current browser",
+                    "An active FanHub Plus subscription",
+                    "A TV or display with HDMI 2.1 for 4K HDR"
+                })
+                {
+                    <li class="fh-feat"><i class="ri-arrow-right-s-line text-[#f41b3b]"></i> @need</li>
+                }
+            </ul>
+        </div>
+
+        <div class="fh-panel">
+            <h2 class="fh-h3">Data saver mode</h2>
+            <p class="fh-lead mt-4">
+                Travelling on mobile data? Turn on data saver from Settings and FanHub will cap the bitrate, keeping a
+                full episode under 200MB on a standard definition stream. Downloads pause automatically when you leave
+                Wi-Fi, so a commute never eats your allowance by accident.
+            </p>
+            <div class="mt-7 space-y-4">
+                <div>
+                    <div class="flex justify-between text-xs text-gray-400 mb-2"><span>SD (data saver)</span><span>~0.9 GB / 10 hrs</span></div>
+                    <div class="fh-progress"><i style="width:22%"></i></div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs text-gray-400 mb-2"><span>HD 1080p</span><span>~3.5 GB / 10 hrs</span></div>
+                    <div class="fh-progress"><i style="width:55%"></i></div>
+                </div>
+                <div>
+                    <div class="flex justify-between text-xs text-gray-400 mb-2"><span>4K UHD HDR</span><span>~7.0 GB / hr</span></div>
+                    <div class="fh-progress"><i style="width:100%"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="fh-wrap pb-24">
+    <div class="fh-panel fh-wash text-center py-14 px-6">
+        <h2 class="fh-h2">Get the app on your device</h2>
+        <p class="fh-lead mt-3 max-w-xl mx-auto">Free to download with any plan. Sign in once and pick up where you left off.</p>
+        <div class="flex flex-wrap items-center justify-center gap-3 mt-8">
+            <a href="#" class="fh-btn fh-btn-primary fh-btn-lg"><i class="ri-google-play-fill"></i> Google Play</a>
+            <a href="#" class="fh-btn fh-btn-ghost fh-btn-lg"><i class="ri-apple-fill"></i> App Store</a>
+            <a asp-controller="Home" asp-action="Faq" class="fh-btn fh-btn-outline fh-btn-lg">Device FAQs</a>
+        </div>
+    </div>
+</section>

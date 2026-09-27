@@ -1,0 +1,94 @@
+@model FanHubPlus.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Sign In";
+    var returnUrl = ViewBag.ReturnUrl as string;
+}
+
+<section class="fh-wrap fh-section">
+    <div class="fh-auth-shell">
+
+        <!-- ============ FORM ============ -->
+        <div class="fh-panel">
+            <span class="fh-eyebrow">Welcome back</span>
+            <h1 class="fh-h2 mt-2">Sign in to FanHub Plus</h1>
+            <p class="fh-lead mt-3">Pick up where you left off on any device.</p>
+
+            <form method="post" asp-controller="Account" asp-action="SignIn" class="mt-8" novalidate>
+                <input type="hidden" name="returnUrl" value="@returnUrl" />
+                <div asp-validation-summary="ModelOnly" class="fh-input-msg mb-4"></div>
+
+                <div class="fh-field">
+                    <label asp-for="Email" class="fh-label"></label>
+                    <div class="fh-input-group">
+                        <i class="ri-mail-line"></i>
+                        <input asp-for="Email" class="fh-input" placeholder="you@example.com" autocomplete="email" />
+                    </div>
+                    <span asp-validation-for="Email" class="fh-input-msg"></span>
+                </div>
+
+                <div class="fh-field">
+                    <label asp-for="Password" class="fh-label"></label>
+                    <div class="fh-input-group">
+                        <i class="ri-lock-line"></i>
+                        <input asp-for="Password" type="password" id="signInPassword" class="fh-input !pr-12" placeholder="••••••••" autocomplete="current-password" />
+                        <button type="button" class="fh-icon-btn !w-8 !h-8 !border-0 fh-input-btn" data-fh-reveal="signInPassword" aria-label="Show password">
+                            <i class="ri-eye-line text-base"></i>
+                        </button>
+                    </div>
+                    <span asp-validation-for="Password" class="fh-input-msg"></span>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <label class="fh-check">
+                        <input asp-for="RememberMe" />
+                        <span>Keep me signed in</span>
+                    </label>
+                    <a asp-controller="Account" asp-action="ForgotPassword" class="text-xs font-bold text-[#f41b3b] hover:underline">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="fh-btn fh-btn-primary fh-btn-block fh-btn-lg mt-7">
+                    <i class="ri-login-box-line"></i> Sign in
+                </button>
+            </form>
+
+            <p class="text-sm text-gray-400 mt-7 text-center">
+                New to FanHub Plus?
+                <a asp-controller="Account" asp-action="SignUp" class="text-[#f41b3b] font-bold hover:underline">Create an account</a>
+            </p>
+
+            <div class="fh-divider flex items-center gap-4 my-7">
+                <span class="flex-1 h-px bg-white/10"></span>
+                <span class="text-[11px] uppercase tracking-widest text-gray-600">or continue with</span>
+                <span class="flex-1 h-px bg-white/10"></span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+                <button type="button" class="fh-btn fh-btn-ghost fh-btn-sm"><i class="ri-google-fill"></i> Google</button>
+                <button type="button" class="fh-btn fh-btn-ghost fh-btn-sm"><i class="ri-apple-fill"></i> Apple</button>
+            </div>
+        </div>
+
+        <!-- ============ SIDE PANEL ============ -->
+        <aside class="fh-panel fh-wash hidden lg:flex flex-col justify-center text-center">
+            <span class="fh-score mx-auto">4K</span>
+            <h2 class="fh-h2 mt-7" style="font-size:1.5rem">Everything you love, on every screen</h2>
+            <ul class="mt-8 space-y-3.5 text-left">
+                @foreach (var perk in new[]
+                {
+                    new { Icon = "ri-hd-line", Text = "4K HDR with Dolby Vision and Atmos" },
+                    new { Icon = "ri-broadcast-line", Text = "Live sport with instant replays" },
+                    new { Icon = "ri-download-2-line", Text = "30 days of offline downloads" },
+                    new { Icon = "ri-shield-check-line", Text = "Six profiles, including a PIN-locked kids profile" }
+                })
+                {
+                    <li class="fh-feat"><i class="@perk.Icon text-[#f41b3b]"></i> @perk.Text</li>
+                }
+            </ul>
+            <a asp-controller="Home" asp-action="Pricing" class="fh-btn fh-btn-primary fh-btn-block mt-9">See plans</a>
+        </aside>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

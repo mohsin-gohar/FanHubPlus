@@ -12,5 +12,8 @@ namespace FanHubPlus.ViewModels
         public List<VideoItem> TopRated { get; set; } = new();
         public List<VideoItem> LatestReleases { get; set; } = new();
         public List<BlogPost> BlogPosts { get; set; } = new();
+        public List<Channel> Channels { get; set; } = new();
+        public List<StoreProduct> StoreDeals { get; set; } = new();
+        public List<FaqItem> Faqs { get; set; } = new();
     }
 }

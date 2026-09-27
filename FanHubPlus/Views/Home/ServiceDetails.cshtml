@@ -1,0 +1,86 @@
+@{
+    ViewData["Title"] = Model.Title;
+    var related = ViewBag.Related as dynamic;
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Service", Title = Model.Title, Subtitle = Model.Lead, Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("Services", "/Home/Services"), (Model.Title, null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<section class="fh-wrap pb-20">
+    <div class="grid lg:grid-cols-[1.35fr_0.65fr] gap-10 items-start">
+
+        <!-- ============ BODY ============ -->
+        <article>
+            <div class="fh-still" data-theme="@Model.Theme">
+                <i class="@Model.Icon fh-art-glyph"></i>
+                <div class="absolute inset-0 z-[3] flex items-center justify-center">
+                    <span class="w-16 h-16 rounded-2xl bg-black/40 backdrop-blur-md border border-white/15 flex items-center justify-center text-white text-3xl">
+                        <i class="@Model.Icon"></i>
+                    </span>
+                </div>
+            </div>
+
+            <div class="fh-panel mt-7">
+                <h2 class="fh-h3">About this service</h2>
+                <p class="fh-lead mt-4">@Model.Body</p>
+
+                <h2 class="fh-h3 mt-10">What's included</h2>
+                <ul class="mt-5 space-y-3">
+                    @foreach (var point in Model.Points)
+                    {
+                        <li class="fh-feat"><i class="ri-check-line text-emerald-400"></i> @point</li>
+                    }
+                </ul>
+
+                <div class="flex flex-wrap gap-3 mt-9">
+                    <a asp-controller="Home" asp-action="Contact" class="fh-btn fh-btn-primary">@Model.Cta</a>
+                    <a asp-controller="Home" asp-action="Pricing" class="fh-btn fh-btn-ghost">See plans</a>
+                </div>
+            </div>
+        </article>
+
+        <!-- ============ SIDEBAR ============ -->
+        <aside class="space-y-6">
+            <div class="fh-panel">
+                <h2 class="fh-widget-title">Highlights</h2>
+                <div class="space-y-4">
+                    @foreach (var highlight in new[]
+                    {
+                        new { Icon = "ri-flashlight-line", Title = "Fast by default", Body = "Streams start in under two seconds on a typical home connection." },
+                        new { Icon = "ri-hd-line", Title = "Picture first", Body = "4K HDR with Dolby Vision and Atmos where the device supports it." },
+                        new { Icon = "ri-shield-check-line", Title = "No ads, ever", Body = "Commercial free on every plan, with no ad-personalisation profile." }
+                    })
+                    {
+                        <div class="flex items-start gap-3">
+                            <span class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[#f41b3b] flex-none">
+                                <i class="@highlight.Icon"></i>
+                            </span>
+                            <div>
+                                <div class="text-sm font-bold text-white">@highlight.Title</div>
+                                <p class="text-xs text-gray-400 leading-relaxed mt-1">@highlight.Body</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            @if (related != null)
+            {
+                <div class="fh-widget">
+                    <h2 class="fh-widget-title">Other services</h2>
+                    <div class="fh-linklist">
+                        @foreach (var item in related)
+                        {
+                            <a asp-controller="Home" asp-action="ServiceDetails" asp-route-id="@item.Id">
+                                <span class="truncate">@item.Title</span>
+                                <i class="ri-arrow-right-s-line"></i>
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+        </aside>
+    </div>
+</section>

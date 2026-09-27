@@ -1,0 +1,94 @@
+@model List<FanHubPlus.Models.FaqItem>
+@{
+    ViewData["Title"] = "Frequently Asked Questions";
+    var topics = ViewBag.Topics as List<string> ?? new List<string>();
+    var active = ViewBag.ActiveTopic as string ?? "All";
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Help centre", Title = "Frequently asked questions", Subtitle = "Everything viewers ask us about plans, devices, accounts and billing - plus a direct line to a human if the answer is not here.", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("FAQ", null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<section class="fh-wrap pb-20">
+    <div class="grid lg:grid-cols-[0.32fr_0.68fr] gap-10 items-start">
+
+        <!-- ============ TOPIC FILTERS ============ -->
+        <aside class="space-y-6 lg:sticky lg:top-28">
+            <div class="fh-panel">
+                <h2 class="fh-widget-title">Filter by topic</h2>
+                <div class="fh-linklist">
+                    <a asp-controller="Home" asp-action="Faq" asp-route-topic="All" class="@(active == "All" ? "is-active" : "")">
+                        All questions <i class="ri-arrow-right-s-line"></i>
+                    </a>
+                    @foreach (var topic in topics)
+                    {
+                        <a asp-controller="Home" asp-action="Faq" asp-route-topic="@topic" class="@(active == topic ? "is-active" : "")">
+                            @topic <i class="ri-arrow-right-s-line"></i>
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <div class="fh-panel fh-wash text-center">
+                <span class="fh-avatar fh-avatar-lg mx-auto"><i class="ri-headset-line"></i></span>
+                <h2 class="fh-h3 mt-4">Still need help?</h2>
+                <p class="text-xs text-gray-400 mt-2">Our support team replies within 24 hours, seven days a week.</p>
+                <a asp-controller="Home" asp-action="Contact" class="fh-btn fh-btn-primary fh-btn-block mt-5">Contact support</a>
+            </div>
+        </aside>
+
+        <!-- ============ QUESTIONS ============ -->
+        <div>
+            @if (Model.Count == 0)
+            {
+                <div class="fh-empty">
+                    <i class="ri-question-line"></i>
+                    <h2 class="fh-h3 mt-4">No questions in this topic yet</h2>
+                    <p class="fh-lead mt-2">Try another topic, or ask us directly and we will add the answer.</p>
+                    <a asp-controller="Home" asp-action="Faq" class="fh-btn fh-btn-primary mt-6">Show all questions</a>
+                </div>
+            }
+            else
+            {
+                <div class="flex flex-wrap items-center gap-2 pb-6 mb-6 border-b border-white/10">
+                    <span class="text-sm text-gray-400">Showing <span class="text-white font-bold">@Model.Count</span> question(s)</span>
+                    @if (active != "All")
+                    {
+                        <span class="fh-chip fh-chip-primary">@active</span>
+                    }
+                </div>
+
+                <div data-fh-single>
+                    @foreach (var faq in Model)
+                    {
+                        <div class="fh-acc">
+                            <button type="button" class="fh-acc-q" aria-expanded="false">
+                                <span class="flex items-start gap-3">
+                                    <i class="ri-question-line text-[#f41b3b] text-lg leading-none mt-0.5"></i>
+                                    <span>
+                                        @faq.Question
+                                        @if (faq.IsPopular)
+                                        {
+                                            <span class="fh-chip fh-chip-rating ml-2 align-middle">Popular</span>
+                                        }
+                                    </span>
+                                </span>
+                                <i class="ri-arrow-down-s-line"></i>
+                            </button>
+                            <div class="fh-acc-a">@faq.Answer</div>
+                        </div>
+                    }
+                </div>
+
+                <div class="fh-panel mt-10 flex flex-wrap items-center justify-between gap-5">
+                    <div>
+                        <h2 class="fh-h3">Could not find your answer?</h2>
+                        <p class="text-sm text-gray-400 mt-1.5">Send us the question and we will answer it the same day.</p>
+                    </div>
+                    <a asp-controller="Home" asp-action="Contact" class="fh-btn fh-btn-primary">Ask a question <i class="ri-arrow-right-line"></i></a>
+                </div>
+            }
+        </div>
+    </div>
+</section>

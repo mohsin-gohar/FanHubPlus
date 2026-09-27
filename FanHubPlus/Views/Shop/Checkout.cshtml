@@ -1,0 +1,172 @@
+@model FanHubPlus.ViewModels.CheckoutViewModel
+@{
+    ViewData["Title"] = "Checkout";
+    var cart = ViewBag.Cart as FanHubPlus.ViewModels.CartViewModel;
+    var isCard = Model.PaymentMethod == "Card";
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Store", Title = "Checkout", Subtitle = "Almost there. This is a demonstration store, so no payment is actually taken.", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("Store", "/Shop/Index"), ("Cart", "/Shop/Cart"), ("Checkout", null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<section class="fh-wrap pb-20">
+    @if (cart == null || cart.IsEmpty)
+    {
+        <div class="fh-empty">
+            <i class="ri-shopping-cart-line"></i>
+            <h2 class="fh-h2 mt-5" style="font-size:1.5rem">There is nothing to check out</h2>
+            <p class="fh-lead mt-3">Add something to your bag first.</p>
+            <a asp-controller="Shop" asp-action="Index" class="fh-btn fh-btn-primary mt-6">Back to the store</a>
+        </div>
+    }
+    else
+    {
+        <!-- ============ STEPS ============ -->
+        <div class="fh-steps mb-9">
+            <span class="fh-step is-done"><b><i class="ri-check-line"></i></b> Bag</span>
+            <span class="fh-step is-active"><b>2</b> Details &amp; payment</span>
+            <span class="fh-step"><b>3</b> Confirmation</span>
+        </div>
+
+        <form method="post" asp-controller="Shop" asp-action="Checkout" class="grid lg:grid-cols-[1fr_360px] gap-8 items-start" novalidate>
+            @if (cart.CouponCode != null)
+            {
+                <input type="hidden" name="coupon" value="@cart.CouponCode" />
+            }
+
+            <!-- ============ FORM ============ -->
+            <div class="space-y-6">
+                <div class="fh-panel">
+                    <h2 class="fh-h3">Contact details</h2>
+                    <div class="grid sm:grid-cols-2 gap-5 mt-6">
+                        <div>
+                            <label asp-for="FullName" class="fh-label"></label>
+                            <input asp-for="FullName" class="fh-input" placeholder="Full name" />
+                            <span asp-validation-for="FullName" class="fh-input-msg"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Email" class="fh-label"></label>
+                            <input asp-for="Email" class="fh-input" placeholder="you@example.com" />
+                            <span asp-validation-for="Email" class="fh-input-msg"></span>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label asp-for="Phone" class="fh-label"></label>
+                            <input asp-for="Phone" class="fh-input" placeholder="+91 00000 00000" />
+                            <span asp-validation-for="Phone" class="fh-input-msg"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fh-panel">
+                    <h2 class="fh-h3">Shipping address</h2>
+                    <div class="grid sm:grid-cols-2 gap-5 mt-6">
+                        <div class="sm:col-span-2">
+                            <label asp-for="Address" class="fh-label"></label>
+                            <input asp-for="Address" class="fh-input" placeholder="Flat, street, landmark" />
+                            <span asp-validation-for="Address" class="fh-input-msg"></span>
+                        </div>
+                        <div>
+                            <label asp-for="City" class="fh-label"></label>
+                            <input asp-for="City" class="fh-input" placeholder="City" />
+                            <span asp-validation-for="City" class="fh-input-msg"></span>
+                        </div>
+                        <div>
+                            <label asp-for="PinCode" class="fh-label"></label>
+                            <input asp-for="PinCode" class="fh-input" placeholder="400001" maxlength="6" />
+                            <span asp-validation-for="PinCode" class="fh-input-msg"></span>
+                        </div>
+                        <div class="sm:col-span-2 space-y-3">
+                            <label class="fh-check"><input asp-for="SameAsBilling" /><span>Same as my billing address</span></label>
+                            <label class="fh-check"><input asp-for="SaveAddress" /><span>Save this address for next time</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="fh-panel">
+                    <h2 class="fh-h3">Payment method</h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
+                        @foreach (var method in new[] { "Card", "UPI", "Net Banking", "Wallet" })
+                        {
+                            var isSelected = Model.PaymentMethod == method;
+                            <label class="fh-panel !p-4 flex items-center gap-3 cursor-pointer @(isSelected ? "!border-[#f41b3b]" : "")">
+                                <input asp-for="PaymentMethod" type="radio" value="@method" class="w-4 h-4 accent-[#f41b3b]"
+                                       onchange="document.getElementById('card-fields').hidden = this.value !== 'Card';" />
+                                <span class="text-sm font-bold text-white">@method</span>
+                            </label>
+                        }
+                    </div>
+
+                    <div id="card-fields" class="grid sm:grid-cols-3 gap-5 mt-7" hidden="@(!isCard)">
+                        <div class="sm:col-span-3">
+                            <label asp-for="CardNumber" class="fh-label"></label>
+                            <input asp-for="CardNumber" class="fh-input" placeholder="4242 4242 4242 4242" inputmode="numeric" />
+                            <span asp-validation-for="CardNumber" class="fh-input-msg"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Expiry" class="fh-label"></label>
+                            <input asp-for="Expiry" class="fh-input" placeholder="MM/YY" maxlength="5" />
+                            <span asp-validation-for="Expiry" class="fh-input-msg"></span>
+                        </div>
+                        <div>
+                            <label asp-for="Cvv" class="fh-label"></label>
+                            <input asp-for="Cvv" class="fh-input" placeholder="123" maxlength="4" />
+                            <span asp-validation-for="Cvv" class="fh-input-msg"></span>
+                        </div>
+                    </div>
+
+                    <p class="text-[11px] text-gray-500 mt-5">
+                        <i class="ri-lock-line"></i> This is a demonstration store. No card details are stored, transmitted or charged.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ============ SUMMARY ============ -->
+            <aside class="space-y-6">
+                <div class="fh-panel">
+                    <h2 class="fh-widget-title">Order summary</h2>
+
+                    <div class="mt-5 space-y-4">
+                        @foreach (var line in cart.Lines)
+                        {
+                            <div class="flex items-center gap-3">
+                                <span class="fh-still !w-12 !h-14 flex-none" data-theme="@line.Product.ArtTheme">
+                                    <i class="@line.Product.ArtGlyph fh-art-glyph-sm !text-xl"></i>
+                                </span>
+                                <div class="min-w-0 flex-1">
+                                    <div class="text-xs font-bold text-white truncate">@line.Product.Name</div>
+                                    <div class="text-[11px] text-gray-500">Qty @line.Quantity</div>
+                                </div>
+                                <span class="text-xs font-bold text-white">$@line.LineTotal.ToString("0.00")</span>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="fh-divider mt-6 pt-5 space-y-3 text-sm">
+                        <div class="flex justify-between"><span class="text-gray-400">Subtotal</span><span class="text-white font-bold">$@cart.Subtotal.ToString("0.00")</span></div>
+                        @if (cart.Discount > 0)
+                        {
+                            <div class="flex justify-between"><span class="text-gray-400">Discount</span><span class="text-emerald-400 font-bold">-$@cart.Discount.ToString("0.00")</span></div>
+                        }
+                        <div class="flex justify-between"><span class="text-gray-400">Shipping</span><span class="text-white font-bold">@(cart.Shipping > 0 ? "$" + cart.Shipping.ToString("0.00") : "Free")</span></div>
+                        <div class="flex justify-between"><span class="text-gray-400">Tax (5%)</span><span class="text-white font-bold">$@cart.Tax.ToString("0.00")</span></div>
+                        <div class="fh-divider flex justify-between pt-4 text-base">
+                            <span class="text-white font-bold">Total</span>
+                            <span class="text-[#f41b3b] font-black text-xl">$@cart.Total.ToString("0.00")</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="fh-btn fh-btn-primary fh-btn-block fh-btn-lg mt-6">
+                        <i class="ri-lock-line"></i> Place order
+                    </button>
+                    <a asp-controller="Shop" asp-action="Cart" class="fh-btn fh-btn-outline fh-btn-block mt-3">Back to bag</a>
+                </div>
+            </aside>
+        </form>
+    }
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

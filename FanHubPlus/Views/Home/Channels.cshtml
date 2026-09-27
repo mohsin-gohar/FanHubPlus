@@ -1,0 +1,65 @@
+@model FanHubPlus.ViewModels.BrowseViewModel
+@{
+    ViewData["Title"] = "Live Channels";
+    var active = ViewContext.RouteData.Values["category"] as string ?? "All";
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Live television", Title = "Channel List", Subtitle = "Live sport, news, kids, music and cinema channels - all included with Premium 4K UHD, with instant replays for fixtures.", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("Channels", null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<section class="fh-wrap pb-20">
+    <div class="fh-tabs mb-9">
+        <a asp-controller="Home" asp-action="Channels" class="fh-tab @(active == "All" ? "is-active" : "")">All</a>
+        @foreach (var topic in Model.Genres)
+        {
+            <a asp-controller="Home" asp-action="Channels" asp-route-category="@topic" class="fh-tab @(active == topic ? "is-active" : "")">@topic</a>
+        }
+    </div>
+
+    @if (Model.Channels.Count == 0)
+    {
+        <div class="fh-empty">
+            <i class="ri-tv-off-line"></i>
+            <p class="fh-lead mt-3">No channels in this category yet.</p>
+        </div>
+    }
+    else
+    {
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            @foreach (var channel in Model.Channels)
+            {
+                <article class="fh-panel fh-hover-panel fh-reveal">
+                    <div class="flex items-center gap-4">
+                        <span class="fh-still !aspect-square !w-16 !h-16 flex-none" data-theme="@channel.LogoTheme">
+                            <i class="ri-tv-2-line text-2xl !text-white/70 absolute inset-0 m-auto z-[3]"></i>
+                        </span>
+                        <div class="min-w-0">
+                            <h2 class="fh-h3 truncate">@channel.Name</h2>
+                            <p class="text-[11px] text-gray-500 mt-1">Channel @channel.Number &bull; @channel.Language</p>
+                        </div>
+                        <span class="fh-chip fh-chip-live ml-auto !px-2"><span class="fh-dot-live"></span></span>
+                    </div>
+
+                    <p class="text-sm text-gray-400 leading-relaxed mt-5">@channel.Description</p>
+
+                    <div class="fh-divider mt-5 pt-4 space-y-2.5 text-xs">
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="text-gray-500 flex items-center gap-2"><i class="ri-play-circle-line"></i> Now playing</span>
+                            <span class="text-white font-bold text-right">@channel.NowPlaying</span>
+                        </div>
+                        <div class="flex items-center justify-between gap-3">
+                            <span class="text-gray-500 flex items-center gap-2"><i class="ri-user-3-line"></i> Watching</span>
+                            <span class="text-white font-bold">@channel.ViewerDisplay</span>
+                        </div>
+                    </div>
+
+                    <a asp-controller="Home" asp-action="Videos" asp-route-search="@channel.Name" class="fh-btn fh-btn-primary fh-btn-block mt-5">
+                        <i class="ri-play-fill"></i> Watch live
+                    </a>
+                </article>
+            }
+        </div>
+    }
+</section>

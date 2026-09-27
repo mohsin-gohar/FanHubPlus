@@ -1,0 +1,222 @@
+@model FanHubPlus.ViewModels.HomeIndexViewModel
+@{
+    ViewData["Title"] = "FanHub Plus - Showcase";
+}
+
+<!-- ============ VIDEO-FIRST HERO (alternate home layout) ============ -->
+<section class="fh-hero !min-h-[560px]">
+    <div class="absolute inset-0" data-theme="t6">
+        <div class="absolute inset-0" style="background-image:var(--fh-art); background-size:cover;"></div>
+        <div class="absolute inset-0" style="background:linear-gradient(180deg, rgba(11,12,15,.55) 0%, rgba(11,12,15,.9) 70%, #0b0c0f 100%);"></div>
+    </div>
+
+    <div class="relative z-10 fh-wrap text-center py-32">
+        <span class="fh-chip !bg-black/40 !border-white/15 !text-white mx-auto">
+            <span class="fh-dot-live bg-[#f41b3b]"></span> FanHub Originals are here
+        </span>
+        <h1 class="fh-h1 mt-6 max-w-4xl mx-auto">
+            Watch everything.<br />Pay for almost nothing.
+        </h1>
+        <p class="fh-lead mt-5 max-w-2xl mx-auto">
+            Thousands of films, series, anime and documentaries plus live sport - all commercial free, all in 4K HDR
+            where your device allows it.
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-3 mt-9">
+            <a asp-controller="Home" asp-action="Pricing" class="fh-btn fh-btn-primary fh-btn-lg">Start watching free</a>
+            <a asp-controller="Home" asp-action="Movies" class="fh-btn fh-btn-ghost fh-btn-lg">Browse the library</a>
+        </div>
+
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-3xl mx-auto mt-16">
+            @foreach (var stat in new[]
+            {
+                new { Value = 12400, Suffix = "+", Label = "Titles" },
+                new { Value = 190, Suffix = "", Label = "Countries" },
+                new { Value = 42, Suffix = "", Label = "Originals" },
+                new { Value = 4, Suffix = "K", Label = "Resolution" }
+            })
+            {
+                <div>
+                    <div class="fh-stat-num"><span data-fh-count="@stat.Value" data-fh-suffix="@stat.Suffix">0</span></div>
+                    <div class="fh-stat-label">@stat.Label</div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- ============ CHANNEL LINE-UP ============ -->
+<section class="fh-wrap fh-section pt-0">
+    <div class="fh-head">
+        <div>
+            <span class="fh-eyebrow">Live television</span>
+            <h2 class="fh-h2 mt-2">On air right now</h2>
+        </div>
+        <a asp-controller="Home" asp-action="Channels" class="fh-btn fh-btn-ghost fh-btn-sm">All channels <i class="ri-arrow-right-line"></i></a>
+    </div>
+
+    <div class="fh-scroll-x">
+        @foreach (var channel in Model.Channels)
+        {
+            <article class="fh-panel !w-[240px]">
+                <div class="flex items-center gap-3">
+                    <span class="fh-still !aspect-square !w-12 !h-12 flex-none" data-theme="@channel.LogoTheme">
+                        <i class="ri-tv-2-line text-xl !text-white/70 absolute inset-0 m-auto z-[3]"></i>
+                    </span>
+                    <div class="min-w-0">
+                        <div class="text-sm font-bold text-white truncate">@channel.Name</div>
+                        <div class="text-[11px] text-gray-500">Ch @channel.Number</div>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-400 mt-4 truncate">@channel.NowPlaying</p>
+                <div class="flex items-center justify-between mt-4">
+                    <span class="fh-chip fh-chip-live !px-2"><span class="fh-dot-live"></span></span>
+                    <span class="text-[11px] text-gray-500">@channel.ViewerDisplay watching</span>
+                </div>
+            </article>
+        }
+    </div>
+</section>
+
+<!-- ============ TRENDING RAIL ============ -->
+<section class="fh-wrap fh-section pt-0">
+    <div class="fh-rail" data-fh-rail="poster">
+        <div class="fh-head">
+            <div>
+                <span class="fh-eyebrow">Highest rated</span>
+                <h2 class="fh-h2 mt-2">What critics loved</h2>
+            </div>
+            <div class="fh-rail-nav">
+                <button type="button" class="fh-icon-btn" data-fh-prev aria-label="Previous"><i class="ri-arrow-left-s-line"></i></button>
+                <button type="button" class="fh-icon-btn" data-fh-next aria-label="Next"><i class="ri-arrow-right-s-line"></i></button>
+            </div>
+        </div>
+        <div class="swiper">
+            <div class="swiper-wrapper">
+                @foreach (var item in Model.TrendingVideos)
+                {
+                    <div class="swiper-slide"><partial name="_VideoCard" model="item" /></div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ============ GENRE TILES ============ -->
+<section class="fh-wrap fh-section pt-0">
+    <div class="fh-head">
+        <div>
+            <span class="fh-eyebrow">Browse by mood</span>
+            <h2 class="fh-h2 mt-2">Pick a genre</h2>
+        </div>
+    </div>
+    <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3.5">
+        @foreach (var category in Model.Categories)
+        {
+            <a asp-controller="Home" asp-action="Movies" asp-route-genre="@category.Name" class="fh-tile">
+                <span class="fh-tile-icon">@category.Icon</span>
+                <span class="fh-tile-name">@category.Name</span>
+                <span class="fh-tile-count">@category.VideoCount titles</span>
+            </a>
+        }
+    </div>
+</section>
+
+<!-- ============ FEATURED ORIGINALS ============ -->
+<section class="fh-wrap fh-section pt-0">
+    <div class="fh-head">
+        <div>
+            <span class="fh-eyebrow">FanHub originals</span>
+            <h2 class="fh-h2 mt-2">Made here, for everyone</h2>
+        </div>
+        <a asp-controller="Home" asp-action="Movies" asp-route-sortBy="year" class="fh-btn fh-btn-ghost fh-btn-sm">See all <i class="ri-arrow-right-line"></i></a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        @foreach (var item in Model.LatestReleases.Take(3))
+        {
+            <article class="fh-panel fh-panel-flush fh-hover-panel">
+                <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="fh-still !aspect-[16/10] rounded-none border-0" data-theme="@item.PosterTheme">
+                    <i class="fh-art-glyph-sm"></i>
+                    <span class="fh-play-orb"><i class="ri-play-fill"></i></span>
+                </a>
+                <div class="p-6">
+                    <div class="flex flex-wrap items-center gap-2">
+                        <span class="fh-chip fh-chip-primary">@item.Genre</span>
+                        <span class="fh-chip fh-chip-rating"><i class="ri-star-fill"></i> @item.ImdbRating.ToString("0.0")</span>
+                        <span class="fh-chip">@item.YearDisplay</span>
+                    </div>
+                    <h3 class="fh-h3 mt-4">
+                        <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="hover:text-[#f41b3b] transition-colors">@item.Title</a>
+                    </h3>
+                    <p class="text-sm text-gray-400 leading-relaxed mt-2.5 line-clamp-3">@item.Description</p>
+                    <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="fh-btn fh-btn-ghost fh-btn-sm mt-5">Watch now <i class="ri-play-fill"></i></a>
+                </div>
+            </article>
+        }
+    </div>
+</section>
+
+
+<!-- ============ EDITORIAL ============ -->
+<section class="fh-wrap fh-section pt-0">
+    <div class="fh-head">
+        <div>
+            <span class="fh-eyebrow">Blog</span>
+            <h2 class="fh-h2 mt-2">Latest from the editorial desk</h2>
+        </div>
+        <a asp-controller="Home" asp-action="Blog" class="fh-btn fh-btn-ghost fh-btn-sm">All articles <i class="ri-arrow-right-line"></i></a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        @foreach (var post in Model.BlogPosts)
+        {
+            <partial name="_BlogCard" model="post" />
+        }
+    </div>
+</section>
+
+<!-- ============ REVIEWS + FAQ ============ -->
+<section class="fh-wrap fh-section pt-0">
+    <div class="grid lg:grid-cols-2 gap-10 items-start">
+        <div>
+            <span class="fh-eyebrow">Reviews</span>
+            <h2 class="fh-h2 mt-2">Viewer verdict</h2>
+            <div class="space-y-4 mt-7">
+                @foreach (var item in Model.Testimonials)
+                {
+                    <div class="fh-panel">
+                        <div class="text-[#ffea00] text-xs tracking-widest">
+                            <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
+                        </div>
+                        <p class="text-sm text-gray-300 leading-relaxed mt-3">&ldquo;@item.Quote&rdquo;</p>
+                        <div class="flex items-center gap-3 mt-4 pt-4 fh-divider">
+                            <span class="fh-avatar fh-avatar-sm">@item.Name[..1]</span>
+                            <div class="text-[11px]">
+                                <div class="text-white font-bold">@item.Name</div>
+                                <div class="text-gray-500">@item.Role</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div>
+            <span class="fh-eyebrow">Questions</span>
+            <h2 class="fh-h2 mt-2">Good to know</h2>
+            <div class="mt-7" data-fh-single>
+                @foreach (var faq in Model.Faqs)
+                {
+                    <div class="fh-acc">
+                        <button type="button" class="fh-acc-q" aria-expanded="false">
+                            <span>@faq.Question</span>
+                            <i class="ri-arrow-down-s-line"></i>
+                        </button>
+                        <div class="fh-acc-a">@faq.Answer</div>
+                    </div>
+                }
+            </div>
+            <a asp-controller="Home" asp-action="Faq" class="fh-btn fh-btn-primary mt-7">See all FAQs <i class="ri-arrow-right-line"></i></a>
+        </div>
+    </div>
+</section>
+

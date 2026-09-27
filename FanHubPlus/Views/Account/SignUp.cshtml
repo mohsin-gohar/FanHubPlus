@@ -1,0 +1,103 @@
+@model FanHubPlus.ViewModels.SignUpViewModel
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<section class="fh-wrap fh-section">
+    <div class="fh-auth-shell">
+
+        <!-- ============ FORM ============ -->
+        <div class="fh-panel">
+            <span class="fh-eyebrow">Join us</span>
+            <h1 class="fh-h2 mt-2">Create your account</h1>
+            <p class="fh-lead mt-3">Seven days of Premium 4K UHD free. No card needed to start.</p>
+
+            <form method="post" asp-controller="Account" asp-action="SignUp" class="mt-8" novalidate>
+                <div asp-validation-summary="ModelOnly" class="fh-input-msg mb-4"></div>
+
+                <div class="fh-field">
+                    <label asp-for="Name" class="fh-label"></label>
+                    <div class="fh-input-group">
+                        <i class="ri-user-3-line"></i>
+                        <input asp-for="Name" class="fh-input" placeholder="Your full name" autocomplete="name" />
+                    </div>
+                    <span asp-validation-for="Name" class="fh-input-msg"></span>
+                </div>
+
+                <div class="fh-field">
+                    <label asp-for="Email" class="fh-label"></label>
+                    <div class="fh-input-group">
+                        <i class="ri-mail-line"></i>
+                        <input asp-for="Email" class="fh-input" placeholder="you@example.com" autocomplete="email" />
+                    </div>
+                    <span asp-validation-for="Email" class="fh-input-msg"></span>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                    <div class="fh-field">
+                        <label asp-for="Password" class="fh-label"></label>
+                        <div class="fh-input-group">
+                            <i class="ri-lock-line"></i>
+                            <input asp-for="Password" type="password" id="signUpPassword" class="fh-input !pr-12" placeholder="••••••••" autocomplete="new-password" />
+                            <button type="button" class="fh-icon-btn !w-8 !h-8 !border-0 fh-input-btn" data-fh-reveal="signUpPassword" aria-label="Show password">
+                                <i class="ri-eye-line text-base"></i>
+                            </button>
+                        </div>
+                        <span asp-validation-for="Password" class="fh-input-msg"></span>
+                    </div>
+
+                    <div class="fh-field">
+                        <label asp-for="ConfirmPassword" class="fh-label"></label>
+                        <div class="fh-input-group">
+                            <i class="ri-lock-line"></i>
+                            <input asp-for="ConfirmPassword" type="password" class="fh-input" placeholder="••••••••" autocomplete="new-password" />
+                        </div>
+                        <span asp-validation-for="ConfirmPassword" class="fh-input-msg"></span>
+                    </div>
+                </div>
+
+                <label class="fh-check">
+                    <input type="checkbox" checked />
+                    <span>I agree to the <a asp-controller="Home" asp-action="Terms" class="text-[#f41b3b] font-semibold">terms of service</a> and the <a asp-controller="Home" asp-action="Privacy" class="text-[#f41b3b] font-semibold">privacy policy</a>.</span>
+                </label>
+
+                <button type="submit" class="fh-btn fh-btn-primary fh-btn-block fh-btn-lg mt-7">
+                    <i class="ri-user-add-line"></i> Create account
+                </button>
+            </form>
+
+            <p class="text-sm text-gray-400 mt-7 text-center">
+                Already have an account?
+                <a asp-controller="Account" asp-action="SignIn" class="text-[#f41b3b] font-bold hover:underline">Sign in</a>
+            </p>
+        </div>
+
+        <!-- ============ SIDE PANEL ============ -->
+        <aside class="fh-panel fh-wash hidden lg:flex flex-col justify-center">
+            <h2 class="fh-h2" style="font-size:1.5rem">What your account includes</h2>
+            <ul class="mt-8 space-y-3.5">
+                @foreach (var perk in new[]
+                {
+                    new { Icon = "ri-crown-line", Text = "7 day Premium 4K UHD trial" },
+                    new { Icon = "ri-user-3-line", Text = "Up to six profiles" },
+                    new { Icon = "ri-download-2-line", Text = "Downloads on three devices" },
+                    new { Icon = "ri-shopping-bag-3-line", Text = "10% off everything in the store" }
+                })
+                {
+                    <li class="fh-feat"><i class="@perk.Icon text-[#f41b3b]"></i> @perk.Text</li>
+                }
+            </ul>
+
+            <div class="fh-divider mt-9 pt-7">
+                <p class="text-sm text-gray-400 leading-relaxed">
+                    This project stores your details in memory only, to demonstrate the sign-up flow. Nothing is written to disk
+                    and no email is ever sent.
+                </p>
+            </div>
+        </aside>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

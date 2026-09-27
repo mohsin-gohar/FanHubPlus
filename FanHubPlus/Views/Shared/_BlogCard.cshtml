@@ -1,0 +1,55 @@
+@model FanHubPlus.Models.BlogPost
+
+<!-- Reusable article card. Layout mode is passed through ViewData. -->
+@{
+    var mode = ViewData["BlogCardMode"] as string ?? "grid";
+}
+
+@if (mode == "list")
+{
+    <article class="fh-panel fh-reveal grid sm:grid-cols-[220px_1fr] gap-5 overflow-hidden">
+        <a asp-controller="Home" asp-action="BlogDetails" asp-route-id="@Model.Id" class="fh-still" data-theme="@Model.PosterTheme">
+            <i class="@Model.ArtGlyph fh-art-glyph-sm"></i>
+            <span class="fh-chip fh-chip-primary absolute top-2.5 left-2.5 z-[3]">@Model.Category</span>
+        </a>
+        <div class="p-5">
+            <div class="flex flex-wrap items-center gap-3 text-[11px] text-gray-500">
+                <span class="text-[#f41b3b] font-bold uppercase">@Model.Author</span>
+                <i class="ri-arrow-right-s-line text-[10px]"></i>
+                <span>@Model.DateDisplay</span>
+                <i class="ri-arrow-right-s-line text-[10px]"></i>
+                <span>@Model.ReadDisplay</span>
+            </div>
+            <h3 class="fh-h3 mt-2.5">
+                <a asp-controller="Home" asp-action="BlogDetails" asp-route-id="@Model.Id" class="hover:text-[#f41b3b] transition-colors">@Model.Title</a>
+            </h3>
+            <p class="text-sm text-gray-400 leading-relaxed mt-2.5">@Model.Excerpt</p>
+            <a asp-controller="Home" asp-action="BlogDetails" asp-route-id="@Model.Id" class="fh-btn fh-btn-ghost fh-btn-sm mt-5">
+                Read article <i class="ri-arrow-right-line"></i>
+            </a>
+        </div>
+    </article>
+}
+else
+{
+    <article class="fh-panel fh-panel-flush fh-reveal group">
+        <a asp-controller="Home" asp-action="BlogDetails" asp-route-id="@Model.Id" class="fh-still block rounded-none border-0 border-b" data-theme="@Model.PosterTheme">
+            <i class="@Model.ArtGlyph fh-art-glyph-sm"></i>
+            <span class="fh-chip fh-chip-primary absolute top-3 left-3 z-[3]">@Model.Category</span>
+        </a>
+        <div class="p-5">
+            <div class="flex items-center gap-2.5 text-[11px] text-gray-500">
+                <span>@Model.DateDisplay</span>
+                <span>&bull;</span>
+                <span>@Model.ReadDisplay</span>
+            </div>
+            <h3 class="fh-h3 mt-2 leading-snug">
+                <a asp-controller="Home" asp-action="BlogDetails" asp-route-id="@Model.Id" class="hover:text-[#f41b3b] transition-colors">@Model.Title</a>
+            </h3>
+            <p class="text-xs text-gray-400 leading-relaxed mt-2.5 line-clamp-3">@Model.Excerpt</p>
+            <a asp-controller="Home" asp-action="BlogDetails" asp-route-id="@Model.Id" class="inline-flex items-center gap-1.5 text-xs font-bold text-white mt-4 group-hover:text-[#f41b3b] transition-colors">
+                Read more <i class="ri-arrow-right-line"></i>
+            </a>
+        </div>
+    </article>
+}

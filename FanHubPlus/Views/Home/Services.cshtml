@@ -1,0 +1,78 @@
+@{
+    ViewData["Title"] = "Our Services";
+    var services = new[]
+    {
+        new { Id = 1, Slug = "streaming", Title = "FanHub Streaming", Icon = "ri-play-circle-line", Theme = "t1", Lead = "Unlimited ad-free streaming on tens of thousands of screens a day.", Points = new[] { "Up to four simultaneous screens", "Offline downloads for 30 days", "Six profiles including kids" } },
+        new { Id = 2, Slug = "live", Title = "Live Channels & Sport", Icon = "ri-broadcast-line", Theme = "t4", Lead = "Low latency live sport, news and events with instant replays.", Points = new[] { "5-8 second delay over the internet", "Instant replay from kick-off", "Match centre with stats" } },
+        new { Id = 3, Slug = "store", Title = "FanHub Store", Icon = "ri-shopping-bag-3-line", Theme = "t6", Lead = "Official merch, soundtracks and hardware for the things you love.", Points = new[] { "Members-only pricing on drops", "Tracked delivery across India", "30 day returns" } },
+        new { Id = 4, Slug = "partners", Title = "Studio Partnerships", Icon = "ri-building-2-line", Theme = "t5", Lead = "Distribution and production partnerships with studios worldwide.", Points = new[] { "Catalogue ingest in days", "Automated subtitle pipelines", "Monthly reporting" } }
+    };
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "What we do", Title = "One subscription, four services", Subtitle = "Streaming, live television, an official store and a partner team for studios - all running on the same platform.", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("Services", null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<!-- ============ SERVICE CARDS ============ -->
+<section class="fh-wrap pb-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        @foreach (var service in services)
+        {
+            <article class="fh-panel fh-panel-flush fh-reveal group">
+                <div class="fh-still !aspect-[2/1] rounded-none border-0" data-theme="@service.Theme">
+                    <i class="@service.Icon fh-art-glyph"></i>
+                    <div class="absolute inset-0 z-[3] flex items-end p-6">
+                        <div>
+                            <span class="w-12 h-12 rounded-xl bg-black/40 backdrop-blur-md flex items-center justify-center text-white text-xl border border-white/15">
+                                <i class="@service.Icon"></i>
+                            </span>
+                            <h2 class="fh-h2 mt-4 text-white">@service.Title</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <p class="fh-lead">@service.Lead</p>
+                    <ul class="mt-5 space-y-2.5">
+                        @foreach (var point in service.Points)
+                        {
+                            <li class="fh-feat"><i class="ri-check-line text-emerald-400"></i> @point</li>
+                        }
+                    </ul>
+                    <a asp-controller="Home" asp-action="ServiceDetails" asp-route-id="@service.Id" class="fh-btn fh-btn-primary mt-7">
+                        Learn more <i class="ri-arrow-right-line"></i>
+                    </a>
+                </div>
+            </article>
+        }
+    </div>
+</section>
+
+<!-- ============ PROCESS ============ -->
+<section class="fh-wrap pb-24">
+    <div class="fh-head fh-head-center">
+        <div>
+            <span class="fh-eyebrow fh-eyebrow-center">How it works</span>
+            <h2 class="fh-h2 mt-2">From sign-up to playback in three steps</h2>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        @foreach (var step in new[]
+        {
+            new { Num = "01", Icon = "ri-user-3-line", Title = "Create a profile", Body = "Sign up with an email, add a profile for everyone in the household and set an age filter for the kids." },
+            new { Num = "02", Icon = "ri-crown-line", Title = "Pick a plan", Body = "Start with seven days of Premium 4K UHD free. Switch plans or cancel from My Account at any point." },
+            new { Num = "03", Icon = "ri-play-circle-line", Title = "Press play", Body = "Stream in 4K HDR, download for the commute and rewind a live match back to kick-off." }
+        })
+        {
+            <div class="fh-panel fh-reveal relative">
+                <span class="absolute top-5 right-6 text-4xl font-black text-white/5">@step.Num</span>
+                <span class="w-12 h-12 rounded-xl bg-[#f41b3b]/15 text-[#f41b3b] flex items-center justify-center text-xl">
+                    <i class="@step.Icon"></i>
+                </span>
+                <h3 class="fh-h3 mt-5">@step.Title</h3>
+                <p class="text-sm text-gray-400 leading-relaxed mt-2.5">@step.Body</p>
+            </div>
+        }
+    </div>
+</section>

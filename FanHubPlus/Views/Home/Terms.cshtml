@@ -1,0 +1,92 @@
+@{
+    ViewData["Title"] = "Terms of Service";
+    var updated = DateTime.Now.ToString("dd MMMM, yyyy");
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Legal", Title = "Terms of Service", Subtitle = "The rules of using FanHub Plus, written to be read rather than skipped. Last updated " + @updated + ".", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("Terms of Service", null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<section class="fh-wrap pb-20">
+    <div class="grid lg:grid-cols-[0.3fr_0.7fr] gap-10 items-start">
+        <aside class="fh-widget lg:sticky lg:top-28">
+            <h2 class="fh-widget-title">Sections</h2>
+            <div class="fh-linklist">
+                <a href="#acceptance">1. Acceptance <i class="ri-arrow-right-s-line"></i></a>
+                <a href="#service">2. The service <i class="ri-arrow-right-s-line"></i></a>
+                <a href="#account">3. Your account <i class="ri-arrow-right-s-line"></i></a>
+                <a href="#plans">4. Plans and billing <i class="ri-arrow-right-s-line"></i></a>
+                <a href="#content">5. Content rights <i class="ri-arrow-right-s-line"></i></a>
+                <a href="#conduct">6. Acceptable use <i class="ri-arrow-right-s-line"></i></a>
+                <a href="#liability">7. Liability <i class="ri-arrow-right-s-line"></i></a>
+                <a href="#changes">8. Changes <i class="ri-arrow-right-s-line"></i></a>
+            </div>
+        </aside>
+
+        <div class="fh-panel">
+            <div class="fh-article">
+                <h2 id="acceptance">1. Acceptance of these terms</h2>
+                <p>
+                    By creating an account or pressing play on FanHub Plus you agree to these terms. If you do not agree with any
+                    part of them, please stop using the service.
+                </p>
+
+                <h2 id="service">2. The service</h2>
+                <p>
+                    FanHub Plus provides access to a library of films, television series, anime, documentaries and live
+                    television channels. Availability of a given title varies by country because of licensing windows, and a title
+                    may appear and disappear over time. We aim to keep the catalogue stable but cannot guarantee that any specific
+                    title remains available for the whole of your subscription.
+                </p>
+
+                <h2 id="account">3. Your account</h2>
+                <p>
+                    You are responsible for activity that happens under your account and for keeping your password confidential.
+                    You may create up to six profiles on one subscription; profiles are for members of your household and must not
+                    be shared outside it. We may suspend accounts that show signs of automated scraping or credential sharing.
+                </p>
+
+                <h2 id="plans">4. Plans and billing</h2>
+                <p>
+                    Subscriptions renew automatically at the end of each billing period until cancelled. You can cancel at any time
+                    from My Account, and access continues until the end of the period already paid for. Prices include applicable
+                    taxes. Where a trial is offered, the trial converts to a paid subscription only if you do not cancel before it
+                    ends, and we will notify you before the first charge.
+                </p>
+
+                <h2 id="content">5. Content rights</h2>
+                <p>
+                    All titles, artwork, audio and metadata on FanHub Plus remain the property of their respective owners and are
+                    licensed for personal, non-commercial viewing only. Recording, screening publicly, scraping artwork or
+                    redistributing any part of the service is not permitted.
+                </p>
+
+                <h2 id="conduct">6. Acceptable use</h2>
+                <p>You agree not to:</p>
+                <ul>
+                    <li>circumvent, disable or interfere with the security of the service;</li>
+                    <li>attempt to gain access to accounts, servers or data that are not yours;</li>
+                    <li>use automated tools to scrape titles, artwork or metadata;</li>
+                    <li>resell, sublicense or redistribute any part of the subscription;</li>
+                    <li>upload or transmit unlawful material through community features such as comments.</li>
+                </ul>
+
+                <h2 id="liability">7. Liability</h2>
+                <p>
+                    The service is provided "as is". To the fullest extent permitted by law we exclude implied warranties of
+                    merchantability, fitness for a particular purpose and non-infringement, and we are not liable for indirect or
+                    consequential loss arising from your use of the service. Nothing here limits liability that cannot lawfully be
+                    limited.
+                </p>
+
+                <h2 id="changes">8. Changes to these terms</h2>
+                <p>
+                    We may update these terms from time to time. Material changes will be announced in the app or by email at least
+                    fourteen days before they take effect. Continuing to use the service after that date means you accept the
+                    revised terms. Questions can go to <a asp-controller="Home" asp-action="Contact">our support team</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>

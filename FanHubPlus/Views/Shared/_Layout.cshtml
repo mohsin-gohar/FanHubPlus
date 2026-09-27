@@ -1,354 +1,371 @@
-﻿<!DOCTYPE html>
+@inject FanHubPlus.Services.CartService Cart
+@{
+    var action = ViewContext.RouteData.Values["action"] as string ?? "Index";
+    var controller = ViewContext.RouteData.Values["controller"] as string ?? "Home";
+    var genre = ViewContext.RouteData.Values["genre"] as string ?? string.Empty;
+    var flash = TempData["SuccessMessage"] as string;
+    int cartCount = Cart.Count;
+
+    bool IsActive(string ctrl, string act, string? g = null) =>
+        string.Equals(controller, ctrl, StringComparison.OrdinalIgnoreCase)
+        && string.Equals(action, act, StringComparison.OrdinalIgnoreCase)
+        && (g is null || string.Equals(genre, g, StringComparison.OrdinalIgnoreCase));
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - FanHub Plus - Modern Video Streaming</title>
+    <title>@ViewData["Title"] - FanHub Plus</title>
+    <meta name="description" content="FanHub Plus - unlimited movies, TV shows, anime, documentaries and live sport in 4K HDR." />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montez&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Play:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/remixicon.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/swiper-bundle.min.css" asp-append-version="true" />
-    <!-- Tailwind CSS v4 browser build: generates the utility classes used across the views at runtime -->
     <script src="~/js/tailwind-browser.js"></script>
     <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/fanhub-theme.css" asp-append-version="true" />
 </head>
-<body class="bg-[#0b0c0f] text-gray-200 antialiased selection:bg-red-600 selection:text-white">
+<body class="antialiased selection:bg-[#f41b3b] selection:text-white">
 
-    @{
-        // Active-link helpers for the navbar (mirrors the reference template's .active state)
-        var currentAction = ViewContext.RouteData.Values["action"] as string ?? "Index";
-        var currentGenre = ViewContext.RouteData.Values["genre"] as string ?? string.Empty;
-        bool NavActive(string action, string? genre = null) =>
-            string.Equals(currentAction, action, StringComparison.OrdinalIgnoreCase)
-            && (genre == null || string.Equals(currentGenre, genre, StringComparison.OrdinalIgnoreCase));
-        bool NavGenreActive(params string[] genres) =>
-            string.Equals(currentAction, "Movies", StringComparison.OrdinalIgnoreCase)
-            && genres.Any(g => string.Equals(currentGenre, g, StringComparison.OrdinalIgnoreCase));
-    }
-    <!-- ================================================================
-         MISAO STYLE NAVBAR - reference: templates.envytheme.com/misao
-         ================================================================ -->
-    <header id="navbar" class="navbar-glass sticky top-0 z-50 w-full transition-all duration-300 ease-in-out">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="relative flex items-center flex-wrap xl:flex-nowrap justify-between xl:justify-start">
+    <!-- ================= TOP BAR ================= -->
+    <div class="hidden md:block bg-[#07080a] border-b border-white/5 text-[12px]">
+        <div class="fh-wrap flex items-center justify-between h-9">
+            <p class="text-gray-500 flex items-center gap-2">
+                <i class="ri-broadcast-line text-[#f41b3b]"></i>
+                Live now: <a asp-controller="Home" asp-action="Videos" class="text-gray-300 hover:text-[#f41b3b] transition-colors">FanHub Cricket &bull; T20 Series</a>
+            </p>
+            <nav class="flex items-center gap-5 text-gray-500">
+                <a asp-controller="Home" asp-action="Devices" class="hover:text-white transition-colors">Devices</a>
+                <a asp-controller="Home" asp-action="Careers" class="hover:text-white transition-colors">Careers</a>
+                <a asp-controller="Home" asp-action="Faq" class="hover:text-white transition-colors">Help</a>
+                <a asp-controller="Account" asp-action="SignIn" class="hover:text-white transition-colors">Sign In</a>
+            </nav>
+        </div>
+    </div>
+
+    <!-- ================= HEADER ================= -->
+    <header id="navbar" class="navbar-glass sticky top-0 z-50 w-full">
+        <div class="fh-wrap">
+            <div class="relative flex items-center justify-between gap-4">
 
                 <!-- Logo -->
-                <a asp-controller="Home" asp-action="Index" class="flex-none inline-block py-3 xl:py-0" aria-label="FanHub Plus - Home">
-                    <span class="flex items-center gap-2 group">
-                        <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f41b3b] to-[#ffea00] flex items-center justify-center text-white font-black text-xl shadow-lg shadow-red-600/30 group-hover:scale-105 transition-transform">
-                            <i class="ri-play-fill text-2xl"></i>
+                <a asp-controller="Home" asp-action="Index" class="flex-none py-3.5 inline-block" aria-label="FanHub Plus - Home">
+                    <span class="flex items-center gap-2.5">
+                        <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f41b3b] to-[#ffea00] flex items-center justify-center text-white text-xl shadow-lg shadow-red-600/25">
+                            <i class="ri-play-fill"></i>
                         </span>
-                        <span class="text-2xl font-black tracking-tight text-white font-['Montserrat']">
-                            FAN<span class="text-[#f41b3b]">HUB</span><span class="text-xs ml-1 px-1.5 py-0.5 rounded bg-[#f41b3b]/20 text-[#f41b3b] font-bold">PLUS</span>
+                        <span class="text-xl font-black tracking-tight text-white font-['Montserrat']">
+                            FAN<span class="text-[#f41b3b]">HUB</span><span class="text-[10px] ml-1 px-1.5 py-0.5 rounded bg-[#f41b3b]/20 text-[#f41b3b] font-bold align-middle">PLUS</span>
                         </span>
                     </span>
                 </a>
 
-                <!-- Burger / mobile toggle -->
-                <div class="flex-none xl:hidden">
-                    <button type="button" id="navbarBurgerToggle" class="navbar-burger-toggle inline-block leading-none"
-                            aria-label="Open menu" aria-expanded="false" aria-controls="navbarSidebar">
-                        <span class="h-[3px] w-[30px] my-[5px] block bg-white"></span>
-                        <span class="h-[3px] w-[30px] my-[5px] block bg-white"></span>
-                        <span class="h-[3px] w-[30px] my-[5px] block bg-white"></span>
-                    </button>
-                </div>
-
-                <!-- Desktop menu -->
-                <div class="hidden xl:flex items-center grow basis-auto gap-[35px] xl:pl-[35px]">
-                    <ul class="navbar-nav flex items-center flex-row gap-[30px] mx-auto">
-
-                        <!-- Home -->
-                        <li class="nav-item relative">
-                            <a asp-controller="Home" asp-action="Index" class="nav-link dropdown-toggle @(NavActive("Index") ? "active" : "")">Home</a>
-                            <ul class="dropdown-menu absolute">
+                <!-- Desktop navigation -->
+                <nav class="hidden xl:block flex-1">
+                    <ul class="navbar-nav flex items-center gap-[28px]">
+                        <li class="nav-item">
+                            <a asp-controller="Home" asp-action="Index" class="nav-link dropdown-toggle @(IsActive("Home","Index") ? "active" : "")">Home</a>
+                            <ul class="dropdown-menu">
                                 <li class="nav-item"><a asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Showcase" class="nav-link">Home - Showcase</a></li>
                                 <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="trending" class="nav-link">Trending Now</a></li>
-                                <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="live" class="nav-link">Live TV &amp; Sports</a></li>
-                                <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="top-rated" class="nav-link">Top Rated Titles</a></li>
-                                <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="latest" class="nav-link">Latest Releases</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Videos" class="nav-link">Live TV &amp; Sports</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-sortBy="rating" class="nav-link">Top Rated</a></li>
                             </ul>
                         </li>
 
-                        <!-- Movies -->
-                        <li class="nav-item relative">
-                            <a asp-controller="Home" asp-action="Movies" class="nav-link dropdown-toggle @(NavActive("Movies", "") ? "active" : "")">Movies</a>
-                            <ul class="dropdown-menu absolute">
-                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" class="nav-link">All Movies</a></li>
+                        <li class="nav-item">
+                            <a asp-controller="Home" asp-action="Movies" class="nav-link dropdown-toggle @(IsActive("Home","Movies") || IsActive("Home","TvShows") || IsActive("Home","Videos") || IsActive("Home","Categories") || IsActive("Home","Channels") ? "active" : "")">Browse</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" class="nav-link">Movies</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="TvShows" class="nav-link">TV Shows</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Videos" class="nav-link">Live Videos</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Channels" class="nav-link">Channels</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Categories" class="nav-link">Categories</a></li>
+                            </ul>
+                        </li>
+
+
+                        <li class="nav-item">
+                            <a asp-controller="Home" asp-action="Movies" class="nav-link dropdown-toggle @(IsActive("Home","Movies", genre) && !string.IsNullOrEmpty(genre) ? "active" : "")">Genres</a>
+                            <ul class="dropdown-menu">
                                 <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Action" class="nav-link">Action &amp; Sci-Fi</a></li>
                                 <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Drama" class="nav-link">Drama &amp; Crime</a></li>
                                 <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Horror" class="nav-link">Horror &amp; Thriller</a></li>
                                 <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Romance" class="nav-link">Romance</a></li>
                                 <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Comedy" class="nav-link">Comedy</a></li>
                                 <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Documentary" class="nav-link">Documentaries</a></li>
-                            </ul>
-                        </li>
-                        <!-- TV Shows -->
-                        <li class="nav-item relative">
-                            <a asp-controller="Home" asp-action="Movies" asp-route-genre="Drama" class="nav-link dropdown-toggle @(NavGenreActive("Drama", "Anime", "Comedy") ? "active" : "")">TV Shows</a>
-                            <ul class="dropdown-menu absolute">
-                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-sortBy="year" class="nav-link">Browse TV Shows</a></li>
-                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Drama" class="nav-link">Drama Series</a></li>
                                 <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Anime" class="nav-link">Anime</a></li>
-                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Comedy" class="nav-link">Comedy Series</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Sports" class="nav-link">Sports</a></li>
                             </ul>
                         </li>
 
-                        <!-- Live Sports -->
-                        <li class="nav-item relative">
-                            <a asp-controller="Home" asp-action="Movies" asp-route-genre="Sports" class="nav-link @(NavActive("Movies", "Sports") ? "active" : "")">Live Sports</a>
-                        </li>
-
-                        <!-- Pages -->
-                        <li class="nav-item relative">
-                            <a asp-controller="Home" asp-action="Pricing" class="nav-link dropdown-toggle @(NavActive("Pricing") ? "active" : "")">Pages</a>
-                            <ul class="dropdown-menu absolute">
-                                <li class="nav-item"><a asp-controller="Home" asp-action="Pricing" class="nav-link">Pricing Plan</a></li>
-                                <li class="nav-item"><a asp-controller="Home" asp-action="Privacy" class="nav-link">Privacy Policy</a></li>
-                                <li class="nav-item"><a asp-controller="Home" asp-action="Error" class="nav-link">404 Error Page</a></li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link dropdown-toggle">My Account</a>
-                                    <ul class="dropdown-menu absolute">
-                                        <li class="nav-item"><a href="#" class="nav-link">Sign In</a></li>
-                                        <li class="nav-item"><a href="#" class="nav-link">Sign Up</a></li>
-                                        <li class="nav-item"><a href="#" class="nav-link">Forgot Password</a></li>
-                                    </ul>
-                                </li>
+                        <li class="nav-item">
+                            <a asp-controller="Home" asp-action="About" class="nav-link dropdown-toggle @(IsActive("Home","About") || IsActive("Home","Services") || IsActive("Home","Devices") || IsActive("Home","Careers") || IsActive("Home","Blog") || IsActive("Home","Testimonials") || IsActive("Home","Pricing") || IsActive("Home","Faq") ? "active" : "")">Pages</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a asp-controller="Home" asp-action="About" class="nav-link">About Us</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Services" class="nav-link">Services</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Devices" class="nav-link">Supported Devices</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Careers" class="nav-link">Careers</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Blog" class="nav-link">Blog</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Testimonials" class="nav-link">Testimonials</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Pricing" class="nav-link">Pricing</a></li>
+                                <li class="nav-item"><a asp-controller="Home" asp-action="Faq" class="nav-link">FAQ</a></li>
                             </ul>
                         </li>
 
-                        <!-- Contact Us -->
-                        <li class="nav-item relative">
-                            <a asp-controller="Home" asp-action="Contact" class="nav-link @(NavActive("Contact") ? "active" : "")">Contact Us</a>
+                        <li class="nav-item">
+                            <a asp-controller="Shop" asp-action="Index" class="nav-link dropdown-toggle @(IsActive("Shop","Index") || IsActive("Shop","Product") || IsActive("Shop","Cart") ? "active" : "")">Store</a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a asp-controller="Shop" asp-action="Index" class="nav-link">All Products</a></li>
+                                <li class="nav-item"><a asp-controller="Shop" asp-action="Index" asp-route-category="Merch" class="nav-link">Merch</a></li>
+                                <li class="nav-item"><a asp-controller="Shop" asp-action="Index" asp-route-category="Audio" class="nav-link">Audio</a></li>
+                                <li class="nav-item"><a asp-controller="Shop" asp-action="Index" asp-route-category="Devices" class="nav-link">Devices</a></li>
+                                <li class="nav-item"><a asp-controller="Shop" asp-action="Index" asp-route-category="Bundles" class="nav-link">Bundles</a></li>
+                            </ul>
                         </li>
+
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Contact" class="nav-link @(IsActive("Home","Contact") ? "active" : "")">Contact</a></li>
                     </ul>
+                </nav>
 
-                    <!-- Right side : search / watchlist / account -->
-                    <div class="flex items-center gap-[25px] xl:gap-[35px]">
-                        <div class="flex items-center gap-[13px]">
-                            <div class="relative">
-                                <button type="button" id="searchBtn" class="text-xl relative inline-block text-white transition-all duration-300 ease-in-out hover:text-[#ffea00]" aria-label="Search" aria-expanded="false">
-                                    <i class="ri-search-line"></i>
-                                </button>
-                                <div id="searchBox" class="absolute mt-[28px] xl:mt-[36px] top-full right-0 w-[290px] sm:w-[380px] bg-black p-[25px] border border-white/10 invisible opacity-0 transition-all duration-300 ease-in-out">
-                                    <form asp-controller="Home" asp-action="Movies" method="get" class="relative">
-                                        <input type="text" name="search" class="form-input" placeholder="Search for anything" />
-                                        <button class="absolute top-1/2 -translate-y-1/2 right-[20px] text-xl leading-none hover:text-[#f41b3b]" type="submit" aria-label="Submit search">
-                                            <i class="ri-search-line"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="w-px bg-white/20 h-[20px]"></div>
-                            <a asp-controller="Home" asp-action="Movies" class="text-xl relative inline-block text-white transition-all duration-300 ease-in-out hover:text-[#ffea00]" title="My Watchlist">
-                                <i class="ri-shopping-cart-2-line"></i>
-                                <span class="flex items-center justify-center absolute top-0 -right-[5px] w-[12px] h-[12px] text-[9px] font-bold text-black bg-[#ffea00] rounded-full">0</span>
-                            </a>
-                            <div class="w-px bg-white/20 h-[20px] xl:hidden"></div>
-                            <a href="#" class="text-xl relative inline-block xl:hidden text-white transition-all duration-300 ease-in-out hover:text-[#ffea00]" title="Sign in (coming soon)">
-                                <i class="ri-user-3-line"></i>
-                            </a>
-                        </div>
-                        <a asp-controller="Home" asp-action="Pricing" class="primary-btn hidden xl:inline-block">Subscribe Now</a>
-                    </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-2.5 ml-auto">
+                    <button type="button" id="searchBtn" class="fh-icon-btn" aria-label="Search" aria-expanded="false">
+                        <i class="ri-search-line"></i>
+                    </button>
+                    <a asp-controller="Shop" asp-action="Cart" class="fh-icon-btn relative" aria-label="Cart">
+                        <i class="ri-shopping-bag-3-line"></i>
+                        @if (cartCount > 0)
+                        {
+                            <span class="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-[#f41b3b] text-white text-[10px] font-black flex items-center justify-center">@cartCount</span>
+                        }
+                    </a>
+                    <a asp-controller="Account" asp-action="Account" class="hidden lg:inline-flex fh-btn fh-btn-ghost fh-btn-sm">
+                        <i class="ri-user-3-line"></i> My Account
+                    </a>
+                    <a asp-controller="Home" asp-action="Pricing" class="hidden md:inline-flex fh-btn fh-btn-primary fh-btn-sm">
+                        <i class="ri-crown-line"></i> Subscribe
+                    </a>
+                    <button type="button" id="navbarBurgerToggle" class="navbar-burger-toggle xl:hidden" aria-label="Open menu" aria-expanded="false" aria-controls="navbarSidebar">
+                        <span class="h-[3px] w-[28px] my-[5px] block bg-white"></span>
+                        <span class="h-[3px] w-[28px] my-[5px] block bg-white"></span>
+                        <span class="h-[3px] w-[28px] my-[5px] block bg-white"></span>
+                    </button>
                 </div>
+            </div>
+
+            <!-- Search drawer -->
+            <div id="searchBox" class="pb-4">
+                <form method="get" asp-controller="Home" asp-action="Movies" class="fh-input-group">
+                    <i class="ri-search-line"></i>
+                    <input type="search" name="search" class="fh-input" placeholder="Search movies, shows, actors..." aria-label="Search the library" />
+                    <button type="submit" class="fh-btn fh-btn-primary fh-btn-sm fh-input-btn" aria-label="Submit search">Search</button>
+                </form>
             </div>
         </div>
     </header>
 
-    <!-- ============ Sidebar modal (mobile navigation) ============ -->
-    <div id="navbarSidebar" class="sidebar-modal" role="dialog" aria-modal="true" aria-label="Mobile navigation">
-        <div class="p-[20px] md:p-[30px] flex items-center justify-between bg-black border-b border-white/10">
-            <a asp-controller="Home" asp-action="Index" class="flex-none inline-block" aria-label="FanHub Plus - Home">
-                <span class="flex items-center gap-2">
-                    <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#f41b3b] to-[#ffea00] flex items-center justify-center text-white font-black text-lg">
-                        <i class="ri-play-fill text-xl"></i>
-                    </span>
-                    <span class="text-xl font-black tracking-tight text-white font-['Montserrat']">
-                        FAN<span class="text-[#f41b3b]">HUB</span><span class="text-[10px] ml-1 px-1.5 py-0.5 rounded bg-[#f41b3b]/20 text-[#f41b3b] font-bold">PLUS</span>
-                    </span>
-                </span>
-            </a>
-            <button type="button" id="navbarSidebarClose" class="inline-block text-xl leading-none text-white hover:text-[#ffea00]" aria-label="Close menu">
-                <i class="ri-close-line"></i>
-            </button>
+    <div id="navbarBackdrop" class="navbar-backdrop"></div>
+
+
+    <!-- ================= MOBILE SIDEBAR ================= -->
+    <aside id="navbarSidebar" class="sidebar-modal" aria-label="Mobile navigation">
+        <div class="flex items-center justify-between px-6 py-5 border-b border-white/5">
+            <span class="text-lg font-black text-white font-['Montserrat']">FAN<span class="text-[#f41b3b]">HUB</span><span class="text-[10px] ml-1 px-1.5 py-0.5 rounded bg-[#f41b3b]/20 text-[#f41b3b] font-bold">PLUS</span></span>
+            <button type="button" id="navbarSidebarClose" class="fh-icon-btn" aria-label="Close menu"><i class="ri-close-line"></i></button>
         </div>
 
-        <div class="overflow-y-auto flex-1">
-            <ul class="sidebar-navbar-nav p-[20px] md:p-[30px]">
+        <div class="flex-1 overflow-y-auto px-6 py-6">
+            <form method="get" asp-controller="Home" asp-action="Movies" class="fh-input-group mb-6">
+                <i class="ri-search-line"></i>
+                <input type="search" name="search" class="fh-input" placeholder="Search titles..." aria-label="Search" />
+            </form>
 
-                <li class="nav-item mb-[20px] last:mb-0">
-                    <a asp-controller="Home" asp-action="Index" class="nav-link dropdown-toggle @(NavActive("Index") ? "active" : "")">Home</a>
-                    <ul class="dropdown-menu hidden mt-[15px] py-[10px] border-l border-white/15">
-                        <li class="nav-item"><a asp-controller="Home" asp-action="Index" class="nav-link">Home</a></li>
-                        <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="trending" class="nav-link">Trending Now</a></li>
-                        <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="live" class="nav-link">Live TV &amp; Sports</a></li>
-                        <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="top-rated" class="nav-link">Top Rated Titles</a></li>
-                        <li class="nav-item"><a asp-controller="Home" asp-action="Index" asp-fragment="latest" class="nav-link">Latest Releases</a></li>
+            <ul class="sidebar-navbar-nav space-y-1">
+                <li class="nav-item"><a asp-controller="Home" asp-action="Index" class="nav-link @(IsActive("Home","Index") ? "active" : "")">Home</a></li>
+                <li class="nav-item"><a asp-controller="Home" asp-action="Showcase" class="nav-link @(IsActive("Home","Showcase") ? "active" : "")">Home - Showcase</a></li>
+                <li class="nav-item"><a href="#" class="nav-link dropdown-toggle">Browse</a>
+                    <ul class="dropdown-menu hidden">
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" class="nav-link">Movies</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="TvShows" class="nav-link">TV Shows</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Videos" class="nav-link">Live Videos</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Channels" class="nav-link">Channels</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Categories" class="nav-link">Categories</a></li>
                     </ul>
                 </li>
-
-                <li class="nav-item mb-[20px] last:mb-0">
-                    <a asp-controller="Home" asp-action="Pricing" class="nav-link dropdown-toggle @(NavActive("Pricing") ? "active" : "")">Pages</a>
-                    <ul class="dropdown-menu hidden mt-[15px] py-[10px] border-l border-white/15">
-                        <li class="nav-item"><a asp-controller="Home" asp-action="Pricing" class="nav-link">Pricing Plan</a></li>
-                        <li class="nav-item"><a asp-controller="Home" asp-action="Privacy" class="nav-link">Privacy Policy</a></li>
-                        <li class="nav-item"><a asp-controller="Home" asp-action="Error" class="nav-link">404 Error Page</a></li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link dropdown-toggle">My Account</a>
-                            <ul class="dropdown-menu hidden mt-[15px] py-[10px] border-l border-white/15">
-                                <li class="nav-item"><a href="#" class="nav-link">Sign In</a></li>
-                                <li class="nav-item"><a href="#" class="nav-link">Sign Up</a></li>
-                                <li class="nav-item"><a href="#" class="nav-link">Forgot Password</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="nav-item mb-[20px] last:mb-0">
-                    <a asp-controller="Home" asp-action="Movies" class="nav-link dropdown-toggle @(NavActive("Movies", "") ? "active" : "")">Movies</a>
-                    <ul class="dropdown-menu hidden mt-[15px] py-[10px] border-l border-white/15">
-                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" class="nav-link">All Movies</a></li>
+                <li class="nav-item"><a href="#" class="nav-link dropdown-toggle">Genres</a>
+                    <ul class="dropdown-menu hidden">
                         <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Action" class="nav-link">Action &amp; Sci-Fi</a></li>
                         <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Drama" class="nav-link">Drama &amp; Crime</a></li>
                         <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Horror" class="nav-link">Horror &amp; Thriller</a></li>
                         <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Romance" class="nav-link">Romance</a></li>
-                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Comedy" class="nav-link">Comedy</a></li>
                         <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Documentary" class="nav-link">Documentaries</a></li>
-                    </ul>
-                </li>
-
-                <li class="nav-item mb-[20px] last:mb-0">
-                    <a asp-controller="Home" asp-action="Movies" asp-route-genre="Drama" class="nav-link dropdown-toggle @(NavGenreActive("Drama", "Anime", "Comedy") ? "active" : "")">TV Shows</a>
-                    <ul class="dropdown-menu hidden mt-[15px] py-[10px] border-l border-white/15">
-                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-sortBy="year" class="nav-link">Browse TV Shows</a></li>
-                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Drama" class="nav-link">Drama Series</a></li>
                         <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Anime" class="nav-link">Anime</a></li>
-                        <li class="nav-item"><a asp-controller="Home" asp-action="Movies" asp-route-genre="Comedy" class="nav-link">Comedy Series</a></li>
                     </ul>
                 </li>
-
-                <li class="nav-item mb-[20px] last:mb-0">
-                    <a asp-controller="Home" asp-action="Movies" asp-route-genre="Sports" class="nav-link @(NavActive("Movies", "Sports") ? "active" : "")">Live Sports</a>
+                <li class="nav-item"><a href="#" class="nav-link dropdown-toggle">Pages</a>
+                    <ul class="dropdown-menu hidden">
+                        <li class="nav-item"><a asp-controller="Home" asp-action="About" class="nav-link">About Us</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Services" class="nav-link">Services</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Devices" class="nav-link">Supported Devices</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Careers" class="nav-link">Careers</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Blog" class="nav-link">Blog</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Pricing" class="nav-link">Pricing</a></li>
+                        <li class="nav-item"><a asp-controller="Home" asp-action="Faq" class="nav-link">FAQ</a></li>
+                    </ul>
                 </li>
-
-                <li class="nav-item mb-[20px] last:mb-0">
-                    <a asp-controller="Home" asp-action="Contact" class="nav-link @(NavActive("Contact") ? "active" : "")">Contact Us</a>
+                <li class="nav-item"><a href="#" class="nav-link dropdown-toggle">Store</a>
+                    <ul class="dropdown-menu hidden">
+                        <li class="nav-item"><a asp-controller="Shop" asp-action="Index" class="nav-link">All Products</a></li>
+                        <li class="nav-item"><a asp-controller="Shop" asp-action="Cart" class="nav-link">Cart</a></li>
+                    </ul>
                 </li>
+                <li class="nav-item"><a asp-controller="Home" asp-action="Contact" class="nav-link @(IsActive("Home","Contact") ? "active" : "")">Contact</a></li>
+                <li class="nav-item"><a asp-controller="Account" asp-action="Account" class="nav-link @(IsActive("Account","Account") ? "active" : "")">My Account</a></li>
             </ul>
-        </div>
 
-        <div class="p-[20px] md:p-[30px] bg-black border-t border-white/10">
-            <div class="flex items-center gap-[25px] md:gap-[30px] mb-[20px] md:mb-[25px]">
-                <a asp-controller="Home" asp-action="Movies" class="text-xl relative inline-block text-white hover:text-[#ffea00]" title="My Watchlist">
-                    <i class="ri-shopping-cart-2-line"></i>
-                    <span class="flex items-center justify-center absolute top-0 -right-[5px] w-[12px] h-[12px] text-[9px] font-bold text-black bg-[#ffea00] rounded-full">0</span>
-                </a>
-                <a asp-controller="Home" asp-action="Pricing" class="primary-btn">Subscribe Now</a>
+            <div class="mt-8 grid grid-cols-2 gap-3">
+                <a asp-controller="Account" asp-action="SignIn" class="fh-btn fh-btn-outline fh-btn-sm">Sign In</a>
+                <a asp-controller="Account" asp-action="SignUp" class="fh-btn fh-btn-primary fh-btn-sm">Register</a>
             </div>
-            <form asp-controller="Home" asp-action="Movies" method="get" class="relative">
-                <input type="text" name="search" class="form-input" placeholder="Search for anything" />
-                <button class="absolute top-1/2 -translate-y-1/2 right-[20px] text-xl leading-none hover:text-[#f41b3b]" type="submit" aria-label="Submit search">
-                    <i class="ri-search-line"></i>
-                </button>
-            </form>
         </div>
-    </div>
-    <div id="navbarBackdrop" class="navbar-backdrop"></div>
-
-
-
+    </aside>
 
     <main role="main">
+        <partial name="_FlashMessage" />
         @RenderBody()
     </main>
-    <!-- Footer -->
-    <footer class="bg-[#07080a] border-t border-white/10 pt-16 pb-12 mt-24">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-[#07080a] border-t border-white/5 mt-24">
+        <div class="fh-wrap pt-14 pb-10">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
-                <div class="lg:col-span-2 space-y-4">
-                    <a asp-controller="Home" asp-action="Index" class="flex items-center gap-2">
-                        <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#f41b3b] to-[#ffea00] flex items-center justify-center text-white font-bold text-lg">
-                            <i class="ri-play-fill text-xl"></i>
+                <div class="lg:col-span-2 space-y-5">
+                    <a asp-controller="Home" asp-action="Index" class="inline-flex items-center gap-2.5">
+                        <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f41b3b] to-[#ffea00] flex items-center justify-center text-white text-lg">
+                            <i class="ri-play-fill"></i>
                         </span>
-                        <span class="text-2xl font-black text-white font-['Montserrat']">
-                            FAN<span class="text-[#f41b3b]">HUB</span><span class="text-xs ml-1 px-1.5 py-0.5 rounded bg-[#f41b3b]/20 text-[#f41b3b] font-bold">PLUS</span>
-                        </span>
+                        <span class="text-xl font-black text-white font-['Montserrat']">FAN<span class="text-[#f41b3b]">HUB</span><span class="text-[10px] ml-1 px-1.5 py-0.5 rounded bg-[#f41b3b]/20 text-[#f41b3b] font-bold">PLUS</span></span>
                     </a>
-                    <p class="text-gray-400 text-sm max-w-sm leading-relaxed">
-                        FanHub Plus is a next-generation streaming & OTT entertainment destination offering unlimited blockbusters, originals, anime, and 4K HDR live sporting events.
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-sm">
+                        Unlimited blockbusters, FanHub originals, anime, documentaries and 4K HDR live sport - commercial free on every plan.
                     </p>
-                    <div class="flex items-center space-x-3 pt-2">
-                        <a href="#" class="w-9 h-9 rounded-full bg-[#14161d] border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#f41b3b] hover:border-[#f41b3b] transition-all"><i class="ri-facebook-fill"></i></a>
-                        <a href="#" class="w-9 h-9 rounded-full bg-[#14161d] border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#f41b3b] hover:border-[#f41b3b] transition-all"><i class="ri-twitter-x-fill"></i></a>
-                        <a href="#" class="w-9 h-9 rounded-full bg-[#14161d] border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#f41b3b] hover:border-[#f41b3b] transition-all"><i class="ri-instagram-line"></i></a>
-                        <a href="#" class="w-9 h-9 rounded-full bg-[#14161d] border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#f41b3b] hover:border-[#f41b3b] transition-all"><i class="ri-youtube-line"></i></a>
+
+                    <div>
+                        <h3 class="text-xs font-bold uppercase tracking-widest text-white mb-3">Get release alerts</h3>
+                        <form method="post" asp-controller="Home" asp-action="Newsletter" class="fh-newsletter max-w-sm">
+                            <input type="email" name="email" class="fh-input" placeholder="you@example.com" aria-label="Email for release alerts" required />
+                            <button type="submit" class="fh-btn fh-btn-primary fh-btn-sm">Join</button>
+                        </form>
+                    </div>
+
+                    <div class="flex items-center gap-2.5">
+                        <a href="#" class="fh-icon-btn" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
+                        <a href="#" class="fh-icon-btn" aria-label="X"><i class="ri-twitter-x-fill"></i></a>
+                        <a href="#" class="fh-icon-btn" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+                        <a href="#" class="fh-icon-btn" aria-label="YouTube"><i class="ri-youtube-fill"></i></a>
                     </div>
                 </div>
 
                 <div>
-                    <h3 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Explore</h3>
-                    <ul class="space-y-2.5 text-sm">
-                        <li><a asp-controller="Home" asp-action="Index" class="text-gray-400 hover:text-[#f41b3b] transition-colors">Home</a></li>
-                        <li><a asp-controller="Home" asp-action="Movies" class="text-gray-400 hover:text-[#f41b3b] transition-colors">Movies Catalog</a></li>
-                        <li><a asp-controller="Home" asp-action="Movies" asp-route-genre="Horror" class="text-gray-400 hover:text-[#f41b3b] transition-colors">TV Series</a></li>
-                        <li><a asp-controller="Home" asp-action="Movies" asp-route-genre="Sports" class="text-gray-400 hover:text-[#f41b3b] transition-colors">Live Streaming</a></li>
-                        <li><a asp-controller="Home" asp-action="Pricing" class="text-gray-400 hover:text-[#f41b3b] transition-colors">Pricing Plans</a></li>
+                    <h3 class="text-sm font-bold text-white mb-4">Browse</h3>
+                    <ul class="space-y-2.5 text-sm text-gray-400">
+                        <li><a asp-controller="Home" asp-action="Movies" class="hover:text-[#f41b3b] transition-colors">Movies</a></li>
+                        <li><a asp-controller="Home" asp-action="TvShows" class="hover:text-[#f41b3b] transition-colors">TV Shows</a></li>
+                        <li><a asp-controller="Home" asp-action="Videos" class="hover:text-[#f41b3b] transition-colors">Live Videos</a></li>
+                        <li><a asp-controller="Home" asp-action="Channels" class="hover:text-[#f41b3b] transition-colors">Channels</a></li>
+                        <li><a asp-controller="Home" asp-action="Categories" class="hover:text-[#f41b3b] transition-colors">Categories</a></li>
+                        <li><a asp-controller="Home" asp-action="Pricing" class="hover:text-[#f41b3b] transition-colors">Pricing Plans</a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h3 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Genres</h3>
-                    <ul class="space-y-2.5 text-sm">
-                        <li><a asp-controller="Home" asp-action="Movies" asp-route-genre="Action" class="text-gray-400 hover:text-[#f41b3b] transition-colors">Action & Sci-Fi</a></li>
-                        <li><a asp-controller="Home" asp-action="Movies" asp-route-genre="Drama" class="text-gray-400 hover:text-[#f41b3b] transition-colors">Drama & Crime</a></li>
-                        <li><a asp-controller="Home" asp-action="Movies" asp-route-genre="Anime" class="text-gray-400 hover:text-[#f41b3b] transition-colors">Japanese Anime</a></li>
-                        <li><a asp-controller="Home" asp-action="Movies" asp-route-genre="Horror" class="text-gray-400 hover:text-[#f41b3b] transition-colors">Horror & Thriller</a></li>
-                        <li><a asp-controller="Home" asp-action="Movies" asp-route-genre="Documentary" class="text-gray-400 hover:text-[#f41b3b] transition-colors">Documentaries</a></li>
+                    <h3 class="text-sm font-bold text-white mb-4">Company</h3>
+                    <ul class="space-y-2.5 text-sm text-gray-400">
+                        <li><a asp-controller="Home" asp-action="About" class="hover:text-[#f41b3b] transition-colors">About Us</a></li>
+                        <li><a asp-controller="Home" asp-action="Services" class="hover:text-[#f41b3b] transition-colors">Services</a></li>
+                        <li><a asp-controller="Home" asp-action="Devices" class="hover:text-[#f41b3b] transition-colors">Supported Devices</a></li>
+                        <li><a asp-controller="Home" asp-action="Careers" class="hover:text-[#f41b3b] transition-colors">Careers</a></li>
+                        <li><a asp-controller="Home" asp-action="Blog" class="hover:text-[#f41b3b] transition-colors">Blog</a></li>
+                        <li><a asp-controller="Home" asp-action="Testimonials" class="hover:text-[#f41b3b] transition-colors">Testimonials</a></li>
                     </ul>
                 </div>
 
+
                 <div>
-                    <h3 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Download App</h3>
-                    <p class="text-gray-400 text-xs mb-3">Watch on Android, iOS, Apple TV, Smart TVs and tablets anywhere.</p>
-                    <div class="space-y-2">
-                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[#14161d] border border-white/10 hover:border-red-500/50 transition-all">
-                            <i class="ri-google-play-fill text-2xl text-[#f41b3b]"></i>
-                            <div class="text-left">
-                                <div class="text-[10px] text-gray-400 uppercase">GET IT ON</div>
-                                <div class="text-xs font-bold text-white">Google Play</div>
-                            </div>
-                        </a>
-                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[#14161d] border border-white/10 hover:border-red-500/50 transition-all">
-                            <i class="ri-apple-fill text-2xl text-white"></i>
-                            <div class="text-left">
-                                <div class="text-[10px] text-gray-400 uppercase">Download on</div>
-                                <div class="text-xs font-bold text-white">App Store</div>
-                            </div>
-                        </a>
-                    </div>
+                    <h3 class="text-sm font-bold text-white mb-4">Support</h3>
+                    <ul class="space-y-2.5 text-sm text-gray-400">
+                        <li><a asp-controller="Home" asp-action="Contact" class="hover:text-[#f41b3b] transition-colors">Contact Us</a></li>
+                        <li><a asp-controller="Home" asp-action="Faq" class="hover:text-[#f41b3b] transition-colors">FAQ</a></li>
+                        <li><a asp-controller="Account" asp-action="Account" class="hover:text-[#f41b3b] transition-colors">My Account</a></li>
+                        <li><a asp-controller="Account" asp-action="SignIn" class="hover:text-[#f41b3b] transition-colors">Sign In</a></li>
+                        <li><a asp-controller="Home" asp-action="Privacy" class="hover:text-[#f41b3b] transition-colors">Privacy Policy</a></li>
+                        <li><a asp-controller="Home" asp-action="Terms" class="hover:text-[#f41b3b] transition-colors">Terms of Service</a></li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
-                <p>&copy; @DateTime.Now.Year FanHubPlus. Built for Aptech TechWiz 7. All rights reserved.</p>
-                <div class="flex space-x-6">
+            <!-- Store badges -->
+            <div class="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+                <div>
+                    <h3 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-3">Download the app</h3>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="#" class="fh-store-badge">
+                            <i class="ri-google-play-fill text-[#f41b3b]"></i>
+                            <span class="leading-tight">
+                                <span class="block text-[10px] uppercase text-gray-500">Get it on</span>
+                                <span class="block text-xs font-bold text-white">Google Play</span>
+                            </span>
+                        </a>
+                        <a href="#" class="fh-store-badge">
+                            <i class="ri-apple-fill text-white"></i>
+                            <span class="leading-tight">
+                                <span class="block text-[10px] uppercase text-gray-500">Download on</span>
+                                <span class="block text-xs font-bold text-white">App Store</span>
+                            </span>
+                        </a>
+                        <a href="#" class="fh-store-badge">
+                            <i class="ri-tv-line text-white"></i>
+                            <span class="leading-tight">
+                                <span class="block text-[10px] uppercase text-gray-500">Available on</span>
+                                <span class="block text-xs font-bold text-white">Apple TV</span>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2.5 text-gray-600">
+                    <span class="text-[11px] uppercase tracking-widest mr-1">We accept</span>
+                    <span class="fh-chip"><i class="ri-visa-line"></i> Visa</span>
+                    <span class="fh-chip"><i class="ri-mastercard-line"></i> Mastercard</span>
+                    <span class="fh-chip">UPI</span>
+                    <span class="fh-chip">Net Banking</span>
+                </div>
+            </div>
+
+            <div class="mt-10 pt-6 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+                <p>&copy; @DateTime.Now.Year FanHubPlus. An academic demonstration project. All rights reserved.</p>
+                <div class="flex flex-wrap items-center gap-6">
                     <a asp-controller="Home" asp-action="Privacy" class="hover:text-gray-300 transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-gray-300 transition-colors">Terms of Service</a>
-                    <a href="#" class="hover:text-gray-300 transition-colors">Cookie Preferences</a>
-                    <a asp-controller="Home" asp-action="Contact" class="hover:text-gray-300 transition-colors">Help Center</a>
+                    <a asp-controller="Home" asp-action="Terms" class="hover:text-gray-300 transition-colors">Terms of Service</a>
+                    <a asp-controller="Home" asp-action="Faq" class="hover:text-gray-300 transition-colors">Help Center</a>
+                    <a asp-controller="Home" asp-action="Contact" class="hover:text-gray-300 transition-colors">Support</a>
                 </div>
             </div>
         </div>
     </footer>
 
-    <button id="backToTopBtn" type="button" aria-label="Back to Top">
-        <i class="ri-arrow-up-line"></i>
-    </button>
+    <button id="backToTopBtn" type="button" aria-label="Back to Top"><i class="ri-arrow-up-line"></i></button>
 
     <script src="~/js/swiper-bundle.min.js" asp-append-version="true"></script>
     <script src="~/js/main.js" asp-append-version="true"></script>
+    <script src="~/js/ui.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+

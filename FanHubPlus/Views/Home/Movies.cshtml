@@ -1,124 +1,158 @@
-@model FanHubPlus.ViewModels.MovieFilterViewModel
+@model FanHubPlus.ViewModels.BrowseViewModel
 @{
-    ViewData["Title"] = string.IsNullOrWhiteSpace(Model.Genre) ? "Browse Movies & Shows" : Model.Genre + " Collection";
-    Func<string, string> posterBg = theme => theme switch
+    ViewData["Title"] = Model.Section;
+    var action = Model.Section switch
     {
-        "t1" => "bg-gradient-to-tr from-rose-900 via-red-800 to-amber-700",
-        "t2" => "bg-gradient-to-tr from-indigo-950 via-purple-900 to-slate-900",
-        "t3" => "bg-gradient-to-tr from-cyan-950 via-teal-900 to-emerald-950",
-        "t4" => "bg-gradient-to-tr from-amber-950 via-orange-900 to-red-950",
-        "t5" => "bg-gradient-to-tr from-blue-950 via-indigo-900 to-cyan-950",
-        "t6" => "bg-gradient-to-tr from-fuchsia-950 via-rose-950 to-pink-900",
-        _    => "bg-gradient-to-tr from-slate-900 via-gray-900 to-black"
+        "TV Shows" => "TvShows",
+        "Videos" => "Videos",
+        _ => "Movies"
+    };
+    var heading = Model.Section switch
+    {
+        "TV Shows" => "TV Shows & Series",
+        "Videos" => "Live Videos & Events",
+        _ => "Movies"
     };
 }
 
-<section class="relative overflow-hidden">
-    <div class="absolute inset-0 bg-gradient-to-br from-[#1a0b12] via-[#0b0c0f] to-[#0b0c0f]"></div>
-    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-        <span class="text-xs font-bold uppercase tracking-wider text-[#f41b3b]">FanHub Library</span>
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white mt-1 font-['Montserrat']">
-            @(string.IsNullOrWhiteSpace(Model.Genre) || Model.Genre == "All" ? "Browse Movies & Shows" : Model.Genre + " Collection")
-        </h1>
-        <p class="text-gray-400 text-sm mt-3 max-w-2xl">
-            Filter by genre, sort the catalogue, or search the whole library. @Model.Movies.Count title(s) available right now.
-        </p>
-    </div>
-</section>
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "FanHub library", Title = string.IsNullOrWhiteSpace(Model.Genre) || Model.Genre == "All" ? heading : Model.Genre + " movies", Subtitle = $"Filter, sort and search {Model.TotalCount} title(s) in the FanHub library. Every plan includes the full catalogue in HD and 4K.", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), (heading, null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
 
-<!-- FILTERS -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <form method="get" asp-controller="Home" asp-action="Movies" class="bg-[#14161d] border border-white/10 rounded-2xl p-5 -mt-6 relative z-20">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-            <div>
-                <label class="form-label" for="search">Search</label>
-                <input type="text" id="search" name="search" value="@Model.Search" placeholder="Title or keyword" class="form-input" />
-            </div>
-            <div>
-                <label class="form-label" for="genre">Genre</label>
-                <select id="genre" name="genre" class="form-input">
-                    <option value="All">All genres</option>
-                    @foreach (var g in Model.Genres)
-                    {
-                        var isSelected = string.Equals(Model.Genre, g, StringComparison.OrdinalIgnoreCase);
-                        <option value="@g" selected="@isSelected">@g</option>
-                    }
-                </select>
-            </div>
-            <div>
-                <label class="form-label" for="sortBy">Sort by</label>
-                <select id="sortBy" name="sortBy" class="form-input">
-                    <option value="latest" selected="@(Model.SortBy == null || Model.SortBy == "latest")">Latest releases</option>
-                    <option value="rating" selected="@(Model.SortBy == "rating")">Top rated</option>
-                    <option value="year" selected="@(Model.SortBy == "year")">Newest year</option>
-                    <option value="title" selected="@(Model.SortBy == "title")">Title A-Z</option>
-                </select>
-            </div>
-            <div class="flex gap-3">
-                <button type="submit" class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#f41b3b] hover:bg-[#d01431] text-white font-bold text-sm transition-all">
-                    <i class="ri-filter-3-line"></i> Apply
-                </button>
-                <a asp-controller="Home" asp-action="Movies" class="px-5 py-3 rounded-full bg-white/5 hover:bg-white/15 text-white font-bold text-sm border border-white/10 transition-all">
-                    Reset
-                </a>
-            </div>
-        </div>
-    </form>
-</section>
+<section class="fh-wrap pb-20">
+    <div class="grid lg:grid-cols-[280px_1fr] gap-8">
 
-<!-- RESULTS -->
-<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-20">
-    @if (!Model.Movies.Any())
-    {
-        <div class="text-center py-20 bg-[#14161d] border border-white/10 rounded-2xl">
-            <i class="ri-search-2-line text-5xl text-gray-600"></i>
-            <h2 class="text-lg font-bold text-white mt-4">No titles matched your search</h2>
-            <p class="text-gray-400 text-sm mt-2">Try a different keyword or clear the genre filter.</p>
-        </div>
-    }
-    else
-    {
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-5">
-            @foreach (var item in Model.Movies)
-            {
-                <a asp-controller="Home" asp-action="Details" asp-route-id="@item.Id" class="group block">
-                    <div class="relative aspect-[2/3] w-full @posterBg(item.PosterTheme) rounded-xl overflow-hidden border border-white/5">
-                        <div class="poster-art"></div>
-                        <i class="ri-play-circle-fill poster-glyph"></i>
+        <!-- ============ SIDEBAR FILTERS ============ -->
+        <aside class="space-y-6">
+            <div class="fh-panel">
+                <h2 class="fh-widget-title">Filter</h2>
 
-                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
-                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">@item.Genre</span>
-                            @if (item.IsLive)
-                            {
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#f41b3b] text-white flex items-center gap-1">
-                                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> LIVE
-                                </span>
-                            }
-                            else if (item.IsTopRated)
-                            {
-                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-black/60 text-[#ffea00] flex items-center gap-1 backdrop-blur-sm">
-                                    <i class="ri-star-fill text-[10px]"></i> @item.ImdbRating.ToString("0.0")
-                                </span>
-                            }
-                        </div>
-
-                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
-                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
-                                <i class="ri-play-fill text-xl ml-1"></i>
-                            </span>
-                        </div>
-
-                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
-                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">@item.Title</h3>
-                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
-                                <span>@item.Year</span>
-                                <span>@item.Duration</span>
-                            </div>
+                <form method="get" asp-controller="Home" asp-action="@action" class="space-y-4">
+                    <div>
+                        <label class="fh-label" for="search">Keyword</label>
+                        <div class="fh-input-group">
+                            <i class="ri-search-line"></i>
+                            <input type="search" id="search" name="search" value="@Model.Search" class="fh-input" placeholder="Title, actor, keyword" />
                         </div>
                     </div>
-                </a>
+
+                    <div>
+                        <label class="fh-label" for="genre">Genre</label>
+                        <select id="genre" name="genre" class="fh-input">
+                            <option value="All">All genres</option>
+                            @foreach (var genre in Model.Genres)
+                            {
+                                <option value="@genre" selected="@(string.Equals(Model.Genre, genre, StringComparison.OrdinalIgnoreCase))">@genre</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="fh-label" for="sortBy">Sort by</label>
+                        <select id="sortBy" name="sortBy" class="fh-input">
+                            <option value="latest" selected="@(Model.SortBy == null || Model.SortBy == "latest")">Latest releases</option>
+                            <option value="rating" selected="@(Model.SortBy == "rating")">Top rated</option>
+                            <option value="year" selected="@(Model.SortBy == "year")">Newest year</option>
+                            <option value="title" selected="@(Model.SortBy == "title")">Title A-Z</option>
+                            <option value="oldest" selected="@(Model.SortBy == "oldest")">Oldest first</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="fh-btn fh-btn-primary fh-btn-block"><i class="ri-filter-3-line"></i> Apply filters</button>
+                    <a asp-controller="Home" asp-action="@action" class="fh-btn fh-btn-outline fh-btn-block">Reset</a>
+                </form>
+            </div>
+
+            <div class="fh-widget">
+                <h2 class="fh-widget-title">Quick genre links</h2>
+                <div class="fh-linklist">
+                    <a asp-controller="Home" asp-action="Movies" asp-route-genre="Action">Action &amp; Sci-Fi <i class="ri-arrow-right-s-line"></i></a>
+                    <a asp-controller="Home" asp-action="Movies" asp-route-genre="Drama">Drama &amp; Crime <i class="ri-arrow-right-s-line"></i></a>
+                    <a asp-controller="Home" asp-action="Movies" asp-route-genre="Horror">Horror &amp; Thriller <i class="ri-arrow-right-s-line"></i></a>
+                    <a asp-controller="Home" asp-action="Movies" asp-route-genre="Comedy">Comedy <i class="ri-arrow-right-s-line"></i></a>
+                    <a asp-controller="Home" asp-action="Movies" asp-route-genre="Romance">Romance <i class="ri-arrow-right-s-line"></i></a>
+                    <a asp-controller="Home" asp-action="Movies" asp-route-genre="Documentary">Documentaries <i class="ri-arrow-right-s-line"></i></a>
+                    <a asp-controller="Home" asp-action="Movies" asp-route-genre="Anime">Anime <i class="ri-arrow-right-s-line"></i></a>
+                    <a asp-controller="Home" asp-action="Movies" asp-route-genre="Sports">Sports <i class="ri-arrow-right-s-line"></i></a>
+                </div>
+            </div>
+
+            <div class="fh-panel text-center">
+                <span class="fh-avatar fh-avatar-lg mx-auto"><i class="ri-crown-line"></i></span>
+                <h3 class="fh-h3 mt-4">Unlock everything</h3>
+                <p class="text-xs text-gray-400 mt-2">Get the full library in 4K HDR with zero commercials.</p>
+                <a asp-controller="Home" asp-action="Pricing" class="fh-btn fh-btn-primary fh-btn-block mt-5">See plans</a>
+            </div>
+        </aside>
+
+        <!-- ============ RESULTS ============ -->
+        <div>
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-5 mb-6 border-b border-white/10">
+                <p class="text-sm text-gray-400">
+                    Showing <span class="text-white font-bold">@Model.Items.Count</span> of <span class="text-white font-bold">@Model.TotalCount</span> titles
+                    @if (!string.IsNullOrWhiteSpace(Model.Genre) && Model.Genre != "All")
+                    {
+                        <span>in <span class="text-[#f41b3b]">@Model.Genre</span></span>
+                    }
+                </p>
+                <div class="flex items-center gap-2">
+                    <a asp-controller="Home" asp-action="@action" class="fh-icon-btn" aria-label="Grid view"><i class="ri-layout-grid-line"></i></a>
+                    <a asp-controller="Home" asp-action="@action" asp-route-sortBy="rating" class="fh-icon-btn" aria-label="Top rated"><i class="ri-fire-line"></i></a>
+                </div>
+            </div>
+
+            @if (Model.Items.Count == 0)
+            {
+                <div class="fh-empty">
+                    <i class="ri-search-2-line"></i>
+                    <h2 class="fh-h3 mt-4">No titles matched your search</h2>
+                    <p class="fh-lead mt-2">Try a different keyword, or clear the genre filter to see the whole library.</p>
+                    <a asp-controller="Home" asp-action="@action" class="fh-btn fh-btn-primary mt-6">Clear filters</a>
+                </div>
+            }
+            else
+            {
+                <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-5">
+                    @foreach (var item in Model.Items)
+                    {
+                        <partial name="_VideoCard" model="item" />
+                    }
+                </div>
+
+                @if (Model.TotalPages > 1)
+                {
+                    <nav class="fh-pager" aria-label="Pagination">
+                        @if (Model.Page > 1)
+                        {
+                            <a asp-controller="Home" asp-action="@action" asp-route-page="@(Model.Page - 1)"
+                               asp-route-genre="@Model.Genre" asp-route-search="@Model.Search" asp-route-sortBy="@Model.SortBy" aria-label="Previous page">
+                                <i class="ri-arrow-left-s-line"></i>
+                            </a>
+                        }
+                        @for (var i = 1; i <= Model.TotalPages; i++)
+                        {
+                            if (i == Model.Page)
+                            {
+                                <span class="is-active">@i</span>
+                            }
+                            else
+                            {
+                                <a asp-controller="Home" asp-action="@action" asp-route-page="@i"
+                                   asp-route-genre="@Model.Genre" asp-route-search="@Model.Search" asp-route-sortBy="@Model.SortBy">@i</a>
+                            }
+                        }
+                        @if (Model.Page < Model.TotalPages)
+                        {
+                            <a asp-controller="Home" asp-action="@action" asp-route-page="@(Model.Page + 1)"
+                               asp-route-genre="@Model.Genre" asp-route-search="@Model.Search" asp-route-sortBy="@Model.SortBy" aria-label="Next page">
+                                <i class="ri-arrow-right-s-line"></i>
+                            </a>
+                        }
+                    </nav>
+                }
             }
         </div>
-    }
+    </div>
 </section>
 

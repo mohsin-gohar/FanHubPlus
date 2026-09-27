@@ -1,0 +1,66 @@
+@model List<FanHubPlus.Models.Testimonial>
+@{
+    ViewData["Title"] = "Testimonials";
+    var stats = ViewBag.Stats as dynamic;
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Viewer reviews", Title = "What people are saying", Subtitle = "Unedited notes from filmmakers, developers, students and night-owl viewers across nineteen countries.", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("Testimonials", null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<!-- ============ STATS ============ -->
+@if (stats != null)
+{
+    <section class="fh-wrap pb-16">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-5">
+            @foreach (var stat in stats)
+            {
+                <div class="fh-panel text-center">
+                    <div class="fh-stat-num"><span data-fh-count="@stat.Value" data-fh-suffix="@(stat.Value < 100 ? "" : "+")">0</span></div>
+                    <div class="fh-stat-label">@stat.Label</div>
+                </div>
+            }
+        </div>
+    </section>
+}
+
+<!-- ============ REVIEWS ============ -->
+<section class="fh-wrap pb-20">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        @foreach (var item in Model)
+        {
+            <article class="fh-panel fh-reveal h-full flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between">
+                        <div class="text-[#ffea00] text-sm tracking-widest">
+                            <i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i><i class="ri-star-fill"></i>
+                        </div>
+                        <i class="ri-double-quotes-l text-2xl text-white/10"></i>
+                    </div>
+                    <p class="text-sm text-gray-300 leading-relaxed mt-4">&ldquo;@item.Quote&rdquo;</p>
+                </div>
+                <div class="fh-divider flex items-center gap-3 mt-6 pt-5">
+                    <span class="fh-avatar">@item.Name[..1]</span>
+                    <div>
+                        <div class="text-sm font-bold text-white">@item.Name</div>
+                        <div class="text-[11px] text-gray-500">@item.Role &bull; @item.ReviewCount.ToString("N0") reviews</div>
+                    </div>
+                </div>
+            </article>
+        }
+    </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="fh-wrap pb-24">
+    <div class="fh-panel fh-wash text-center py-14 px-6">
+        <span class="fh-eyebrow fh-eyebrow-center">Your turn</span>
+        <h2 class="fh-h2 mt-3">Join the people above</h2>
+        <p class="fh-lead mt-3 max-w-xl mx-auto">Start with seven days of Premium 4K UHD free. Cancel in two clicks, keep the trial if you are not sure.</p>
+        <div class="flex flex-wrap items-center justify-center gap-3 mt-8">
+            <a asp-controller="Home" asp-action="Pricing" class="fh-btn fh-btn-primary fh-btn-lg">See plans</a>
+            <a asp-controller="Account" asp-action="SignUp" class="fh-btn fh-btn-ghost fh-btn-lg">Create account</a>
+        </div>
+    </div>
+</section>

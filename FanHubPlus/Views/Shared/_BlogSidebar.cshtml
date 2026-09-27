@@ -1,0 +1,69 @@
+@model FanHubPlus.ViewModels.BlogSidebarViewModel
+
+<!-- Shared blog sidebar: search, categories, latest, popular and tags -->
+<aside class="space-y-6">
+    <div class="fh-widget">
+        <h2 class="fh-widget-title">Search</h2>
+        <form method="get" asp-controller="Home" asp-action="Movies" class="fh-input-group">
+            <i class="ri-search-line"></i>
+            <input type="search" name="search" class="fh-input" placeholder="Search titles..." aria-label="Search" />
+        </form>
+    </div>
+
+    <div class="fh-widget">
+        <h2 class="fh-widget-title">Categories</h2>
+        <div class="fh-linklist">
+            <a asp-controller="Home" asp-action="Blog" asp-route-category="All" class="@(Model.ActiveCategory == "All" || Model.ActiveCategory == null ? "is-active" : "")">
+                All articles <i class="ri-arrow-right-s-line"></i>
+            </a>
+            @foreach (var category in Model.Categories)
+            {
+                <a asp-controller="Home" asp-action="Blog" asp-route-category="@category" class="@(Model.ActiveCategory == category ? "is-active" : "")">
+                    @category <i class="ri-arrow-right-s-line"></i>
+                </a>
+            }
+        </div>
+    </div>
+
+    <div class="fh-widget">
+        <h2 class="fh-widget-title">Latest Posts</h2>
+        @foreach (var post in Model.Latest)
+        {
+            <div class="fh-mini-row">
+                <a asp-controller="Home" asp-action="BlogDetails" asp-route-id="@post.Id" class="fh-still fh-mini-thumb" data-theme="@post.PosterTheme">
+                    <i class="@post.ArtGlyph fh-art-glyph-sm !text-3xl"></i>
+                </a>
+                <div>
+                    <a asp-controller="Home" asp-action="BlogDetails" asp-route-id="@post.Id" class="fh-mini-title hover:text-[#f41b3b] transition-colors">@post.Title</a>
+                    <div class="fh-mini-meta">@post.DateDisplay &bull; @post.ReadDisplay</div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="fh-widget">
+        <h2 class="fh-widget-title">Popular Posts</h2>
+        <div class="fh-linklist">
+            @foreach (var post in Model.Popular)
+            {
+                <a asp-controller="Home" asp-action="BlogDetails" asp-route-id="@post.Id">
+                    <span class="truncate">@post.Title</span>
+                    <i class="ri-arrow-right-s-line"></i>
+                </a>
+            }
+        </div>
+    </div>
+
+    @if (Model.Tags.Count > 0)
+    {
+        <div class="fh-widget">
+            <h2 class="fh-widget-title">Popular Tags</h2>
+            <div class="fh-tagcloud">
+                @foreach (var tag in Model.Tags)
+                {
+                    <a asp-controller="Home" asp-action="Blog" asp-route-search="@tag" class="fh-tag">@tag</a>
+                }
+            </div>
+        </div>
+    }
+</aside>

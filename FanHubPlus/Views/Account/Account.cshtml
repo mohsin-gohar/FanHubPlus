@@ -1,0 +1,245 @@
+@model FanHubPlus.ViewModels.ProfileViewModel
+@{
+    ViewData["Title"] = "My Account";
+    var tab = ViewContext.RouteData.Values["tab"] as string ?? "overview";
+    var initials = string.IsNullOrWhiteSpace(Model.Name) ? "F" : Model.Name[..1].ToUpperInvariant();
+}
+
+@{
+    var pageHeader = new FanHubPlus.ViewModels.PageHeaderViewModel { Eyebrow = "Member area", Title = "My Account", Subtitle = "Manage your profile, plan, profiles and billing in one place.", Breadcrumbs = new List<(string, string?)> { ("Home", "/Home/Index"), ("My Account", null) }  };
+}
+<partial name="_PageHeader" model="pageHeader" />
+
+<section class="fh-wrap pb-20">
+    <div class="grid lg:grid-cols-[280px_1fr] gap-8 items-start">
+
+        <!-- ============ PROFILE CARD + NAV ============ -->
+        <aside class="space-y-6 lg:sticky lg:top-28">
+            <div class="fh-panel text-center">
+                <span class="fh-avatar fh-avatar-lg mx-auto">@initials</span>
+                <h2 class="fh-h3 mt-4">@(string.IsNullOrWhiteSpace(Model.Name) ? "Demo member" : Model.Name)</h2>
+                <p class="text-[11px] text-gray-500 mt-1">@(string.IsNullOrWhiteSpace(Model.Email) ? "No email set" : Model.Email)</p>
+                <span class="fh-chip fh-chip-primary mt-4"><i class="ri-crown-line"></i> @Model.Plan</span>
+            </div>
+
+            <div class="fh-panel">
+                <nav class="fh-side-nav" aria-label="Account sections">
+                    @foreach (var link in new[]
+                    {
+                        new { Key = "overview", Icon = "ri-dashboard-3-line", Label = "Overview" },
+                        new { Key = "profile", Icon = "ri-user-settings-line", Label = "Profile settings" },
+                        new { Key = "plan", Icon = "ri-crown-line", Label = "Plan & billing" },
+                        new { Key = "profiles", Icon = "ri-team-line", Label = "Profiles" },
+                        new { Key = "watchlist", Icon = "ri-bookmark-line", Label = "My list" }
+                    })
+                    {
+                        <a asp-controller="Account" asp-action="Account" asp-route-tab="@link.Key" class="@(tab == link.Key ? "is-active" : "")">
+                            <i class="@link.Icon"></i> @link.Label
+                        </a>
+                    }
+                </nav>
+
+                <form method="post" asp-controller="Account" asp-action="Logout" class="fh-divider mt-5 pt-5">
+                    <button type="submit" class="fh-btn fh-btn-outline fh-btn-block fh-btn-sm">
+                        <i class="ri-logout-box-r-line"></i> Sign out
+                    </button>
+                </form>
+            </div>
+        </aside>
+
+        <!-- ============ TABS ============ -->
+        <div>
+        <div class="fh-tabs" data-fh-tabs>
+            <button type="button" class="fh-tab is-active" data-fh-tab="acc-overview" role="tab">Overview</button>
+            <button type="button" class="fh-tab" data-fh-tab="acc-profile" role="tab">Profile</button>
+            <button type="button" class="fh-tab" data-fh-tab="acc-plan" role="tab">Plan &amp; billing</button>
+            <button type="button" class="fh-tab" data-fh-tab="acc-profiles" role="tab">Profiles</button>
+            <button type="button" class="fh-tab" data-fh-tab="acc-list" role="tab">My list</button>
+        </div>
+
+        <!-- OVERVIEW -->
+        <div id="acc-overview" class="fh-tabpane is-active">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+                @foreach (var stat in new[]
+                {
+                    new { Icon = "ri-play-circle-line", Value = "148", Label = "Titles watched" },
+                    new { Icon = "ri-time-line", Value = "212h", Label = "Time watched" },
+                    new { Icon = "ri-bookmark-line", Value = "23", Label = "On my list" },
+                    new { Icon = "ri-team-line", Value = "3", Label = "Profiles" }
+                })
+                {
+                    <div class="fh-panel text-center">
+                        <i class="@stat.Icon text-2xl text-[#f41b3b]"></i>
+                        <div class="fh-stat-num mt-3">@stat.Value</div>
+                        <div class="fh-stat-label">@stat.Label</div>
+                    </div>
+                }
+            </div>
+
+            <div class="fh-panel mt-6">
+                <h2 class="fh-h3">Continue watching</h2>
+                <p class="fh-lead mt-2">Pick up where you stopped. This demo shows placeholder rows.</p>
+                <div class="space-y-4 mt-6">
+                    @foreach (var row in new[]
+                    {
+                        new { Title = "Crimson Horizon", Progress = 72, Theme = "t1", Episode = "Feature presentation" },
+                        new { Title = "Neon Alley", Progress = 34, Theme = "t4", Episode = "S01E02 Soundcheck" },
+                        new { Title = "King Jungle", Progress = 88, Theme = "t3", Episode = "Episode 3 - The Canopy" }
+                    })
+                    {
+                        <div class="flex items-center gap-4">
+                            <span class="fh-still !w-16 !h-10 flex-none" data-theme="@row.Theme"></span>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between gap-3">
+                                    <span class="text-sm font-bold text-white truncate">@row.Title</span>
+                                    <span class="text-[11px] text-gray-500">@row.Progress%</span>
+                                </div>
+                                <div class="text-[11px] text-gray-500 mb-1.5">@row.Episode</div>
+                                <div class="fh-progress"><i style="width:@row.Progress%"></i></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- PROFILE -->
+        <div id="acc-profile" class="fh-tabpane">
+            <form method="post" asp-controller="Account" asp-action="Account" class="fh-panel mt-6" novalidate>
+                <h2 class="fh-h3">Profile settings</h2>
+                <p class="fh-lead mt-2">These details are used for your account and for billing receipts.</p>
+
+                <div class="grid sm:grid-cols-2 gap-5 mt-7">
+                    <div>
+                        <label asp-for="Name" class="fh-label"></label>
+                        <input asp-for="Name" class="fh-input" placeholder="Your name" />
+                        <span asp-validation-for="Name" class="fh-input-msg"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Email" class="fh-label"></label>
+                        <input asp-for="Email" class="fh-input" placeholder="you@example.com" />
+                        <span asp-validation-for="Email" class="fh-input-msg"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Phone" class="fh-label"></label>
+                        <input asp-for="Phone" class="fh-input" placeholder="+91 00000 00000" />
+                        <span asp-validation-for="Phone" class="fh-input-msg"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Language" class="fh-label"></label>
+                        <select asp-for="Language" class="fh-input">
+                            <option>English</option>
+                            <option>Hindi</option>
+                            <option>Tamil</option>
+                            <option>Telugu</option>
+                            <option>Arabic</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="fh-divider mt-7 pt-6 space-y-3">
+                    <label class="fh-check"><input asp-for="AutoPlay" /><span>Autoplay the next episode or title</span></label>
+                    <label class="fh-check"><input asp-for="DownloadOverWifiOnly" /><span>Only download on Wi-Fi</span></label>
+                </div>
+
+                <button type="submit" class="fh-btn fh-btn-primary mt-7"><i class="ri-save-3-line"></i> Save changes</button>
+            </form>
+        </div>
+
+        <!-- PLAN -->
+        <div id="acc-plan" class="fh-tabpane">
+            <div class="fh-panel mt-6">
+                <div class="flex flex-wrap items-center justify-between gap-4">
+                    <div>
+                        <span class="text-xs uppercase tracking-widest text-[#f41b3b] font-bold">Current plan</span>
+                        <h2 class="fh-h3 mt-1.5">@Model.Plan</h2>
+                        <p class="text-sm text-gray-400 mt-1.5">Renews on the 28th of next month &bull; $14.99 / month</p>
+                    </div>
+                    <div class="flex gap-3">
+                        <a asp-controller="Home" asp-action="Pricing" class="fh-btn fh-btn-primary fh-btn-sm">Change plan</a>
+                        <button type="button" class="fh-btn fh-btn-outline fh-btn-sm">Cancel</button>
+                    </div>
+                </div>
+
+                <div class="fh-divider mt-7 pt-6">
+                    <h3 class="fh-h3">Billing history</h3>
+                    <div class="fh-panel-flush fh-panel mt-4 overflow-x-auto">
+                        <table class="fh-table">
+                            <thead><tr><th>Date</th><th>Invoice</th><th>Amount</th><th>Status</th></tr></thead>
+                            <tbody>
+                                @foreach (var invoice in new[]
+                                {
+                                    new { Date = "28 Oct 2025", Id = "INV-25010-8841", Amount = "$14.99" },
+                                    new { Date = "28 Sep 2025", Id = "INV-25009-7712", Amount = "$14.99" },
+                                    new { Date = "28 Aug 2025", Id = "INV-25008-6630", Amount = "$14.99" }
+                                })
+                                {
+                                    <tr>
+                                        <td class="whitespace-nowrap">@invoice.Date</td>
+                                        <td class="whitespace-nowrap">@invoice.Id</td>
+                                        <td class="font-bold text-white">@invoice.Amount</td>
+                                        <td><span class="fh-chip fh-chip-free">Paid</span></td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- PROFILES -->
+        <div id="acc-profiles" class="fh-tabpane">
+            <div class="fh-panel mt-6">
+                <h2 class="fh-h3">Profiles</h2>
+                <p class="fh-lead mt-2">Up to six profiles per account, each with its own recommendations and history.</p>
+
+                <div class="grid sm:grid-cols-2 gap-4 mt-7">
+                    @foreach (var profile in new[]
+                    {
+                        new { Name = "Main", Detail = "All ages", Active = true },
+                        new { Name = "Kids", Detail = "Ages 5 and under", Active = false },
+                        new { Name = "Guest", Detail = "Two hour limit", Active = false }
+                    })
+                    {
+                        <div class="fh-panel flex items-center gap-4 @(profile.Active ? "!border-[#f41b3b]" : "")">
+                            <span class="fh-avatar">@profile.Name[..1]</span>
+                            <div class="flex-1">
+                                <div class="text-sm font-bold text-white">@profile.Name</div>
+                                <div class="text-[11px] text-gray-500">@profile.Detail</div>
+                            </div>
+                            @if (profile.Active)
+                            {
+                                <span class="fh-chip fh-chip-primary">Active</span>
+                            }
+                        </div>
+                    }
+                    <button type="button" class="fh-panel flex items-center justify-center gap-3 border-dashed hover:border-[#f41b3b] transition-colors">
+                        <i class="ri-add-line text-xl text-[#f41b3b]"></i>
+                        <span class="text-sm font-bold text-white">Add profile</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MY LIST -->
+        <div id="acc-list" class="fh-tabpane">
+            <div class="fh-panel mt-6">
+                <h2 class="fh-h3">My list</h2>
+                <p class="fh-lead mt-2">Everything you have saved for later. Connect your account to fill this list.</p>
+                <div class="fh-empty mt-7">
+                    <i class="ri-bookmark-line"></i>
+                    <p class="fh-lead mt-3">Nothing saved yet. Tap the bookmark on any title to add it here.</p>
+                    <a asp-controller="Home" asp-action="Movies" class="fh-btn fh-btn-primary mt-6">Browse titles</a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
