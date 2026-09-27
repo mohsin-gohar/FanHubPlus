@@ -23,6 +23,16 @@
         "t6" => "bg-pink-500/20 text-pink-400 border-pink-500/30",
         _    => "bg-gray-500/20 text-gray-400 border-gray-500/30"
     };
+
+    Func<string, string> getGenreIcon = (theme) => theme switch {
+        "t1" => "ri-fire-fill",
+        "t2" => "ri-shield-keyhole-line",
+        "t3" => "ri-compass-3-line",
+        "t4" => "ri-flashlight-line",
+        "t5" => "ri-radar-line",
+        "t6" => "ri-heart-3-line",
+        _    => "ri-film-line"
+    };
 }
 
 <!-- HERO BANNER SWIPER -->
@@ -127,6 +137,9 @@
                 <div class="swiper-slide">
                     <div class="movie-card group">
                         <div class="relative aspect-[2/3] w-full @getPosterBg(item.PosterTheme) flex flex-col justify-between p-4 overflow-hidden">
+                            <div class="poster-art"></div>
+                            <i class="@getGenreIcon(item.PosterTheme) poster-glyph"></i>
+                            <div class="poster-watermark">@item.Title</div>
                             <div class="flex items-center justify-between z-10">
                                 <span class="text-[11px] font-bold px-2 py-0.5 rounded border @getGenreBadge(item.PosterTheme)">
                                     @item.Genre
@@ -189,6 +202,8 @@
                 <div class="swiper-slide">
                     <div class="movie-card group">
                         <div class="relative aspect-video w-full @getPosterBg(item.PosterTheme) flex flex-col justify-between p-4 overflow-hidden">
+                            <div class="poster-art"></div>
+                            <i class="@getGenreIcon(item.PosterTheme) poster-glyph poster-glyph-sm"></i>
                             <div class="flex items-center justify-between z-10">
                                 <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-600/90 text-white text-[10px] font-black tracking-wider uppercase">
                                     <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> LIVE
@@ -244,6 +259,9 @@
                 <div class="swiper-slide">
                     <div class="movie-card group">
                         <div class="relative aspect-[2/3] w-full @getPosterBg(item.PosterTheme) flex flex-col justify-between p-4 overflow-hidden">
+                            <div class="poster-art"></div>
+                            <i class="@getGenreIcon(item.PosterTheme) poster-glyph"></i>
+                            <div class="poster-watermark">@item.Title</div>
                             <div class="flex items-center justify-between z-10">
                                 <span class="text-[11px] font-bold px-2 py-0.5 rounded border @getGenreBadge(item.PosterTheme)">
                                     @item.Genre
