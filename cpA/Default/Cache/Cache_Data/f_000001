@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browse Movies &amp; Shows - FanHub Plus - Modern Video Streaming</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montez&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Play:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/remixicon.css?v=CfFBncbxzA9apgVC4JwFfkBSDEiwiZQeyu6VvZbSqWI" />
+    <link rel="stylesheet" href="/css/swiper-bundle.min.css?v=tfJg5vUi5EYTM7hHKJpdstLxgkw3IJYRj6YMN86pWyY" />
+    <!-- Tailwind CSS v4 browser build: generates the utility classes used across the views at runtime -->
+    <script src="/js/tailwind-browser.js"></script>
+    <link rel="stylesheet" href="/css/custom.css?v=wuhRlS1aSNI5tXcMOJtT_WGiv-5ULuloDGYyqLuLC0k" />
+</head>
+<body class="bg-[#0b0c0f] text-gray-200 antialiased selection:bg-red-600 selection:text-white">
+
+    <header class="navbar-glass sticky top-0 z-50 w-full transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center gap-8">
+                    <a class="flex items-center gap-2 group" href="/">
+                        <span class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#f41b3b] to-[#ffea00] flex items-center justify-center text-white font-black text-xl shadow-lg shadow-red-600/30 group-hover:scale-105 transition-transform">
+                            <i class="ri-play-fill text-2xl"></i>
+                        </span>
+                        <div class="flex flex-col">
+                            <span class="text-2xl font-black tracking-tight text-white font-['Montserrat']">
+                                FAN<span class="text-[#f41b3b]">HUB</span><span class="text-xs ml-1 px-1.5 py-0.5 rounded bg-[#f41b3b]/20 text-[#f41b3b] font-bold">PLUS</span>
+                            </span>
+                        </div>
+                    </a>
+
+                    <nav class="hidden md:flex items-center space-x-1 lg:space-x-3 shrink-0">
+                        <a class="px-2.5 py-2 rounded-md text-sm font-medium text-white hover:text-[#f41b3b] transition-colors whitespace-nowrap" href="/">Home</a>
+                        <a class="px-2.5 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-[#f41b3b] transition-colors whitespace-nowrap" href="/Home/Movies">Movies</a>
+                        <a class="px-2.5 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-[#f41b3b] transition-colors whitespace-nowrap" href="/Home/Movies?genre=Horror">TV Shows</a>
+                        <a class="px-2.5 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-[#f41b3b] transition-colors whitespace-nowrap" href="/Home/Movies?genre=Sports">Live Sports</a>
+                        <a class="px-2.5 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-[#f41b3b] transition-colors whitespace-nowrap" href="/Home/Pricing">Pricing</a>
+                        <a class="px-2.5 py-2 rounded-md text-sm font-medium text-gray-300 hover:text-[#f41b3b] transition-colors whitespace-nowrap" href="/Home/Contact">Contact</a>
+                    </nav>
+                </div>
+
+                <div class="hidden md:flex items-center space-x-4">
+                    <form method="get" class="relative" action="/Home/Movies">
+                        <input type="text" name="search" placeholder="Search titles..." 
+                               class="bg-[#14161d] border border-white/10 text-xs sm:text-sm rounded-full pl-10 pr-4 py-2 w-44 lg:w-60 text-gray-200 placeholder-gray-500 focus:outline-none focus:border-[#f41b3b] transition-all" />
+                        <i class="ri-search-line absolute left-3.5 top-2.5 text-gray-400"></i>
+                    </form>
+
+                    <span class="inline-flex items-center gap-1 text-xs uppercase px-2.5 py-1 rounded bg-[#ffea00]/10 text-[#ffea00] border border-[#ffea00]/20 font-bold">
+                        <i class="ri-vip-crown-fill"></i> 4K UHD
+                    </span>
+
+                    <a class="bg-[#f41b3b] hover:bg-[#d01431] text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg shadow-red-600/30 transition-all transform hover:-translate-y-0.5 inline-flex items-center gap-2" href="/Home/Pricing">
+                        <span>Subscribe</span>
+                        <i class="ri-arrow-right-line"></i>
+                    </a>
+                </div>
+
+                <div class="md:hidden flex items-center space-x-3">
+                    <button type="button" id="mobileMenuBtn" class="text-gray-300 hover:text-white p-2 rounded-lg bg-[#14161d] border border-white/10" aria-label="Open menu">
+                        <i class="ri-menu-4-line text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="mobileMenu" class="hidden md:hidden bg-[#0b0c0f]/95 backdrop-blur-lg border-b border-white/10 px-4 pt-2 pb-6 space-y-3">
+            <form method="get" class="relative mb-3" action="/Home/Movies">
+                <input type="text" name="search" placeholder="Search titles..." 
+                       class="w-full bg-[#14161d] border border-white/10 text-sm rounded-lg pl-10 pr-4 py-2.5 text-gray-200" />
+                <i class="ri-search-line absolute left-3.5 top-3 text-gray-400"></i>
+            </form>
+            <a class="block py-2 text-base font-medium text-white hover:text-[#f41b3b]" href="/">Home</a>
+            <a class="block py-2 text-base font-medium text-gray-300 hover:text-[#f41b3b]" href="/Home/Movies">Browse All Movies</a>
+            <a class="block py-2 text-base font-medium text-gray-300 hover:text-[#f41b3b]" href="/Home/Movies?genre=Horror">TV Shows</a>
+            <a class="block py-2 text-base font-medium text-gray-300 hover:text-[#f41b3b]" href="/Home/Movies?genre=Sports">Live Sports</a>
+            <a class="block py-2 text-base font-medium text-gray-300 hover:text-[#f41b3b]" href="/Home/Pricing">Pricing Plans</a>
+            <a class="block py-2 text-base font-medium text-gray-300 hover:text-[#f41b3b]" href="/Home/Contact">Contact Support</a>
+            <div class="pt-2">
+                <a class="w-full text-center block bg-[#f41b3b] text-white font-bold py-2.5 rounded-lg shadow-lg" href="/Home/Pricing">
+                    Join VIP Now
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main role="main">
+        
+<section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-[#1a0b12] via-[#0b0c0f] to-[#0b0c0f]"></div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+        <span class="text-xs font-bold uppercase tracking-wider text-[#f41b3b]">FanHub Library</span>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white mt-1 font-['Montserrat']">
+            Browse Movies &amp; Shows
+        </h1>
+        <p class="text-gray-400 text-sm mt-3 max-w-2xl">
+            Filter by genre, sort the catalogue, or search the whole library. 25 title(s) available right now.
+        </p>
+    </div>
+</section>
+
+<!-- FILTERS -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <form method="get" class="bg-[#14161d] border border-white/10 rounded-2xl p-5 -mt-6 relative z-20" action="/Home/Movies">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+            <div>
+                <label class="form-label" for="search">Search</label>
+                <input type="text" id="search" name="search" placeholder="Title or keyword" class="form-input" />
+            </div>
+            <div>
+                <label class="form-label" for="genre">Genre</label>
+                <select id="genre" name="genre" class="form-input">
+                    <option value="All">All genres</option>
+                        <option value="Horror">Horror</option>
+                        <option value="Action">Action</option>
+                        <option value="Drama">Drama</option>
+                        <option value="Adventure">Adventure</option>
+                        <option value="Political">Political</option>
+                        <option value="Music">Music</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Comedy">Comedy</option>
+                        <option value="Noir">Noir</option>
+                        <option value="Documentary">Documentary</option>
+                </select>
+            </div>
+            <div>
+                <label class="form-label" for="sortBy">Sort by</label>
+                <select id="sortBy" name="sortBy" class="form-input">
+                    <option value="latest" selected="selected">Latest releases</option>
+                    <option value="rating">Top rated</option>
+                    <option value="year">Newest year</option>
+                    <option value="title">Title A-Z</option>
+                </select>
+            </div>
+            <div class="flex gap-3">
+                <button type="submit" class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-[#f41b3b] hover:bg-[#d01431] text-white font-bold text-sm transition-all">
+                    <i class="ri-filter-3-line"></i> Apply
+                </button>
+                <a class="px-5 py-3 rounded-full bg-white/5 hover:bg-white/15 text-white font-bold text-sm border border-white/10 transition-all" href="/Home/Movies">
+                    Reset
+                </a>
+            </div>
+        </div>
+    </form>
+</section>
+
+<!-- RESULTS -->
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10 mb-20">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-5">
+                <a class="group block" href="/Home/Details/20">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-slate-900 via-gray-900 to-black rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Comedy</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-black/60 text-[#ffea00] flex items-center gap-1 backdrop-blur-sm">
+                                    <i class="ri-star-fill text-[10px]"></i> 8.8
+                                </span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Midnight Diner</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>1h 55m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/19">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-fuchsia-950 via-rose-950 to-pink-900 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Sports</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-black/60 text-[#ffea00] flex items-center gap-1 backdrop-blur-sm">
+                                    <i class="ri-star-fill text-[10px]"></i> 8.5
+                                </span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">MMA Victory</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2023</span>
+                                <span>2h 12m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/18">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-indigo-950 via-purple-900 to-slate-900 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Horror</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-black/60 text-[#ffea00] flex items-center gap-1 backdrop-blur-sm">
+                                    <i class="ri-star-fill text-[10px]"></i> 8.2
+                                </span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Tuck Everlasting</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>2h 32m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/17">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-rose-900 via-red-800 to-amber-700 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Action</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-black/60 text-[#ffea00] flex items-center gap-1 backdrop-blur-sm">
+                                    <i class="ri-star-fill text-[10px]"></i> 8.8
+                                </span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">After The Fall</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2024</span>
+                                <span>2h 11m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/16">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-cyan-950 via-teal-900 to-emerald-950 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Adventure</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-black/60 text-[#ffea00] flex items-center gap-1 backdrop-blur-sm">
+                                    <i class="ri-star-fill text-[10px]"></i> 8.9
+                                </span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">The Mountain</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>2h 25m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/15">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-fuchsia-950 via-rose-950 to-pink-900 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Sports</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#f41b3b] text-white flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> LIVE
+                                </span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Sidewalk The Hero</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2026</span>
+                                <span>LIVE</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/14">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-amber-950 via-orange-900 to-red-950 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Music</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#f41b3b] text-white flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> LIVE
+                                </span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Midnight Frequency</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2026</span>
+                                <span>ENDED</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/13">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-cyan-950 via-teal-900 to-emerald-950 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Sports</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#f41b3b] text-white flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> LIVE
+                                </span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">The Streamline Cup</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2026</span>
+                                <span>LIVE</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/12">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-rose-900 via-red-800 to-amber-700 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Sports</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#f41b3b] text-white flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> LIVE
+                                </span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Breaking Stage</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2026</span>
+                                <span>LIVE</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/11">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-blue-950 via-indigo-900 to-cyan-950 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Entertainment</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#f41b3b] text-white flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> LIVE
+                                </span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Spotlight Live</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2026</span>
+                                <span>LIVE</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/10">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-slate-900 via-gray-900 to-black rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Music</span>
+                                <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#f41b3b] text-white flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> LIVE
+                                </span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">The K-Pop Live</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2026</span>
+                                <span>LIVE</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/3">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-amber-950 via-orange-900 to-red-950 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Drama</span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Neon Alley</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>2h 05m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/2">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-rose-900 via-red-800 to-amber-700 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Action</span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Crimson Horizon</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2026</span>
+                                <span>1h 42m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/1">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-indigo-950 via-purple-900 to-slate-900 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Horror</span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">The Next Saga Unfolds</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>1h 55m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/24">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-rose-900 via-red-800 to-amber-700 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Action</span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Touch Story</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>2h 18m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/22">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-cyan-950 via-teal-900 to-emerald-950 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Adventure</span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Unexpected Journey</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>1h 51m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/21">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-blue-950 via-indigo-900 to-cyan-950 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Noir</span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Beyond The Neon</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>2h 03m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/23">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-indigo-950 via-purple-900 to-slate-900 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Horror</span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Miles In The Dark</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>1h 44m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/9">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-indigo-950 via-purple-900 to-slate-900 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Horror</span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Dream Signal</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>1h 39m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/8">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-slate-900 via-gray-900 to-black rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Drama</span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">The Silent Code</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>2h 01m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/7">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-fuchsia-950 via-rose-950 to-pink-900 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Action</span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Parallel Line</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>1h 47m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/6">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-blue-950 via-indigo-900 to-cyan-950 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Action</span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Beyond The Neon</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>2h 22m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/5">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-cyan-950 via-teal-900 to-emerald-950 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Political</span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">The Glass Empire</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>1h 58m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/4">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-rose-900 via-red-800 to-amber-700 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Adventure</span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">Crimson Horizon</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>2h 10m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <a class="group block" href="/Home/Details/25">
+                    <div class="relative aspect-[2/3] w-full bg-gradient-to-tr from-amber-950 via-orange-900 to-red-950 rounded-xl overflow-hidden border border-white/5">
+                        <div class="poster-art"></div>
+                        <i class="ri-play-circle-fill poster-glyph"></i>
+
+                        <div class="absolute top-0 left-0 right-0 p-3 flex items-start justify-between">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-black/60 text-white backdrop-blur-sm">Documentary</span>
+                        </div>
+
+                        <div class="play-btn-overlay absolute top-1/2 left-1/2 z-20">
+                            <span class="w-12 h-12 rounded-full bg-[#f41b3b] text-white flex items-center justify-center shadow-lg shadow-red-600/50 group-hover:scale-110 transition-transform">
+                                <i class="ri-play-fill text-xl ml-1"></i>
+                            </span>
+                        </div>
+
+                        <div class="z-10 absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent p-3 pt-8">
+                            <h3 class="text-xs sm:text-sm font-bold text-white truncate group-hover:text-[#f41b3b] transition-colors">King Jungle</h3>
+                            <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-gray-400 mt-1">
+                                <span>2025</span>
+                                <span>1h 29m</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+        </div>
+</section>
+
+
+    </main>
+    <!-- Footer -->
+    <footer class="bg-[#07080a] border-t border-white/10 pt-16 pb-12 mt-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+                <div class="lg:col-span-2 space-y-4">
+                    <a class="flex items-center gap-2" href="/">
+                        <span class="w-9 h-9 rounded-xl bg-gradient-to-tr from-[#f41b3b] to-[#ffea00] flex items-center justify-center text-white font-bold text-lg">
+                            <i class="ri-play-fill text-xl"></i>
+                        </span>
+                        <span class="text-2xl font-black text-white font-['Montserrat']">
+                            FAN<span class="text-[#f41b3b]">HUB</span><span class="text-xs ml-1 px-1.5 py-0.5 rounded bg-[#f41b3b]/20 text-[#f41b3b] font-bold">PLUS</span>
+                        </span>
+                    </a>
+                    <p class="text-gray-400 text-sm max-w-sm leading-relaxed">
+                        FanHub Plus is a next-generation streaming & OTT entertainment destination offering unlimited blockbusters, originals, anime, and 4K HDR live sporting events.
+                    </p>
+                    <div class="flex items-center space-x-3 pt-2">
+                        <a href="#" class="w-9 h-9 rounded-full bg-[#14161d] border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#f41b3b] hover:border-[#f41b3b] transition-all"><i class="ri-facebook-fill"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-[#14161d] border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#f41b3b] hover:border-[#f41b3b] transition-all"><i class="ri-twitter-x-fill"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-[#14161d] border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#f41b3b] hover:border-[#f41b3b] transition-all"><i class="ri-instagram-line"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-[#14161d] border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#f41b3b] hover:border-[#f41b3b] transition-all"><i class="ri-youtube-line"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Explore</h3>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><a class="text-gray-400 hover:text-[#f41b3b] transition-colors" href="/">Home</a></li>
+                        <li><a class="text-gray-400 hover:text-[#f41b3b] transition-colors" href="/Home/Movies">Movies Catalog</a></li>
+                        <li><a class="text-gray-400 hover:text-[#f41b3b] transition-colors" href="/Home/Movies?genre=Horror">TV Series</a></li>
+                        <li><a class="text-gray-400 hover:text-[#f41b3b] transition-colors" href="/Home/Movies?genre=Sports">Live Streaming</a></li>
+                        <li><a class="text-gray-400 hover:text-[#f41b3b] transition-colors" href="/Home/Pricing">Pricing Plans</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Genres</h3>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><a class="text-gray-400 hover:text-[#f41b3b] transition-colors" href="/Home/Movies?genre=Action">Action & Sci-Fi</a></li>
+                        <li><a class="text-gray-400 hover:text-[#f41b3b] transition-colors" href="/Home/Movies?genre=Drama">Drama & Crime</a></li>
+                        <li><a class="text-gray-400 hover:text-[#f41b3b] transition-colors" href="/Home/Movies?genre=Anime">Japanese Anime</a></li>
+                        <li><a class="text-gray-400 hover:text-[#f41b3b] transition-colors" href="/Home/Movies?genre=Horror">Horror & Thriller</a></li>
+                        <li><a class="text-gray-400 hover:text-[#f41b3b] transition-colors" href="/Home/Movies?genre=Documentary">Documentaries</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3 class="text-sm font-bold uppercase tracking-wider text-white mb-4">Download App</h3>
+                    <p class="text-gray-400 text-xs mb-3">Watch on Android, iOS, Apple TV, Smart TVs and tablets anywhere.</p>
+                    <div class="space-y-2">
+                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[#14161d] border border-white/10 hover:border-red-500/50 transition-all">
+                            <i class="ri-google-play-fill text-2xl text-[#f41b3b]"></i>
+                            <div class="text-left">
+                                <div class="text-[10px] text-gray-400 uppercase">GET IT ON</div>
+                                <div class="text-xs font-bold text-white">Google Play</div>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[#14161d] border border-white/10 hover:border-red-500/50 transition-all">
+                            <i class="ri-apple-fill text-2xl text-white"></i>
+                            <div class="text-left">
+                                <div class="text-[10px] text-gray-400 uppercase">Download on</div>
+                                <div class="text-xs font-bold text-white">App Store</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-500">
+                <p>&copy; 2026 FanHubPlus. Built for Aptech TechWiz 7. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a class="hover:text-gray-300 transition-colors" href="/Home/Privacy">Privacy Policy</a>
+                    <a href="#" class="hover:text-gray-300 transition-colors">Terms of Service</a>
+                    <a href="#" class="hover:text-gray-300 transition-colors">Cookie Preferences</a>
+                    <a class="hover:text-gray-300 transition-colors" href="/Home/Contact">Help Center</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <button id="backToTopBtn" type="button" aria-label="Back to Top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+
+    <script src="/js/swiper-bundle.min.js?v=RI1Ue_0kZ1Oj2l__N5YuqPmfvyk4jvWz3ETOTlpb_1M"></script>
+    <script src="/js/main.js?v=O1QOJetaOtk9m8PPQ2rXnLR-61p886lqq1qRt2P7Qig"></script>
+    
+</body>
+</html>
