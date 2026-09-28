@@ -38,6 +38,7 @@ public class MusicController : Controller
     }
 
     // GET /Music
+    [ResponseCache(Duration = 600, VaryByQueryKeys = ["*"])]
     public async Task<IActionResult> Index(string? search, int? categoryId, string? sort, int page = 1)
     {
         var vm = new MusicViewModel
@@ -95,7 +96,7 @@ public class MusicController : Controller
     // GET /Music/Details/5
     public async Task<IActionResult> Details(int id)
     {
-        var song = await _contents.Query()
+        var song = await _contents.QueryTracked()
             .Include(c => c.Category)
             .Include(c => c.MediaItems)
             .FirstOrDefaultAsync(c => c.ContentId == id && (c.Type == ContentType.Song || c.Type == ContentType.Album));

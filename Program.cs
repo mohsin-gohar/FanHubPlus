@@ -22,6 +22,10 @@ builder.Services.AddControllersWithViews(options =>
 // ---------- Response compression (HTML/JSON/CSS/JS) - smaller payloads ----------
 builder.Services.AddResponseCompression(options => options.EnableForHttps = true);
 
+// ---------- Response caching + in-memory cache ----------
+builder.Services.AddResponseCaching();
+builder.Services.AddMemoryCache();
+
 // ============================================================================
 //  EF Core + Microsoft SQL Server
 //  Connection string comes from Configuration/environment:
@@ -184,6 +188,7 @@ app.Use(async (ctx, next) =>
 });
 
 app.UseResponseCompression();
+app.UseResponseCaching();
 
 if (app.Environment.IsDevelopment())
 {

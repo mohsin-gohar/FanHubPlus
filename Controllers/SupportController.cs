@@ -24,6 +24,7 @@ public class SupportController : Controller
         _userManager = userManager;
     }
 
+    [ResponseCache(Duration = 600, VaryByQueryKeys = ["*"])]
     public async Task<IActionResult> Index()
     {
         var vm = new SupportViewModel

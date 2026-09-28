@@ -19,6 +19,7 @@ namespace FanHubPlus.Controllers
             _categories = categories;
         }
 
+        [ResponseCache(Duration = 600, VaryByQueryKeys = ["*"])]
         public async Task<IActionResult> Index(string timeline, int? categoryId, int page = 1)
         {
             page = Math.Max(1, page);

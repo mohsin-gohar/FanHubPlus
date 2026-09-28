@@ -24,22 +24,42 @@ public class HomeController : Controller
     }
 
     // Landing page: hero counters + trending content + latest news + upcoming events + merch
+    [ResponseCache(Duration = 300, VaryByQueryKeys = ["*"])]
     public async Task<IActionResult> Index()
     {
-        var (contents, members, events) = await _stats.GetPortalTotalsAsync();
+        // Fire all independent DB queries concurrently instead of sequentially
+        var totalsTask = _stats.GetPortalTotalsAsync();
+        var categoriesTask = _categories.Query()
+            .Select(c => new CategorySummaryViewModel
+            {
+                CategoryId = c.CategoryId,
+                Name = c.Name,
+                IconUrl = c.IconUrl,
+                Description = c.Description,
+                ContentCount = c.Contents.Count
+            })
+            .OrderBy(c => c.Name)
+            .ToListAsync();
+        var trendingTask = _content.GetTrendingAsync(6);
+        var trailersTask = _content.GetTrailersAsync(6);
+        var articlesTask = _content.GetLatestArticlesAsync(3);
+        var eventsTask = _content.GetUpcomingEventsAsync(3);
+        var merchTask = _content.GetFeaturedMerchAsync(4);
+
+        await Task.WhenAll(
+            totalsTask, categoriesTask, trendingTask,
+            trailersTask, articlesTask, eventsTask, merchTask);
+
+        var (contents, members, events) = await totalsTask;
 
         var vm = new HomeViewModel
         {
-            // Categories carry their titles so the landing page's category cards
-            // can show "n Titles" the way the template does.
-            Categories = await _categories.Query()
-                .Include(c => c.Contents)
-                .OrderBy(c => c.Name).ToListAsync(),
-            Trending = await _content.GetTrendingAsync(6),
-            Trailers = await _content.GetTrailersAsync(6),
-            LatestArticles = await _content.GetLatestArticlesAsync(3),
-            UpcomingEvents = await _content.GetUpcomingEventsAsync(3),
-            FeaturedMerch = await _content.GetFeaturedMerchAsync(4),
+            Categories = await categoriesTask,
+            Trending = await trendingTask,
+            Trailers = await trailersTask,
+            LatestArticles = await articlesTask,
+            UpcomingEvents = await eventsTask,
+            FeaturedMerch = await merchTask,
             TotalContents = contents,
             TotalMembers = members,
             TotalEvents = events
@@ -58,4 +78,3 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
-

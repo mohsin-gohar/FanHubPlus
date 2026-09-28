@@ -25,8 +25,8 @@ namespace FanHubPlus.Migrations
             modelBuilder.Entity("FanHubPlus.Models.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -37,8 +37,7 @@ namespace FanHubPlus.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -47,8 +46,8 @@ namespace FanHubPlus.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Email")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
@@ -68,12 +67,12 @@ namespace FanHubPlus.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -85,15 +84,14 @@ namespace FanHubPlus.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("SecurityStamp")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("UserName")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -117,8 +115,8 @@ namespace FanHubPlus.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ArticleId"));
 
                     b.Property<string>("AuthorId")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Body")
                         .IsRequired()
@@ -150,7 +148,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("Slug");
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.Bookmark", b =>
@@ -178,15 +176,15 @@ namespace FanHubPlus.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("BookmarkId");
 
                     b.HasIndex("UserId", "ItemType", "ItemId")
                         .IsUnique();
 
-                    b.ToTable("Bookmarks", (string)null);
+                    b.ToTable("Bookmarks");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.Category", b =>
@@ -215,7 +213,7 @@ namespace FanHubPlus.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.CharacterProfile", b =>
@@ -250,7 +248,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("CharacterProfiles", (string)null);
+                    b.ToTable("CharacterProfiles");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.ChatFaq", b =>
@@ -277,7 +275,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasKey("FaqId");
 
-                    b.ToTable("ChatFaqs", (string)null);
+                    b.ToTable("ChatFaqs");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.ChatbotQuery", b =>
@@ -302,14 +300,14 @@ namespace FanHubPlus.Migrations
                         .HasColumnType("nvarchar(4000)");
 
                     b.Property<string>("UserId")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("QueryId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ChatbotQueries", (string)null);
+                    b.ToTable("ChatbotQueries");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.Content", b =>
@@ -319,6 +317,14 @@ namespace FanHubPlus.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ContentId"));
+
+                    b.Property<string>("AlbumName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Artist")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -333,6 +339,14 @@ namespace FanHubPlus.Migrations
                     b.Property<string>("Genre")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("OfficialWebsiteUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("PlayableGameUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("PopularityScore")
                         .HasColumnType("int");
@@ -365,7 +379,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("Title");
 
-                    b.ToTable("Contents", (string)null);
+                    b.ToTable("Contents");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.ContentTag", b =>
@@ -380,7 +394,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("ContentTags", (string)null);
+                    b.ToTable("ContentTags");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.EventItem", b =>
@@ -426,7 +440,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("EventDate");
 
-                    b.ToTable("Events", (string)null);
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.FanSubmission", b =>
@@ -461,14 +475,14 @@ namespace FanHubPlus.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("SubmissionId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FanSubmissions", (string)null);
+                    b.ToTable("FanSubmissions");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.Feedback", b =>
@@ -498,14 +512,14 @@ namespace FanHubPlus.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("UserId")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("FeedbackId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Feedbacks", (string)null);
+                    b.ToTable("Feedbacks");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.MediaItem", b =>
@@ -537,7 +551,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("ContentId");
 
-                    b.ToTable("MediaItems", (string)null);
+                    b.ToTable("MediaItems");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.MerchandiseItem", b =>
@@ -580,7 +594,71 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("IsUpcoming");
 
-                    b.ToTable("MerchandiseItems", (string)null);
+                    b.ToTable("MerchandiseItems");
+                });
+
+            modelBuilder.Entity("FanHubPlus.Models.Entities.Playlist", b =>
+                {
+                    b.Property<int>("PlaylistId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlaylistId"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsPublic")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("PlaylistId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Playlists");
+                });
+
+            modelBuilder.Entity("FanHubPlus.Models.Entities.PlaylistItem", b =>
+                {
+                    b.Property<int>("PlaylistItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PlaylistItemId"));
+
+                    b.Property<DateTime>("AddedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ContentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlaylistId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("PlaylistItemId");
+
+                    b.HasIndex("ContentId");
+
+                    b.HasIndex("PlaylistId");
+
+                    b.ToTable("PlaylistItems");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.Rating", b =>
@@ -602,8 +680,8 @@ namespace FanHubPlus.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("RatingId");
 
@@ -612,7 +690,7 @@ namespace FanHubPlus.Migrations
                     b.HasIndex("UserId", "ContentId")
                         .IsUnique();
 
-                    b.ToTable("Ratings", (string)null);
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.Tag", b =>
@@ -630,14 +708,14 @@ namespace FanHubPlus.Migrations
 
                     b.HasKey("TagId");
 
-                    b.ToTable("Tags", (string)null);
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.UserCategory", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -646,7 +724,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("UserCategories", (string)null);
+                    b.ToTable("UserCategories");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.ViewLog", b =>
@@ -666,8 +744,8 @@ namespace FanHubPlus.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("UserId")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("ViewedAt")
                         .HasColumnType("datetime2");
@@ -676,27 +754,26 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ViewLogs", (string)null);
+                    b.ToTable("ViewLogs");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("NormalizedName")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -717,16 +794,14 @@ namespace FanHubPlus.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -744,17 +819,15 @@ namespace FanHubPlus.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClaimValue")
-                        .HasMaxLength(1024)
-                        .HasColumnType("nvarchar(1024)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
@@ -766,21 +839,20 @@ namespace FanHubPlus.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -792,10 +864,10 @@ namespace FanHubPlus.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -807,20 +879,19 @@ namespace FanHubPlus.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasMaxLength(450)
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -950,6 +1021,36 @@ namespace FanHubPlus.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("FanHubPlus.Models.Entities.Playlist", b =>
+                {
+                    b.HasOne("FanHubPlus.Models.Entities.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("FanHubPlus.Models.Entities.PlaylistItem", b =>
+                {
+                    b.HasOne("FanHubPlus.Models.Entities.Content", "Content")
+                        .WithMany()
+                        .HasForeignKey("ContentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("FanHubPlus.Models.Entities.Playlist", "Playlist")
+                        .WithMany("Items")
+                        .HasForeignKey("PlaylistId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Content");
+
+                    b.Navigation("Playlist");
+                });
+
             modelBuilder.Entity("FanHubPlus.Models.Entities.Rating", b =>
                 {
                     b.HasOne("FanHubPlus.Models.Entities.Content", "Content")
@@ -1074,6 +1175,11 @@ namespace FanHubPlus.Migrations
                     b.Navigation("MediaItems");
 
                     b.Navigation("Ratings");
+                });
+
+            modelBuilder.Entity("FanHubPlus.Models.Entities.Playlist", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.Tag", b =>

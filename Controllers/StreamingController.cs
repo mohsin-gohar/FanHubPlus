@@ -35,6 +35,7 @@ public class StreamingController : Controller
     }
 
     // GET /Streaming
+    [ResponseCache(Duration = 600, VaryByQueryKeys = ["*"])]
     public async Task<IActionResult> Index(
         string? search, int? categoryId,
         string? genre, string? contentType,
@@ -107,7 +108,7 @@ public class StreamingController : Controller
     // GET /Streaming/Details/5
     public async Task<IActionResult> Details(int id)
     {
-        var item = await _contents.Query()
+        var item = await _contents.QueryTracked()
             .Include(c => c.Category)
             .Include(c => c.MediaItems)
             .FirstOrDefaultAsync(c => c.ContentId == id);

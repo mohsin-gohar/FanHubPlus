@@ -31,6 +31,7 @@ public class MerchController : Controller
         _stats = stats;
     }
 
+    [ResponseCache(Duration = 600, VaryByQueryKeys = ["*"])]
     public async Task<IActionResult> Index(MerchTag? tag, int? categoryId, bool? upcoming)
     {
         var vm = new MerchViewModel
@@ -57,7 +58,7 @@ public class MerchController : Controller
 
     public async Task<IActionResult> Details(int id)
     {
-        var item = await _merch.Query()
+        var item = await _merch.QueryTracked()
             .Include(m => m.Category)
             .FirstOrDefaultAsync(m => m.ItemId == id);
 

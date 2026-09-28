@@ -81,3 +81,18 @@ Desktop.ini
 
 # Local build output used for smoke-testing the app
 .verify-build/
+
+# Headless-browser scratch directories (Chrome/Edge profiles and screenshots
+# created while debugging the UI). These are machine-local and can be several
+# hundred MB - they must never be committed.
+.chrome-cdp/
+chrome-prof*/
+chrome-profile*/
+navbar-shots/
+cdp-probe.js
+shot-*.png
+nav-*.png
+current-nav*.png
+v-*.png
+live_page.html
+original-*.html

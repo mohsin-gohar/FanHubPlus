@@ -39,6 +39,7 @@ public class ExploreController : Controller
     }
 
     // GET /Explore?search=&categoryId=&type=&sort=&page=
+    [ResponseCache(Duration = 600, VaryByQueryKeys = ["*"])]
     public async Task<IActionResult> Index(string? search, int? categoryId,
                                            ContentType? type, string? sort, int page = 1)
     {
@@ -87,7 +88,7 @@ public class ExploreController : Controller
     // GET /Explore/Details/5
     public async Task<IActionResult> Details(int id)
     {
-        var content = await _contents.Query()
+        var content = await _contents.QueryTracked()
             .Include(c => c.Category)
             .Include(c => c.MediaItems)
             .Include(c => c.ContentTags).ThenInclude(ct => ct.Tag)

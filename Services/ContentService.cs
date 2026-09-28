@@ -45,7 +45,7 @@ public class ContentService : IContentService
             .Distinct()
             .ToList();
 
-        var existingLinks = await _contentTags.Query()
+        var existingLinks = await _contentTags.QueryTracked()
             .Where(ct => ct.ContentId == content.ContentId)
             .Include(ct => ct.Tag)
             .ToListAsync();
@@ -157,7 +157,7 @@ public class ContentService : IContentService
         var contentExists = await _contents.Query().AsNoTracking().AnyAsync(c => c.ContentId == contentId);
         if (!contentExists) throw new KeyNotFoundException($"Content {contentId} no longer exists.");
 
-        var existing = await _ratings.Query()
+        var existing = await _ratings.QueryTracked()
             .FirstOrDefaultAsync(r => r.UserId == userId && r.ContentId == contentId);
 
         if (existing is null)
@@ -172,7 +172,7 @@ public class ContentService : IContentService
             {
                 // Two requests raced: the unique index (UserId, ContentId) rejected the
                 // second insert. Fall back to updating the row that won instead of 500.
-                var winner = await _ratings.Query()
+                var winner = await _ratings.QueryTracked()
                     .FirstOrDefaultAsync(r => r.UserId == userId && r.ContentId == contentId);
                 if (winner is null) throw;
 

@@ -59,6 +59,12 @@
     @* Utility classes used by the Razor views (replaces the previous Tailwind
        build). Provides every .flex / .bg-white etc. utility the markup needs. *@
     <link rel="stylesheet" href="~/css/fhp-utilities.css" asp-append-version="true" />
+    @* Regenerated Tailwind build (tailwind.config.js + tailwind.src.css). The
+       utility sheet above is a pre-purged build that predates several views, so
+       it lacks things like .h-full / .aspect-[16/9] / .object-cover / .truncate;
+       without them media and cards lose their sizing. Loaded last so the
+       utilities win over the older sheet's copies of the same names. *@
+    <link rel="stylesheet" href="~/css/tailwind.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/assets/css/swiper-bundle.min.css" />
     <link rel="stylesheet" href="~/assets/css/flaticon_fanhubplus.css" />
     <link rel="stylesheet" href="~/assets/css/scrollCue.css" />
@@ -110,7 +116,18 @@
                     class="navbar-brand fhp-nav__brand"
                     asp-controller="Home" asp-action="Index"
                 >
-                    <img src="~/assets/images/logo.svg" alt="FanHubPlus Logo" class="h-[38px] w-auto d-none d-sm-inline-block" />
+                    @* Live HTML wordmark instead of the logo.svg: SVG <text> depends
+                       on Montserrat having loaded, and without it the browser falls
+                       back to a different face (or renders nothing at all), so the
+                       brand name silently disappeared from the navbar. Real text is
+                       always painted, stays selectable and readable by screen
+                       readers, and picks up the theme colours. *@
+                    <span class="fhp-nav__logo" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="15" height="15" focusable="false">
+                            <path d="M8 5.2 19 12 8 18.8V5.2Z" fill="currentColor" />
+                        </svg>
+                    </span>
+                    <span class="fhp-nav__wordmark">Fan<em>HubPlus</em></span>
                     <span class="fhp-nav__mark d-inline-flex d-sm-none">FHP</span>
                 </a>
 
@@ -130,6 +147,8 @@
                         <a
                             href="javascript:void(0);"
                             class="@NavDrop@Mark("home")"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
                         >
                             Home <i class="ri-arrow-down-s-line"></i>
                         </a>
@@ -142,7 +161,7 @@
                             @if (isAuth)
                             {
                                 <li class="nav-item">
-                                    <a class="@NavPlain" asp-controller="Account" asp-action="Dashboard">
+                                    <a class="@NavPlain" asp-controller="Account" asp-action="Profile">
                                         User Dashboard
                                     </a>
                                 </li>
@@ -153,6 +172,8 @@
                         <a
                             href="javascript:void(0);"
                             class="@NavDrop"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
                         >
                             Pages <i class="ri-arrow-down-s-line"></i>
                         </a>
@@ -208,6 +229,8 @@
                         <a
                             href="javascript:void(0);"
                             class="@NavDrop@Mark("streaming")"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
                         >
                             Movies &amp; TV <i class="ri-arrow-down-s-line"></i>
                         </a>
@@ -243,6 +266,8 @@
                         <a
                             href="javascript:void(0);"
                             class="@NavDrop"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
                         >
                             Videos <i class="ri-arrow-down-s-line"></i>
                         </a>
@@ -263,6 +288,8 @@
                         <a
                             href="javascript:void(0);"
                             class="@NavDrop@Mark("blog")"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
                         >
                             Blog <i class="ri-arrow-down-s-line"></i>
                         </a>

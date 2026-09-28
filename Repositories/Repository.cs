@@ -17,7 +17,16 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
         _set = db.Set<TEntity>();
     }
 
-    public IQueryable<TEntity> Query() => _set.AsQueryable(); // tracked query
+    // Read-only queries skip change-tracking overhead (no entity updates).
+    // Use QueryTracked() only when you load an entity to modify it.
+    public IQueryable<TEntity> Query() => _set.AsNoTracking().AsQueryable();
+
+    // Read-only queries: skips change-tracking overhead (no entity updates)
+    public IQueryable<TEntity> QueryNoTracking() => _set.AsNoTracking().AsQueryable();
+
+    // Tracked queries: use when you load an entity to modify/delete it
+    // so EF Core can detect and persist changes via SaveChangesAsync().
+    public IQueryable<TEntity> QueryTracked() => _set.AsQueryable();
 
     public async Task<TEntity?> GetByIdAsync(object id) => await _set.FindAsync(id);
 

@@ -38,9 +38,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <!-- Caching -->
+    <!-- Caching. Microsoft.Extensions.Caching.Memory is NOT listed on purpose: it
+         ships inside the Microsoft.AspNetCore.App shared framework that the Web
+         SDK already references, and there is no 8.0.x package on nuget.org for it,
+         so asking for 8.0.11 made restore fall back to 9.0.0 (warning NU1603) and
+         dragged a .NET 9 assembly into a net8.0 app. -->
     <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.11" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.11" />
     <!-- Health Checks -->
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="8.0.1" />
     <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="8.0.1" />

@@ -37,7 +37,7 @@ public class BookmarkService : IBookmarkService
 
     public async Task<bool> ToggleAsync(string userId, BookmarkType type, int itemId, string? note = null)
     {
-        var existing = await _bookmarks.Query()
+        var existing = await _bookmarks.QueryTracked()
             .FirstOrDefaultAsync(b => b.UserId == userId && b.ItemType == type && b.ItemId == itemId);
 
         if (existing is not null)
@@ -78,7 +78,7 @@ public class BookmarkService : IBookmarkService
     // Removes one bookmark, but only when it belongs to the given user (IDOR guard)
     public async Task<bool> RemoveAsync(string userId, int bookmarkId)
     {
-        var mark = await _bookmarks.Query()
+        var mark = await _bookmarks.QueryTracked()
             .FirstOrDefaultAsync(b => b.BookmarkId == bookmarkId && b.UserId == userId);
 
         if (mark is null) return false;

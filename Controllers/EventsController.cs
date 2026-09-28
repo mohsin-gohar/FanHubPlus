@@ -13,6 +13,7 @@ public class EventsController : Controller
 
     public EventsController(IRepository<EventItem> events) => _events = events;
 
+    [ResponseCache(Duration = 600, VaryByQueryKeys = ["*"])]
     public async Task<IActionResult> Index(string? city, bool past = false)
     {
         var query = _events.Query().AsQueryable();

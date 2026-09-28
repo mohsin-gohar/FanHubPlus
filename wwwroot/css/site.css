@@ -2469,6 +2469,48 @@ html.lenis, html.lenis body { height: auto; }
     align-items: center;
     gap: 12px;
 }
+
+/* Play logo in front of the wordmark. Inline SVG (not an <img>) so it inherits
+   currentColor and never shows a broken-image icon.
+   Named __logo, NOT __badge: __badge is already the shopping-bag count pill
+   further down this file, and reusing it made the logo inherit that pill's
+   position:absolute / 18px yellow styling. */
+#navbar .fhp-nav__logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    color: #fff;
+    background: linear-gradient(135deg, #f41b3b 0%, #ff962e 100%);
+    border: 1px solid rgba(255, 255, 255, .22);
+    box-shadow: 0 8px 20px -8px rgba(244, 27, 59, .8), inset 0 1px 0 rgba(255, 255, 255, .35);
+}
+
+#navbar .fhp-nav__wordmark {
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    font-size: 21px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -.4px;
+    color: #fff;
+    white-space: nowrap;
+}
+
+#navbar .fhp-nav__wordmark em {
+    font-style: normal;
+    color: var(--fhp-yellow, #ffea00);
+}
+
+/* Below the sm breakpoint the tile is hidden, so the badge carries the brand. */
+@media (max-width: 575.98px) {
+    #navbar.fhp-nav .fhp-nav__brand { gap: 8px; }
+    #navbar .fhp-nav__logo { display: none; }
+    #navbar .fhp-nav__wordmark { font-size: 18px; }
+}
+
 #navbar .fhp-nav__mark {
     display: inline-flex;
     align-items: center;
@@ -2496,15 +2538,31 @@ html.lenis, html.lenis body { height: auto; }
 }
 #navbar.fhp-nav .fhp-nav__brand:hover > span:last-child { letter-spacing: .16em; }
 
-/* ---------- Primary links: tracked uppercase + centre-out underline ---- */
+/* ---------- Primary links: sentence case, yellow active, caret at the end */
 #navbar .navbar-nav > .nav-item > .nav-link {
+    position: relative;
     padding-top: 30px;
     padding-bottom: 30px;
-    font-size: 12.5px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .14em;
-    color: rgba(255, 255, 255, .78);
+    padding-inline: 9px;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    white-space: nowrap;
+    color: rgba(255, 255, 255, .88);
+}
+/* Bootstrap's default focus ring is a blue box; swap it for the brand cue.
+   Keyboard users still get a clearly visible 2px outline. */
+#navbar .navbar-nav > .nav-item > .nav-link:focus-visible {
+    outline: 2px solid var(--fhp-secondary, #ffea00);
+    outline-offset: -2px;
+    border-radius: 4px;
+    box-shadow: none;
+}
+/* Bootstrap paints its own caret on .dropdown-toggle; the markup already
+   ships a remixicon <i>, so drop the background-image to avoid two carets. */
+#navbar .navbar-nav > .nav-item > .dropdown-toggle::after {
+    display: none;
 }
 #navbar .navbar-nav > .nav-item > .nav-link:not(.dropdown-toggle)::after {
     content: "";
@@ -2514,19 +2572,37 @@ html.lenis, html.lenis body { height: auto; }
     bottom: 22px;
     height: 2px;
     border-radius: 2px;
-    background: linear-gradient(90deg, var(--fhp-red), var(--fhp-yellow));
+    background: var(--fhp-secondary, #ffea00);
     transition: left .35s var(--fhp-ease), right .35s var(--fhp-ease);
 }
 #navbar .navbar-nav > .nav-item > .nav-link:not(.dropdown-toggle):hover::after,
-#navbar .navbar-nav > .nav-item > .nav-link:not(.dropdown-toggle):focus-visible::after,
-#navbar .navbar-nav > .nav-item > .nav-link.active::after {
-    left: 0;
-    right: 0;
+#navbar .navbar-nav > .nav-item > .nav-link:not(.dropdown-toggle):focus-visible::after {
+    left: 9px;
+    right: 9px;
 }
 #navbar .navbar-nav > .nav-item > .nav-link:hover,
-#navbar .navbar-nav > .nav-item > .nav-link:focus-visible,
-#navbar .navbar-nav > .nav-item > .nav-link.active {
+#navbar .navbar-nav > .nav-item > .nav-link:focus-visible {
     color: #fff;
+}
+/* Active page reads in the template's secondary yellow, as in the reference. */
+#navbar .navbar-nav > .nav-item > .nav-link.active {
+    color: var(--fhp-secondary, #ffea00);
+}
+#navbar .navbar-nav > .nav-item > .nav-link.active:not(.dropdown-toggle)::after {
+    left: 9px;
+    right: 9px;
+}
+/* Caret rides just after the label and dims with the label. */
+#navbar .navbar-nav > .nav-item > .nav-link > i {
+    font-size: 15px;
+    line-height: 1;
+    opacity: .7;
+    transition: transform .3s var(--fhp-ease), opacity .3s var(--fhp-ease);
+}
+#navbar .navbar-nav > .nav-item.dropdown:hover > .nav-link > i,
+#navbar .navbar-nav > .nav-item.dropdown:focus-within > .nav-link > i {
+    transform: rotate(180deg);
+    opacity: 1;
 }
 
 /* ---------- User pill (avatar chip in the top bar) ---------- */
@@ -4147,35 +4223,40 @@ a.fhp-foot__contact-value:hover { color: var(--fhp-yellow); }
     background: rgba(255, 255, 255, .04);
     color: rgba(221, 221, 221, .8);
     font-size: .74rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    transition: background-color .3s var(--fhp-ease), border-color .3s var(--fhp-ease),
+                color .3s var(--fhp-ease);
+}
 
 /* ---------- thumbnails ------------------------------------------------- */
 .fhp-dthumb {
     display: block;
-    width: 56px;
-    height: 40px;
+    width: 44px;
+    height: 32px;
     border: 1px solid var(--fhp-dk-hair);
-    border-radius: 8px;
+    border-radius: 6px;
     object-fit: cover;
 }
-.fhp-dthumb--round { width: 42px; height: 42px; border-radius: 50%; }
+.fhp-dthumb--round { width: 32px; height: 32px; border-radius: 50%; }
 .fhp-dthumb-fallback {
     display: grid;
     place-items: center;
-    width: 56px;
-    height: 40px;
+    width: 44px;
+    height: 32px;
     border: 1px dashed rgba(232, 192, 116, .28);
-    border-radius: 8px;
+    border-radius: 6px;
     background: rgba(232, 192, 116, .06);
     color: rgba(232, 192, 116, .7);
-    font-size: 1rem;
+    font-size: .8rem;
 }
-.fhp-dthumb-fallback--round { width: 42px; height: 42px; border-radius: 50%; }
+.fhp-dthumb-fallback--round { width: 32px; height: 32px; border-radius: 50%; }
 
 /* ---------- card grid (submissions) ------------------------------------ */
 .fhp-dcards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 14px;
 }
 .fhp-dcard {
     display: flex;
@@ -4194,15 +4275,15 @@ a.fhp-foot__contact-value:hover { color: var(--fhp-yellow); }
 .fhp-dcard__img {
     display: block;
     width: 100%;
-    height: 170px;
+    height: 100px;
     object-fit: cover;
 }
 .fhp-dcard__body {
     display: flex;
     flex: 1 1 auto;
     flex-direction: column;
-    gap: 11px;
-    padding: 17px 19px 19px;
+    gap: 9px;
+    padding: 13px 15px 15px;
 }
 .fhp-dcard__head {
     display: flex;
@@ -4244,11 +4325,13 @@ a.fhp-foot__contact-value:hover { color: var(--fhp-yellow); }
     margin-top: 12px;
 }
 .fhp-dform__preview img {
+    width: 44px;
+    height: 44px;
     border: 1px solid var(--fhp-dk-hair);
-    border-radius: 8px;
+    border-radius: 6px;
     object-fit: cover;
 }
-.fhp-dform__preview--round img { border-radius: 50%; }
+.fhp-dform__preview--round img { width: 40px; height: 40px; border-radius: 50%; }
 .fhp-dform__preview span { color: rgba(221, 221, 221, .4); font-size: .74rem; }
 
 /* ---------- responsive -------------------------------------------------- */
@@ -4265,11 +4348,6 @@ a.fhp-foot__contact-value:hover { color: var(--fhp-yellow); }
     .fhp-dcard:hover { transform: none; }
 }
 
-    font-weight: 700;
-    letter-spacing: .08em;
-    transition: background-color .3s var(--fhp-ease), border-color .3s var(--fhp-ease),
-                color .3s var(--fhp-ease);
-}
 a.fhp-dpager__btn:hover {
     border-color: var(--fhp-dk-gold);
     background: rgba(232, 192, 116, .16);
@@ -4410,13 +4488,28 @@ footer a:hover {
 #navbar .navbar-nav > .nav-item > .nav-link {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
 }
-#navbar .navbar-nav > .nav-item > .nav-link:hover,
-#navbar .navbar-nav > .nav-item > .nav-link:focus-visible {
-    color: var(--fhp-red);
+/* Hover warms to white; the active page stays yellow (set further up), so
+   exclude it here or the red would swallow the current-page cue. */
+#navbar .navbar-nav > .nav-item > .nav-link:not(.active):hover,
+#navbar .navbar-nav > .nav-item > .nav-link:not(.active):focus-visible {
+    color: #fff;
 }
-#navbar .navbar-nav > .nav-item > .nav-link i { font-size: 15px; }
+/* The bar carries eight top-level items; trim tracking before it can collide. */
+@media (max-width: 1399.98px) {
+    #navbar .navbar-nav > .nav-item > .nav-link {
+        padding-inline: 6px;
+        font-size: 14px;
+    }
+    #navbar .fhp-nav__links { gap: 0; }
+}
+@media (max-width: 1199.98px) {
+    #navbar .navbar-nav > .nav-item > .nav-link {
+        padding-inline: 4px;
+        font-size: 13.5px;
+    }
+}
 
 /* ---------- Actions cluster ----------------------------------------- */
 #navbar .fhp-nav__actions {

@@ -30,6 +30,7 @@ public class SitemapController : Controller
     }
 
     // GET /Sitemap - human-readable page with DB-driven links
+    [ResponseCache(Duration = 3600, VaryByQueryKeys = ["*"])]
     public async Task<IActionResult> Index()
     {
         var vm = new SitemapViewModel
@@ -106,7 +107,7 @@ public class SitemapController : Controller
     }
 
     // GET /Sitemap/Xml - standard sitemap.xml consumed by search engines
-    [HttpGet]
+    [HttpGet, ResponseCache(Duration = 3600, VaryByQueryKeys = ["*"])]
     public async Task<IActionResult> Xml()
     {
         var baseUri = $"{Request.Scheme}://{Request.Host}";

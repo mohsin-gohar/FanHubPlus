@@ -11,7 +11,7 @@
             ContentId = i,
             Title = c.Name,
             CategoryId = c.CategoryId,
-            Category = c,
+            Category = new Category { CategoryId = c.CategoryId, Name = c.Name, IconUrl = c.IconUrl, Description = c.Description },
             Description = c.Description,
         }).ToList();
     }
@@ -157,7 +157,7 @@
 {
     <div class="py-[60px] md:py-[80px] lg:py-[100px] xl:py-[120px] 2xl:py-[140px]">
         <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
-            @Head("Trending Videos", Url.Action("Index", "Explore"), "View More Videos")
+            @Head("Trending Videos", Url.Action("Index", "Explore")!, "View More Videos")
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-[25px]" data-cues="slideInUp" data-group="1">
                 @foreach (var item in Model.Trending.Take(6))
                 {
@@ -207,7 +207,7 @@
 {
     <div class="py-[60px] md:py-[80px] lg:py-[100px] xl:py-[120px] 2xl:py-[140px]">
         <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
-            @Head("Categories", Url.Action("Index", "Explore"), "View All Categories")
+            @Head("Categories", Url.Action("Index", "Explore")!, "View All Categories")
             <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-[25px]" data-cues="slideInUp" data-group="3">
                 @foreach (var category in Model.Categories.Take(7))
                 {
@@ -222,7 +222,7 @@
                                 </a>
                             </h3>
                             <span class="block font-bold text-13 md:text-sm text-body/60 uppercase tracking-[0.1em]">
-                                @category.Contents.Count @(category.Contents.Count == 1 ? "Title" : "Titles")
+                                @category.ContentCount @(category.ContentCount == 1 ? "Title" : "Titles")
                             </span>
                         </div>
                     </div>
@@ -237,7 +237,7 @@
 {
     <div class="py-[60px] md:py-[80px] lg:py-[100px] xl:py-[120px] 2xl:py-[140px]">
         <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
-            @Head("Top Rated Movies", Url.Action("Index", "Explore", new { sort = "views" }), "View All Titles")
+            @Head("Top Rated Movies", Url.Action("Index", "Explore", new { sort = "views" })!, "View All Titles")
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-[25px]" data-cues="slideInUp" data-group="2">
                 @foreach (var item in Model.Trending.OrderByDescending(i => i.PopularityScore).ThenByDescending(i => i.ViewCount).Take(10))
                 {
@@ -253,7 +253,7 @@
 {
     <div class="py-[60px] md:py-[80px] lg:py-[100px] xl:py-[120px] 2xl:py-[140px]">
         <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
-            @Head("Trailers & Clips", Url.Action("Index", "Explore"), "Browse The Library")
+            @Head("Trailers & Clips", Url.Action("Index", "Explore")!, "Browse The Library")
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-[25px]" data-cues="slideInUp" data-group="1">
                 @foreach (var trailer in Model.Trailers)
                 {
@@ -312,7 +312,7 @@
 {
     <div class="py-[60px] md:py-[80px] lg:py-[100px] xl:py-[120px] 2xl:py-[140px]">
         <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
-            @Head("Fan Merchandise", Url.Action("Index", "Merch"), "Visit The Shop")
+            @Head("Fan Merchandise", Url.Action("Index", "Merch")!, "Visit The Shop")
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[25px] xl:gap-[35px]" data-cues="slideInUp" data-group="4">
                 @foreach (var item in Model.FeaturedMerch)
                 {
@@ -355,7 +355,7 @@
 {
     <div class="py-[60px] md:py-[80px] lg:py-[100px] xl:py-[120px] 2xl:py-[140px]">
         <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
-            @Head("Upcoming Fan Events", Url.Action("Index", "Events"), "Open The Event Map")
+            @Head("Upcoming Fan Events", Url.Action("Index", "Events")!, "Open The Event Map")
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[25px] lg:gap-[35px]" data-cues="slideInUp" data-group="3">
                 @for (var i = 0; i < Model.UpcomingEvents.Count; i++)
                 {
@@ -465,7 +465,7 @@
 {
     <div class="pb-[60px] md:pb-[80px] lg:pb-[100px] xl:pb-[120px] 2xl:pb-[140px]">
         <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
-            @Head("News & Editorials", Url.Action("Index", "Blog"), "Read The Blog")
+            @Head("News & Editorials", Url.Action("Index", "Blog")!, "Read The Blog")
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[25px] lg:gap-[35px]" data-cues="slideInUp" data-group="3">
                 @foreach (var article in Model.LatestArticles)
                 {

@@ -31,6 +31,7 @@ public class GamingController : Controller
     }
 
     // GET /Gaming
+    [ResponseCache(Duration = 600, VaryByQueryKeys = ["*"])]
     public async Task<IActionResult> Index(string? search, int? categoryId, bool playableOnly = false, string? sort = "popular", int page = 1)
     {
         var vm = new GamingViewModel
@@ -84,7 +85,7 @@ public class GamingController : Controller
     // GET /Gaming/Details/5
     public async Task<IActionResult> Details(int id)
     {
-        var game = await _contents.Query()
+        var game = await _contents.QueryTracked()
             .Include(c => c.Category)
             .Include(c => c.MediaItems)
             .FirstOrDefaultAsync(c => c.ContentId == id);

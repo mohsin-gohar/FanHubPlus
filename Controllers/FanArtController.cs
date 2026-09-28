@@ -29,6 +29,7 @@ public class FanArtController : Controller
         _uploads = uploads;
     }
 
+    [ResponseCache(Duration = 300, VaryByQueryKeys = ["*"])]
     public async Task<IActionResult> Index()
     {
         var vm = new FanArtViewModel

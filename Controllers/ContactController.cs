@@ -6,7 +6,8 @@ namespace FanHubPlus.Controllers
 {
     public class ContactController : Controller
     {
-        public IActionResult Index()
+        [ResponseCache(Duration = 600, VaryByQueryKeys = ["*"])]
+    public IActionResult Index()
         {
             return View();
         }

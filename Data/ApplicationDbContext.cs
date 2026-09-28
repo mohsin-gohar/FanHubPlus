@@ -171,23 +171,49 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         // Useful indexes for the Explorer filters (search by title, sort by date)
         builder.Entity<Content>().HasIndex(c => c.Title);
         builder.Entity<Content>().HasIndex(c => c.ReleaseDate);
+        builder.Entity<Content>().HasIndex(c => new { c.CategoryId, c.Type });
+        builder.Entity<Content>().HasIndex(c => c.Type);
+        builder.Entity<Content>().HasIndex(c => new { c.PopularityScore, c.ViewCount });
+
+        builder.Entity<CharacterProfile>().HasIndex(c => c.Name);
+        builder.Entity<CharacterProfile>().HasIndex(c => c.CategoryId);
+        builder.Entity<CharacterProfile>().HasIndex(c => c.Fandom);
+
         builder.Entity<EventItem>().HasIndex(e => e.EventDate);
+        builder.Entity<EventItem>().HasIndex(e => e.City);
+
         builder.Entity<MerchandiseItem>().HasIndex(m => m.IsUpcoming);
+        builder.Entity<MerchandiseItem>().HasIndex(m => new { m.CategoryId, m.Tag });
+
         builder.Entity<Article>().HasIndex(a => a.Slug);   // /Blog/Details/{slug} lookups
+        builder.Entity<Article>().HasIndex(a => a.PublishedAt);
+        builder.Entity<Article>().HasIndex(a => new { a.IsTimeline, a.CategoryId });
+
+        builder.Entity<FanSubmission>().HasIndex(s => s.Status);
+        builder.Entity<FanSubmission>().HasIndex(s => s.CreatedAt);
 
         // Category name must be unique (no double "Anime")
         builder.Entity<Category>().HasIndex(c => c.Name).IsUnique();
 
-        // SQL Server uses database-level collation; avoid MySQL-specific annotations.
+        // ---- ASP.NET Core Identity column widths -----------------------------
+        // These MUST match the widths the database was actually created with
+        // (see Migrations/20260924095153_InitialCreate), otherwise SQL Server
+        // rejects any new foreign key:
+        //   "Column 'AspNetUsers.Id' is not the same length or scale as
+        //    referencing column 'Playlists.UserId' in foreign key ..."
+        // SQL Server's Identity defaults are 450 for keys and 256 for names;
+        // the 128 values that used to sit here came from the MySQL era and
+        // never had a migration, so the model silently drifted from the schema.
+        const int KeyLength = 450;   // Id / UserId / RoleId and other GUID keys
+        const int NameLength = 256;  // UserName / Email / Normalized* / Role name
+
         builder.Entity<ApplicationUser>(user =>
         {
-            user.Property(u => u.Id).HasMaxLength(128);
-            user.Property(u => u.UserName).HasMaxLength(128);
-            user.Property(u => u.NormalizedUserName).HasMaxLength(128);
-            user.Property(u => u.Email).HasMaxLength(128);
-            user.Property(u => u.NormalizedEmail).HasMaxLength(128);
-            user.Property(u => u.ConcurrencyStamp).HasMaxLength(128);
-            user.Property(u => u.SecurityStamp).HasMaxLength(128);
+            user.Property(u => u.Id).HasMaxLength(KeyLength);
+            user.Property(u => u.UserName).HasMaxLength(NameLength);
+            user.Property(u => u.NormalizedUserName).HasMaxLength(NameLength);
+            user.Property(u => u.Email).HasMaxLength(NameLength);
+            user.Property(u => u.NormalizedEmail).HasMaxLength(NameLength);
             user.Property(u => u.Name).HasMaxLength(100);
             user.Property(u => u.AvatarUrl).HasMaxLength(300);
             user.HasIndex(u => u.NormalizedEmail).HasDatabaseName("EmailIndex");
@@ -195,52 +221,40 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
 
         builder.Entity<IdentityRole>(role =>
         {
-            role.Property(r => r.Id).HasMaxLength(128);
-            role.Property(r => r.Name).HasMaxLength(128);
-            role.Property(r => r.NormalizedName).HasMaxLength(128);
-            role.Property(r => r.ConcurrencyStamp).HasMaxLength(128);
+            role.Property(r => r.Id).HasMaxLength(KeyLength);
+            role.Property(r => r.Name).HasMaxLength(NameLength);
+            role.Property(r => r.NormalizedName).HasMaxLength(NameLength);
         });
 
         builder.Entity<IdentityUserToken<string>>(token =>
         {
-            token.Property(t => t.UserId).HasMaxLength(128);
-            token.Property(t => t.LoginProvider).HasMaxLength(128);
-            token.Property(t => t.Name).HasMaxLength(128);
-            token.Property(t => t.Value).HasMaxLength(512);
+            token.Property(t => t.UserId).HasMaxLength(KeyLength);
+            token.Property(t => t.LoginProvider).HasMaxLength(KeyLength);
+            token.Property(t => t.Name).HasMaxLength(KeyLength);
         });
 
         builder.Entity<IdentityUserLogin<string>>(login =>
         {
-            login.Property(l => l.LoginProvider).HasMaxLength(128);
-            login.Property(l => l.ProviderKey).HasMaxLength(128);
-            login.Property(l => l.ProviderDisplayName).HasMaxLength(128);
-            login.Property(l => l.UserId).HasMaxLength(128);
+            login.Property(l => l.LoginProvider).HasMaxLength(KeyLength);
+            login.Property(l => l.ProviderKey).HasMaxLength(KeyLength);
+            login.Property(l => l.UserId).HasMaxLength(KeyLength);
         });
 
         builder.Entity<IdentityUserClaim<string>>(claim =>
         {
-            claim.Property(c => c.UserId).HasMaxLength(128);
-            claim.Property(c => c.ClaimType).HasMaxLength(256);
-            claim.Property(c => c.ClaimValue).HasMaxLength(1024);
-        });
-
-        builder.Entity<IdentityRoleClaim<string>>(claim =>
-        {
-            claim.Property(c => c.ClaimType).HasMaxLength(256);
-            claim.Property(c => c.ClaimValue).HasMaxLength(1024);
+            claim.Property(c => c.UserId).HasMaxLength(KeyLength);
         });
 
         // 3) Rows that are always looked up by user id + item id
-        builder.Entity<UserCategory>().Property(uc => uc.UserId).HasMaxLength(128);
-        builder.Entity<Rating>().Property(r => r.UserId).HasMaxLength(128);
-        builder.Entity<Bookmark>().Property(b => b.UserId).HasMaxLength(128);
+        builder.Entity<UserCategory>().Property(uc => uc.UserId).HasMaxLength(KeyLength);
+        builder.Entity<Rating>().Property(r => r.UserId).HasMaxLength(KeyLength);
+        builder.Entity<Bookmark>().Property(b => b.UserId).HasMaxLength(KeyLength);
         builder.Entity<Bookmark>().Property(b => b.Note).HasMaxLength(500);
-        builder.Entity<Feedback>().Property(f => f.UserId).HasMaxLength(128);
-        builder.Entity<ChatbotQuery>().Property(q => q.UserId).HasMaxLength(128);
-        builder.Entity<ViewLog>().Property(v => v.UserId).HasMaxLength(128);
-        builder.Entity<FanSubmission>().Property(s => s.UserId).HasMaxLength(128);
-        builder.Entity<Article>().Property(a => a.AuthorId).HasMaxLength(128);
-
-        // SQL Server uses database-level collation; no MySQL-specific annotations.
+        builder.Entity<Feedback>().Property(f => f.UserId).HasMaxLength(KeyLength);
+        builder.Entity<ChatbotQuery>().Property(q => q.UserId).HasMaxLength(KeyLength);
+        builder.Entity<ViewLog>().Property(v => v.UserId).HasMaxLength(KeyLength);
+        builder.Entity<FanSubmission>().Property(s => s.UserId).HasMaxLength(KeyLength);
+        builder.Entity<Article>().Property(a => a.AuthorId).HasMaxLength(KeyLength);
+        builder.Entity<Playlist>().Property(p => p.UserId).HasMaxLength(KeyLength);
     }
 }

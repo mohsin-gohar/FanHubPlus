@@ -256,7 +256,7 @@ public class AccountController : Controller
         }
 
         // ---- Sync favourite categories (many-to-many UserCategory) ----
-        var current = await _userCategories.Query()
+        var current = await _userCategories.QueryTracked()
             .Where(uc => uc.UserId == user.Id)
             .ToListAsync();
 

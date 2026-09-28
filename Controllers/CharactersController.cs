@@ -34,6 +34,7 @@ public class CharactersController : Controller
         _stats = stats;
     }
 
+    [ResponseCache(Duration = 600, VaryByQueryKeys = ["*"])]
     public async Task<IActionResult> Index(string? search, int? categoryId)
     {
         var vm = new CharactersViewModel

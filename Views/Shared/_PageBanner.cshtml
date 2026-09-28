@@ -8,7 +8,40 @@
 @{
     var trail = Model ?? new List<FanHubPlus.Models.ViewModels.BreadcrumbItem>();
     var current = trail.Count > 0 ? trail[^1].Text : string.Empty;
-    var art = ViewData["bannerArt"] as string ?? "/assets/images/bg-images/bg-image7.jpg";
+
+    // ---- Header background artwork -------------------------------------------
+    // Every inner page paints a background image behind its header; the home page
+    // (Home/Index) is excluded on purpose - it already has its own full-bleed hero,
+    // so a banner behind it would double up the artwork.
+    //
+    // A view can still pin its own image with ViewData["bannerArt"]. Otherwise the
+    // image is picked from the controller, so each section gets a different photo
+    // instead of all 30 pages sharing one picture. Anything unmapped falls back to
+    // the template default (bg-image7).
+    var controller = (Context.Request.RouteValues["controller"]?.ToString() ?? "").ToLowerInvariant();
+    var bannerArtByController = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+    {
+        ["explore"]   = "/assets/images/bg-images/bg-image1.jpg",
+        ["characters"] = "/assets/images/bg-images/bg-image2.jpg",
+        ["blog"]      = "/assets/images/bg-images/bg-image3.jpg",
+        ["news"]      = "/assets/images/bg-images/bg-image4.jpg",
+        ["music"]     = "/assets/images/bg-images/bg-image5.jpg",
+        ["streaming"] = "/assets/images/bg-images/bg-image6.jpg",
+        ["gaming"]    = "/assets/images/bg-images/bg-image8.jpg",
+        ["merch"]     = "/assets/images/bg-images/bg-image1.jpg",
+        ["events"]    = "/assets/images/bg-images/bg-image2.jpg",
+        ["fanart"]    = "/assets/images/bg-images/bg-image3.jpg",
+        ["bookmarks"] = "/assets/images/bg-images/bg-image4.jpg",
+        ["account"]   = "/assets/images/bg-images/bg-image5.jpg",
+        ["contact"]   = "/assets/images/bg-images/bg-image6.jpg",
+        ["support"]   = "/assets/images/bg-images/bg-image8.jpg",
+        ["chatbot"]   = "/assets/images/bg-images/bg-image3.jpg",
+        ["sitemap"]   = "/assets/images/bg-images/bg-image4.jpg",
+    };
+
+    var art = ViewData["bannerArt"] as string
+              ?? (bannerArtByController.TryGetValue(controller, out var mapped) ? mapped : null)
+              ?? "/assets/images/bg-images/bg-image7.jpg";
 
     // The trail can carry intermediate levels; the template shows them as
     // "Home / level / current" with the current one in the accent colour.
