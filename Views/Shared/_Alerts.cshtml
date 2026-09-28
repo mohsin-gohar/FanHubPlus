@@ -1,24 +1,38 @@
-@* TempData flash messages. One shape for every notice on the site:
-   tinted block, icon, copy, close. Dismissing is handled once in site.js. *@
-@if (TempData["StatusMessage"] is string ok)
+@* TempData flash messages. One shape for every notice on the site: a dark
+   panel in the template's language, icon, copy, close. Dismissing is handled
+   once in site.js (.fhp-alert__close); the panel itself is painted by
+   css/fanhubplus-app.css so the template stylesheet stays untouched. *@
+@{
+    var ok = TempData["StatusMessage"] as string;
+    var err = TempData["StatusError"] as string;
+    var perr = TempData["PasswordError"] as string;
+}
+@if (ok != null || err != null || perr != null)
 {
-    <div class="fhp-alert fhp-alert--success" role="status">
-        <i class="ri-check-line" aria-hidden="true"></i> @ok
-        <button type="button" class="fhp-alert__close" aria-label="Dismiss">&times;</button>
+    <div class="fhp-notices">
+        @if (ok != null)
+        {
+            <div class="fhp-alert fhp-alert--success" role="status">
+                <i class="ri-check-line" aria-hidden="true"></i>
+                <span>@ok</span>
+                <button type="button" class="fhp-alert__close" aria-label="Dismiss">&times;</button>
+            </div>
+        }
+        @if (err != null)
+        {
+            <div class="fhp-alert fhp-alert--warning" role="alert">
+                <i class="ri-alert-line" aria-hidden="true"></i>
+                <span>@err</span>
+                <button type="button" class="fhp-alert__close" aria-label="Dismiss">&times;</button>
+            </div>
+        }
+        @if (perr != null)
+        {
+            <div class="fhp-alert fhp-alert--warning" role="alert">
+                <i class="ri-lock-line" aria-hidden="true"></i>
+                <span>@perr</span>
+                <button type="button" class="fhp-alert__close" aria-label="Dismiss">&times;</button>
+            </div>
+        }
     </div>
 }
-@if (TempData["StatusError"] is string err)
-{
-    <div class="fhp-alert fhp-alert--warning" role="alert">
-        <i class="ri-alert-line" aria-hidden="true"></i> @err
-        <button type="button" class="fhp-alert__close" aria-label="Dismiss">&times;</button>
-    </div>
-}
-@if (TempData["PasswordError"] is string perr)
-{
-    <div class="fhp-alert fhp-alert--warning" role="alert">
-        <i class="ri-lock-line" aria-hidden="true"></i> @perr
-        <button type="button" class="fhp-alert__close" aria-label="Dismiss">&times;</button>
-    </div>
-}
-

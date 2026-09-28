@@ -1,138 +1,148 @@
 @model ExploreViewModel
 @{
-    ViewData["Title"] = "Explore";
-    ViewData["fhpBanner"] = true;
+    ViewData["Title"] = "Movies & TV Shows";
     var trail = new List<BreadcrumbItem> { new("Explore") };
 
     var sorts = new (string Value, string Label)[]
     {
-        ("popular", "Most Popular"),
-        ("newest", "Newest First"),
-        ("views", "Most Viewed"),
-        ("title", "Title A-Z"),
+        ("popular", "Popularity"),
+        ("newest", "Recently Added"),
+        ("views", "Most Watched"),
+        ("title", "Alphabetical"),
     };
-    var hasFilters = !string.IsNullOrWhiteSpace(Model.Search)
-                     || Model.CategoryId is > 0
-                     || Model.Type is not null
-                     || Model.Sort != "popular";
+
+    // "Showing results 1-12 of 50", the template's own results line.
+    var from = Model.TotalItems == 0 ? 0 : ((Model.Page - 1) * Model.PageSize) + 1;
+    var to = from == 0 ? 0 : from + Model.Items.Count - 1;
+
+    string Tab(bool active) =>
+        "inline-block font-bold text-lg md:text-xl lg:text-[22px] transition-all ease-in-out duration-300 hover:text-primary"
+        + (active ? " text-primary underline" : "");
+
+    // The filter row's own controls, copied from the template.
+    const string Select = "form-select !w-auto !h-auto !px-0 ltr:!pr-[25px] rtl:!pl-[25px] !bg-transparent !border-none !text-black font-bold ltr:!bg-[right_0px_center] rtl:!bg-[left_0px_center]";
+
+    string Label(ContentType t) => t switch
+    {
+        ContentType.Series => "TV Shows",
+        ContentType.Movie => "Movies",
+        _ => t.ToString(),
+    };
 }
 
 <partial name="_PageBanner" model="trail" />
 
-<section class="fhp-section">
-    <div class="container">
-        <div class="fhp-layout">
-
-            <div>
-                <div class="fhp-panel fhp-panel--flush">
-                    <h1 class="fhp-panel__title">Find your next obsession</h1>
-                    <form method="get" class="fhp-form" role="search">
-                        <div class="fhp-field">
-                            <label class="fhp-field__label" for="exploreSearch">Search</label>
-                            <input id="exploreSearch" type="search" name="search" value="@Model.Search"
-                                   class="form-control form-input" placeholder="Title, genre or keyword" />
-                        </div>
-                        <div class="fhp-grid fhp-grid--2">
-                            <div class="fhp-field">
-                                <label class="fhp-field__label" for="exploreCategory">Fandom</label>
-                                <select id="exploreCategory" name="categoryId" class="form-select form-input">
-                                    <option value="">All fandoms</option>
-                                    @foreach (var category in Model.Categories)
-                                    {
-                                        <option value="@category.CategoryId" selected="@(Model.CategoryId == category.CategoryId)">@category.Name</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="fhp-field">
-                                <label class="fhp-field__label" for="exploreType">Type</label>
-                                <select id="exploreType" name="type" class="form-select form-input">
-                                    <option value="">All types</option>
-                                    @foreach (var type in Enum.GetValues<ContentType>())
-                                    {
-                                        <option value="@type" selected="@(Model.Type == type)">@type</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="fhp-field">
-                                <label class="fhp-field__label" for="exploreSort">Sort by</label>
-                                <select id="exploreSort" name="sort" class="form-select form-input">
-                                    @foreach (var (value, label) in sorts)
-                                    {
-                                        <option value="@value" selected="@(Model.Sort == value)">@label</option>
-                                    }
-                                </select>
-                            </div>
-                            <div class="fhp-field fhp-field--action">
-                                <button type="submit" class="fhp-btn fhp-btn--primary fhp-btn--block">Apply filters</button>
-                            </div>
-                        </div>
-                    </form>
-                    <p class="fhp-hint">
-                        @Model.TotalItems @(Model.TotalItems == 1 ? "title" : "titles") found
-                        @if (hasFilters)
-                        {
-                            <span>&middot; <a class="fhp-link-strong" asp-controller="Explore" asp-action="Index">Clear all</a></span>
-                        }
-                    </p>
-                </div>
-                @if (Model.Items.Count == 0)
+<!-- Movies & TV Shows -->
+<div class="py-[60px] md:py-[80px] lg:py-[100px] xl:py-[120px] 2xl:py-[140px]">
+    <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
+        <form method="get" asp-controller="Explore" asp-action="Index">
+            <div class="flex items-center flex-wrap gap-[15px] md:gap-[20px] lg:gap-[25px] mb-[20px]">
+                <a
+                    asp-controller="Explore" asp-action="Index"
+                    asp-route-search="@Model.Search" asp-route-categoryId="@Model.CategoryId" asp-route-sort="@Model.Sort"
+                    class="@Tab(Model.Type is null)"
+                >
+                    All
+                </a>
+                @foreach (var type in Enum.GetValues<ContentType>())
                 {
-                    <div class="fhp-empty">
-                        <h2 class="fhp-empty__title">Nothing here yet</h2>
-                        <p>No titles match those filters. Try a broader search or clear the filters.</p>
-                        <a class="fhp-btn fhp-btn--primary" asp-controller="Explore" asp-action="Index">Browse everything</a>
-                    </div>
+                    <a
+                        asp-controller="Explore" asp-action="Index"
+                        asp-route-search="@Model.Search" asp-route-categoryId="@Model.CategoryId"
+                        asp-route-type="@type" asp-route-sort="@Model.Sort"
+                        class="@Tab(Model.Type == type)"
+                    >
+                        @Label(type)
+                    </a>
                 }
-                else
-                {
-                    <div class="fhp-grid fhp-grid--3 fhp-mt-25">
-                        @foreach (var item in Model.Items)
+                <span class="inline-block relative ltr:pl-[20px] rtl:pr-[20px]">
+                    <i class="ri-filter-2-fill absolute top-1/2 -translate-y-1/2 ltr:left-0 rtl:right-0"></i>
+                    Filters
+                </span>
+                <select name="categoryId" class="@Select" onchange="this.form.submit()" aria-label="Fandom">
+                    <option value="">
+                        Fandoms
+                    </option>
+                    @foreach (var category in Model.Categories)
+                    {
+                        <option value="@category.CategoryId" selected="@(Model.CategoryId == category.CategoryId ? "selected" : null)">
+                            @category.Name
+                        </option>
+                    }
+                </select>
+                <select name="type" class="@Select" onchange="this.form.submit()" aria-label="Type">
+                    <option value="">
+                        Type
+                    </option>
+                    @foreach (var type in Enum.GetValues<ContentType>())
+                    {
+                        <option value="@type" selected="@(Model.Type == type ? "selected" : null)">
+                            @Label(type)
+                        </option>
+                    }
+                </select>
+                <label class="sr-only" for="exploreSearch">Search titles</label>
+                <input
+                    id="exploreSearch" type="search" name="search" value="@Model.Search"
+                    class="form-input !w-auto !h-[44px]" placeholder="Search titles"
+                />
+                <button class="primary-btn" type="submit">
+                    Apply
+                </button>
+                <a asp-controller="Explore" asp-action="Index" class="inline-block text-primary transition-all ease-in-out duration-300 hover:text-black">
+                    Reset
+                </a>
+            </div>
+            <div class="sm:flex items-center justify-between gap-[15px] mb-[25px]">
+                <p class="!mb-0 flex-none">
+                    Showing results @from–@to of @Model.TotalItems
+                </p>
+                <div class="flex items-center gap-[5px] mt-[10px] sm:mt-0">
+                    <span class="block flex-none">
+                        Sort by:
+                    </span>
+                    <select name="sort" class="@Select" onchange="this.form.submit()" aria-label="Sort by">
+                        @foreach (var (value, label) in sorts)
                         {
-                            <partial name="_ContentCard" model="item" />
+                            <option value="@value" selected="@(Model.Sort == value ? "selected" : null)">
+                                @label
+                            </option>
                         }
-                    </div>
-                    <partial name="_Pager" model="new {
-                        Page = Model.Page,
-                        TotalPages = Model.TotalPages,
-                        UrlFor = (Func<int, string>)(p => Model.PageUrl(p)) }" />
+                    </select>
+                </div>
+            </div>
+        </form>
+        @if (Model.Items.Count == 0)
+        {
+            <div class="text-center py-[40px] md:py-[60px]">
+                <h3 class="text-[22px] md:text-[26px] leading-[1.07] mb-[15px]">
+                    Nothing matches those filters
+                </h3>
+                <p class="mb-[25px]">
+                    Try a broader search, or reset the filters to see the whole library.
+                </p>
+                <a asp-controller="Explore" asp-action="Index" class="primary-btn">
+                    Browse everything
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-[25px]">
+                @foreach (var item in Model.Items)
+                {
+                    <partial name="_ContentCard" model="item" />
                 }
             </div>
 
-            @* ---- sticky fandom rail ---- *@
-            <aside class="fhp-aside" aria-label="Fandom navigation">
-                <div class="fhp-panel fhp-panel--flush">
-                    <h2 class="fhp-side-title">Browse fandoms</h2>
-                    <ul class="fhp-list">
-                        <li>
-                            <a asp-controller="Explore" asp-action="Index" class="@(Model.CategoryId is null ? "is-active" : "")">
-                                All titles <span>@Model.TotalItems</span>
-                            </a>
-                        </li>
-                        @foreach (var category in Model.Categories)
-                        {
-                            <li>
-                                <a asp-controller="Explore" asp-action="Index" asp-route-categoryId="@category.CategoryId"
-                                   class="@(Model.CategoryId == category.CategoryId ? "is-active" : "")">
-                                    @category.Name <i class="ri-arrow-right-line" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                        }
-                    </ul>
-
-                    <h2 class="fhp-side-title fhp-mt-25">Quick filters</h2>
-                    <div class="fhp-chips">
-                        @foreach (var type in Enum.GetValues<ContentType>())
-                        {
-                            <a class="fhp-chip @(Model.Type == type ? "is-active" : "")"
-                               asp-controller="Explore" asp-action="Index"
-                               asp-route-categoryId="@Model.CategoryId"
-                               asp-route-type="@type">@type</a>
-                        }
-                    </div>
-                </div>
-            </aside>
-        </div>
+            <partial name="_Pager" model="new {
+                Page = Model.Page,
+                TotalPages = Model.TotalPages,
+                UrlFor = (Func<int, string>)(p => Model.PageUrl(p)) }" />
+        }
     </div>
-</section>
+</div>
+<!-- End Movies & TV Shows -->
 
 <partial name="_JoinNow" />
+

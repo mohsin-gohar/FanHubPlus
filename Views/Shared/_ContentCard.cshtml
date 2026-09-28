@@ -1,68 +1,61 @@
-@* Content card - the video-details card, used by Explore, related rows,
-   bookmarks and the home page. One component, one source of truth.
-   Fallback art is derived from the id, so a card always looks intentional
-   even when an admin has not uploaded a cover yet. *@
+@* A movie tile exactly as the template draws it: cover, and on hover a
+   navy-black panel sliding up with the title, the IMDb chip and the meta row.
+   The artwork falls back to the template's own poster set when an admin has
+   not uploaded a cover, so a tile always looks composed. *@
 @model FanHubPlus.Models.Entities.Content
 @{
     var cover = string.IsNullOrWhiteSpace(Model.ThumbnailUrl)
         ? $"/assets/images/movies/movie{(Model.ContentId % 24) + 1}.jpg"
         : Model.ThumbnailUrl;
     var year = Model.ReleaseDate?.ToString("yyyy") ?? Model.CreatedAt.ToString("yyyy");
-    var views = Model.ViewCount >= 1000
-        ? (Model.ViewCount / 1000d).ToString("0.#") + "k"
-        : Model.ViewCount.ToString();
-    var dark = (bool?)ViewData["fhpDark"] == true;
-
-    // When the page loaded this item's media rows the play button can start the
-    // video right here; otherwise it simply opens the detail page, where the
-    // full player lives.
-    var trailer = MediaUrl.Primary(Model.MediaItems);
+    var score = Model.AverageRating > 0 ? Model.AverageRating.ToString("0.0") : "—";
 }
-<article class="fhp-vcard @(dark ? "fhp-vcard--dark" : "")">
-    <div class="fhp-vcard__frame">
-        <a asp-controller="Explore" asp-action="Details" asp-route-id="@Model.ContentId" tabindex="-1" aria-hidden="true">
-            <img src="@cover" class="fhp-vcard__img" alt="@Model.Title" loading="lazy" decoding="async" width="400" height="250" />
-        </a>
-
-        <div class="fhp-vcard__tools">
-            <button type="button" class="fhp-icon-btn bookmark-btn" title="Save to your list"
-                    aria-pressed="false" aria-label="Save @Model.Title to your list"
-                    data-type="@((int)BookmarkType.Content)" data-id="@Model.ContentId">
-                <i class="ri-heart-line" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="fhp-icon-btn fhp-share" title="Share"
-                    aria-label="Share @Model.Title"
-                    data-share-title="@Model.Title"
-                    data-share-url="@Url.Action("Details", "Explore", new { id = Model.ContentId })">
-                <i class="ri-share-line" aria-hidden="true"></i>
-            </button>
-        </div>
-
-        @if (trailer is not null)
-        {
-            <button type="button" class="fhp-vcard__play fhp-vcard__play--inline" data-fhp-video
-                    data-kind="@MediaUrl.Kind(trailer.EmbedUrl)" data-src="@trailer.EmbedUrl"
-                    data-poster="@cover" data-title="@($"{Model.Title} — {trailer.Tag ?? "trailer"}")"
-                    aria-label="Play the @(trailer.Tag ?? "trailer") of @Model.Title here">
-                <i class="ri-play-fill" aria-hidden="true"></i>
-            </button>
-        }
-        else
-        {
-            <a asp-controller="Explore" asp-action="Details" asp-route-id="@Model.ContentId"
-               class="fhp-vcard__play" aria-label="Open @Model.Title">
-                <i class="ri-play-fill" aria-hidden="true"></i>
+<div class="group text-center relative">
+    <a
+        asp-controller="Explore" asp-action="Details" asp-route-id="@Model.ContentId"
+        class="block overflow-hidden rounded-[5px]"
+    >
+        <img
+            src="@cover"
+            class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110"
+            alt="@Model.Title poster"
+            loading="lazy"
+        >
+    </a>
+    <div class="bg-navy-black py-[20px] md:py-[25px] lg:py-[30px] absolute bottom-0 left-0 right-0 rounded-b-[5px] transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible">
+        <h3 class="text-base md:text-lg lg:text-xl leading-none mb-[14px] md:mb-[16px]">
+            <a
+                asp-controller="Explore" asp-action="Details" asp-route-id="@Model.ContentId"
+                class="transition-all duration-300 ease-in-out hover:text-secondary"
+            >
+                @Model.Title
             </a>
-        }
-        <span class="fhp-vcard__badge">@views views</span>
+        </h3>
+        <div class="inline-block relative font-bold text-13 md:text-sm tracking-[0.15em] text-body/70 bg-black rounded-[5px] py-[4px] ltr:pr-[10px] rtl:pl-[10px] ltr:pl-[30px] rtl:pr-[30px]">
+            <i class="ri-star-fill text-[#FF962E] absolute ltr:left-[9px] rtl:right-[9px] top-1/2 transform -translate-y-1/2"></i>
+            <span class="text-secondary">@score</span>/10 IMDb
+        </div>
+        <ul class="text-13 md:text-sm font-bold text-body/70 flex items-center justify-center flex-wrap gap-[11px] mt-[11px] md:mt-[14px] uppercase tracking-[0.1em]">
+            <li>
+                @year
+            </li>
+            <li>
+                <div class="w-px bg-white/15 h-[12px]"></div>
+            </li>
+            <li>
+                @Model.Type
+            </li>
+            <li>
+                <div class="w-px bg-white/15 h-[12px]"></div>
+            </li>
+            <li>
+                <a
+                    asp-controller="Explore" asp-action="Index" asp-route-categoryId="@Model.CategoryId"
+                    class="inline-block text-[#ae99fa] transition-all duration-300 ease-in-out hover:text-secondary"
+                >
+                    @(Model.Category?.Name ?? "Fandom")
+                </a>
+            </li>
+        </ul>
     </div>
-
-    <h3 class="fhp-vcard__title">
-        <a asp-controller="Explore" asp-action="Details" asp-route-id="@Model.ContentId">@Model.Title</a>
-    </h3>
-    <ul class="fhp-rail">
-        <li>@year</li>
-        <li><span class="fhp-rail__sep" aria-hidden="true"></span></li>
-        <li><a asp-controller="Explore" asp-action="Index" asp-route-categoryId="@Model.CategoryId">@(Model.Category?.Name ?? "Fandom")</a></li>
-    </ul>
-</article>
+</div>

@@ -1,22 +1,23 @@
-@* Floating chatbot widget - available on every page, talks to /Chatbot/Ask (JSON) *@
+@* Floating FanBot launcher - present on every page, talks to /Chatbot/Ask.
+   Ids and class names are the contract with site.js; the look comes from
+   css/fanhubplus-app.css (the template ships no chat widget). *@
 <div id="chatWidget" class="chat-widget d-none">
-    <div class="chat-header d-flex justify-content-between align-items-center">
-        <span>🤖 FanBot</span>
-        <button type="button" class="btn-close btn-close-white" id="chatClose" aria-label="Close chat"></button>
+    <div class="chat-header">
+        <span>FanBot</span>
+        <button type="button" class="chat-close" id="chatClose" aria-label="Close chat">&times;</button>
     </div>
     <div class="chat-body" id="chatBody">
-        <div class="chat-msg bot">Hi! I'm FanBot 🤖 Ask me about categories, events, ratings or how the portal works.</div>
+        <div class="chat-msg bot">Hi! I'm FanBot. Ask me about fandoms, characters, events, ratings or how the portal works.</div>
     </div>
-    <div class="chat-suggestions px-2 pt-2 d-flex flex-wrap gap-1" id="chatSuggestions"></div>
-    <form class="chat-input input-group p-2 m-0 border-top" id="chatForm">
+    <div class="chat-suggestions" id="chatSuggestions"></div>
+    <form class="chat-input" id="chatForm">
         @Html.AntiForgeryToken()
-        <input type="text" class="form-control form-control-sm" id="chatText"
-               maxlength="1000" placeholder="Type your question..." autocomplete="off" required />
-        <button class="btn btn-primary btn-sm" type="submit" id="chatSend">➤</button>
+        <label class="sr-only" for="chatText">Your question</label>
+        <input type="text" id="chatText" maxlength="1000" placeholder="Type your question..." autocomplete="off" required />
+        <button type="submit" id="chatSend">Send</button>
     </form>
 </div>
 
-<button type="button" id="chatToggle" class="chat-fab" aria-label="Open chatbot" title="Chat with FanBot">
-    💬
+<button type="button" id="chatToggle" class="chat-fab" aria-label="Open the FanBot chat" title="Chat with FanBot">
+    <i class="ri-chat-3-line" aria-hidden="true"></i>
 </button>
-

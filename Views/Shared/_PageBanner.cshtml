@@ -1,63 +1,56 @@
-@* Page banner - the signature FanHubPlus "inner page" header.
-   Model: breadcrumb trail; the LAST item is the current page.
+@* Page banner - the template's inner-page header, element for element.
+   Model: the breadcrumb trail; the LAST item is the current page.
    Example:
-     ViewData["fhpBanner"] = true;
-     <partial name="_PageBanner" model="new List<BreadcrumbItem> { new("Explore", "/Explore"), new("Drama") }" /> *@
+     <partial name="_PageBanner" model="new List<BreadcrumbItem> { new("Explore", "/Explore"), new("Drama") }" />
+   Every inner page of the template paints bg-image7.jpg behind it; a page that
+   needs its own artwork sets ViewData["bannerArt"] first. *@
 @model List<FanHubPlus.Models.ViewModels.BreadcrumbItem>
 @{
     var trail = Model ?? new List<FanHubPlus.Models.ViewModels.BreadcrumbItem>();
     var current = trail.Count > 0 ? trail[^1].Text : string.Empty;
+    var art = ViewData["bannerArt"] as string ?? "/assets/images/bg-images/bg-image7.jpg";
 
-    // Cinematic artwork for the inner-page header. A section that always lives
-    // at the same place gets a fixed picture (so "Characters" always looks like
-    // Characters); detail pages - a different id every time - are hashed from
-    // the route, which still hands each one its own cover.
-    var route = Context.Request.RouteValues;
-    var controller = (route["controller"]?.ToString() ?? "Home").ToLowerInvariant();
-    var id = route["id"]?.ToString() ?? string.Empty;
-
-    var sectionArt = new Dictionary<string, string>
-    {
-        ["explore"]    = "/assets/images/bg-images/bg-image1.jpg",
-        ["characters"] = "/assets/images/bg-images/bg-image2.jpg",
-        ["events"]     = "/assets/images/bg-images/bg-image3.jpg",
-        ["sitemap"]    = "/assets/images/bg-images/bg-image4.jpg",
-        ["news"]       = "/assets/images/bg-images/bg-image5.jpg",
-        ["merch"]      = "/assets/images/bg-images/bg-image6.jpg",
-        ["fanart"]     = "/assets/images/bg-images/bg-image7.jpg",
-        ["support"]    = "/assets/images/bg-images/bg-image8.jpg",
-        ["chatbot"]    = "/assets/images/bg-images/bg-image7.jpg",
-        ["bookmarks"]  = "/assets/images/bg-images/bg-image3.jpg",
-    };
-
-    var seed = 0;
-    foreach (var ch in $"{controller}{id}") seed += ch;
-    var bannerBg = sectionArt.TryGetValue(controller, out var fixedArt)
-        ? fixedArt
-        : $"/assets/images/banners/banner-bg{(seed % 6) + 1}.jpg";
+    // The trail can carry intermediate levels; the template shows them as
+    // "Home / level / current" with the current one in the accent colour.
+    var middle = trail.Take(Math.Max(0, trail.Count - 1)).ToList();
 }
-<section class="fhp-banner">
-    <div class="fhp-banner__bg" style="background-image: url('@bannerBg');" aria-hidden="true"></div>
-    <div class="container fhp-banner__body">
-        <h1 class="fhp-banner__title">@current</h1>
-        <nav aria-label="Breadcrumb">
-            <ol class="fhp-crumbs">
-                <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-                @for (var i = 0; i < trail.Count; i++)
-                {
-                    var crumb = trail[i];
-                    var isLast = i == trail.Count - 1;
-                    if (isLast || string.IsNullOrWhiteSpace(crumb.Url))
+<div
+    class="pt-[130px] md:pt-[140px] lg:pt-[155px] xl:pt-[195px] 2xl:pt-[205px] pb-[60px] md:pb-[80px] lg:pb-[105px] xl:pb-[125px] 2xl:pb-[140px] rounded-b-[10px] relative bg-no-repeat bg-center bg-cover text-center"
+    style="background-image: url(@art);"
+>
+    <div class="container">
+        <h1 class="!font-black font-secondary uppercase tracking-[0.05em] text-[22px] md:text-[26px] lg:text-[32px] leading-none mb-[15px]">
+            @current
+        </h1>
+        <ul class="flex items-center justify-center flex-wrap gap-[10px] uppercase font-bold tracking-[0.1em] text-13 md:text-sm text-body">
+            <li>
+                <a asp-controller="Home" asp-action="Index" class="transition-all duration-300 ease-in-out hover:text-primary">
+                    Home
+                </a>
+            </li>
+            @foreach (var crumb in middle)
+            {
+                <li>
+                    /
+                </li>
+                <li>
+                    @if (!string.IsNullOrWhiteSpace(crumb.Url))
                     {
-                        <li aria-current="page">@crumb.Text</li>
+                        <a href="@crumb.Url" class="transition-all duration-300 ease-in-out hover:text-primary">@crumb.Text</a>
                     }
                     else
                     {
-                        <li><a href="@crumb.Url">@crumb.Text</a></li>
+                        @crumb.Text
                     }
-                }
-            </ol>
-        </nav>
+                </li>
+            }
+            <li>
+                /
+            </li>
+            <li class="text-secondary">
+                @current
+            </li>
+        </ul>
     </div>
-    <div class="fhp-banner__curve" aria-hidden="true"></div>
-</section>
+    <div class="h-[15px] mx-auto max-w-[535px] xl:max-w-[635px] absolute bottom-0 left-0 right-0 bg-white rounded-t-[10px] hidden lg:block"></div>
+</div>

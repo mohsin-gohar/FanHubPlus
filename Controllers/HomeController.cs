@@ -30,7 +30,10 @@ public class HomeController : Controller
 
         var vm = new HomeViewModel
         {
+            // Categories carry their titles so the landing page's category cards
+            // can show "n Titles" the way the template does.
             Categories = await _categories.Query()
+                .Include(c => c.Contents)
                 .OrderBy(c => c.Name).ToListAsync(),
             Trending = await _content.GetTrendingAsync(6),
             Trailers = await _content.GetTrailersAsync(6),
