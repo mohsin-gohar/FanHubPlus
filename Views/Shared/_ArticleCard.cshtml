@@ -1,0 +1,53 @@
+@* Blog card, exactly as the template draws it: cover, uppercase meta row and
+   the title. The dark landing page variant tints the meta and hovers in the
+   yellow accent; the white listing pages use the black/primary variant the
+   template uses there.
+   Set ViewData["fhpDark"] = true on dark pages, ViewData["fhpArticleController"]
+   to point the card at another controller (Blog instead of News). *@
+@model FanHubPlus.Models.Entities.Article
+@{
+    var dark = (bool?)ViewData["fhpDark"] == true;
+    var controller = ViewData["fhpArticleController"] as string ?? "News";
+    var cover = $"/assets/images/blogs/blog{(Model.ArticleId % 6) + 1}.jpg";
+    var author = string.IsNullOrWhiteSpace(Model.Author?.Name) ? "FanHubPlus Editorial" : Model.Author!.Name;
+
+    var meta = "text-13 md:text-sm uppercase font-bold flex items-center flex-wrap gap-[13px] mb-[9px] md:mb-[11px]"
+               + (dark ? " text-body/70" : "");
+    var divider = dark ? "bg-white/20" : "bg-black/20";
+    var byLink = "inline-block text-[#ae99fa] transition-all duration-300 ease-in-out "
+                 + (dark ? "hover:text-secondary" : "hover:text-primary");
+    var title = (dark ? "" : "!text-black ") + "mb-0 text-base md:text-lg lg:text-xl leading-[1.4]";
+    var hover = dark ? "group-hover:text-secondary" : "group-hover:text-primary";
+}
+<div class="group">
+    <a
+        asp-controller="@controller" asp-action="Details" asp-route-id="@Model.ArticleId"
+        class="overflow-hidden block rounded-[5px] mb-[20px] lg:mb-[25px]"
+    >
+        <img
+            src="@cover"
+            class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110"
+            alt="@Model.Title"
+            loading="lazy"
+        >
+    </a>
+    <ul class="@meta">
+        <li>
+            @Model.PublishedAt.ToString("dd MMM, yyyy")
+        </li>
+        <li>
+            <div class="w-px @divider h-[12px]"></div>
+        </li>
+        <li>
+            By
+            <a asp-controller="@controller" asp-action="Details" asp-route-id="@Model.ArticleId" class="@byLink">
+                @author
+            </a>
+        </li>
+    </ul>
+    <h3 class="@title">
+        <a asp-controller="@controller" asp-action="Details" asp-route-id="@Model.ArticleId" class="transition-all duration-300 ease-in-out @hover">
+            @Model.Title
+        </a>
+    </h3>
+</div>

@@ -358,3 +358,170 @@ main.bg-white .fhp-stars button:hover {
     }
 }
 
+
+/* ---------- Video modal plumbing ----------------------------------------
+   The Bootstrap JS bundle is loaded by the layout, but its reboot CSS never
+   is (the template ships compiled Tailwind). These are the handful of modal
+   rules bootstrap's JS relies on, plus the player shell from the old theme,
+   so #fhpVideoModal renders without dragging bootstrap's reset onto the
+   template. */
+/* ---------- Legacy sheet reconciliations --------------------------------
+   site.css is loaded first; a few of its rules outrank the template's own
+   utilities by specificity alone. Cancel them here (this file loads last). */
+
+/* The template footer lets every link inherit its colour; the legacy sheet
+   dims them all to 65% grey instead. */
+.footer a {
+    color: inherit;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1055;
+    display: none;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    outline: 0;
+}
+
+.modal.show {
+    display: block;
+}
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    background-color: #000;
+}
+
+.modal-backdrop.fade {
+    opacity: 0;
+}
+
+.modal-backdrop.fade.show {
+    opacity: .7;
+}
+
+.modal-dialog {
+    position: relative;
+    width: auto;
+    margin: .5rem;
+    pointer-events: none;
+}
+
+.modal-dialog-centered {
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+}
+
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    pointer-events: auto;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: .3rem;
+    outline: 0;
+}
+
+.modal-xl {
+    max-width: 1140px;
+}
+
+.modal.fade .modal-dialog {
+    transform: translate(0, -50px);
+    transition: transform .3s ease-out;
+}
+
+.modal.show .modal-dialog {
+    transform: none;
+}
+
+/* Player shell: pure video, no page scroll behind it */
+.fhp-vmodal .modal-content {
+    background: #0f0f0f;
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, .6);
+}
+
+.fhp-vmodal__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 13px 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+.fhp-vmodal__title {
+    margin: 0;
+    color: #fff;
+    font-size: 17px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.fhp-vmodal__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255, 255, 255, .22);
+    border-radius: 50%;
+    background: transparent;
+    color: #fff;
+    font-size: 20px;
+    line-height: 1;
+    transition: background-color .3s cubic-bezier(.4, 0, .2, 1), color .3s cubic-bezier(.4, 0, .2, 1);
+}
+
+.fhp-vmodal__close:hover {
+    background: #f41b3b;
+    border-color: #f41b3b;
+    color: #fff;
+}
+
+.fhp-vmodal__body {
+    padding: 0;
+    background: #000;
+}
+
+.fhp-vmodal__stage {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+}
+
+.fhp-vmodal__stage video,
+.fhp-vmodal__stage iframe {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+@media (max-width: 767px) {
+    .fhp-vmodal__stage {
+        aspect-ratio: 4 / 3;
+    }
+}
+

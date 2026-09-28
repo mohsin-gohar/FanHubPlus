@@ -44,6 +44,11 @@
     <title>@(ViewData["Title"] != null ? ViewData["Title"] + " | " : "")FanHubPlus</title>
 
     <!-- Links Of CSS File -->
+    @* Legacy component sheet for the inner pages that have not been moved to
+       the template markup yet (forms, panels, tabs, media, timeline, map...).
+       It comes FIRST so the template's compiled Tailwind wins wherever the two
+       share a selector; every .fhp-* component rule is unique to it. *@
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/assets/css/swiper-bundle.min.css" />
     <link rel="stylesheet" href="~/assets/css/flaticon_fanhubplus.css" />
     <link rel="stylesheet" href="~/assets/css/scrollCue.css" />
@@ -709,7 +714,12 @@
 
     <partial name="_ChatWidget" />
 
+    @* Any [data-fhp-video] control (trailers, the showreel, Explore cards)
+       opens this modal; site.js builds the player on demand. *@
+    <partial name="_VideoModal" />
+
     <!-- Links Of JS File -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/assets/js/swiper-bundle.min.js"></script>
     <script src="~/assets/js/scrollCue.min.js"></script>
     <script src="~/assets/js/parallax.min.js"></script>

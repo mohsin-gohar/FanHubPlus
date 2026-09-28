@@ -8,7 +8,9 @@
         ? $"/assets/images/movies/movie{(Model.ContentId % 24) + 1}.jpg"
         : Model.ThumbnailUrl;
     var year = Model.ReleaseDate?.ToString("yyyy") ?? Model.CreatedAt.ToString("yyyy");
-    var score = Model.AverageRating > 0 ? Model.AverageRating.ToString("0.0") : "—";
+    // 1-5 stars in the catalogue, shown on the template's 10-point IMDb chip.
+    var avg = Model.Ratings.Count > 0 ? Model.Ratings.Average(r => r.Stars) : 0;
+    var score = avg > 0 ? (avg / 5.0 * 10.0).ToString("0.0") : "—";
 }
 <div class="group text-center relative">
     <a

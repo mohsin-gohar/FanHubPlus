@@ -78,3 +78,6 @@ Desktop.ini
 .kilo/
 .kilocode/
 .worktrees/
+
+# Local build output used for smoke-testing the app
+.verify-build/

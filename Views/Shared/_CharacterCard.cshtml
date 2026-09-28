@@ -1,0 +1,51 @@
+@* Character portrait tile - the template's movie-tile geometry with the
+   character's fandom as the meta line instead of a rating.
+   Usage: <partial name="_CharacterCard" model="character" /> *@
+@model FanHubPlus.Models.Entities.CharacterProfile
+@{
+    var portrait = string.IsNullOrWhiteSpace(Model.ImageUrl)
+        ? $"/assets/images/categories/category{(Model.CharacterId % 7) + 1}.jpg"
+        : Model.ImageUrl;
+    var lore = string.IsNullOrWhiteSpace(Model.Fandom)
+        ? Model.Category?.Name ?? "Fandom"
+        : Model.Fandom;
+}
+<div class="group text-center relative">
+    <a
+        asp-controller="Characters" asp-action="Details" asp-route-id="@Model.CharacterId"
+        class="block overflow-hidden rounded-[5px]"
+    >
+        <img
+            src="@portrait"
+            class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110"
+            alt="@Model.Name"
+            loading="lazy"
+        >
+    </a>
+    <div class="bg-navy-black py-[20px] md:py-[25px] lg:py-[30px] absolute bottom-0 left-0 right-0 rounded-b-[5px] transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible">
+        <h3 class="text-base md:text-lg lg:text-xl leading-none mb-[14px] md:mb-[16px]">
+            <a
+                asp-controller="Characters" asp-action="Details" asp-route-id="@Model.CharacterId"
+                class="transition-all duration-300 ease-in-out hover:text-secondary"
+            >
+                @Model.Name
+            </a>
+        </h3>
+        <ul class="text-13 md:text-sm font-bold text-body/70 flex items-center justify-center flex-wrap gap-[11px] uppercase tracking-[0.1em]">
+            <li>
+                @lore
+            </li>
+            <li>
+                <div class="w-px bg-white/15 h-[12px]"></div>
+            </li>
+            <li>
+                <a
+                    asp-controller="Characters" asp-action="Details" asp-route-id="@Model.CharacterId"
+                    class="inline-block text-[#ae99fa] transition-all duration-300 ease-in-out hover:text-secondary"
+                >
+                    View Profile
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>

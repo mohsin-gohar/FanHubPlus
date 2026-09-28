@@ -262,19 +262,26 @@
                         : trailer.Poster;
                     <div class="group text-center">
                         <div class="relative rounded-[5px] mb-[20px] lg:mb-[22px]">
-                            <a data-fslightbox href="@trailer.Url" class="block overflow-hidden rounded-[5px]">
+                            <a data-fhp-video data-kind="@trailer.Kind" data-src="@trailer.Url" data-poster="@poster"
+                               data-title="@trailer.Content.Title — @trailer.Label"
+                               href="@trailer.Url" class="block overflow-hidden rounded-[5px]">
                                 <img src="@poster" class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110" alt="@trailer.Content.Title" loading="lazy">
                             </a>
                             <div class="@tileActions">
                                 <a asp-controller="Explore" asp-action="Details" asp-route-id="@trailer.Content.ContentId" class="@tileAction" title="Open the title page">
                                     <i class="ri-information-line"></i>
                                 </a>
-                                <button type="button" class="@tileAction" title="Copy a link to share">
+                                <button type="button" class="@tileAction fhp-share"
+                                        data-share-url="@Url.Action("Details", "Explore", new { id = trailer.Content.ContentId })"
+                                        data-share-title="@trailer.Content.Title on FanHubPlus"
+                                        title="Copy a link to share">
                                     <i class="ri-share-line"></i>
                                 </button>
-                                <a data-fslightbox href="@trailer.Url" class="@tileAction" title="Play the @trailer.Label">
+                                <button type="button" class="@tileAction" title="Play the @trailer.Label"
+                                        data-fhp-video data-kind="@trailer.Kind" data-src="@trailer.Url" data-poster="@poster"
+                                        data-title="@trailer.Content.Title — @trailer.Label">
                                     <i class="ri-play-fill"></i>
-                                </a>
+                                </button>
                             </div>
                         </div>
                         <h3 class="text-base md:text-lg lg:text-xl leading-none mb-[10px]">

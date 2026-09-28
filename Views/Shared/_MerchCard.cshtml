@@ -1,0 +1,49 @@
+@* Shop card, the template's product tile: cover, the "View Product" button
+   that fades in on hover, the name with its view chip and the accent line
+   underneath. The catalogue has no prices, so the accent line carries the
+   tag (and the drop date for pre-orders) instead of a price.
+   Set ViewData["fhpDark"] = true on dark pages. *@
+@model FanHubPlus.Models.Entities.MerchandiseItem
+@{
+    var dark = (bool?)ViewData["fhpDark"] == true;
+    var cover = string.IsNullOrWhiteSpace(Model.ImageUrl)
+        ? $"/assets/images/products/product{(Model.ItemId % 9) + 1}.jpg"
+        : Model.ImageUrl;
+    var name = (dark ? "" : "!text-black ") + "mb-0 text-base md:text-lg lg:text-xl leading-none";
+    var hover = dark ? "hover:text-secondary" : "hover:text-primary";
+    var accent = dark ? "text-secondary" : "text-primary";
+    var status = Model.IsUpcoming && Model.ReleaseDate is { } d
+        ? $"{Model.Tag} · drops {d:dd MMM yyyy}"
+        : Model.Tag.ToString();
+}
+<div class="group">
+    <div class="text-center relative mb-[15px] md:mb-[20px]">
+        <a asp-controller="Merch" asp-action="Details" asp-route-id="@Model.ItemId" class="block rounded-[5px] overflow-hidden">
+            <img
+                src="@cover"
+                class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110"
+                alt="@Model.Name"
+                loading="lazy"
+            >
+        </a>
+        <a
+            asp-controller="Merch" asp-action="Details" asp-route-id="@Model.ItemId"
+            class="secondary-btn uppercase absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 opacity-0 invisible group-hover:opacity-100 group-hover:visible"
+        >
+            View Product
+        </a>
+    </div>
+    <div class="flex items-center justify-between mb-[8px] gap-[10px]">
+        <h3 class="@name">
+            <a asp-controller="Merch" asp-action="Details" asp-route-id="@Model.ItemId" class="transition-all ease-in-out duration-300 @hover">
+                @Model.Name
+            </a>
+        </h3>
+        <div class="inline-block relative font-bold ltr:pl-[20px] rtl:pr-[20px] flex-none">
+            <i class="ri-eye-line text-[#FF962E] absolute ltr:left-0 rtl:right-0 top-1/2 transform -translate-y-1/2"></i>(@Model.ViewCount)
+        </div>
+    </div>
+    <span class="block font-bold @accent">
+        @status
+    </span>
+</div>

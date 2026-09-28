@@ -1,0 +1,53 @@
+@* Fan-art tile in the template's video-card shape: the artwork opens in the
+   FSLightbox viewer the layout already loads (data-fslightbox), so the gallery
+   needs no extra script. The author rides along in the hover action row.
+   Usage: <partial name="_ArtworkCard" model="submission" /> *@
+@model FanHubPlus.Models.Entities.FanSubmission
+@{
+    var art = string.IsNullOrWhiteSpace(Model.ImageUrl)
+        ? $"/assets/images/releases/release{(Model.SubmissionId % 6) + 1}.jpg"
+        : Model.ImageUrl;
+    var author = string.IsNullOrWhiteSpace(Model.User?.Name) ? "Former member" : Model.User!.Name;
+    var story = (Model.Body ?? string.Empty).Trim();
+    var excerpt = story.Length > 120 ? story[..120].TrimEnd() + "…" : story;
+}
+<div class="group text-center">
+    <div class="relative rounded-[5px] mb-[20px] lg:mb-[22px]">
+        <a href="@art" data-fslightbox="fan-art" class="block overflow-hidden rounded-[5px]">
+            <img
+                src="@art"
+                class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110"
+                alt="@Model.Title"
+                loading="lazy"
+            >
+        </a>
+        <div class="flex items-center justify-center flex-wrap gap-[5px] absolute bottom-[10px] left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:bottom-[20px]">
+            <span class="flex items-center justify-center text-white bg-white/30 rounded-full px-[12px] h-[30px] text-13 font-bold">
+                @author
+            </span>
+            <a href="@art" data-fslightbox="fan-art" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="View the full artwork">
+                <i class="ri-eye-line"></i>
+            </a>
+        </div>
+    </div>
+    <h3 class="text-base md:text-lg lg:text-xl leading-none mb-[10px]">
+        @Model.Title
+    </h3>
+    <ul class="text-13 md:text-sm font-bold text-body/70 flex items-center justify-center flex-wrap gap-[11px] uppercase tracking-[0.1em]">
+        <li>
+            @Model.CreatedAt.ToString("dd MMM yyyy")
+        </li>
+        <li>
+            <div class="w-px bg-white/15 h-[12px]"></div>
+        </li>
+        <li>
+            Fan Art
+        </li>
+    </ul>
+    @if (!string.IsNullOrEmpty(excerpt))
+    {
+        <p class="mt-[12px] mb-0">
+            @excerpt
+        </p>
+    }
+</div>
