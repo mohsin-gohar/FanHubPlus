@@ -125,6 +125,7 @@ builder.Services.AddScoped<IStatsService, StatsService>();
 builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddScoped<IBookmarkService, BookmarkService>();
 builder.Services.AddScoped<ISupportService, SupportService>();
+builder.Services.AddScoped<IArticleService, ArticleService>();
 
 // Runs automatically on startup: roles, admin user, demo user, 8 categories, demo content
 builder.Services.AddScoped<DbSeeder>();

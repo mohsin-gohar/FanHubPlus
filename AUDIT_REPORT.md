@@ -107,12 +107,12 @@ To create local accounts, explicitly set `Database__SeedDemoAccounts=true` and p
 
 ## UI theme re-applied (2026-09-27)
 
-The **Misao** template (EnvyTheme, https://templates.envytheme.com/misao/index.html) is the visual
+The **FanHubPlus** template (EnvyTheme, https://templates.envytheme.com/misao/index.html) is the visual
 foundation again, matching the original hand-in:
 
 | Layer | Location | State |
 |---|---|---|
-| Template design system | `wwwroot/assets/css/style.css` + `flaticon_misao.css`, `remixicon.css`, `swiper-bundle.min.css`, `scrollCue.css` | restored |
+| Template design system | `wwwroot/assets/css/style.css` + `flaticon_fanhubplus.css`, `remixicon.css`, `swiper-bundle.min.css`, `scrollCue.css` | restored |
 | Template behaviour | `wwwroot/assets/js/` - GSAP/ScrollTrigger, Swiper, Lenis, lightbox, parallax, scroll cue, `fhp-custom.js` | restored |
 | Template media | `wwwroot/assets/images/` (photography, shapes, posters) and `movie.mp4` hero video | restored |
 | Project design system | `wwwroot/css/site.css` (`--fhp-*` tokens, buttons, panels, cards, banners, admin shell) and `wwwroot/js/site.js` | re-paired with the template |
@@ -124,3 +124,26 @@ security middleware and the test suite are unchanged; the three detail pages who
 longer carry a category list (`Explore/Details`, `News/Details`, `Merch/Details`) were adapted to the current
 contracts instead of changing any controller. Verified after the swap: build 0 warnings/0 errors, 20 tests
 pass, and every public, authenticated and admin route returns HTTP 200 with no unhandled exception.
+
+## Theme rebrand pass (2026-09-28)
+
+The imported theme was rebranded to FanHubPlus with a global find-and-replace. No visual change; only
+names changed:
+
+| Item | Change |
+|---|---|
+| Icon font | `assets/css/flaticon_misao.css` -> `flaticon_fanhubplus.css`, `assets/fonts/flaticon_misao14a1.*` -> `flaticon_fanhubplus14a1.*`; the `@font-face` family, all five `url()` targets and the `#...` fragment were renamed, as were the caret rule in `assets/css/style.css`, the `<font id>` inside the SVG font and the `<link>` in `Views/Shared/_Layout.cshtml` |
+| Wordmark artwork | `assets/images/logo.svg` and `logo-big.svg` redrawn as FanHubPlus wordmarks in the same viewBoxes/sizes (neither file is referenced by the views - the header and footer render the brand as live text) |
+| Text | Footer credit, code comments and documentation: `Misao` -> `FanHubPlus`; also `.misaoOriginalsSwiper` -> `.fanhubplusOriginalsSwiper` in `assets/js/custom.js` (a selector no markup referenced, so behaviour is unchanged) |
+| Untouched | All class names, Tailwind utility strings, colours, type scale, behaviour scripts, media, and the upstream URL quoted above |
+
+Verified after the pass: `dotnet build FanHubPlus.sln` reports 0 warnings / 0 errors; a
+case-insensitive search for the old brand across `Views/`, `Areas/`, `wwwroot/`, `Models/`,
+`Services/`, `Controllers/`, `Data/`, `Migrations/` and `Properties/` returns 0 hits; every `~/`
+asset reference in `Views/Shared/_Layout.cshtml` and all five `url()` targets in
+`flaticon_fanhubplus.css` resolve on disk; and a runtime smoke test answers HTTP 200 for `/`, for the
+renamed stylesheet, for the renamed `woff2` font and for both logo files (the old stylesheet path
+correctly returns 404).
+
+Full record, including the intentional deviations and how to re-run or roll back the migration:
+`THEME_MIGRATION.md`.

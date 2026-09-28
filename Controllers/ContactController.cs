@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using FanHubPlus.Models;
+using FanHubPlus.Models.ViewModels;
 
 namespace FanHubPlus.Controllers
 {
@@ -10,7 +11,6 @@ namespace FanHubPlus.Controllers
             return View();
         }
 
-        [HttpPost]
         [HttpPost]
         [Route("Contact/SendMessage")]
         public IActionResult SendMessage(ContactViewModel model)

@@ -1,7 +1,7 @@
 @using System.Text.RegularExpressions
 @{
     // Admin area master layout: top bar + fixed sidebar + main column.
-    // Like the public site the dashboard is locked to the Misao dark theme
+    // Like the public site the dashboard is locked to the FanHubPlus dark theme
     // (data-theme-lock="dark"), so both shells read as one product. The shared
     // fhp_pref cookie still drives the font-size preference.
     var pref = Context.Request.Cookies["fhp_pref"];
@@ -21,11 +21,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@(ViewData["Title"] != null ? ViewData["Title"] + " · " : "")Admin · FanHubPlus</title>
 
-    @* ---------- Same Misao assets the public shell loads ---------- *@
+    @* ---------- Same FanHubPlus assets the public shell loads ---------- *@
     <link rel="stylesheet" href="~/assets/css/remixicon.css" />
     @* ---------- Bootstrap (grid + widgets the admin forms/tables rely on) ---------- *@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    @* ---------- FanHubPlus bridge (Misao palette + the fhp- vocabulary) ---------- *@
+    @* ---------- FanHubPlus bridge (FanHubPlus palette + the fhp- vocabulary) ---------- *@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     <link rel="icon" type="image/png" href="~/assets/images/favicon.ico" />

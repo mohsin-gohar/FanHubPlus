@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using FanHubPlus.Models.Entities;
-using FanHubPlus.Models;
+using FanHubPlus.Models.ViewModels;
 
 namespace FanHubPlus.Controllers
 {
@@ -26,13 +26,13 @@ namespace FanHubPlus.Controllers
         public async Task<IActionResult> Profile()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return Redirect("/Auth/SignIn");
-            var model = new AccountViewModel
+            if (user == null) return Redirect("/Account/Login");
+            var model = new ProfileViewModel
             {
-                DisplayName = user.DisplayName,
-                Email = user.Email,
-                Bio = user.Bio,
-                AvatarUrl = user.AvatarUrl
+                Name = user.Name,
+                CurrentAvatarUrl = user.AvatarUrl,
+                DarkMode = user.DarkMode,
+                FontSize = user.FontSize
             };
             return View(model);
         }
@@ -40,21 +40,21 @@ namespace FanHubPlus.Controllers
         public async Task<IActionResult> Bookmarks()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return Redirect("/Auth/SignIn");
+            if (user == null) return Redirect("/Account/Login");
             return View("Bookmarks");
         }
 
         public async Task<IActionResult> History()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return Redirect("/Auth/SignIn");
+            if (user == null) return Redirect("/Account/Login");
             return View("History");
         }
 
         public async Task<IActionResult> Settings()
         {
             var user = await _userManager.GetUserAsync(User);
-            if (user == null) return Redirect("/Auth/SignIn");
+            if (user == null) return Redirect("/Account/Login");
             return View("Settings");
         }
     }

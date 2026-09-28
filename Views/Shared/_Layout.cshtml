@@ -1,6 +1,6 @@
 @using System.Text.RegularExpressions
 @{
-    // The public site always runs the Misao (dark) theme; the cookie still
+    // The public site always runs the FanHubPlus (dark) theme; the cookie still
     // carries the visitor's preferred base font size: "fhp_pref" = "1|16".
     var pref = Context.Request.Cookies["fhp_pref"];
     var fontMatch = Regex.Match(pref ?? "", @"\|(\d+)$");
@@ -12,7 +12,7 @@
 
     var controller = (Context.Request.RouteValues["controller"]?.ToString() ?? "Home").ToLowerInvariant();
 
-    // Class strings are copied verbatim from the Misao template so the
+    // Class strings are copied verbatim from the FanHubPlus template so the
     // compiled Tailwind stylesheet really contains them.
     string NavLink(string name) =>
         "nav-link font-bold text-15 relative py-[30px] xl:py-[40px] block text-white transition-all duration-300 ease-in-out hover:text-secondary"
@@ -31,15 +31,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@(ViewData["Title"] != null ? ViewData["Title"] + " | " : "")FanHubPlus</title>
 
-    @* ---------- Misao theme stylesheets ---------- *@
+    @* ---------- FanHubPlus theme stylesheets ---------- *@
     <link rel="stylesheet" href="~/assets/css/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="~/assets/css/flaticon_misao.css" />
+    <link rel="stylesheet" href="~/assets/css/flaticon_fanhubplus.css" />
     <link rel="stylesheet" href="~/assets/css/scrollCue.css" />
     <link rel="stylesheet" href="~/assets/css/remixicon.css" />
     <link rel="stylesheet" href="~/assets/css/style.css" />
     @* ---------- Bootstrap (grid + widgets used by the inner views) ---------- *@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    @* ---------- FanHubPlus bridge (Misao palette + overrides) ---------- *@
+    @* ---------- FanHubPlus bridge (FanHubPlus palette + overrides) ---------- *@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
     <link rel="icon" type="image/png" href="~/assets/images/favicon.ico" />
@@ -434,7 +434,7 @@
                     <p class="fhp-foot__copy">
                         &copy; @DateTime.Now.Year <strong>FanHubPlus</strong>. All rights reserved.
                         Built for the TechWiz competition on the
-                        <a href="https://envytheme.com/" target="_blank" rel="noopener noreferrer">Misao</a> theme.
+                        <a href="https://envytheme.com/" target="_blank" rel="noopener noreferrer">FanHubPlus</a> theme.
                     </p>
                     <ul class="fhp-foot__legal">
                         <li><a asp-controller="Sitemap" asp-action="Index">Sitemap</a></li>
@@ -464,7 +464,7 @@
 
     <partial name="_ChatWidget" />
 
-    <!-- Misao theme scripts (same order as the original template) -->
+    <!-- FanHubPlus theme scripts (same order as the original template) -->
     <script src="~/assets/js/swiper-bundle.min.js"></script>
     <script src="~/assets/js/scrollCue.min.js"></script>
     <script src="~/assets/js/parallax.min.js"></script>

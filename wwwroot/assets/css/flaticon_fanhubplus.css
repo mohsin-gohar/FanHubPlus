@@ -10,16 +10,16 @@
 */
 
 @font-face {
-    font-family: "flaticon_misao";
-    src: url("../fonts/flaticon_misao14a1.woff2?a020489a4b8dfd00358a8b1c80a0d428") format("woff2"),
-url("../fonts/flaticon_misao14a1.woff?a020489a4b8dfd00358a8b1c80a0d428") format("woff"),
-url("../fonts/flaticon_misao14a1.eot?a020489a4b8dfd00358a8b1c80a0d428#iefix") format("embedded-opentype"),
-url("../fonts/flaticon_misao14a1.ttf?a020489a4b8dfd00358a8b1c80a0d428") format("truetype"),
-url("../fonts/flaticon_misao14a1.svg?a020489a4b8dfd00358a8b1c80a0d428#flaticon_misao") format("svg")
+    font-family: "flaticon_fanhubplus";
+    src: url("../fonts/flaticon_fanhubplus14a1.woff2?a020489a4b8dfd00358a8b1c80a0d428") format("woff2"),
+url("../fonts/flaticon_fanhubplus14a1.woff?a020489a4b8dfd00358a8b1c80a0d428") format("woff"),
+url("../fonts/flaticon_fanhubplus14a1.eot?a020489a4b8dfd00358a8b1c80a0d428#iefix") format("embedded-opentype"),
+url("../fonts/flaticon_fanhubplus14a1.ttf?a020489a4b8dfd00358a8b1c80a0d428") format("truetype"),
+url("../fonts/flaticon_fanhubplus14a1.svg?a020489a4b8dfd00358a8b1c80a0d428#flaticon_fanhubplus") format("svg")
 }
 
 i[class^="flaticon-"]:before, i[class*=" flaticon-"]:before {
-    font-family: flaticon_misao !important;
+    font-family: flaticon_fanhubplus !important;
     font-style: normal;
     font-weight: normal !important;
     font-variant: normal;

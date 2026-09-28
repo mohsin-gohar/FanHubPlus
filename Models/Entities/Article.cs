@@ -22,6 +22,9 @@ public class Article
 
     public bool IsTimeline { get; set; }                 // true => render as a timeline story
 
+    [StringLength(220)]
+    public string? Slug { get; set; }                    // URL slug -> /Blog/Details/{slug}
+
     // Navigation properties
     public Category Category { get; set; } = null!;
     public ApplicationUser? Author { get; set; }

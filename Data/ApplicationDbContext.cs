@@ -156,6 +156,7 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
         builder.Entity<Content>().HasIndex(c => c.ReleaseDate);
         builder.Entity<EventItem>().HasIndex(e => e.EventDate);
         builder.Entity<MerchandiseItem>().HasIndex(m => m.IsUpcoming);
+        builder.Entity<Article>().HasIndex(a => a.Slug);   // /Blog/Details/{slug} lookups
 
         // Category name must be unique (no double "Anime")
         builder.Entity<Category>().HasIndex(c => c.Name).IsUnique();

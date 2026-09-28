@@ -293,8 +293,8 @@
 			}
 		});
 
-		// Misao Originals Slider
-		var swiper = new Swiper(".misaoOriginalsSwiper", {
+		// FanHubPlus Originals Slider
+		var swiper = new Swiper(".fanhubplusOriginalsSwiper", {
 			loop: true,
 			slidesPerView: 2,
 			autoplay: {

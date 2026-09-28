@@ -28,7 +28,7 @@
     }
 
     function applyPref(pref) {
-        // Both shells lock the Misao dark theme via data-theme-lock="dark"
+        // Both shells lock the FanHubPlus dark theme via data-theme-lock="dark"
         // (public site and admin alike), so the stored preference only decides
         // the font size there; a fresh pref still lights up an unlocked page.
         var locked = document.documentElement.getAttribute('data-theme-lock') === 'dark';

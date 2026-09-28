@@ -1,0 +1,116 @@
+@model BlogDetailViewModel
+@{
+    var a = Model.Article;
+    ViewData["Title"] = a.Title;
+    ViewData["fhpBanner"] = true;
+
+    var trail = new List<BreadcrumbItem>
+    {
+        new("Blog", Url.Action("Index", "Blog")),
+        new(a.Category?.Name ?? "Stories", Url.Action("Index", "Blog", new { categoryId = a.CategoryId })),
+        new(a.Title)
+    };
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<section class="fhp-section">
+    <div class="container">
+        <div class="fhp-layout">
+            <article class="fhp-main-col">
+                <div class="fhp-panel fhp-panel--flush">
+                    <div class="fhp-detail-head">
+                        <div class="fhp-chips fhp-mb-15">
+                            <span class="fhp-chip fhp-chip--yellow">@(a.IsTimeline ? "Timeline Story" : "Blog Post")</span>
+                            @if (a.Category is not null)
+                            {
+                                <a class="fhp-chip" asp-controller="Blog" asp-action="Index" asp-route-categoryId="@a.CategoryId">
+                                    @a.Category.Name
+                                </a>
+                            }
+                        </div>
+
+                        <h1 class="fhp-title">@a.Title</h1>
+
+                        <div class="fhp-meta-rail">
+                            <div class="fhp-meta-item">
+                                <span class="fhp-meta-label">Published</span>
+                                <span class="fhp-meta-value">@a.PublishedAt.ToString("MMMM dd, yyyy")</span>
+                            </div>
+                            @if (a.Author is not null)
+                            {
+                                <div class="fhp-meta-item">
+                                    <span class="fhp-meta-label">Author</span>
+                                    <span class="fhp-meta-value">@a.Author.Name</span>
+                                </div>
+                            }
+                            <div class="fhp-meta-item">
+                                <span class="fhp-meta-label">Fandom</span>
+                                <span class="fhp-meta-value">@(a.Category?.Name ?? "Universal")</span>
+                            </div>
+                        </div>
+
+                        <div class="fhp-action-bar fhp-mt-20">
+                            <button type="button"
+                                    class="fhp-btn fhp-btn--ghost fhp-share"
+                                    data-share-title="@a.Title"
+                                    data-share-url="@Url.Action("Details", "Blog", new { slug = SlugHelper.Resolve(a) })"
+                                    aria-label="Share this post">
+                                <i class="ri-share-forward-line" aria-hidden="true"></i>
+                                <span>Share</span>
+                            </button>
+                            <a class="fhp-btn fhp-btn--ghost" asp-controller="Blog" asp-action="Index">
+                                <i class="ri-arrow-left-line" aria-hidden="true"></i>
+                                <span>All posts</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="fhp-prose fhp-mt-30">
+                        @Html.Raw(a.Body)
+                    </div>
+                </div>
+
+                @if (Model.RelatedArticles.Count > 0)
+                {
+                    <div class="fhp-mt-40">
+                        <div class="fhp-section-head">
+                            <div class="fhp-section-head__title fhp-section-head__title--stack">
+                                <span class="fhp-eyebrow">Keep reading</span>
+                                <h2>Related posts</h2>
+                            </div>
+                        </div>
+                        <div class="fhp-grid fhp-grid--2 fhp-mt-20">
+                            @foreach (var related in Model.RelatedArticles)
+                            {
+                                <partial name="_BlogCard" model="related" />
+                            }
+                        </div>
+                    </div>
+                }
+            </article>
+
+            <aside class="fhp-aside" aria-label="Blog navigation">
+                <div class="fhp-panel fhp-panel--flush">
+                    <h2 class="fhp-side-title">More from the blog</h2>
+                    <ul class="fhp-list">
+                        <li>
+                            <a asp-controller="Blog" asp-action="Index">All posts <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a asp-controller="Blog" asp-action="Index" asp-route-timeline="false">News posts <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a asp-controller="Blog" asp-action="Index" asp-route-timeline="true">Timeline stories <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                        </li>
+                        <li>
+                            <a asp-controller="News" asp-action="Index">News &amp; timeline <i class="ri-arrow-right-line" aria-hidden="true"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </div>
+</section>
+
+<partial name="_JoinNow" />

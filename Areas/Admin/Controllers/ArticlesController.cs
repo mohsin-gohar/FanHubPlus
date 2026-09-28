@@ -1,6 +1,7 @@
 using FanHubPlus.Models.Entities;
 using FanHubPlus.Models.ViewModels;
 using FanHubPlus.Repositories;
+using FanHubPlus.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,7 @@ public class ArticlesController : Controller
         {
             CategoryId = model.CategoryId,
             Title = model.Title,
+            Slug = SlugHelper.Slugify(model.Title),
             Body = model.Body,
             PublishedAt = model.PublishedAt,
             IsTimeline = model.IsTimeline,
@@ -94,6 +96,7 @@ public class ArticlesController : Controller
 
         entity.CategoryId = model.CategoryId;
         entity.Title = model.Title;
+        entity.Slug = SlugHelper.Slugify(model.Title);
         entity.Body = model.Body;
         entity.PublishedAt = model.PublishedAt;
         entity.IsTimeline = model.IsTimeline;

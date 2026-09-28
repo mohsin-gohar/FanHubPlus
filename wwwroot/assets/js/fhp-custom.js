@@ -49,7 +49,7 @@
 		});
 	})();
 
-	// Navbar Sticky (Misao)
+	// Navbar Sticky (FanHubPlus)
 	const navbar = document.getElementById("navbar");
     if (navbar) {
 		document.addEventListener("DOMContentLoaded", () => {
@@ -230,7 +230,7 @@
 
 	// Accordion
 	// Supports both the component markup (.fhp-accordion__*) and the original
-	// Misao markup (.accordion-*), so any page can use either vocabulary.
+	// FanHubPlus markup (.accordion-*), so any page can use either vocabulary.
 	const accordion = document.getElementById("accordion");
 	if (accordion) {
 		const items = accordion.querySelectorAll(".accordion-item, .fhp-accordion__item");

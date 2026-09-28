@@ -1,0 +1,37 @@
+@* Blog article card - links to the slug-based Blog/Details route
+   (unlike _ArticleCard, which links to the News module by id). *@
+@model FanHubPlus.Models.Entities.Article
+@{
+    var slug = SlugHelper.Resolve(Model);
+    var cover = $"/assets/images/blogs/blog{(Model.ArticleId % 6) + 1}.jpg";
+    var plain = System.Text.RegularExpressions.Regex.Replace(Model.Body ?? string.Empty, "<[^>]+>", " ");
+    plain = System.Net.WebUtility.HtmlDecode(plain).Trim();
+    var excerpt = plain.Length > 110 ? plain[..110].TrimEnd() + "\u2026" : plain;
+    var readMinutes = Math.Max(1, (int)Math.Ceiling(plain.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length / 200.0));
+}
+<article class="fhp-bcard">
+    <div class="fhp-bcard__frame">
+        <a asp-controller="Blog" asp-action="Details" asp-route-slug="@slug" tabindex="-1" aria-hidden="true">
+            <img src="@cover" class="fhp-bcard__img" alt="@Model.Title" loading="lazy" decoding="async" width="400" height="250" />
+        </a>
+        <span class="fhp-bcard__cat">@(Model.Category?.Name ?? "Blog")</span>
+        <a asp-controller="Blog" asp-action="Details" asp-route-slug="@slug"
+           class="fhp-vcard__play" aria-label="Read @Model.Title">
+            <i class="ri-arrow-right-line" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="fhp-bcard__body">
+        <h3 class="fhp-bcard__title">
+            <a asp-controller="Blog" asp-action="Details" asp-route-slug="@slug">@Model.Title</a>
+        </h3>
+        <p class="fhp-bcard__meta">
+            <span><i class="ri-calendar-line" aria-hidden="true"></i> @Model.PublishedAt.ToString("dd MMM yyyy")</span>
+            <span><i class="ri-user-line" aria-hidden="true"></i> @(Model.Author?.Name ?? "FanHubPlus Editorial")</span>
+            <span><i class="ri-timer-line" aria-hidden="true"></i> @readMinutes min read</span>
+        </p>
+        @if (!string.IsNullOrEmpty(excerpt))
+        {
+            <p class="fhp-bcard__excerpt">@excerpt</p>
+        }
+    </div>
+</article>

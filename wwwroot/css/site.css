@@ -21,10 +21,10 @@
 /* ---------- DARK MODE (class-based, persisted in cookie fhp_pref) ---------- */
 html.dark-mode {
     color-scheme: dark;
-    /* ---- Misao palette (project name stays FanHubPlus) ------------- */
-    --fhp-primary: #f41b3b;      /* Misao primary  (red)   */
-    --fhp-primary-2: #ff962e;    /* Misao warm accent      */
-    --fhp-accent: #ffea00;       /* Misao secondary (yellow) */
+    /* ---- FanHubPlus palette (project name stays FanHubPlus) ------------- */
+    --fhp-primary: #f41b3b;      /* FanHubPlus primary  (red)   */
+    --fhp-primary-2: #ff962e;    /* FanHubPlus warm accent      */
+    --fhp-accent: #ffea00;       /* FanHubPlus secondary (yellow) */
     --fhp-hero: linear-gradient(135deg, #f41b3b 0%, #ff5c3b 55%, #ffea00 100%);
     --fhp-surface: #0f0f0f;      /* theme "navy-black"     */
     --fhp-surface-2: #171717;
@@ -44,7 +44,7 @@ html.dark-mode {
     --bs-primary-rgb: 244, 27, 59;
     --bs-secondary-rgb: 255, 234, 0;
     --bs-danger: #f41b3b;
-    /* Bootstrap loads after the theme, so re-assert the Misao typography */
+    /* Bootstrap loads after the theme, so re-assert the FanHubPlus typography */
     --bs-body-font-family: "Play", system-ui, -apple-system, "Segoe UI", sans-serif;
     --bs-body-font-size: .9375rem;
 }
@@ -202,9 +202,9 @@ html.dark-mode .star-rating .star { color: #454e6d; }
 .linechart .stick { width: 70%; max-width: 46px; background: linear-gradient(180deg, var(--fhp-primary-2), var(--fhp-primary)); border-radius: .4rem .4rem 0 0; min-height: 3px; transition: height .4s ease; }
 .linechart .day { font-size: .7rem; color: var(--fhp-text-muted-2); }
 
-/* ---------- Admin shell (same Misao language as the public site) ---------- */
+/* ---------- Admin shell (same FanHubPlus language as the public site) ---------- */
 /* The dashboard renders <html class="dark-mode" data-theme-lock="dark"> exactly
-   like the public layout, so the shell is written against the Misao hex values
+   like the public layout, so the shell is written against the FanHubPlus hex values
    directly - the same approach .fhp-card takes - instead of flipping with
    html.dark-mode. */
 .fhp-admin-body { background: #000; color: #dddddd; }
@@ -327,7 +327,7 @@ html.dark-mode .star-rating .star { color: #454e6d; }
 
 /* Admin tables + cards sitting on the black canvas: Bootstrap ships a light
    .table-light header and .border-0 kills the card edge, both of which read as
-   holes in the Misao surface. */
+   holes in the FanHubPlus surface. */
 html.dark-mode .fhp-admin-main .card { border: 1px solid var(--fhp-border) !important; }
 html.dark-mode .fhp-admin-main .table-light,
 html.dark-mode .fhp-admin-main .table-light > :not(*) {
@@ -380,11 +380,11 @@ html.dark-mode .fhp-admin-main .table-light {
 .media-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
 /* =====================================================================
-   MISAO (ENVYTHEME) BRIDGE
-   The public layout is always rendered with html.dark-mode because Misao
+   FANHUBPLUS (ENVYTHEME) BRIDGE
+   The public layout is always rendered with html.dark-mode because FanHubPlus
    is a dark-only theme. The rules above therefore already flip the plain
    Bootstrap widgets (cards, forms, tables, list-groups, pagination,
-   breadcrumbs, modals ...) onto the Misao palette. Everything below only
+   breadcrumbs, modals ...) onto the FanHubPlus palette. Everything below only
    patches the places where Bootstrap and assets/css/style.css collide.
    ===================================================================== */
 
@@ -393,10 +393,10 @@ html.dark-mode .fhp-admin-main .table-light {
 @media (max-width: 575.98px) { .fhp-main { padding-top: 84px; } }
 
 /* Bootstrap strips .navbar-nav .nav-link horizontal padding and hides every
-   .dropdown-menu with display:none. The Misao header relies on its own
+   .dropdown-menu with display:none. The FanHubPlus header relies on its own
    visibility/opacity + :hover rules instead, so undo the Bootstrap parts. */
 /* Bootstrap's .navbar-nav column layout, its .navbar-nav .dropdown-menu{position:static}
-   and the heading/list reboot rules would all break the Misao markup - restore it. */
+   and the heading/list reboot rules would all break the FanHubPlus markup - restore it. */
 #navbar .navbar-nav { flex-direction: row; }
 #navbar .navbar-nav > .nav-item > .nav-link { padding-left: 0; padding-right: 0; }
 #navbar .navbar-nav > .nav-item > .nav-link.dropdown-toggle::after { display: none; }
@@ -414,13 +414,13 @@ html.dark-mode .fhp-admin-main .table-light {
 }
 #navbar .navbar-nav .nav-item > .dropdown-menu .nav-link { padding-left: 25px; padding-right: 25px; }
 
-/* Bootstrap reboot re-adds list padding + margins that the Misao markup expects to be absent */
+/* Bootstrap reboot re-adds list padding + margins that the FanHubPlus markup expects to be absent */
 #navbar ul, #navbar ol,
 .sidebar-modal ul, .sidebar-modal ol,
 footer ul, footer ol { padding-left: 0; margin-bottom: 0; list-style: none; }
 .sidebar-modal .nav-link { padding-left: 0; padding-right: 0; }
 
-/* ---------- Bootstrap widgets in the Misao palette ------------------ */
+/* ---------- Bootstrap widgets in the FanHubPlus palette ------------------ */
 html.dark-mode .btn-primary,
 html.dark-mode .btn-primary:focus {
     background-color: var(--fhp-primary);
@@ -563,7 +563,7 @@ html.dark-mode .hero { background: var(--fhp-hero); }
    2xl breakpoint (>= 1536px).
    The shipped assets/css/style.css is a purged Tailwind build that was
    generated WITHOUT the 2xl screen, so every `2xl:*` utility used by the
-   Misao template (and by our pages) is missing from it. These are the
+   FanHubPlus template (and by our pages) is missing from it. These are the
    rules the theme design intends on ultra-wide screens.
    --------------------------------------------------------------------- */
 @media (min-width: 1536px) {
@@ -589,14 +589,14 @@ html.dark-mode .hero { background: var(--fhp-hero); }
 }
 
 /* =========================================================
-   ---------- Misao sub-pages (inner-page conversion) ----------
-   The Misao template renders its sub-pages on a WHITE main area
+   ---------- FanHubPlus sub-pages (inner-page conversion) ----------
+   The FanHubPlus template renders its sub-pages on a WHITE main area
    (main.flex-1.bg-white.text-[#666666]) between the dark fixed header
    and the dark footer. Views opt in with ViewData["fhpBanner"] = true.
    ========================================================= */
 
 /* Banner pages start at the very top so the page banner runs behind the
-   fixed header - exactly like the Misao sub-page templates. */
+   fixed header - exactly like the FanHubPlus sub-page templates. */
 .fhp-main.fhp-main--banner {
     padding-top: 0;
     background-color: #fff;
@@ -676,7 +676,7 @@ html.dark-mode .hero { background: var(--fhp-hero); }
 .fhp-main--banner .empty-state { color: #666666; }
 
 /* =====================================================================
-   MISAO "VIDEO DETAILS" DESIGN SYSTEM
+   FANHUBPLUS "VIDEO DETAILS" DESIGN SYSTEM
    ---------------------------------------------------------------------
    The reference template (video-details.html) speaks in long strings of
    arbitrary utility classes. That is fine for a static demo, but it is

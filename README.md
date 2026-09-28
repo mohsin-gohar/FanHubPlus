@@ -23,7 +23,7 @@ bookmarks and a chatbot assistant - plus a role-protected admin area for all of 
 | `Migrations/` | EF Core migrations (`InitialCreate`, `AddFanSubmissionImageUrl`) |
 | `Models/` | Entities, enums, view models |
 | `Repositories/`, `Services/` | Data access and application services |
-| `wwwroot/` | Static assets: the Misao theme (`assets/`), `css/site.css`, `js/site.js`, Bootstrap + jQuery libraries, runtime uploads |
+| `wwwroot/` | Static assets: the FanHubPlus theme (`assets/`), `css/site.css`, `js/site.js`, Bootstrap + jQuery libraries, runtime uploads |
 | `tests/FanHubPlus.Tests/` | xUnit test project (unit, security and SQL Server integration tests) |
 | `AUDIT_REPORT.md` | Audit trail and deployment runbook for this submission |
 
@@ -45,10 +45,10 @@ Build output (`bin/`, `obj/`) is ignored by `.gitignore` and is never part of th
 
 ## UI theme
 
-The interface is the **Misao** template (EnvyTheme) - the same look as the original hand-in:
+The interface is the **FanHubPlus** template (EnvyTheme) - the same look as the original hand-in:
 
 * `wwwroot/assets/css/style.css` - the template design system (dark theme, Play/Montserrat + Montez type scale)
-* `wwwroot/assets/css/{flaticon_misao,remixicon,swiper-bundle.min,scrollCue}.css` - icon fonts and slider styles
+* `wwwroot/assets/css/{flaticon_fanhubplus,remixicon,swiper-bundle.min,scrollCue}.css` - icon fonts and slider styles
 * `wwwroot/assets/js/` - GSAP + ScrollTrigger, Swiper, Lenis smooth scroll, lightbox, parallax, scroll cue and
   `fhp-custom.js` (template wiring adapted to this app)
 * `wwwroot/assets/images/` - photography, shapes, posters and the `movie.mp4` hero video
@@ -61,6 +61,19 @@ The interface is the **Misao** template (EnvyTheme) - the same look as the origi
 
 Swapping the theme only touches `Views/`, `Areas/Admin/Views/`, `wwwroot/assets`, `wwwroot/css/site.css` and
 `wwwroot/js/site.js`; controllers, services, repositories, migrations, seeding and tests are independent of it.
+
+### Theme provenance
+
+The design system under `wwwroot/assets/` is the EnvyTheme streaming/OTT template whose site is
+recorded in `AUDIT_REPORT.md` -> "UI theme re-applied". It was imported unchanged and then rebranded
+to FanHubPlus: the icon stylesheet and its font files were renamed to `flaticon_fanhubplus*`, the
+composed wordmark artwork (`logo.svg`, `logo-big.svg`) was redrawn, and every occurrence of the
+template's brand name in markup, scripts, styles and comments was replaced.
+
+Class names, Tailwind utility strings, colours, type scale, behaviour scripts and all other media are
+untouched, so the rendering matches the template exactly. `THEME_MIGRATION.md` records the full
+rename map, the template-page-to-view mapping, the intentional deviations and the verification
+commands.
 
 ## Configuration
 
