@@ -2,83 +2,115 @@
 @{
     ViewData["Title"] = "Feedback";
     var statusFilter = (FeedbackStatus?)ViewBag.StatusFilter;
-}
+    var open = Model.Items.Count(f => f.Status == FeedbackStatus.Open);
+    var bugs = Model.Items.Count(f => f.Type == FeedbackType.Bug);
 
-<h1 class="page-title h3 mb-3">💬 Feedback moderation</h1>
+    // Paging keeps the status tab in the query string.
+    var pager = AdminPagerViewModel.Build(Model.Page, Model.TotalPages,
+        p => $"?status={statusFilter}&page={p}");
 
-@* ---- Status filter tabs ---- *@
-<ul class="nav nav-pills mb-3">
-    <li class="nav-item">
-        <a class="nav-link @(statusFilter is null ? "active" : "")" asp-action="Index">All</a>
-    </li>
-    @foreach (var s in Enum.GetValues<FeedbackStatus>())
+    var hero = new AdminHeroViewModel
     {
-        <li class="nav-item">
-            <a class="nav-link @(statusFilter == s ? "active" : "")"
-               asp-action="Index" asp-route-status="@s">@s</a>
-        </li>
+        Eyebrow = "FanHub Plus · Moderation",
+        Title = "Feedback",
+        Accent = Model.TotalItems.ToString("N0"),
+        Lede = "What visitors reported from the public site. Change a status straight from " +
+               "the table - the switch is submitted per row.",
+        Chips =
+        {
+            new AdminHeroChip("ri-alarm-warning-line", open.ToString("N0"), "open on this page", true),
+            new AdminHeroChip("ri-bug-line", bugs.ToString("N0"), "reported as bugs"),
+        }
+    };
+    if (statusFilter is not null)
+    {
+        hero.Chips.Add(new AdminHeroChip("ri-filter-2-line", statusFilter.ToString()!, "filter"));
     }
-</ul>
-
-<div class="card border-0 shadow-sm">
-    <div class="table-responsive">
-        <table class="table align-middle mb-0">
-            <thead class="table-light">
-                <tr>
-                    <th style="width:110px;">Type</th>
-                    <th>Message</th>
-                    <th style="width:130px;">From</th>
-                    <th style="width:120px;">Date</th>
-                    <th style="width:150px;">Status</th>
-                    <th style="width:80px;"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var f in Model.Items)
-                {
-                    <tr>
-                        <td><span class="badge rounded-pill @(f.Type == FeedbackType.Bug ? "bg-danger" : f.Type == FeedbackType.Suggestion ? "bg-info" : "bg-secondary")">@f.Type</span></td>
-                        <td class="small">@f.Message</td>
-                        <td class="small">@(f.User?.Name ?? "Visitor")</td>
-                        <td class="small text-muted">@f.CreatedAt.ToString("MMM d, HH:mm")</td>
-                        <td>
-                            <form asp-action="UpdateStatus" asp-route-id="@f.FeedbackId" method="post" class="d-flex gap-1">
-                                @Html.AntiForgeryToken()
-                                <select name="status" class="form-select form-select-sm"
-                                        asp-items="Html.GetEnumSelectList<FeedbackStatus>()"
-                                        selected="@f.Status"></select>
-                                <button type="submit" class="btn btn-sm btn-outline-primary">✔</button>
-                            </form>
-                        </td>
-                        <td class="text-end">
-                            <form asp-action="Delete" asp-route-id="@f.FeedbackId" method="post" class="d-inline"
-                                  onsubmit="return confirm('Delete this feedback?');">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-sm btn-outline-danger">🗑</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-                @if (Model.Items.Count == 0)
-                {
-                    <tr><td colspan="6" class="text-center text-muted py-4">No feedback in this view.</td></tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
-
-@if (Model.TotalPages > 1)
-{
-    <nav class="mt-3">
-        <ul class="pagination">
-            <li class="page-item @(!Model.HasPrevious ? "disabled" : "")">
-                <a class="page-link" href="?status=@statusFilter&page=@(Model.Page - 1)">«</a>
-            </li>
-            <li class="page-item disabled"><span class="page-link">Page @Model.Page of @Model.TotalPages</span></li>
-            <li class="page-item @(!Model.HasNext ? "disabled" : "")">
-                <a class="page-link" href="?status=@statusFilter&page=@(Model.Page + 1)">»</a>
-            </li>
-        </ul>
-    </nav>
 }
+
+<div class="fhp-cine">
+
+    <partial name="_CineHero" model="hero" />
+
+    <section class="fhp-panel">
+        <header class="fhp-panel__head">
+            <h2 class="fhp-panel__title">
+                <i class="ri-feedback-line" aria-hidden="true"></i>
+                Inbox
+            </h2>
+            <span class="fhp-panel__hint">@Model.Items.Count of @Model.TotalItems</span>
+        </header>
+        <div class="fhp-panel__body">
+            <nav class="fhp-dtabs fhp-dtoolbar" aria-label="Filter by status">
+                <a class="@(statusFilter is null ? "is-active" : "")" asp-action="Index">All</a>
+                @foreach (var s in Enum.GetValues<FeedbackStatus>())
+                {
+                    <a class="@(statusFilter == s ? "is-active" : "")" asp-action="Index" asp-route-status="@s">@s</a>
+                }
+            </nav>
+
+            @if (Model.Items.Count == 0)
+            {
+                <div class="fhp-cine-empty">
+                    <i class="ri-feedback-line" aria-hidden="true"></i>
+                    <span>No feedback in this view.</span>
+                </div>
+            }
+            else
+            {
+                <div class="fhp-table-wrap">
+                    <table class="fhp-table">
+                        <thead>
+                            <tr>
+                                <th style="width:110px;">Type</th>
+                                <th>Message</th>
+                                <th style="width:130px;">From</th>
+                                <th style="width:120px;">Date</th>
+                                <th style="width:200px;">Status</th>
+                                <th style="width:60px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var f in Model.Items)
+                            {
+                                var typePill = f.Type == FeedbackType.Bug ? "fhp-pill--bad"
+                                            : f.Type == FeedbackType.Suggestion ? "fhp-pill--info" : "fhp-pill--neutral";
+                                <tr>
+                                    <td><span class="fhp-pill @typePill">@f.Type</span></td>
+                                    <td class="fhp-table__title">@f.Message</td>
+                                    <td class="fhp-dcell-meta">@(f.User?.Name ?? "Visitor")</td>
+                                    <td class="fhp-dcell-meta">@f.CreatedAt.ToString("MMM d, HH:mm")</td>
+                                    <td>
+                                        <form asp-action="UpdateStatus" asp-route-id="@f.FeedbackId" method="post" class="fhp-dstatus">
+                                            @Html.AntiForgeryToken()
+                                            <select name="status" aria-label="Status for this feedback"
+                                                    asp-items="Html.GetEnumSelectList<FeedbackStatus>()"
+                                                    selected="@f.Status"></select>
+                                            <button type="submit" class="fhp-dbtn fhp-dbtn--ghost fhp-dbtn--sm fhp-dbtn--icon"
+                                                    title="Save this status">
+                                                <i class="ri-check-line" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form asp-action="Delete" asp-route-id="@f.FeedbackId" method="post"
+                                              onsubmit="return confirm('Delete this feedback?');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" class="fhp-dbtn fhp-dbtn--danger fhp-dbtn--sm fhp-dbtn--icon"
+                                                    title="Delete this feedback" aria-label="Delete this feedback">
+                                                <i class="ri-close-line" aria-hidden="true"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </section>
+
+    <partial name="_Pager" model="pager" />
+
+</div>

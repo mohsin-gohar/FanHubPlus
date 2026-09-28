@@ -16,7 +16,7 @@ repeated, audited or rolled back from the two source trees.
 | Item | Detail |
 |---|---|
 | Pages | 42 hand-written `.html` files (`index.html`, `index-2..5`, `movies*`, `blog-*`, `shop`, `cart`, `checkout`, `pricing`, `faq`, `careers`, `sign-in`, `sign-up`, ...) |
-| Stylesheets | `assets/css/style.css` (97 KB - a **compiled Tailwind v4.1.18** build), plus `flaticon_misao.css`, `remixicon.css`, `swiper-bundle.min.css`, `scrollCue.css` |
+| Stylesheets | `assets/css/style.css` (97 KB - a **compiled Tailwind v4.1.18** build, vendored as `wwwroot/css/fhp-utilities.css`), plus `flaticon_fanhubplus.css`, `remixicon.css`, `swiper-bundle.min.css`, `scrollCue.css`; Bootstrap 5.3.3 CSS added as the base framework |
 | Scripts | `swiper-bundle`, `scrollCue`, `parallax`, `fslightbox`, `gsap` + `ScrollTrigger` + `SplitText`, `ukiyo`, `lenis`, and the template's own `custom.js` / `gsap-custom.js` |
 | Fonts | `flaticon_misao14a1.*` (icon font, 5 formats), `remixicon6f74.*` |
 | Media | 33 image folders (posters, photography, shapes, partner/channel logos) and a 15 MB `movie.mp4` |
@@ -24,8 +24,15 @@ repeated, audited or rolled back from the two source trees.
 
 Consequence for the port: `style.css` is *compiled* Tailwind (there is no Tailwind source in the
 delivery), so every class string written in markup must be copied **verbatim** - a renamed or
-re-ordered utility silently loses its rule. The stylesheet is therefore treated as a vendored
-artefact and is never edited except for the brand rename.
+re-ordered utility silently loses its rule. The stylesheet was treated as a vendored
+artefact and was never edited except for the brand rename.
+
+> **Update (Bootstrap 5.3 migration):** the compiled Tailwind sheet has been copied to
+> `wwwroot/css/fhp-utilities.css` (attribution stripped, supplemental classes added); Bootstrap
+> 5.3.3 CSS is now loaded as the base framework in `_Layout.cshtml`, with a dedicated
+> `wwwroot/css/bootstrap-fhp-theme.css` mapping the FanHubPlus palette to Bootstrap's CSS custom
+> properties. The views' utility class strings are unchanged and continue to resolve via
+> `fhp-utilities.css`.
 
 ### 1.2 Application (`f:\.net\FanHubPlus`)
 

@@ -486,7 +486,7 @@ html.dark-mode .hero { background: var(--fhp-hero); }
     box-shadow: 0 .9rem 1.8rem rgba(0, 0, 0, .6);
 }
 .fhp-cover { height: 260px; object-fit: cover; width: 100%; }
-/* self-contained hover helpers (no dependency on purged Tailwind variants) */
+/* self-contained hover helpers (no dependency on Bootstrap's utility helpers) */
 .fhp-zoom { transition: transform .35s ease; }
 .fhp-card:hover .fhp-zoom { transform: scale(1.08); }
 .fhp-title { transition: color .3s ease; }
@@ -3759,10 +3759,439 @@ a.fhp-foot__contact-value:hover { color: var(--fhp-yellow); }
     .fhp-admin-btn:hover { transform: none; }
 }
 
+/* ==========================================================================
+   ADMIN DATA PAGES (lists, filters, forms)
+   Same dark vocabulary as the dashboard above: gold hairlines, champagne text,
+   red accents. Bootstrap is still loaded for its grid only, so every control
+   the admin forms/lists use gets a dark skin here.
+   ========================================================================== */
+
+/* The public sheet also defines .fhp-panel (mist block, big padding). The admin
+   panels are the glass ones, so cancel that padding/margin inside the shell. */
+.fhp-admin-main .fhp-panel {
+    margin-top: 0;
+    padding: 0;
+}
+.fhp-admin-main .fhp-panel p { line-height: 1.6; }
+
+/* ---------- hero: title card + its action slot ------------------------ */
+.fhp-cine-hero__top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+.fhp-cine-hero__actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* ---------- buttons --------------------------------------------------- */
+.fhp-dbtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    font-size: .7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    line-height: 1.4;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color .3s var(--fhp-ease), border-color .3s var(--fhp-ease),
+                color .3s var(--fhp-ease), transform .3s var(--fhp-ease),
+                box-shadow .3s var(--fhp-ease);
+}
+.fhp-dbtn i { font-size: .95rem; line-height: 1; }
+.fhp-dbtn--gold {
+    background: linear-gradient(120deg, var(--fhp-dk-champagne), var(--fhp-dk-gold));
+    box-shadow: 0 12px 26px -18px rgba(232, 192, 116, .9);
+    color: #17110a;
+}
+.fhp-dbtn--gold:hover {
+    color: #17110a;
+    box-shadow: 0 16px 30px -16px rgba(232, 192, 116, .95);
+    transform: translateY(-1px);
+}
+.fhp-dbtn--ghost {
+    border-color: var(--fhp-dk-hair);
+    background: rgba(255, 255, 255, .04);
+    color: rgba(221, 221, 221, .8);
+}
+.fhp-dbtn--ghost:hover {
+    border-color: rgba(232, 192, 116, .4);
+    background: rgba(255, 255, 255, .09);
+    color: #fff;
+}
+.fhp-dbtn--danger {
+    border-color: rgba(244, 27, 59, .42);
+    background: rgba(244, 27, 59, .13);
+    color: #ff7b8e;
+}
+.fhp-dbtn--danger:hover {
+    border-color: var(--fhp-red);
+    background: var(--fhp-red);
+    color: #fff;
+}
+.fhp-dbtn--sm { padding: 7px 12px; font-size: .63rem; letter-spacing: .1em; border-radius: 8px; }
+.fhp-dbtn--icon { padding: 7px 10px; }
+.fhp-dbtn:focus-visible {
+    outline: 2px solid var(--fhp-dk-gold);
+    outline-offset: 2px;
+}
+
+/* ---------- toolbar + search ------------------------------------------ */
+.fhp-dtools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+.fhp-dtools__grow { flex: 1 1 250px; min-width: 0; }
+.fhp-dtools__end {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    flex-wrap: wrap;
+}
+.fhp-dsearch { position: relative; display: flex; align-items: center; }
+.fhp-dsearch > i {
+    position: absolute;
+    left: 14px;
+    color: rgba(221, 221, 221, .38);
+    font-size: 1rem;
+    pointer-events: none;
+}
+.fhp-dsearch input {
+    width: 100%;
+    padding: 11px 46px 11px 40px;
+    border: 1px solid var(--fhp-dk-hair);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .04);
+    color: #fff;
+    font-size: .86rem;
+    transition: border-color .3s var(--fhp-ease), box-shadow .3s var(--fhp-ease);
+}
+.fhp-dsearch input::placeholder { color: rgba(221, 221, 221, .38); }
+.fhp-dsearch input:focus {
+    border-color: rgba(232, 192, 116, .55);
+    box-shadow: 0 0 0 3px rgba(232, 192, 116, .12);
+    outline: 0;
+}
+.fhp-dsearch button {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--fhp-dk-champagne);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color .3s var(--fhp-ease);
+}
+.fhp-dsearch button:hover { background: rgba(232, 192, 116, .16); }
+
+
+/* ---------- dark form controls (bootstrap grid still does the layout) -- */
+.fhp-admin-main .form-control,
+.fhp-admin-main .form-select,
+.fhp-dselect {
+    border: 1px solid var(--fhp-dk-hair);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, .04);
+    color: #fff;
+    font-size: .88rem;
+}
+.fhp-admin-main .form-control:focus,
+.fhp-admin-main .form-select:focus,
+.fhp-dselect:focus {
+    border-color: rgba(232, 192, 116, .55);
+    background-color: rgba(255, 255, 255, .06);
+    box-shadow: 0 0 0 3px rgba(232, 192, 116, .12);
+    color: #fff;
+}
+.fhp-admin-main .form-control::placeholder { color: rgba(221, 221, 221, .35); }
+.fhp-admin-main .form-select option,
+.fhp-dselect option { background: #12121a; color: #fff; }
+.fhp-admin-main .form-label {
+    margin-bottom: 8px;
+    color: rgba(221, 221, 221, .55);
+    font-size: .66rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .16em;
+}
+.fhp-admin-main .form-text {
+    margin-top: 7px;
+    color: rgba(221, 221, 221, .4);
+    font-size: .74rem;
+}
+.fhp-admin-main .form-check-label { color: rgba(221, 221, 221, .78); font-size: .86rem; }
+.fhp-admin-main .form-check-input {
+    border-color: rgba(255, 255, 255, .22);
+    background-color: rgba(255, 255, 255, .06);
+}
+.fhp-admin-main .form-check-input:checked {
+    border-color: var(--fhp-red);
+    background-color: var(--fhp-red);
+}
+.fhp-admin-main .form-check-input:focus {
+    border-color: rgba(232, 192, 116, .55);
+    box-shadow: 0 0 0 3px rgba(232, 192, 116, .12);
+}
+.fhp-admin-main hr {
+    border-color: var(--fhp-dk-hair);
+    opacity: 1;
+    margin: 26px 0;
+}
+.fhp-admin-main .text-danger { color: #ff7b8e !important; }
+
+/* ---------- status filter tabs ---------------------------------------- */
+.fhp-dtabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.fhp-dtabs a {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 16px;
+    border: 1px solid var(--fhp-dk-hair);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .03);
+    color: rgba(221, 221, 221, .6);
+    font-size: .66rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .14em;
+    transition: color .3s var(--fhp-ease), border-color .3s var(--fhp-ease),
+                background-color .3s var(--fhp-ease);
+}
+.fhp-dtabs a:hover { border-color: rgba(232, 192, 116, .4); color: #fff; }
+.fhp-dtabs a.is-active {
+    border-color: rgba(232, 192, 116, .5);
+    background: linear-gradient(120deg, rgba(232, 192, 116, .2), rgba(244, 27, 59, .16));
+    color: #fff;
+}
+
+/* ---------- pager ----------------------------------------------------- */
+.fhp-dpager {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.fhp-dpager__btn,
+.fhp-dpager__label {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-width: 40px;
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--fhp-dk-hair);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .04);
+    color: rgba(221, 221, 221, .8);
+    font-size: .74rem;
+
+/* ---------- thumbnails ------------------------------------------------- */
+.fhp-dthumb {
+    display: block;
+    width: 56px;
+    height: 40px;
+    border: 1px solid var(--fhp-dk-hair);
+    border-radius: 8px;
+    object-fit: cover;
+}
+.fhp-dthumb--round { width: 42px; height: 42px; border-radius: 50%; }
+.fhp-dthumb-fallback {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 40px;
+    border: 1px dashed rgba(232, 192, 116, .28);
+    border-radius: 8px;
+    background: rgba(232, 192, 116, .06);
+    color: rgba(232, 192, 116, .7);
+    font-size: 1rem;
+}
+.fhp-dthumb-fallback--round { width: 42px; height: 42px; border-radius: 50%; }
+
+/* ---------- card grid (submissions) ------------------------------------ */
+.fhp-dcards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 18px;
+}
+.fhp-dcard {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid var(--fhp-dk-hair);
+    border-radius: var(--fhp-dk-r);
+    background: linear-gradient(165deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .015));
+    box-shadow: var(--fhp-dk-shadow);
+    transition: transform .35s var(--fhp-ease), border-color .35s var(--fhp-ease);
+}
+.fhp-dcard:hover {
+    transform: translateY(-3px);
+    border-color: rgba(232, 192, 116, .34);
+}
+.fhp-dcard__img {
+    display: block;
+    width: 100%;
+    height: 170px;
+    object-fit: cover;
+}
+.fhp-dcard__body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 11px;
+    padding: 17px 19px 19px;
+}
+.fhp-dcard__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+.fhp-dcard__title {
+    margin: 0;
+    color: #fff;
+    font-size: .95rem;
+    font-weight: 700;
+    line-height: 1.35;
+}
+.fhp-dcard__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    color: rgba(221, 221, 221, .45);
+    font-size: .76rem;
+}
+.fhp-dcard__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: auto;
+    padding-top: 4px;
+}
+
+/* ---------- form shell -------------------------------------------------- */
+.fhp-dform { max-width: 880px; }
+.fhp-dform--narrow { max-width: 660px; }
+.fhp-dform__actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.fhp-dform__preview {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+.fhp-dform__preview img {
+    border: 1px solid var(--fhp-dk-hair);
+    border-radius: 8px;
+    object-fit: cover;
+}
+.fhp-dform__preview--round img { border-radius: 50%; }
+.fhp-dform__preview span { color: rgba(221, 221, 221, .4); font-size: .74rem; }
+
+/* ---------- responsive -------------------------------------------------- */
+@media (max-width: 700px) {
+    .fhp-dtools__end { margin-left: 0; }
+    .fhp-cine-hero__top { flex-direction: column; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fhp-dbtn,
+    .fhp-dcard,
+    .fhp-dtabs a { transition: none !important; }
+    .fhp-dbtn--gold:hover,
+    .fhp-dcard:hover { transform: none; }
+}
+
+    font-weight: 700;
+    letter-spacing: .08em;
+    transition: background-color .3s var(--fhp-ease), border-color .3s var(--fhp-ease),
+                color .3s var(--fhp-ease);
+}
+a.fhp-dpager__btn:hover {
+    border-color: var(--fhp-dk-gold);
+    background: rgba(232, 192, 116, .16);
+    color: #fff;
+}
+.fhp-dpager__label {
+    border-style: dashed;
+    color: rgba(221, 221, 221, .5);
+    text-transform: uppercase;
+    letter-spacing: .14em;
+}
+.fhp-dpager__btn[aria-disabled='true'] { opacity: .32; pointer-events: none; }
+
+/* ---------- table cells ------------------------------------------------ */
+.fhp-drow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+.fhp-drow form { display: inline-flex; margin: 0; }
+.fhp-dcell-meta { color: rgba(221, 221, 221, .45); font-size: .8rem; }
+.fhp-dmuted { color: rgba(221, 221, 221, .34); }
+.fhp-dstatus { display: inline-flex; align-items: center; gap: 7px; }
+.fhp-dstatus select {
+    min-width: 118px;
+    padding: 6px 10px;
+    border: 1px solid var(--fhp-dk-hair);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .05);
+    color: #fff;
+    font-size: .74rem;
+}
+.fhp-dstatus select option { background: #12121a; color: #fff; }
 
 
 
 
 
 
+
+
+
+/* A filter row that sits above a table inside the same panel. */
+.fhp-dtoolbar { margin-bottom: 20px; }
+
+
+/* Numeric columns in the dark table keep the header over its numbers too. */
+.fhp-table th.fhp-num,
+.fhp-table td.fhp-num { text-align: right; }
+
+/* The flash-message partial ships a light skin; the admin shell is dark. */
+.fhp-admin-main .fhp-notices { margin-bottom: 20px; }
+.fhp-admin-main .fhp-alert {
+    border: 1px solid var(--fhp-dk-hair);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .05);
+    color: rgba(221, 221, 221, .88);
+}
+.fhp-admin-main .fhp-alert--success { border-color: rgba(36, 211, 160, .34); background: rgba(36, 211, 160, .1); color: #6ff0cb; }
+.fhp-admin-main .fhp-alert--warning { border-color: rgba(255, 150, 46, .36); background: rgba(255, 150, 46, .1); color: #ffb56b; }
+.fhp-admin-main .fhp-alert__close { color: inherit; opacity: .6; }
+.fhp-admin-main .fhp-alert__close:hover { opacity: 1; }
 

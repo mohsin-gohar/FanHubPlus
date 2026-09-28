@@ -1,0 +1,256 @@
+/*!
+ * FanHubPlus Bootstrap 5.3 Theme
+ * Maps the FanHubPlus palette to Bootstrap 5.3 CSS custom properties.
+ * Complemented by site.css (which carries the dark-mode overrides + component layer).
+ *
+ * Colour tokens (defined in site.css :root):
+ *   --fhp-red       #f41b3b  primary     (dark mode canvas)
+ *   --fhp-red-deep  #9a051b  dark variant of primary
+ *   --fhp-yellow    #ffea00  secondary   (dark mode accent)
+ *   --fhp-orange    #ff962e  warm accent (stars, highlights)
+ *   --fhp-ink       #0f0f0b  body canvas
+ *   --fhp-ink-2     #171717  surface-2
+ *   --fhp-mist      #f3f3f3  light surface
+ *   --fhp-body      #666666  muted text
+ *   --fhp-hair      rgba(0,0,0,.10)  border
+ *   --fhp-r-sm      5px       radius
+ *   --fhp-ease      cubic-bezier(.4,0,.2,1)
+ *
+ * Light mode palette (public site, when html.dark-mode is absent):
+ *   --fhp-primary   #6d5dfc  lilac
+ *   --fhp-primary-2 #4f8cff  cyan
+ *   --fhp-accent    #ff5c8a  pink
+ *   --fhp-hero      gradient lilac→cyan→sky
+ */
+
+/* ==========================================================================
+   Light mode – map FanHubPlus palette to Bootstrap variables
+   Bootstrap’s :root sets --bs-primary etc. to blue; we override to lilac/cyan.
+   ========================================================================== */
+:root {
+    --bs-primary: #6d5dfc;
+    --bs-primary-rgb: 109, 95, 252;
+    --bs-primary-bg-subtle: rgba(109, 95, 252, .15);
+    --bs-primary-border-color: rgba(109, 95, 252, .40);
+
+    --bs-secondary: #ff5c8a;
+    --bs-secondary-rgb: 255, 92, 138;
+    --bs-secondary-bg-subtle: rgba(255, 92, 138, .15);
+    --bs-secondary-border-color: rgba(255, 92, 138, .40);
+
+    --bs-accent: #ff962e;
+    --bs-accent-rgb: 255, 150, 46;
+
+    --bs-body-font-family: "Play", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --bs-body-font-size: 1rem;
+    --bs-body-font-weight: 400;
+    --bs-body-line-height: 1.618;
+    --bs-body-color: #1d2433;
+    --bs-body-bg: #ffffff;
+
+    --bs-heading-color: #1d2433;
+    --bs-link-color: #6d5dfc;
+    --bs-link-hover-color: #4f8cff;
+
+    --bs-border-color: #e3e7f0;
+    --bs-border-width: 1px;
+
+    --bs-input-bg: #ffffff;
+    --bs-input-color: #1d2433;
+    --bs-input-border-color: #ced4da;
+    --bs-input-focus-border-color: #6d5dfc;
+    --bs-input-focus-box-shadow: 0 0 0 .25rem rgba(109, 95, 252, .25);
+
+    --bs-btn-font-weight: 600;
+    --bs-btn-padding-y: .5625rem;
+    --bs-btn-padding-x: 1.25rem;
+
+    --bs-card-border-color: #e3e7f0;
+    --bs-card-cap-bg: #f8f9fa;
+
+    --bs-table-border-color: #e3e7f0;
+
+    --bs-navbar-padding-y: .75rem;
+    --bs-navbar-padding-x: 1rem;
+    --bs-navbar-brand-font-size: 1.125rem;
+    --bs-navbar-color: #1d2433;
+    --bs-navbar-hover-color: #6d5dfc;
+    --bs-navbar-focus-color: #6d5dfc;
+    --bs-navbar-active-color: #4f8cff;
+}
+
+/* ==========================================================================
+   Dark mode – override Bootstrap variables when html.dark-mode is present.
+   site.css also provides component-level overrides; this file sets the
+   foundation variables so Bootstrap components pick up the right palette.
+   ========================================================================== */
+html.dark-mode {
+    --bs-primary: #f41b3b;
+    --bs-primary-rgb: 244, 27, 59;
+    --bs-primary-bg-subtle: rgba(244, 27, 59, .15);
+    --bs-primary-border-color: rgba(244, 27, 59, .40);
+
+    --bs-secondary: #ffea00;
+    --bs-secondary-rgb: 255, 234, 0;
+    --bs-secondary-bg-subtle: rgba(255, 234, 0, .15);
+    --bs-secondary-border-color: rgba(255, 234, 0, .40);
+
+    --bs-accent: #ff962e;
+    --bs-accent-rgb: 255, 150, 46;
+
+    --bs-body-font-family: "Play", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --bs-body-font-size: .9375rem;
+    --bs-body-font-weight: 400;
+    --bs-body-line-height: 1.618;
+    --bs-body-color: #dddddd;
+    --bs-body-bg: #000000;
+
+    --bs-heading-color: #dddddd;
+    --bs-link-color: #ffea00;
+    --bs-link-hover-color: #f41b3b;
+
+    --bs-border-color: rgba(255, 255, 255, .12);
+    --bs-border-width: 1px;
+
+    --bs-input-bg: #171717;
+    --bs-input-color: #dddddd;
+    --bs-input-border-color: rgba(255, 255, 255, .16);
+    --bs-input-focus-border-color: #f41b3b;
+    --bs-input-focus-box-shadow: 0 0 0 .25rem rgba(244, 27, 59, .25);
+
+    --bs-card-border-color: rgba(255, 255, 255, .12);
+    --bs-card-cap-bg: #171717;
+
+    --bs-table-border-color: rgba(255, 255, 255, .12);
+
+    --bs-navbar-color: #dddddd;
+    --bs-navbar-hover-color: #ffea00;
+    --bs-navbar-focus-color: #ffea00;
+    --bs-navbar-active-color: #ff962e;
+
+    --bs-form-checked-input-bg-color: #171717;
+    --bs-form-checked-input-border-color: rgba(255, 255, 255, .16);
+    --bs-form-switch-width: 2.75rem;
+}
+
+/* ==========================================================================
+   Typography
+   ========================================================================== */
+@font-face {
+    font-family: "Play";
+    src: url("/assets/fonts/Play/Play-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Play";
+    src: url("/assets/fonts/Play/Play-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("/assets/fonts/Montserrat/Montserrat-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("/assets/fonts/Montserrat/Montserrat-SemiBold.woff2") format("woff2");
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: "Montserrat";
+    src: url("/assets/fonts/Montserrat/Montserrat-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+body { font-family: var(--bs-body-font-family); }
+
+/* Headings use Montserrat secondary family */
+h1, h2, h3, h4, h5, h6,
+.fw-bold, .fw-bolder, .fw-semibold {
+    font-family: "Montserrat", system-ui, sans-serif;
+    font-weight: 700;
+}
+
+/* ==========================================================================
+   Buttons – primary / secondary / ghost
+   ========================================================================== */
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: #fff;
+}
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--fhp-red-deep);
+    border-color: var(--fhp-red-deep);
+}
+.btn-secondary {
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+    color: #000;
+}
+.btn-secondary:hover, .btn-secondary:focus {
+    background-color: var(--fhp-orange);
+    border-color: var(--fhp-orange);
+}
+
+/* Template button classes (also defined in fhp-utilities, kept for clarity) */
+.primary-btn {
+    background: var(--fhp-red);
+    border: 1px solid var(--fhp-red);
+    color: #fff;
+}
+.primary-btn:hover { background: var(--fhp-red-deep); border-color: var(--fhp-red-deep); }
+
+.secondary-btn {
+    background: var(--fhp-yellow);
+    border: 1px solid var(--fhp-yellow);
+    color: #000;
+}
+.secondary-btn:hover { background: var(--fhp-orange); border-color: var(--fhp-orange); }
+
+.form-input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid var(--fhp-border);
+    border-radius: var(--fhp-r-sm);
+    background: var(--fhp-surface);
+    color: var(--fhp-text);
+    font-family: var(--bs-body-font-family);
+    font-size: 1rem;
+}
+html.dark-mode .form-input {
+    background: var(--fhp-surface-2);
+    border-color: var(--fhp-border);
+    color: var(--fhp-text);
+}
+
+/* ==========================================================================
+   Navbar tweaks
+   ========================================================================== */
+.navbar {
+    border-bottom: 1px solid var(--fhp-border);
+}
+html.dark-mode .navbar { background-color: var(--fhp-ink) !important; }
+
+/* ==========================================================================
+   Card – match the template’s rounded corners + shadow
+   ========================================================================== */
+.card {
+    border-radius: .75rem;
+    box-shadow: var(--fhp-card-shadow);
+}
+html.dark-mode .card {
+    background-color: var(--fhp-surface);
+    border-color: var(--fhp-border);
+    color: var(--fhp-text);
+}

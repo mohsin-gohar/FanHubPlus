@@ -1,100 +1,154 @@
 @model AdminListViewModel<Content>
 @{
     ViewData["Title"] = "Contents";
-    var categories = (List<Category>)ViewBag.Categories;
+
+    var categories = (List<Category>?)ViewBag.Categories ?? new List<Category>();
     int? categoryId = (int?)ViewBag.CategoryId;
+    var filtered = categoryId is not null || !string.IsNullOrWhiteSpace(Model.Search);
+    var filterName = categoryId is not null
+        ? categories.FirstOrDefault(c => c.CategoryId == categoryId)?.Name
+        : null;
+
+    var hero = new AdminHeroViewModel
+    {
+        Eyebrow = "FanHub Plus · Catalogue",
+        Title = "Contents",
+        Accent = Model.TotalItems.ToString("N0"),
+        Lede = "Everything that reaches the streaming grid, Explorer and search. Cover art, " +
+               "category, popularity and lifetime views for every title.",
+        ActionText = "New content",
+        ActionUrl = Url.Action("Create"),
+        ActionIcon = "ri-movie-2-line",
+        Chips =
+        {
+            new AdminHeroChip("ri-price-tag-3-line", categories.Count.ToString("N0"), "categories"),
+            new AdminHeroChip("ri-layout-list-line", Model.Items.Count.ToString("N0"), "on this page"),
+        }
+    };
+    if (filterName is not null)
+    {
+        hero.Chips.Add(new AdminHeroChip("ri-filter-2-line", filterName, "filter"));
+    }
+    else if (!string.IsNullOrWhiteSpace(Model.Search))
+    {
+        hero.Chips.Add(new AdminHeroChip("ri-search-line", Model.Search!, "search"));
+    }
 }
 
-<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-    <h1 class="page-title h3 mb-0">🎬 Contents (@Model.TotalItems)</h1>
-    <a asp-action="Create" class="btn btn-primary">＋ New content</a>
-</div>
+<div class="fhp-cine">
 
-<form method="get" class="card border-0 shadow-sm mb-3">
-    <div class="card-body">
-        <div class="row g-2">
-            <div class="col-md-5">
-                <input type="text" name="search" value="@Model.Search" class="form-control" placeholder="Search title..." />
-            </div>
-            <div class="col-md-4">
-                <select name="categoryId" class="form-select">
+    <partial name="_CineHero" model="hero" />
+
+    @* ================= FILTER BAR ================= *@
+    <section class="fhp-panel">
+        <header class="fhp-panel__head">
+            <h2 class="fhp-panel__title">
+                <i class="ri-filter-3-line" aria-hidden="true"></i>
+                Find content
+            </h2>
+            <span class="fhp-panel__hint">Search &amp; filter</span>
+        </header>
+        <div class="fhp-panel__body">
+            <form method="get" class="fhp-dtools fhp-dtoolbar">
+                <div class="fhp-dsearch fhp-dtools__grow">
+                    <i class="ri-search-line" aria-hidden="true"></i>
+                    <input type="text" name="search" value="@Model.Search"
+                           placeholder="Search title..." aria-label="Search content" />
+                    <button type="submit" title="Search"><i class="ri-arrow-right-s-line" aria-hidden="true"></i></button>
+                </div>
+                <select name="categoryId" class="fhp-dselect" aria-label="Filter by category">
                     <option value="">All categories</option>
                     @foreach (var c in categories)
                     {
                         <option value="@c.CategoryId" selected="@(categoryId == c.CategoryId ? "selected" : null)">@c.Name</option>
                     }
                 </select>
-            </div>
-            <div class="col-md-3 d-grid">
-                <button class="btn btn-outline-primary" type="submit">Filter</button>
-            </div>
+                <button class="fhp-dbtn fhp-dbtn--gold" type="submit">Filter</button>
+                @if (filtered)
+                {
+                    <a class="fhp-dbtn fhp-dbtn--ghost" asp-action="Index">Reset</a>
+                }
+            </form>
         </div>
-    </div>
-</form>
+    </section>
 
-<div class="card border-0 shadow-sm">
-    <div class="table-responsive">
-        <table class="table align-middle mb-0">
-            <thead class="table-light">
-                <tr>
-                    <th style="width:70px;">Cover</th>
-                    <th>Title</th>
-                    <th>Category</th>
-                    <th>Type</th>
-                    <th class="text-end">Popularity</th>
-                    <th class="text-end">Views</th>
-                    <th class="text-end">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var c in Model.Items)
-                {
-                    <tr>
-                        <td>
-                            @if (!string.IsNullOrEmpty(c.ThumbnailUrl))
+    @* ================= TITLES ================= *@
+    <section class="fhp-panel">
+        <header class="fhp-panel__head">
+            <h2 class="fhp-panel__title">
+                <i class="ri-film-line" aria-hidden="true"></i>
+                Titles
+            </h2>
+            <span class="fhp-panel__hint">@Model.Items.Count of @Model.TotalItems</span>
+        </header>
+        <div class="fhp-panel__body">
+            @if (Model.Items.Count == 0)
+            {
+                <div class="fhp-cine-empty">
+                    <i class="ri-movie-2-line" aria-hidden="true"></i>
+                    <span>@(filtered ? "Nothing matches this filter." : "No content published yet.")</span>
+                </div>
+            }
+            else
+            {
+                <div class="fhp-table-wrap">
+                    <table class="fhp-table">
+                        <thead>
+                            <tr>
+                                <th class="fhp-num" style="width:70px;">Cover</th>
+                                <th>Title</th>
+                                <th>Category</th>
+                                <th>Type</th>
+                                <th class="fhp-num">Popularity</th>
+                                <th class="fhp-num">Views</th>
+                                <th class="fhp-num" style="width:150px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var c in Model.Items)
                             {
-                                <img src="@c.ThumbnailUrl" alt="" style="width:56px;height:40px;object-fit:cover;border-radius:6px;" />
+                                <tr>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(c.ThumbnailUrl))
+                                        {
+                                            <img class="fhp-dthumb" src="@c.ThumbnailUrl" alt="" loading="lazy" />
+                                        }
+                                        else
+                                        {
+                                            <span class="fhp-dthumb-fallback" aria-hidden="true"><i class="ri-film-line"></i></span>
+                                        }
+                                    </td>
+                                    <td class="fhp-table__title">@c.Title</td>
+                                    <td><span class="fhp-pill fhp-pill--neutral">@c.Category.Name</span></td>
+                                    <td><span class="fhp-pill fhp-pill--info">@c.Type</span></td>
+                                    <td class="fhp-table__num">@c.PopularityScore</td>
+                                    <td class="fhp-table__num">@c.ViewCount.ToString("N0")</td>
+                                    <td>
+                                        <div class="fhp-drow">
+                                            <a class="fhp-dbtn fhp-dbtn--ghost fhp-dbtn--sm" asp-action="Edit" asp-route-id="@c.ContentId">
+                                                <i class="ri-edit-line" aria-hidden="true"></i>
+                                                <span>Edit</span>
+                                            </a>
+                                            <form asp-action="Delete" asp-route-id="@c.ContentId" method="post"
+                                                  onsubmit="return confirm('Delete @c.Title? Media rows are cascade-deleted.');">
+                                                @Html.AntiForgeryToken()
+                                                <button type="submit" class="fhp-dbtn fhp-dbtn--danger fhp-dbtn--sm">
+                                                    <i class="ri-delete-bin-6-line" aria-hidden="true"></i>
+                                                    <span>Delete</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
                             }
-                            else
-                            {
-                                <div class="cover-fallback" style="width:56px;height:40px;font-size:.6rem;border-radius:6px;padding:.2rem;">🎬</div>
-                            }
-                        </td>
-                        <td class="fw-semibold">@c.Title</td>
-                        <td><span class="badge bg-secondary rounded-pill">@c.Category.Name</span></td>
-                        <td><span class="badge badge-type rounded-pill">@c.Type</span></td>
-                        <td class="text-end">@c.PopularityScore</td>
-                        <td class="text-end">@c.ViewCount</td>
-                        <td class="text-end">
-                            <a asp-action="Edit" asp-route-id="@c.ContentId" class="btn btn-sm btn-outline-primary">Edit</a>
-                            <form asp-action="Delete" asp-route-id="@c.ContentId" method="post" class="d-inline"
-                                  onsubmit="return confirm('Delete @c.Title? Media rows are cascade-deleted.');">
-                                @Html.AntiForgeryToken()
-                                <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                }
-                @if (Model.Items.Count == 0)
-                {
-                    <tr><td colspan="7" class="text-center text-muted py-4">No content found.</td></tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </section>
+
+    <partial name="_Pager" model="AdminPagerViewModel.From(Model)" />
+
 </div>
 
-@if (Model.TotalPages > 1)
-{
-    <nav class="mt-3">
-        <ul class="pagination">
-            <li class="page-item @(!Model.HasPrevious ? "disabled" : "")">
-                <a class="page-link" href="@Model.PageUrl(Model.Page - 1)">«</a>
-            </li>
-            <li class="page-item disabled"><span class="page-link">Page @Model.Page of @Model.TotalPages</span></li>
-            <li class="page-item @(!Model.HasNext ? "disabled" : "")">
-                <a class="page-link" href="@Model.PageUrl(Model.Page + 1)">»</a>
-            </li>
-        </ul>
-    </nav>
-}

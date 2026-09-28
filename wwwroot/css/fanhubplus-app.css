@@ -1,12 +1,12 @@
 /* ==========================================================================
    FanHubPlus application components
    --------------------------------------------------------------------------
-   The public site renders the streaming template's own stylesheet
-   (assets/css/style.css). The template has no rule for a handful of
-   application-only widgets - flash messages, the FanBot chat launcher and the
-   bookmark / rating controls - so those live here, written against the same
-   palette (primary #f41b3b, secondary #ffea00, navy-black #0f0f0f) and type
-   scale. Nothing in this file changes a template component.
+    The public site renders the streaming template's utility sheet
+    (wwwroot/css/fhp-utilities.css) plus Bootstrap 5.3. The template has no rule
+    for a handful of application-only widgets - flash messages, the FanBot chat
+    launcher and the bookmark / rating controls - so those live here, written
+    against the same palette (primary #f41b3b, secondary #ffea00, navy-black
+    #0f0f0b) and type scale. Nothing in this file changes a template component.
    ========================================================================== */
 
 /* Helpers (the template ships no sr-only / display utility) */
@@ -360,11 +360,9 @@ main.bg-white .fhp-stars button:hover {
 
 
 /* ---------- Video modal plumbing ----------------------------------------
-   The Bootstrap JS bundle is loaded by the layout, but its reboot CSS never
-   is (the template ships compiled Tailwind). These are the handful of modal
-   rules bootstrap's JS relies on, plus the player shell from the old theme,
-   so #fhpVideoModal renders without dragging bootstrap's reset onto the
-   template. */
+   The Bootstrap JS bundle is loaded by the layout, and so is Bootstrap 5.3 CSS.
+   These rules reinforce the modal/player shell so #fhpVideoModal renders with
+   the FanHubPlus dark treatment. */
 /* ---------- Legacy sheet reconciliations --------------------------------
    site.css is loaded first; a few of its rules outrank the template's own
    utilities by specificity alone. Cancel them here (this file loads last). */

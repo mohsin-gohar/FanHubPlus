@@ -1,0 +1,70 @@
+@* The admin title card, shared by every list page and form so they all open
+   the same way the dashboard does: eyebrow, title, one gradient-accented word,
+   a lede, a row of live chips and the page's own action up top right. *@
+@model AdminHeroViewModel
+@{
+    var hasAction = !string.IsNullOrWhiteSpace(Model.ActionText) && !string.IsNullOrWhiteSpace(Model.ActionUrl);
+    var hasBack = !string.IsNullOrWhiteSpace(Model.BackText) && !string.IsNullOrWhiteSpace(Model.BackUrl);
+    var hasAccent = !string.IsNullOrWhiteSpace(Model.Accent);
+    var hasLede = !string.IsNullOrWhiteSpace(Model.Lede);
+    var actionIcon = string.IsNullOrWhiteSpace(Model.ActionIcon) ? "ri-add-line" : Model.ActionIcon;
+    var backIcon = string.IsNullOrWhiteSpace(Model.BackIcon) ? "ri-arrow-left-line" : Model.BackIcon;
+}
+
+<section class="fhp-cine-hero">
+    <div class="fhp-cine-hero__top">
+        <div>
+            <p class="fhp-cine-hero__eyebrow">@Model.Eyebrow</p>
+            <h1 class="fhp-cine-hero__title">
+                @Model.Title
+                @if (hasAccent)
+                {
+                    <span class="fhp-cine-hero__accent">@Model.Accent</span>
+                }
+            </h1>
+            @if (hasLede)
+            {
+                <p class="fhp-cine-hero__lede">@Model.Lede</p>
+            }
+            @if (Model.Chips.Count > 0)
+            {
+                <ul class="fhp-cine-hero__meta">
+                    @foreach (var chip in Model.Chips)
+                    {
+                        <li class="fhp-cine-chip@(chip.Live ? " fhp-cine-chip--live" : "")">
+                            <i class="@chip.Icon" aria-hidden="true"></i>
+                            @if (string.IsNullOrWhiteSpace(chip.Label))
+                            {
+                                <span><strong>@chip.Value</strong></span>
+                            }
+                            else
+                            {
+                                <span><strong>@chip.Value</strong> @chip.Label</span>
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+
+        @if (hasAction || hasBack)
+        {
+            <div class="fhp-cine-hero__actions">
+                @if (hasBack)
+                {
+                    <a class="fhp-dbtn fhp-dbtn--ghost" href="@Model.BackUrl">
+                        <i class="@Model.BackIcon" aria-hidden="true"></i>
+                        <span>@Model.BackText</span>
+                    </a>
+                }
+                @if (hasAction)
+                {
+                    <a class="fhp-dbtn fhp-dbtn--gold" href="@Model.ActionUrl">
+                        <i class="@(string.IsNullOrWhiteSpace(Model.ActionIcon) ? "ri-add-line" : Model.ActionIcon)" aria-hidden="true"></i>
+                        <span>@Model.ActionText</span>
+                    </a>
+                }
+            </div>
+        }
+    </div>
+</section>

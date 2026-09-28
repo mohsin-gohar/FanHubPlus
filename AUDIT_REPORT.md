@@ -135,7 +135,7 @@ names changed:
 | Icon font | `assets/css/flaticon_misao.css` -> `flaticon_fanhubplus.css`, `assets/fonts/flaticon_misao14a1.*` -> `flaticon_fanhubplus14a1.*`; the `@font-face` family, all five `url()` targets and the `#...` fragment were renamed, as were the caret rule in `assets/css/style.css`, the `<font id>` inside the SVG font and the `<link>` in `Views/Shared/_Layout.cshtml` |
 | Wordmark artwork | `assets/images/logo.svg` and `logo-big.svg` redrawn as FanHubPlus wordmarks in the same viewBoxes/sizes (neither file is referenced by the views - the header and footer render the brand as live text) |
 | Text | Footer credit, code comments and documentation: `Misao` -> `FanHubPlus`; also `.misaoOriginalsSwiper` -> `.fanhubplusOriginalsSwiper` in `assets/js/custom.js` (a selector no markup referenced, so behaviour is unchanged) |
-| Untouched | All class names, Tailwind utility strings, colours, type scale, behaviour scripts, media, and the upstream URL quoted above |
+| Untouched | All class names, utility strings, colours, type scale, behaviour scripts, media, and the upstream URL quoted above |
 
 Verified after the pass: `dotnet build FanHubPlus.sln` reports 0 warnings / 0 errors; a
 case-insensitive search for the old brand across `Views/`, `Areas/`, `wwwroot/`, `Models/`,

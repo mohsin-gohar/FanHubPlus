@@ -1,0 +1,20 @@
+@* Pager row for the admin lists. Renders nothing while there is a single
+   page, so a view can drop it in unconditionally. *@
+@model AdminPagerViewModel
+
+@if (Model.TotalPages > 1)
+{
+    <nav class="fhp-dpager" aria-label="Pagination">
+        <a class="fhp-dpager__btn" href="@Model.PreviousUrl"
+           aria-disabled="@(!Model.HasPrevious)" title="Previous page">
+            <i class="ri-arrow-left-s-line" aria-hidden="true"></i>
+            <span>Prev</span>
+        </a>
+        <span class="fhp-dpager__label">Page @Model.Page of @Model.TotalPages</span>
+        <a class="fhp-dpager__btn" href="@Model.NextUrl"
+           aria-disabled="@(!Model.HasNext)" title="Next page">
+            <span>Next</span>
+            <i class="ri-arrow-right-s-line" aria-hidden="true"></i>
+        </a>
+    </nav>
+}

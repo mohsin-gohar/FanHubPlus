@@ -2,8 +2,8 @@
 @{
     // Public site theme: the FanHubPlus build of the streaming template. The
     // markup below is the template's own header / sidebar / footer verbatim -
-    // same element nesting, same class strings (the stylesheet is compiled
-    // Tailwind, so every class has to appear exactly as the template wrote it).
+    // same element nesting, same class strings (Bootstrap 5.3 + the fhp-utilities
+    // utility sheet, so every class has to appear exactly as the template wrote it).
     var pref = Context.Request.Cookies["fhp_pref"];
     var fontMatch = Regex.Match(pref ?? "", @"\|(\d+)$");
     var fontPx = fontMatch.Success ? fontMatch.Groups[1].Value : "16";
@@ -44,18 +44,24 @@
     <title>@(ViewData["Title"] != null ? ViewData["Title"] + " | " : "")FanHubPlus</title>
 
     <!-- Links Of CSS File -->
-    @* Legacy component sheet for the inner pages that have not been moved to
-       the template markup yet (forms, panels, tabs, media, timeline, map...).
-       It comes FIRST so the template's compiled Tailwind wins wherever the two
-       share a selector; every .fhp-* component rule is unique to it. *@
+    @* Bootstrap 5.3 is the base CSS framework. *@
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+    @* FanHubPlus theme: maps the palette to Bootstrap CSS custom properties. *@
+    <link rel="stylesheet" href="~/css/bootstrap-fhp-theme.css" asp-append-version="true" />
+    @* Core component sheet: variables, dark-mode overrides, and all .fhp-*
+       component rules for forms, panels, tabs, media, timeline, map, etc.
+       Loads before the utility sheet so the utility layer wins on shared
+       selectors. *@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @* Utility classes used by the Razor views (replaces the previous Tailwind
+       build). Provides every .flex / .bg-white etc. utility the markup needs. *@
+    <link rel="stylesheet" href="~/css/fhp-utilities.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/assets/css/swiper-bundle.min.css" />
     <link rel="stylesheet" href="~/assets/css/flaticon_fanhubplus.css" />
     <link rel="stylesheet" href="~/assets/css/scrollCue.css" />
     <link rel="stylesheet" href="~/assets/css/remixicon.css" />
-    <link rel="stylesheet" href="~/assets/css/style.css" />
     @* Application widgets the template has no rule for (flash notices, FanBot,
-       bookmark + rating controls). Written against the template palette. *@
+       bookmark + rating controls). Loaded last so it always wins. *@
     <link rel="stylesheet" href="~/css/fanhubplus-app.css" asp-append-version="true" />
 
     <!-- Favicon -->

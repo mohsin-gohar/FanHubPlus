@@ -6,6 +6,7 @@ fan-art gallery with moderated submissions, a merchandise shop, a support/help d
 bookmarks and a chatbot assistant - plus a role-protected admin area for all of it.
 
 * **Framework**: ASP.NET Core 8 MVC (Razor views, Areas, dependency injection)
+* **CSS**: Bootstrap 5.3 (base framework + dark theme) with the FanHubPlus utility sheet
 * **Database**: Microsoft SQL Server via EF Core 8 (`Microsoft.EntityFrameworkCore.SqlServer`, code-first migrations)
 * **Identity**: ASP.NET Core Identity (hashed passwords, e-mail confirmation, lockout, roles `Admin` / `User`)
 * **Architecture**: Controller -> Service -> generic Repository (`IRepository<>` / `Repository<>`) -> EF Core
@@ -47,7 +48,10 @@ Build output (`bin/`, `obj/`) is ignored by `.gitignore` and is never part of th
 
 The interface is the **FanHubPlus** template (EnvyTheme) - the same look as the original hand-in:
 
-* `wwwroot/assets/css/style.css` - the template design system (dark theme, Play/Montserrat + Montez type scale)
+* `wwwroot/lib/bootstrap/` - Bootstrap 5.3.3 CSS + JS bundle (base framework)
+* `wwwroot/css/bootstrap-fhp-theme.css` - Bootstrap 5.3 theme maps the FanHubPlus palette to CSS custom properties
+* `wwwroot/css/fhp-utilities.css` - utility classes used by the Razor views (replaces the previous compiled Tailwind sheet)
+* `wwwroot/css/{site,fanhubplus-app}.css` - the FanHubPlus component + widget layer (dark mode, cards, chat widget, modals, admin shell)
 * `wwwroot/assets/css/{flaticon_fanhubplus,remixicon,swiper-bundle.min,scrollCue}.css` - icon fonts and slider styles
 * `wwwroot/assets/js/` - GSAP + ScrollTrigger, Swiper, Lenis smooth scroll, lightbox, parallax, scroll cue and
   `fhp-custom.js` (template wiring adapted to this app)
@@ -70,7 +74,7 @@ to FanHubPlus: the icon stylesheet and its font files were renamed to `flaticon_
 composed wordmark artwork (`logo.svg`, `logo-big.svg`) was redrawn, and every occurrence of the
 template's brand name in markup, scripts, styles and comments was replaced.
 
-Class names, Tailwind utility strings, colours, type scale, behaviour scripts and all other media are
+Class names, utility class strings, colours, type scale, behaviour scripts and all other media are
 untouched, so the rendering matches the template exactly. `THEME_MIGRATION.md` records the full
 rename map, the template-page-to-view mapping, the intentional deviations and the verification
 commands.

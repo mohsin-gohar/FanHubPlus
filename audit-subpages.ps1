@@ -1,5 +1,6 @@
 # audit-subpages.ps1 — finds CSS classes used in rendered pages but missing
-# from every stylesheet the site loads (theme style.css, site.css, bootstrap, swiper, scrollCue, remixicon).
+# from every stylesheet the site loads (bootstrap-fhp-theme, site.css,
+# fhp-utilities, fanhubplus-app, bootstrap, swiper, scrollCue, remixicon).
 param(
     [string[]]$Pages = @('/', '/Explore', '/News', '/Merch', '/Support', '/Account/Login', '/Account/Register'),
     [string]$Base = 'http://localhost:5124'
@@ -9,13 +10,15 @@ $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 
 $cssFiles = @(
-    'F:\.net\FanHubPlus\FanHubPlus\wwwroot\assets\css\style.css',
-    'F:\.net\FanHubPlus\FanHubPlus\wwwroot\css\site.css',
-    'F:\.net\FanHubPlus\FanHubPlus\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css',
-    'F:\.net\FanHubPlus\FanHubPlus\wwwroot\assets\css\swiper-bundle.min.css',
-    'F:\.net\FanHubPlus\FanHubPlus\wwwroot\assets\css\scrollCue.css',
-    'F:\.net\FanHubPlus\FanHubPlus\wwwroot\assets\css\remixicon.css',
-    'F:\.net\FanHubPlus\FanHubPlus\wwwroot\assets\css\flaticon_misao.css'
+    'F:\.net\FanHubPlus\wwwroot\css\bootstrap-fhp-theme.css',
+    'F:\.net\FanHubPlus\wwwroot\css\site.css',
+    'F:\.net\FanHubPlus\wwwroot\css\fhp-utilities.css',
+    'F:\.net\FanHubPlus\wwwroot\css\fanhubplus-app.css',
+    'F:\.net\FanHubPlus\wwwroot\lib\bootstrap\dist\css\bootstrap.min.css',
+    'F:\.net\FanHubPlus\wwwroot\assets\css\swiper-bundle.min.css',
+    'F:\.net\FanHubPlus\wwwroot\assets\css\scrollCue.css',
+    'F:\.net\FanHubPlus\wwwroot\assets\css\remixicon.css',
+    'F:\.net\FanHubPlus\wwwroot\assets\css\flaticon_fanhubplus.css'
 )
 $css = ($cssFiles | ForEach-Object { [System.IO.File]::ReadAllText($_) }) -join "`n"
 

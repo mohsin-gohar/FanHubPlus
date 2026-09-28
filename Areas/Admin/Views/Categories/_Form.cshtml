@@ -2,43 +2,78 @@
 @{
     var isEdit = Model.CategoryId != 0;
     ViewData["Title"] = isEdit ? "Edit category" : "New category";
+
+    var hero = new AdminHeroViewModel
+    {
+        Eyebrow = "FanHub Plus · Catalogue",
+        Title = isEdit ? "Edit category" : "New category",
+        Accent = isEdit ? Model.Name : null,
+        Lede = isEdit
+            ? "Renaming a shelf updates the public filters, the Explorer sidebar and every content row at once."
+            : "A name and a one-line description is all a shelf needs; the icon is optional.",
+        BackText = "Back to categories",
+        BackUrl = Url.Action("Index"),
+        Chips =
+        {
+            new AdminHeroChip("ri-file-text-line", string.IsNullOrWhiteSpace(Model.Description) ? "No" : "Yes", "description"),
+            new AdminHeroChip("ri-image-line", string.IsNullOrWhiteSpace(Model.IconUrl) ? "No" : "Yes", "icon"),
+        }
+    };
 }
 
-<h1 class="page-title h3 mb-3">@(isEdit ? "✏️ Edit category" : "＋ New category")</h1>
+<div class="fhp-cine">
 
-<div class="card border-0 shadow-sm" style="max-width:640px;">
-    <div class="card-body p-4">
-        <form action="@(isEdit ? Url.Action("Edit", new { id = Model.CategoryId }) : Url.Action("Create"))"
-              method="post">
-            @Html.AntiForgeryToken()
-            @if (isEdit)
-            {
-                <input type="hidden" asp-for="CategoryId" />
-            }
-            <div asp-validation-summary="ModelOnly" class="text-danger small mb-2"></div>
+    <partial name="_CineHero" model="hero" />
 
-            <div class="mb-3">
-                <label asp-for="Name" class="form-label"></label>
-                <input asp-for="Name" class="form-control" autofocus />
-                <span asp-validation-for="Name" class="text-danger small"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Description" class="form-label"></label>
-                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
-                <span asp-validation-for="Description" class="text-danger small"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="IconUrl" class="form-label"></label>
-                <input asp-for="IconUrl" class="form-control" placeholder="/images/demo/....svg or https://..." />
-                <span asp-validation-for="IconUrl" class="text-danger small"></span>
-            </div>
+    <section class="fhp-panel">
+        <header class="fhp-panel__head">
+            <h2 class="fhp-panel__title">
+                <i class="ri-price-tag-3-line" aria-hidden="true"></i>
+                Shelf details
+            </h2>
+            <span class="fhp-panel__hint">@(isEdit ? $"Editing #{Model.CategoryId}" : "New record")</span>
+        </header>
+        <div class="fhp-panel__body">
+            <form class="fhp-dform fhp-dform--narrow" action="@(isEdit ? Url.Action("Edit", new { id = Model.CategoryId }) : Url.Action("Create"))"
+                  method="post">
+                @Html.AntiForgeryToken()
+                @if (isEdit)
+                {
+                    <input type="hidden" asp-for="CategoryId" />
+                }
+                <div asp-validation-summary="ModelOnly" class="text-danger small mb-2"></div>
 
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Save</button>
-                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
-            </div>
-        </form>
-    </div>
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" autofocus />
+                    <span asp-validation-for="Name" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="IconUrl" class="form-label"></label>
+                    <input asp-for="IconUrl" class="form-control" placeholder="/images/demo/....svg or https://..." />
+                    <span asp-validation-for="IconUrl" class="text-danger small"></span>
+                </div>
+
+                <hr />
+                <div class="fhp-dform__actions">
+                    <button type="submit" class="fhp-dbtn fhp-dbtn--gold">
+                        <i class="ri-save-3-line" aria-hidden="true"></i>
+                        <span>Save</span>
+                    </button>
+                    <a asp-action="Index" class="fhp-dbtn fhp-dbtn--ghost">
+                        <i class="ri-close-line" aria-hidden="true"></i>
+                        <span>Cancel</span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </section>
+
 </div>
 
 @section Scripts {
