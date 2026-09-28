@@ -1,62 +1,47 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using FanHubPlus.Data;
 using FanHubPlus.Models;
 using FanHubPlus.Services;
 using FanHubPlus.ViewModels;
+using FanHubPlus.Services.Interfaces;
+using FanHubPlus.DTOs;
 
 namespace FanHubPlus.Controllers;
 
-/// <summary>Store grid, product page, cart and checkout.</summary>
 public class ShopController : Controller
 {
-    private readonly FanHubDbContext _db;
+    private readonly IStoreService _storeService;
     private readonly CartService _cart;
 
-    public ShopController(FanHubDbContext db, CartService cart)
+    public ShopController(IStoreService storeService, CartService cart)
     {
-        _db = db;
+        _storeService = storeService;
         _cart = cart;
     }
 
     public async Task<IActionResult> Index(string? category, string? search, string? sortBy, decimal? minPrice, decimal? maxPrice)
     {
-        var query = _db.Products.AsQueryable();
-
-        if (!string.IsNullOrWhiteSpace(category) && category != "All")
+        var filter = new StoreFilter
         {
-            query = query.Where(p => p.Category == category);
-        }
-        if (!string.IsNullOrWhiteSpace(search))
-        {
-            var term = search.ToLower();
-            query = query.Where(p => p.Name.ToLower().Contains(term) || p.Description.ToLower().Contains(term));
-        }
-        if (minPrice.HasValue) query = query.Where(p => p.Price >= minPrice.Value);
-        if (maxPrice.HasValue) query = query.Where(p => p.Price <= maxPrice.Value);
-
-        var all = await _db.Products.ToListAsync();
-        var filtered = query.ToList();
-
-        filtered = sortBy switch
-        {
-            "price-asc" => filtered.OrderBy(p => p.Price).ToList(),
-            "price-desc" => filtered.OrderByDescending(p => p.Price).ToList(),
-            "rating" => filtered.OrderByDescending(p => p.Rating).ToList(),
-            _ => filtered.OrderByDescending(p => p.Sold).ToList()
+            Category = category,
+            Search = search,
+            SortBy = sortBy ?? "popular",
+            MinPrice = minPrice,
+            MaxPrice = maxPrice
         };
+
+        var result = await _storeService.GetPagedAsync(filter);
 
         var model = new ShopViewModel
         {
-            Products = filtered,
-            Featured = all.OrderByDescending(p => p.DiscountPercent).Take(3).ToList(),
-            Categories = all.Select(p => p.Category).Distinct().OrderBy(c => c).ToList(),
+            Products = result.Items,
+            Featured = result.AdditionalData?.Featured ?? new(),
+            Categories = result.AdditionalData?.Categories ?? new(),
             Category = category,
             Search = search,
             SortBy = sortBy,
             MinPrice = minPrice ?? 0,
             MaxPrice = maxPrice ?? 500,
-            TotalCount = filtered.Count
+            TotalCount = result.TotalCount
         };
 
         return View(model);
@@ -64,18 +49,15 @@ public class ShopController : Controller
 
     public async Task<IActionResult> Product(int id)
     {
-        var product = await _db.Products.FirstOrDefaultAsync(p => p.Id == id);
-        if (product == null) return NotFound();
+        var detail = await _storeService.GetDetailAsync(id);
+        if (detail == null) return NotFound();
 
-        var all = await _db.Products.ToListAsync();
         var model = new ProductDetailsViewModel
         {
-            Product = product,
-            Related = all.Where(p => p.Id != id).OrderByDescending(p => p.Sold).Take(4).ToList(),
-            SameCategory = all.Where(p => p.Id != id && p.Category == product.Category).Take(3).ToList(),
-            Gallery = new List<StoreProduct> { product }
-                .Concat(all.Where(p => p.ArtTheme == product.ArtTheme && p.Id != id).Take(2))
-                .ToList()
+            Product = detail.Product,
+            Related = detail.Related,
+            SameCategory = detail.SameCategory,
+            Gallery = detail.Gallery
         };
 
         return View(model);
@@ -92,7 +74,7 @@ public class ShopController : Controller
 
     private CartViewModel BuildCart(string? coupon)
     {
-        var all = _db.Products.ToList();
+        var all = (await _storeService.GetPagedAsync(new StoreFilter())).Items;
 
         var model = new CartViewModel
         {
@@ -177,4 +159,3 @@ public class ShopController : Controller
         return View();
     }
 }
-

@@ -1,198 +1,191 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using FanHubPlus.Data;
 using FanHubPlus.Models;
 using FanHubPlus.ViewModels;
+using FanHubPlus.Services.Interfaces;
+using FanHubPlus.DTOs;
 
 namespace FanHubPlus.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    private readonly FanHubDbContext _db;
+    private readonly IVideoService _videoService;
+    private readonly IBlogService _blogService;
+    private readonly IStoreService _storeService;
+    private readonly IChannelService _channelService;
+    private readonly ITestimonialService _testimonialService;
+    private readonly IFaqService _faqService;
+    private readonly ICareerService _careerService;
 
-    public HomeController(ILogger<HomeController> logger, FanHubDbContext db)
+    public HomeController(
+        ILogger<HomeController> logger,
+        IVideoService videoService,
+        IBlogService blogService,
+        IStoreService storeService,
+        IChannelService channelService,
+        ITestimonialService testimonialService,
+        IFaqService faqService,
+        ICareerService careerService)
     {
         _logger = logger;
-        _db = db;
+        _videoService = videoService;
+        _blogService = blogService;
+        _storeService = storeService;
+        _channelService = channelService;
+        _testimonialService = testimonialService;
+        _faqService = faqService;
+        _careerService = careerService;
     }
 
-    // ------------------------------------------------------------------
-    // Home pages
-    // ------------------------------------------------------------------
     public async Task<IActionResult> Index()
     {
         var model = new HomeIndexViewModel
         {
-            FeaturedHero = await _db.Videos.Where(v => v.IsFeatured).ToListAsync(),
-            TrendingVideos = await _db.Videos.Where(v => v.IsTrending).ToListAsync(),
-            LiveNow = await _db.Videos.Where(v => v.IsLive).ToListAsync(),
-            TopRated = await _db.Videos.Where(v => v.IsTopRated).ToListAsync(),
-            LatestReleases = await _db.Videos.OrderByDescending(v => v.ReleaseDate).Take(10).ToListAsync(),
-            Categories = await _db.Categories.ToListAsync(),
-            Testimonials = await _db.Testimonials.ToListAsync(),
-            BlogPosts = await _db.BlogPosts.OrderByDescending(b => b.PublishedOn).Take(4).ToListAsync(),
-            Channels = await _db.Channels.OrderByDescending(c => c.Viewers).Take(6).ToListAsync(),
-            StoreDeals = (await _db.Products.ToListAsync())
-                .OrderByDescending(p => p.DiscountPercent)
-                .Take(4)
-                .ToList(),
-            Faqs = await _db.Faqs.Where(f => f.IsPopular).Take(4).ToListAsync()
+            FeaturedHero = await _videoService.GetFeaturedAsync(3),
+            TrendingVideos = await _videoService.GetTrendingAsync(8),
+            LiveNow = await _videoService.GetLiveAsync(6),
+            TopRated = await _videoService.GetTopRatedAsync(5),
+            LatestReleases = await _videoService.GetLatestAsync(10),
+            Categories = await _videoService.GetCategoriesAsync(),
+            Testimonials = await _testimonialService.GetAllAsync(),
+            BlogPosts = await _blogService.GetLatestAsync(4),
+            Channels = await _channelService.GetTopChannelsAsync(6),
+            StoreDeals = await _storeService.GetFeaturedAsync(4),
+            Faqs = await _faqService.GetPopularAsync(4)
         };
 
         return View(model);
     }
 
-    /// <summary>Alternate home layout: video-first hero, live channels, editorial picks.</summary>
     public async Task<IActionResult> Showcase()
     {
         var model = new HomeIndexViewModel
         {
-            FeaturedHero = await _db.Videos.Where(v => v.IsFeatured).ToListAsync(),
-            TrendingVideos = await _db.Videos.OrderByDescending(v => v.ImdbRating).Take(8).ToListAsync(),
-            LiveNow = await _db.Videos.Where(v => v.IsLive).ToListAsync(),
-            TopRated = await _db.Videos.Where(v => v.IsTopRated).ToListAsync(),
-            LatestReleases = await _db.Videos.OrderByDescending(v => v.ReleaseDate).Take(8).ToListAsync(),
-            Categories = await _db.Categories.ToListAsync(),
-            Testimonials = await _db.Testimonials.ToListAsync(),
-            BlogPosts = await _db.BlogPosts.OrderByDescending(b => b.PublishedOn).Take(3).ToListAsync(),
-            Channels = await _db.Channels.ToListAsync(),
-            StoreDeals = (await _db.Products.ToListAsync())
-                .OrderByDescending(p => p.DiscountPercent)
-                .Take(3)
-                .ToList(),
-            Faqs = await _db.Faqs.Take(4).ToListAsync()
+            FeaturedHero = await _videoService.GetFeaturedAsync(3),
+            TrendingVideos = await _videoService.GetTrendingAsync(8),
+            LiveNow = await _videoService.GetLiveAsync(6),
+            TopRated = await _videoService.GetTopRatedAsync(5),
+            LatestReleases = await _videoService.GetLatestAsync(8),
+            Categories = await _videoService.GetCategoriesAsync(),
+            Testimonials = await _testimonialService.GetAllAsync(),
+            BlogPosts = await _blogService.GetLatestAsync(3),
+            Channels = await _channelService.GetTopChannelsAsync(6),
+            StoreDeals = await _storeService.GetFeaturedAsync(3),
+            Faqs = await _faqService.GetPopularAsync(4)
         };
 
         return View(model);
     }
 
-    // ------------------------------------------------------------------
-    // Catalogue
-    // ------------------------------------------------------------------
+    public async Task<IActionResult> IndexTwo()
+    {
+        var model = new HomeIndexViewModel
+        {
+            FeaturedHero = await _videoService.GetFeaturedAsync(3),
+            TrendingVideos = await _videoService.GetTrendingAsync(8),
+            LiveNow = await _videoService.GetLiveAsync(6),
+            TopRated = await _videoService.GetTopRatedAsync(5),
+            LatestReleases = await _videoService.GetLatestAsync(8),
+            Categories = await _videoService.GetCategoriesAsync(),
+            Testimonials = await _testimonialService.GetAllAsync(),
+            BlogPosts = await _blogService.GetLatestAsync(3),
+            Channels = await _channelService.GetTopChannelsAsync(6),
+            StoreDeals = await _storeService.GetFeaturedAsync(3),
+            Faqs = await _faqService.GetPopularAsync(4)
+        };
+
+        return View(model);
+    }
+
     public async Task<IActionResult> Details(int id)
     {
-        var video = await _db.Videos.FirstOrDefaultAsync(v => v.Id == id);
-        if (video == null) return NotFound();
+        var detail = await _videoService.GetDetailAsync(id);
+        if (detail == null) return NotFound();
 
         var model = new DetailsViewModel
         {
-            Title = video,
-            Episodes = await _db.Episodes.Where(e => e.VideoId == id)
-                .OrderBy(e => e.Season).ThenBy(e => e.Number).ToListAsync(),
-            Related = await _db.Videos
-                .Where(v => v.Id != id && (v.Genre == video.Genre || v.IsTopRated))
-                .Take(6).ToListAsync(),
-            Comments = await _db.Comments.Where(c => c.VideoId == id && c.ParentId == null)
-                .OrderByDescending(c => c.PostedOn).ToListAsync(),
-            Replies = await _db.Comments.Where(c => c.VideoId == id && c.ParentId != null).ToListAsync()
+            Title = detail.Video,
+            Episodes = detail.Episodes,
+            Related = detail.Related,
+            Comments = detail.Comments,
+            Replies = detail.Replies,
+            WatchlistCount = Math.Max(0, (await _videoService.GetPagedAsync(new VideoFilter())).TotalCount - 1),
+            AverageScore = detail.Video.ImdbRating > 0 ? (int)Math.Round(detail.Video.ImdbRating * 10) : 86
         };
-        model.WatchlistCount = Math.Max(0, await _db.Videos.CountAsync() - 1);
-        model.AverageScore = video.ImdbRating > 0 ? (int)Math.Round(video.ImdbRating * 10) : 86;
 
         return View(model);
     }
 
-    public Task<IActionResult> Movies(string? genre, string? search, string? sortBy, int page = 1)
-        => CatalogueAsync("Movies", genre, search, sortBy, page);
+    public async Task<IActionResult> Movies(string? genre, string? search, string? sortBy, int page = 1)
+        => await CatalogueAsync(VideoType.Movies, genre, search, sortBy, page);
 
-    public Task<IActionResult> TvShows(string? genre, string? search, string? sortBy, int page = 1)
-        => CatalogueAsync("TV Shows", genre, search, sortBy, page);
+    public async Task<IActionResult> TvShows(string? genre, string? search, string? sortBy, int page = 1)
+        => await CatalogueAsync(VideoType.TvShows, genre, search, sortBy, page);
 
-    public Task<IActionResult> Videos(string? genre, string? search, string? sortBy, int page = 1)
-        => CatalogueAsync("Videos", genre, search, sortBy, page);
+    public async Task<IActionResult> Videos(string? genre, string? search, string? sortBy, int page = 1)
+        => await CatalogueAsync(VideoType.Live, genre, search, sortBy, page);
 
-    private async Task<IActionResult> CatalogueAsync(string section, string? genre, string? search, string? sortBy, int page)
+    private async Task<IActionResult> CatalogueAsync(VideoType section, string? genre, string? search, string? sortBy, int page)
     {
-        var query = _db.Videos.AsQueryable();
-
-        if (section == "TV Shows") query = query.Where(v => v.IsSeries);
-        if (section == "Videos") query = query.Where(v => v.IsLive);
-
-        if (!string.IsNullOrWhiteSpace(genre) && genre != "All")
+        var filter = new VideoFilter
         {
-            query = query.Where(v => v.Genre.ToLower() == genre.ToLower());
-        }
-
-        if (!string.IsNullOrWhiteSpace(search))
-        {
-            var term = search.ToLower();
-            query = query.Where(v => v.Title.ToLower().Contains(term)
-                || v.Description.ToLower().Contains(term)
-                || v.Genre.ToLower().Contains(term)
-                || v.Cast.ToLower().Contains(term));
-        }
-
-        var total = await query.CountAsync();
-
-        query = sortBy switch
-        {
-            "rating" => query.OrderByDescending(v => v.ImdbRating),
-            "year" => query.OrderByDescending(v => v.Year),
-            "title" => query.OrderBy(v => v.Title),
-            "oldest" => query.OrderBy(v => v.ReleaseDate),
-            _ => query.OrderByDescending(v => v.ReleaseDate)
+            Type = section,
+            Genre = genre,
+            Search = search,
+            SortBy = sortBy ?? "latest",
+            Page = Math.Max(1, page)
         };
 
-        var pageSize = 12;
-        var current = Math.Max(1, page);
+        var result = await _videoService.GetPagedAsync(filter);
 
         var model = new BrowseViewModel
         {
-            Section = section,
+            Section = section.ToString(),
             Genre = genre,
             Search = search,
             SortBy = sortBy,
-            Page = current,
-            PageSize = pageSize,
-            TotalCount = total,
-            Items = await query.Skip(BrowseViewModel.SkipTake(current, pageSize)).Take(pageSize).ToListAsync(),
-            Categories = await _db.Categories.ToListAsync(),
-            Genres = await _db.Videos.Select(v => v.Genre).Distinct().OrderBy(g => g).ToListAsync()
+            Page = filter.Page,
+            PageSize = filter.PageSize,
+            TotalCount = result.TotalCount,
+            Items = result.Items,
+            Categories = await _videoService.GetCategoriesAsync(),
+            Genres = (await _videoService.GetPagedAsync(new VideoFilter { PageSize = 1000 })).Items.Select(v => v.Genre).Distinct().OrderBy(g => g).ToList()
         };
 
-        // Movies / TV Shows / Live Videos all render the same catalogue layout.
         return View("Movies", model);
     }
 
     public async Task<IActionResult> Categories()
     {
+        var categories = await _videoService.GetCategoriesAsync();
+        foreach (var category in categories)
+        {
+            var videos = await _videoService.GetByGenreAsync(category.Name, 1);
+            category.VideoCount = videos.Count > 0 ? videos.Count : 0;
+        }
+
         var model = new BrowseViewModel
         {
             Section = "Categories",
-            Categories = await _db.Categories.OrderBy(c => c.Name).ToListAsync()
+            Categories = categories
         };
-
-        foreach (var category in model.Categories)
-        {
-            category.VideoCount = await _db.Videos.CountAsync(v => v.Genre == category.Name);
-        }
 
         return View(model);
     }
 
     public async Task<IActionResult> Channels(string? category)
     {
-        var query = _db.Channels.AsQueryable();
-        if (!string.IsNullOrWhiteSpace(category) && category != "All")
-        {
-            query = query.Where(c => c.Category == category);
-        }
-
         var model = new BrowseViewModel
         {
             Section = "Channels",
-            Channels = await query.OrderByDescending(c => c.Viewers).ToListAsync(),
-            Genres = await _db.Channels.Select(c => c.Category).Distinct().OrderBy(c => c).ToListAsync()
+            Channels = await _channelService.GetChannelsAsync(category),
+            Genres = await _channelService.GetCategoriesAsync()
         };
 
         return View(model);
     }
 
-    // ------------------------------------------------------------------
-    // Company + editorial pages
-    // ------------------------------------------------------------------
     public IActionResult About()
     {
         ViewBag.Stats = new[]
@@ -209,7 +202,6 @@ public class HomeController : Controller
             new { Year = "2023", Title = "Live sport at scale", Body = "Low latency live channels brought cricket, football and concerts to the same login as the library." },
             new { Year = "2025", Title = "4K HDR everywhere", Body = "Dolby Vision, Atmos and offline downloads rolled out across every supported device." }
         };
-        ViewBag.Team = _db.Testimonials.ToList();
         return View();
     }
 
@@ -236,48 +228,41 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Careers()
     {
-        var jobs = await _db.Jobs.OrderByDescending(j => j.PostedOn).ToListAsync();
+        var jobs = await _careerService.GetAllAsync();
         return View(jobs);
     }
 
     public async Task<IActionResult> CareerDetails(int id)
     {
-        var job = await _db.Jobs.FirstOrDefaultAsync(j => j.Id == id);
+        var job = await _careerService.GetByIdAsync(id);
         if (job == null) return NotFound();
-        ViewBag.Others = await _db.Jobs.Where(j => j.Id != id).OrderByDescending(j => j.PostedOn).Take(4).ToListAsync();
+        ViewBag.Others = await _careerService.GetOtherJobsAsync(id);
         return View(job);
     }
 
     public async Task<IActionResult> Blog(string layout = "right", string? category = null, int page = 1)
     {
-        var query = _db.BlogPosts.AsQueryable();
-        if (!string.IsNullOrWhiteSpace(category) && category != "All")
+        var filter = new BlogFilter
         {
-            query = query.Where(b => b.Category == category);
-        }
+            Category = category,
+            Layout = layout,
+            Page = Math.Max(1, page)
+        };
 
-        var pageSize = 6;
-        var current = Math.Max(1, page);
-        var all = await _db.BlogPosts.ToListAsync();
+        var result = await _blogService.GetPagedAsync(filter);
 
         var model = new BlogListViewModel
         {
             Layout = layout,
             Category = category,
-            Page = current,
-            PageSize = pageSize,
-            TotalCount = await query.CountAsync(),
-            Posts = await query.OrderByDescending(b => b.PublishedOn)
-                .Skip(BrowseViewModel.SkipTake(current, pageSize)).Take(pageSize).ToListAsync(),
-            Latest = all.OrderByDescending(b => b.PublishedOn).Take(4).ToList(),
-            Popular = all.OrderByDescending(b => b.Comments).Take(4).ToList(),
-            Categories = all.Select(b => b.Category).Distinct().OrderBy(c => c).ToList(),
-            Tags = all.SelectMany(b => b.TagList)
-                .GroupBy(t => t)
-                .OrderByDescending(g => g.Count())
-                .Select(g => g.Key)
-                .Take(14)
-                .ToList()
+            Page = result.Page,
+            PageSize = result.PageSize,
+            TotalCount = result.TotalCount,
+            Posts = result.Items,
+            Latest = result.AdditionalData?.Latest ?? new(),
+            Popular = result.AdditionalData?.Popular ?? new(),
+            Categories = result.AdditionalData?.Categories ?? new(),
+            Tags = result.AdditionalData?.Tags ?? new()
         };
 
         return View(model);
@@ -285,61 +270,28 @@ public class HomeController : Controller
 
     public async Task<IActionResult> BlogDetails(int id, string sidebar = "right")
     {
-        var post = await _db.BlogPosts.FirstOrDefaultAsync(b => b.Id == id);
-        if (post == null) return NotFound();
+        var detail = await _blogService.GetDetailAsync(id);
+        if (detail == null) return NotFound();
 
         var model = new BlogDetailsViewModel
         {
-            Post = post,
+            Post = detail.Post,
             Sidebar = sidebar,
-            Related = await _db.BlogPosts.Where(b => b.Id != id)
-                .OrderBy(b => b.Category == post.Category ? 0 : 1)
-                .ThenByDescending(b => b.PublishedOn)
-                .Take(3).ToListAsync(),
-            Latest = await _db.BlogPosts.OrderByDescending(b => b.PublishedOn).Take(4).ToListAsync(),
-            Popular = await _db.BlogPosts.OrderByDescending(b => b.Comments).Take(4).ToListAsync(),
-            Comments = await _db.Comments.Where(c => c.VideoId == 0).OrderByDescending(c => c.PostedOn).ToListAsync()
+            Related = detail.Related,
+            Latest = detail.Latest,
+            Popular = detail.Popular,
+            Comments = detail.Comments
         };
 
         return View(model);
     }
-
 
     public async Task<IActionResult> Faq(string? topic)
     {
-        var query = _db.Faqs.AsQueryable();
-        if (!string.IsNullOrWhiteSpace(topic) && topic != "All")
-        {
-            query = query.Where(f => f.Topic == topic);
-        }
-
-        ViewBag.Topics = await _db.Faqs.Select(f => f.Topic).Distinct().OrderBy(t => t).ToListAsync();
+        var query = await _faqService.GetAllAsync(topic);
+        ViewBag.Topics = await _faqService.GetTopicsAsync();
         ViewBag.ActiveTopic = topic ?? "All";
-        return View(await query.OrderBy(f => f.Id).ToListAsync());
-    }
-
-    /// <summary>Second home layout: video-first hero, channel line-up and editorial picks.</summary>
-    public async Task<IActionResult> IndexTwo()
-    {
-        var model = new HomeIndexViewModel
-        {
-            FeaturedHero = await _db.Videos.Where(v => v.IsFeatured).ToListAsync(),
-            TrendingVideos = await _db.Videos.OrderByDescending(v => v.ImdbRating).Take(8).ToListAsync(),
-            LiveNow = await _db.Videos.Where(v => v.IsLive).ToListAsync(),
-            TopRated = await _db.Videos.Where(v => v.IsTopRated).ToListAsync(),
-            LatestReleases = await _db.Videos.OrderByDescending(v => v.ReleaseDate).Take(8).ToListAsync(),
-            Categories = await _db.Categories.ToListAsync(),
-            Testimonials = await _db.Testimonials.ToListAsync(),
-            BlogPosts = await _db.BlogPosts.OrderByDescending(b => b.PublishedOn).Take(3).ToListAsync(),
-            Channels = await _db.Channels.ToListAsync(),
-            StoreDeals = (await _db.Products.ToListAsync())
-                .OrderByDescending(p => p.DiscountPercent)
-                .Take(3)
-                .ToList(),
-            Faqs = await _db.Faqs.Take(4).ToListAsync()
-        };
-
-        return View(model);
+        return View(query);
     }
 
     public async Task<IActionResult> Testimonials()
@@ -351,7 +303,7 @@ public class HomeController : Controller
             new { Value = 42d, Label = "Original productions" },
             new { Value = 8.4d, Label = "Average viewer score" }
         };
-        return View(await _db.Testimonials.ToListAsync());
+        return View(await _testimonialService.GetAllAsync());
     }
 
     [HttpPost]
@@ -364,15 +316,9 @@ public class HomeController : Controller
         return RedirectToAction(nameof(Index));
     }
 
-    public IActionResult Pricing()
-    {
-        return View();
-    }
+    public IActionResult Pricing() => View();
 
-    public IActionResult Contact()
-    {
-        return View(new ContactViewModel());
-    }
+    public IActionResult Contact() => View(new ContactViewModel());
 
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -386,21 +332,13 @@ public class HomeController : Controller
         return View(model);
     }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
-
-    public IActionResult Terms()
-    {
-        return View();
-    }
+    public IActionResult Privacy() => View();
+    public IActionResult Terms() => View();
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error(int? statusCode = null)
     {
         Response.StatusCode = statusCode is 404 or 500 ? statusCode.Value : StatusCodes.Status500InternalServerError;
-
         return View(new ErrorViewModel
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier,
@@ -409,4 +347,3 @@ public class HomeController : Controller
         });
     }
 }
-

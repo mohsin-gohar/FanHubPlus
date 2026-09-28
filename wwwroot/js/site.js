@@ -73,11 +73,17 @@
         var toggle = document.getElementById('chatToggle');
         if (!widget || !toggle) return;
 
+        var voiceToggle = document.getElementById('chatVoiceToggle');
+        var voiceStop = document.getElementById('chatVoiceStop');
+        var micBtn = document.getElementById('chatMicBtn');
+        var _speech = window.fhpSpeech;
+
         function open() {
             widget.classList.remove('d-none');
             toggle.style.display = 'none';
             var body = document.getElementById('chatBody');
             if (body) body.scrollTop = body.scrollHeight;
+            updateVoiceToggle();
         }
         function close() { widget.classList.add('d-none'); toggle.style.display = ''; }
 
@@ -88,12 +94,74 @@
         var body = document.getElementById('chatBody');
         var suggestions = document.getElementById('chatSuggestions');
 
+        function updateVoiceToggle() {
+            if (!voiceToggle) return;
+            var pref = _speech ? _speech.pref.read() : { auto: false };
+            voiceToggle.classList.toggle('active', pref.auto);
+        }
+
+        function addSpeakBtn(msgEl, text) {
+            if (!msgEl) return;
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'chat-msg__voice';
+            btn.setAttribute('aria-label', 'Read aloud');
+            btn.innerHTML = '<i class="ri-speak-line" aria-hidden="true"></i>';
+            btn.addEventListener('click', function () { speakMsg(msgEl, text); });
+            msgEl.appendChild(btn);
+        }
+
+        function speakMsg(msgEl, text) {
+            if (!_speech) return;
+            if (_speech.isSpeaking()) { _speech.stop(); return; }
+            msgEl.classList.add('is-speaking');
+            var icon = msgEl.querySelector('.chat-msg__voice i');
+            if (icon) icon.className = 'ri-stop-fill';
+            _speech.speak(text, function () {
+                msgEl.classList.remove('is-speaking');
+                if (icon) icon.className = 'ri-speak-line';
+            });
+        }
+
+        function queueAutoSpeak(text) {
+            if (!_speech) return;
+            var pref = _speech.pref.read();
+            if (!pref.auto) return;
+            if (_speech.isSpeaking()) return;
+            _speech.speak(text, function () {});
+        }
+
+        function escapeHtml(str) {
+            return String(str)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        function renderResults(msgEl, results) {
+            if (!msgEl || !results || results.length === 0) return;
+            var list = document.createElement('div');
+            list.className = 'chat-results';
+            results.forEach(function (r) {
+                var a = document.createElement('a');
+                a.href = r.url;
+                a.className = 'chat-result-item';
+                a.innerHTML = '<span class="chat-result-title">' + escapeHtml(r.title) + '</span>' +
+                              (r.subtitle ? '<span class="chat-result-sub"> ' + escapeHtml(r.subtitle) + '</span>' : '');
+                list.appendChild(a);
+            });
+            msgEl.appendChild(list);
+        }
+
         function addMsg(text, who) {
             var div = document.createElement('div');
             div.className = 'chat-msg ' + who;
             div.textContent = text;
             body.appendChild(div);
             body.scrollTop = body.scrollHeight;
+
+            if (who.indexOf('bot') !== -1 && who.indexOf('typing') === -1) {
+                addSpeakBtn(div, text);
+            }
             return div;
         }
 
@@ -119,10 +187,13 @@
                 .then(function (r) { return r.json(); })
                 .then(function (data) {
                     typing.remove();
-                    addMsg(data.reply || '(empty reply)', 'bot');
+                    var replyText = data.reply || '(empty reply)';
+                    var botMsg = addMsg(replyText, 'bot');
+                    renderResults(botMsg, data.results);
+                    queueAutoSpeak(replyText);
                     renderSuggestions(data.suggestions);
                 })
-                .catch(function () { typing.remove(); addMsg('Sorry, I could not reach the server.', 'bot'); });
+                .catch(function () { typing.remove(); var m = addMsg('Sorry, I could not reach the server.', 'bot'); queueAutoSpeak(m.textContent); });
         }
 
         document.getElementById('chatForm').addEventListener('submit', function (e) {
@@ -131,6 +202,45 @@
             send(input.value.trim());
             input.value = '';
         });
+
+        if (voiceToggle) {
+            voiceToggle.addEventListener('click', function () {
+                var pref = _speech ? _speech.pref.read() : { auto: false };
+                pref.auto = !pref.auto;
+                if (_speech) _speech.pref.setAuto(pref.auto);
+                updateVoiceToggle();
+            });
+        }
+
+        if (voiceStop) {
+            voiceStop.addEventListener('click', function () {
+                if (_speech) _speech.stop();
+            });
+        }
+
+        if (micBtn && _speech && _speech.isRecognitionSupported) {
+            micBtn.addEventListener('click', function () {
+                var micInput = document.getElementById('chatText');
+                if (!micInput) return;
+                micBtn.disabled = true;
+                micBtn.querySelector('i').className = 'ri-stop-fill';
+                _speech.recognize(
+                    function (text) { send(text); },
+                    function (err) {
+                        fhpToast(err === 'unsupported'
+                            ? 'Speech recognition is not available in your browser.'
+                            : 'Speech recognition error: ' + err);
+                    }
+                );
+                setTimeout(function () {
+                    micBtn.disabled = false;
+                    var i = micBtn.querySelector('i');
+                    if (i) i.className = 'ri-mic-line';
+                }, 8000);
+            });
+        } else if (micBtn) {
+            micBtn.style.display = 'none';
+        }
     });
 
     // ---------- Star rating (AJAX) ----------
@@ -353,3 +463,49 @@
         window.setTimeout(function () { box.remove(); }, 250);
     });
 })();
+
+// ---------- Header (fhp-nav) -------------------------------------------
+// Drives the pieces the stylesheet cannot: the reading-progress hairline,
+// the burger's X state (it mirrors .show on the sidebar modal) and the
+// search button's aria-expanded.
+(function () {
+    'use strict';
+
+    var header = document.getElementById('navbar');
+    if (!header) return;
+
+    // Reading progress: 0 at the top, 1 at the very bottom of the document.
+    var bar = header.querySelector('.fhp-nav__progress span');
+    if (bar) {
+        var paint = function () {
+            var doc = document.documentElement;
+            var scrollable = (doc.scrollHeight || 0) - window.innerHeight;
+            var ratio = scrollable > 0 ? window.scrollY / scrollable : 0;
+            bar.style.transform = 'scaleX(' + Math.min(1, Math.max(0, ratio)) + ')';
+        };
+        window.addEventListener('scroll', paint, { passive: true });
+        window.addEventListener('resize', paint);
+        paint();
+    }
+
+    // custom.js puts .show on the sidebar modal; mirror it onto the burger
+    // so the three bars fold into an X while the drawer is open.
+    var burger = document.getElementById('navbarBurgerToggle');
+    var sidebar = document.querySelector('.sidebar-modal');
+    if (burger && sidebar && typeof MutationObserver !== 'undefined') {
+        new MutationObserver(function () {
+            burger.classList.toggle('is-open', sidebar.classList.contains('show'));
+        }).observe(sidebar, { attributes: true, attributeFilter: ['class'] });
+    }
+
+    // custom.js toggles .active on #searchBox; keep the button's ARIA in step.
+    var searchBtn = document.getElementById('searchBtn');
+    var searchBox = document.getElementById('searchBox');
+    if (searchBtn && searchBox) {
+        searchBtn.addEventListener('click', function () {
+            searchBtn.setAttribute('aria-expanded',
+                searchBox.classList.contains('active') ? 'true' : 'false');
+        });
+    }
+})();
+

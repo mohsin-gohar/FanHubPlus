@@ -12,12 +12,26 @@
         <div class="fhp-layout">
 
             <div>
-                <div class="fhp-chat">
-                    <div class="fhp-chat__head">
-                        <span class="fhp-chat__dot" aria-hidden="true"></span>
-                        <span class="fhp-chat__name">FanBot</span>
-                        <span class="fhp-chat__state">@Model.Turns.Count saved conversation(s)</span>
-                    </div>
+                    <div class="fhp-chat">
+                        <div class="fhp-chat__head">
+                            <span class="fhp-chat__dot" aria-hidden="true"></span>
+                            <span class="fhp-chat__name">FanBot</span>
+                            <span class="fhp-chat__state">@Model.Turns.Count saved conversation(s)</span>
+                            <div class="fhp-chat__voice-controls">
+                                <button type="button" id="pageVoiceToggle" class="fhp-chat__voice-btn"
+                                        aria-label="Read replies aloud" title="Read replies aloud">
+                                    <i class="ri-speak-line" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" id="pageVoiceStop" class="fhp-chat__voice-btn"
+                                        aria-label="Stop reading" title="Stop reading">
+                                    <i class="ri-stop-line" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" id="pageMicBtn" class="fhp-chat__voice-btn"
+                                        aria-label="Speak your question" title="Speak your question">
+                                    <i class="ri-mic-line" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
 
                     <div class="fhp-chat__log" id="pageChatBody" role="log" aria-live="polite">
                         @foreach (var turn in Model.Turns)
@@ -39,6 +53,10 @@
                         <label class="fhp-sr" for="pageChatText">Ask FanBot a question</label>
                         <input type="text" id="pageChatText" name="message" maxlength="1000"
                                placeholder="Ask FanBot anything..." autocomplete="off" required />
+                        <button type="button" id="pageMicInForm" class="fhp-chat__voice-btn"
+                                aria-label="Speak your question" title="Speak your question">
+                            <i class="ri-mic-line" aria-hidden="true"></i>
+                        </button>
                         <button class="fhp-btn fhp-btn--primary" type="submit">Send</button>
                     </form>
                 </div>
@@ -85,10 +103,59 @@
             var body = document.getElementById('pageChatBody');
             var form = document.getElementById('pageChatForm');
             var input = document.getElementById('pageChatText');
+            var speech = window.fhpSpeech;
+            var voiceToggle = document.getElementById('pageVoiceToggle');
+            var voiceStop = document.getElementById('pageVoiceStop');
+            var micInForm = document.getElementById('pageMicInForm');
+            var micInHead = document.getElementById('pageMicBtn');
+            var autoRead = speech ? speech.pref.read().auto : false;
 
             function token() {
                 var el = document.querySelector('input[name="__RequestVerificationToken"]');
                 return el ? el.value : '';
+            }
+            function updateVoiceToggle() {
+                if (!voiceToggle) return;
+                voiceToggle.classList.toggle('active', autoRead);
+            }
+            function addSpeakBtn(bubble, text) {
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'fhp-chat__voice-bubble';
+                btn.setAttribute('aria-label', 'Read aloud');
+                btn.innerHTML = '<i class="ri-speak-line" aria-hidden="true"></i>';
+                btn.addEventListener('click', function () { speakBubble(bubble, text); });
+                bubble.appendChild(btn);
+            }
+            function speakBubble(bubble, text) {
+                if (!speech) return;
+                if (speech.isSpeaking()) { speech.stop(); return; }
+                bubble.classList.add('is-speaking');
+                speech.speak(text, function () { bubble.classList.remove('is-speaking'); });
+            }
+            function autoSpeak(text) {
+                if (!speech || !autoRead) return;
+                if (speech.isSpeaking()) return;
+                speech.speak(text, function () {});
+            }
+            function escapeHtml(str) {
+                return String(str)
+                    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+            }
+            function renderResults(bubble, results) {
+                if (!bubble || !results || results.length === 0) return;
+                var list = document.createElement('div');
+                list.className = 'fhp-chat__results';
+                results.forEach(function (r) {
+                    var a = document.createElement('a');
+                    a.href = r.url;
+                    a.className = 'fhp-chat__result-item';
+                    a.innerHTML = '<span class="fhp-chat__result-title">' + escapeHtml(r.title) + '</span>' +
+                                  (r.subtitle ? '<span class="fhp-chat__result-sub"> ' + escapeHtml(r.subtitle) + '</span>' : '');
+                    list.appendChild(a);
+                });
+                bubble.appendChild(list);
             }
             function add(text, who) {
                 var d = document.createElement('div');
@@ -96,6 +163,9 @@
                 d.textContent = text;
                 body.appendChild(d);
                 body.scrollTop = body.scrollHeight;
+                if (who.indexOf('bot') !== -1 && who.indexOf('typing') === -1) {
+                    addSpeakBtn(d, text);
+                }
                 return d;
             }
             function send(text) {
@@ -109,7 +179,10 @@
                     .then(function (r) { return r.json(); })
                     .then(function (res) {
                         pending.remove();
-                        add(res.reply || '(empty)', 'bot');
+                        var replyText = res.reply || '(empty)';
+                        var botBubble = add(replyText, 'bot');
+                        renderResults(botBubble, res.results);
+                        autoSpeak(replyText);
                     })
                     .catch(function () { pending.remove(); add('Could not reach the server.', 'bot'); });
             }
@@ -122,6 +195,57 @@
             Array.prototype.forEach.call(document.querySelectorAll('.chat-suggestion'), function (chip) {
                 chip.addEventListener('click', function () { send(chip.textContent.trim()); });
             });
+
+            // Per-message speak buttons for existing server-rendered messages
+            Array.prototype.forEach.call(document.querySelectorAll('.fhp-chat__bubble--bot'), function (bubble) {
+                var text = bubble.textContent.trim();
+                if (text) addSpeakBtn(bubble, text);
+            });
+
+            if (voiceToggle) {
+                voiceToggle.addEventListener('click', function () {
+                    autoRead = !autoRead;
+                    if (speech) speech.pref.setAuto(autoRead);
+                    updateVoiceToggle();
+                });
+            }
+            if (voiceStop) {
+                voiceStop.addEventListener('click', function () {
+                    if (speech) speech.stop();
+                });
+            }
+            function wireMic(btn) {
+                if (!btn || !speech || !speech.isRecognitionSupported) return;
+                btn.addEventListener('click', function () {
+                    btn.disabled = true;
+                    btn.querySelector('i').className = 'ri-stop-fill';
+                    speech.recognize(
+                        function (text) {
+                            input.value = text;
+                            send(text);
+                            input.value = '';
+                        },
+                        function (err) {
+                            window.fhpToast(err === 'unsupported'
+                                ? 'Speech recognition is not available in your browser.'
+                                : 'Speech recognition error: ' + err);
+                        }
+                    );
+                    setTimeout(function () {
+                        btn.disabled = false;
+                        var i = btn.querySelector('i');
+                        if (i) i.className = 'ri-mic-line';
+                    }, 8000);
+                });
+            }
+            wireMic(micInForm);
+            wireMic(micInHead);
+            // Hide mic buttons if speech recognition is unsupported
+            if (!speech || !speech.isRecognitionSupported) {
+                if (micInForm) micInForm.style.display = 'none';
+                if (micInHead) micInHead.style.display = 'none';
+            }
+            updateVoiceToggle();
         })();
     </script>
 }

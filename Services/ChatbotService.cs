@@ -20,18 +20,24 @@ public class ChatbotService : IChatbotService
     private readonly IRepository<Content> _contents;
     private readonly IRepository<Category> _categories;
     private readonly IRepository<EventItem> _events;
+    private readonly IRepository<CharacterProfile> _characters;
+    private readonly IRepository<Article> _articles;
 
     public ChatbotService(IRepository<ChatFaq> faqs,
                           IRepository<ChatbotQuery> log,
                           IRepository<Content> contents,
                           IRepository<Category> categories,
-                          IRepository<EventItem> events)
+                          IRepository<EventItem> events,
+                          IRepository<CharacterProfile> characters,
+                          IRepository<Article> articles)
     {
         _faqs = faqs;
         _log = log;
         _contents = contents;
         _categories = categories;
         _events = events;
+        _characters = characters;
+        _articles = articles;
     }
 
     public async Task<ChatResponseViewModel> AskAsync(string message, string? userId)
@@ -148,24 +154,76 @@ public class ChatbotService : IChatbotService
             return Ok("Tell me what to search for, e.g. \"search anime\".", "Explore");
 
         var matches = await _contents.Query()
-            .Where(c => c.Title.ToLower().Contains(term) ||
-                        (c.Genre != null && c.Genre.ToLower().Contains(term)))
+            .Where(c => c.Title.ToLower().Contains(term.ToLower()) ||
+                        (c.Genre != null && c.Genre.ToLower().Contains(term.ToLower())) ||
+                        c.Category.Name.ToLower().Contains(term.ToLower()))
             .OrderByDescending(c => c.PopularityScore)
-            .Take(3)
-            .Select(c => c.Title)
+            .Take(5)
+            .Select(c => new ChatResultItem
+            {
+                Title = c.Title,
+                Url = "/Explore/Details/" + c.ContentId,
+                Subtitle = c.Category.Name + " · " + c.Type.ToString(),
+                Type = "content"
+            })
             .ToListAsync();
 
-        if (matches.Count == 0 && relaxed)
-            return Ok("I'm not sure about that one 🤔. Could you rephrase?",
-                "Explore all content", "Support");
-
         if (matches.Count == 0)
+        {
+            // No content matched - try characters
+            var charMatches = await _characters.Query()
+                .Where(c => c.Name.ToLower().Contains(term.ToLower()) ||
+                            (c.Fandom ?? "").ToLower().Contains(term.ToLower()))
+                .Take(3)
+                .Select(c => new ChatResultItem
+                {
+                    Title = c.Name,
+                    Url = "/Characters/Details/" + c.CharacterId,
+                    Subtitle = c.Fandom ?? "",
+                    Type = "character"
+                })
+                .ToListAsync();
+
+            // Try matching articles
+            var articleMatches = await _articles.Query()
+                .Where(a => a.Title.ToLower().Contains(term.ToLower()))
+                .Take(3)
+                .Select(a => new ChatResultItem
+                {
+                    Title = a.Title,
+                    Url = "/News/Details/" + a.ArticleId,
+                    Subtitle = a.Category.Name,
+                    Type = "article"
+                })
+                .ToListAsync();
+
+            var allMatches = charMatches.Concat(articleMatches).ToList();
+
+            if (allMatches.Count > 0)
+            {
+                return new ChatResponseViewModel
+                {
+                    Reply = $"I found {allMatches.Count} match(es) for \"{term}\":",
+                    Results = allMatches,
+                    Suggestions = new() { "Explore", "Search again" }
+                };
+            }
+
+            if (relaxed)
+                return Ok("I'm not sure about that one 🤔. Could you rephrase?",
+                    "Explore all content", "Support");
+
             return Ok($"No content matched \"{term}\". Try another word or browse the full Explorer.",
                 "Explore");
+        }
 
-        return Ok($"I found {matches.Count} match(es):\n• " + string.Join("\n• ", matches) +
-                  "\nOpen the Explorer to see details, ratings and trailers.",
-            "Open Explorer");
+        var result = new ChatResponseViewModel
+        {
+            Reply = $"I found {matches.Count} match(es) for \"{term}\":",
+            Results = matches,
+            Suggestions = new() { "Explore", "Search events" }
+        };
+        return result;
     }
 
     private async Task<ChatFaq?> ScoreFaqsAsync(string lower)

@@ -493,6 +493,49 @@ html.dark-mode .hero { background: var(--fhp-hero); }
 .fhp-card:hover .fhp-title { color: #ffea00; }
 .fhp-card .primary-btn { transition: all .3s ease; }
 
+/* ---------- Standardized image heights for Explore pages ---------------
+   Ensures all images in content cards, artwork cards, character cards,
+   and merch cards have consistent dimensions while maintaining aspect ratio.
+   Uses object-fit: cover to prevent distortion and clip overflow. */
+.explore-card-img,
+.group .rounded-\[5px\],
+._ContentCard img,
+._ArtworkCard img,
+._CharacterCard img,
+._MerchCard img,
+.group img[class*="rounded"] {
+    height: 240px;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+    .explore-card-img,
+    .group .rounded-\[5px\],
+    ._ContentCard img,
+    ._ArtworkCard img,
+    ._CharacterCard img,
+    ._MerchCard img,
+    .group img[class*="rounded"] {
+        height: 200px;
+    }
+}
+
+@media (max-width: 480px) {
+    .explore-card-img,
+    .group .rounded-\[5px\],
+    ._ContentCard img,
+    ._ArtworkCard img,
+    ._CharacterCard img,
+    ._MerchCard img,
+    .group img[class*="rounded"] {
+        height: 160px;
+    }
+}
+
 /* ---------- Card thumb + badges used by _ContentCard --------------- */
 .fhp-thumb { position: relative; display: block; overflow: hidden; }
 .fhp-badge {
@@ -2142,6 +2185,114 @@ html.dark-mode .hero { background: var(--fhp-hero); }
 .fhp-chat__composer input::placeholder { color: rgba(255, 255, 255, .45); }
 .fhp-chat__composer input:focus { outline: 0; background: rgba(255, 255, 255, .18); }
 
+/* Full-page chat: voice controls in header + composer */
+.fhp-chat__voice-controls {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.fhp-chat__voice-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .1);
+    color: rgba(255, 255, 255, .65);
+    font-size: 16px;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+.fhp-chat__voice-btn:hover {
+    background: rgba(255, 255, 255, .2);
+    color: #ffea00;
+}
+.fhp-chat__voice-btn.active {
+    background: #ffea00;
+    color: #000;
+}
+
+/* Per-message voice button on full-page chat bubbles */
+.fhp-chat__bubble--bot { position: relative; }
+.fhp-chat__voice-bubble {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, .05);
+    color: rgba(0, 0, 0, .35);
+    font-size: 10px;
+    opacity: 0;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+}
+.fhp-chat__bubble--bot:hover .fhp-chat__voice-bubble {
+    opacity: 1;
+    color: #f41b3b;
+}
+.fhp-chat__bubble.is-speaking {
+    box-shadow: 0 0 0 2px rgba(244, 27, 59, .3);
+}
+
+/* Dark-mode overrides for the full-page chat voice controls */
+html.dark-mode .fhp-chat__voice-btn {
+    background: rgba(255, 255, 255, .08);
+    color: rgba(255, 255, 255, .55);
+}
+html.dark-mode .fhp-chat__voice-btn:hover {
+    background: rgba(255, 255, 255, .18);
+    color: #ffea00;
+}
+html.dark-mode .fhp-chat__bubble--bot { background: #171717; color: #ddd; }
+html.dark-mode .fhp-chat__bubble--bot .fhp-chat__voice-bubble {
+    background: rgba(255, 255, 255, .08);
+    color: rgba(255, 255, 255, .35);
+}
+html.dark-mode .fhp-chat__bubble--bot:hover .fhp-chat__voice-bubble {
+    color: #ffea00;
+}
+
+/* Full-page chat: search results inside bot bubbles */
+.fhp-chat__results {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.fhp-chat__result-item {
+    display: block;
+    padding: 6px 10px;
+    margin-top: 4px;
+    border-radius: 6px;
+    background: rgba(244, 27, 59, 0.06);
+    border: 1px solid rgba(244, 27, 59, 0.15);
+    color: var(--fhp-primary);
+    font-size: 13px;
+    text-decoration: none;
+    transition: all .2s ease-in-out;
+}
+.fhp-chat__result-item:hover {
+    background: rgba(244, 27, 59, 0.12);
+    border-color: rgba(244, 27, 59, 0.3);
+    transform: translateX(2px);
+}
+.fhp-chat__result-title { font-weight: 600; }
+.fhp-chat__result-sub {
+    display: block;
+    font-size: 11px;
+    opacity: 0.6;
+    font-weight: 400;
+}
+
 /* =====================================================================
    FORM EXTRAS - profile switches, chip pickers
    ===================================================================== */
@@ -2504,40 +2655,29 @@ html.lenis, html.lenis body { height: auto; }
     padding-left: 32px;
 }
 
-/* ---------- CTA: gradient slab with a shine sweep ---------- */
+/* ---------- CTA: Misao vibrant pink-red button ---------- */
 #navbar .fhp-nav__cta {
     position: relative;
     overflow: hidden;
-    border-radius: 9px;
-    border: 1px solid rgba(255, 255, 255, .25);
-    background: linear-gradient(135deg, var(--fhp-red) 0%, var(--fhp-red-deep) 100%);
-    box-shadow: 0 12px 28px -12px rgba(244, 27, 59, .85), inset 0 1px 0 rgba(255, 255, 255, .3);
-    font-size: 12.5px;
+    border-radius: 6px;
+    border: none;
+    background: #ff2c55;
+    box-shadow: 0 8px 20px -6px rgba(255, 44, 85, .6);
+    font-size: 14px;
     font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: .12em;
-    transition: transform .3s var(--fhp-ease), box-shadow .3s var(--fhp-ease),
-                filter .3s var(--fhp-ease);
-}
-#navbar .fhp-nav__cta::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -80%;
-    width: 55%;
-    height: 100%;
-    background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, .45) 50%, transparent 100%);
-    transform: skewX(-20deg);
-    transition: left .55s var(--fhp-ease);
-    pointer-events: none;
+    text-transform: capitalize;
+    letter-spacing: .02em;
+    color: #ffffff !important;
+    padding: 10px 24px;
+    transition: transform .25s var(--fhp-ease), background .25s var(--fhp-ease),
+                box-shadow .25s var(--fhp-ease);
 }
 #navbar .fhp-nav__cta:hover,
 #navbar .fhp-nav__cta:focus-visible {
+    background: #e02247;
     transform: translateY(-2px);
-    box-shadow: 0 18px 36px -12px rgba(244, 27, 59, .95), inset 0 1px 0 rgba(255, 255, 255, .4);
-    filter: brightness(1.05);
+    box-shadow: 0 12px 26px -6px rgba(255, 44, 85, .8);
 }
-#navbar .fhp-nav__cta:hover::after { left: 130%; }
 
 /* ---------- Burger -> X ---------- */
 #navbar .fhp-nav__burger .fhp-nav__burger-bar {
@@ -4194,4 +4334,228 @@ a.fhp-dpager__btn:hover {
 .fhp-admin-main .fhp-alert--warning { border-color: rgba(255, 150, 46, .36); background: rgba(255, 150, 46, .1); color: #ffb56b; }
 .fhp-admin-main .fhp-alert__close { color: inherit; opacity: .6; }
 .fhp-admin-main .fhp-alert__close:hover { opacity: 1; }
+
+/* Footer text color - ensure white text on dark background */
+footer {
+    color: #ffffff;
+}
+footer ul,
+footer p,
+footer a,
+footer li,
+footer h3 {
+    color: #ffffff;
+}
+footer a:hover {
+    color: var(--fhp-secondary, #ffea00);
+}
+
+
+/* =====================================================================
+   HEADER - compact FanHubPlus navbar (Bootstrap 5.3 structure)
+   ---------------------------------------------------------------------
+   Markup contract:
+     #navbar.fhp-nav > nav.navbar > .container
+        > .fhp-nav__brand (.fhp-nav__mark + .fhp-nav__wordmark)
+        > .fhp-nav__burger.navbar-burger-toggle  (3 x .fhp-nav__burger-bar)
+        > ul.navbar-nav.fhp-nav__links
+        > .fhp-nav__actions (.fhp-nav__search > #searchBtn + #searchBox,
+                             .fhp-nav__cart > .fhp-nav__badge, .fhp-nav__icon,
+                             .fhp-nav__divider, .fhp-nav__user | .fhp-nav__cta)
+        > .fhp-nav__progress > span
+   The block above styles the shared class names; the rules below supply
+   the pieces this markup needs (Bootstrap padding reset, burger geometry,
+   the search flyout's hidden state, the bag badge) and swap the monogram
+   tile to the yellow brand colour.
+   ===================================================================== */
+
+/* ---------- Shell: take over Bootstrap's own navbar padding ---------- */
+#navbar.fhp-nav > .navbar { padding-top: 0; padding-bottom: 0; }
+#navbar.fhp-nav .container { display: flex; align-items: center; gap: 16px; }
+
+/* ---------- Brand: yellow monogram tile + wordmark ------------------- */
+#navbar.fhp-nav .fhp-nav__brand {
+    margin-right: 0;
+    padding: 0;
+    color: #fff;
+    text-decoration: none;
+}
+#navbar.fhp-nav .fhp-nav__wordmark {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: .04em;
+    color: #fff;
+}
+#navbar .fhp-nav__mark {
+    background: var(--fhp-yellow);
+    color: #0f0f0b;
+    border-color: rgba(255, 255, 255, .35);
+    box-shadow: 0 8px 20px -8px rgba(255, 234, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .6);
+}
+#navbar.fhp-nav .fhp-nav__brand:hover .fhp-nav__mark,
+#navbar.fhp-nav .fhp-nav__brand:focus-visible .fhp-nav__mark {
+    background: var(--fhp-red);
+    color: #fff;
+    box-shadow: 0 12px 26px -8px rgba(244, 27, 59, .95), inset 0 1px 0 rgba(255, 255, 255, .45);
+}
+
+/* ---------- Primary links ------------------------------------------- */
+#navbar .fhp-nav__links {
+    flex-direction: row;
+    align-items: center;
+    gap: 2px;
+    margin-left: auto;
+}
+#navbar .navbar-nav > .nav-item > .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+#navbar .navbar-nav > .nav-item > .nav-link:hover,
+#navbar .navbar-nav > .nav-item > .nav-link:focus-visible {
+    color: var(--fhp-red);
+}
+#navbar .navbar-nav > .nav-item > .nav-link i { font-size: 15px; }
+
+/* ---------- Actions cluster ----------------------------------------- */
+#navbar .fhp-nav__actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 12px;
+}
+#navbar .fhp-nav__icon {
+    position: relative;
+    padding: 0;
+    font-size: 19px;
+    color: #fff;
+    text-decoration: none;
+}
+#navbar .fhp-nav__icon:hover,
+#navbar .fhp-nav__icon:focus-visible { color: var(--fhp-red); }
+#navbar .fhp-nav__divider {
+    display: block;
+    flex: none;
+    width: 1px;
+    height: 22px;
+}
+
+/* ---------- Shopping-bag badge -------------------------------------- */
+#navbar .fhp-nav__badge {
+    position: absolute;
+    top: -4px;
+    right: -5px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--fhp-yellow);
+    color: #0f0f0b;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+    box-shadow: 0 0 0 2px rgba(10, 10, 14, .9);
+}
+
+/* ---------- CTA + user pill ----------------------------------------- */
+#navbar .fhp-nav__cta {
+    display: inline-flex;
+    align-items: center;
+    padding: 10px 22px;
+    font-size: 12.5px;
+    color: #fff;
+    text-decoration: none;
+}
+#navbar .fhp-nav__cta:hover,
+#navbar .fhp-nav__cta:focus-visible { color: #fff; }
+#navbar .fhp-nav__user {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 14px 5px 5px;
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .06);
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .3s var(--fhp-ease), border-color .3s var(--fhp-ease),
+                transform .3s var(--fhp-ease);
+}
+#navbar .fhp-nav__user i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--fhp-red), var(--fhp-red-deep));
+    font-size: 15px;
+}
+#navbar .fhp-nav__user:hover,
+#navbar .fhp-nav__user:focus-visible {
+    background: rgba(255, 255, 255, .12);
+    border-color: rgba(255, 255, 255, .3);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+
+/* ---------- Burger: compact 3-bar toggle (hidden on desktop) --------- */
+#navbar .fhp-nav__burger {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .05);
+    line-height: 0;
+    color: #fff;
+}
+#navbar .fhp-nav__burger .fhp-nav__burger-bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+    background: #fff;
+}
+/* Bars collapse into an X while the sidebar carries .show (site.js). */
+#navbar .fhp-nav__burger.is-open .fhp-nav__burger-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+#navbar .fhp-nav__burger.is-open .fhp-nav__burger-bar:nth-child(2) { opacity: 0; }
+#navbar .fhp-nav__burger.is-open .fhp-nav__burger-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+@media (max-width: 991.98px) {
+    #navbar .fhp-nav__burger { display: inline-flex; }
+    #navbar .fhp-nav__actions { gap: 9px; margin-left: auto; }
+}
+
+/* ---------- Search flyout: hidden until custom.js adds .active ------- */
+#navbar .fhp-nav__search { position: relative; }
+#searchBox.fhp-nav__searchbox {
+    position: absolute;
+    top: calc(100% + 14px);
+    inset-inline-end: 0;
+    z-index: 20;
+    width: min(380px, calc(100vw - 32px));
+    padding: 20px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: opacity .3s var(--fhp-ease), visibility .3s var(--fhp-ease),
+                transform .3s var(--fhp-ease);
+}
+#searchBox.fhp-nav__searchbox.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+#searchBox.fhp-nav__searchbox .form-input { width: 100%; padding-inline-end: 46px; }
+#searchBox.fhp-nav__searchbox form button { inset-inline-end: 16px; }
 

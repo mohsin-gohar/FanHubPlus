@@ -1,17 +1,25 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using FanHubPlus.Data;
+using FanHubPlus.Models;
 using FanHubPlus.ViewModels;
 
 namespace FanHubPlus.Controllers;
 
-/// <summary>Sign in, registration, password reset and the member area.</summary>
 public class AccountController : Controller
 {
-    private readonly FanHubDbContext _db;
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly SignInManager<ApplicationUser> _signInManager;
+    private readonly ILogger<AccountController> _logger;
 
-    public AccountController(FanHubDbContext db)
+    public AccountController(
+        UserManager<ApplicationUser> userManager,
+        SignInManager<ApplicationUser> signInManager,
+        ILogger<AccountController> logger)
     {
-        _db = db;
+        _userManager = userManager;
+        _signInManager = signInManager;
+        _logger = logger;
     }
 
     [HttpGet]
@@ -23,23 +31,25 @@ public class AccountController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult SignIn(LoginViewModel model, string? returnUrl = null)
+    public async Task<IActionResult> SignIn(LoginViewModel model, string? returnUrl = null)
     {
         if (!ModelState.IsValid) return View(model);
 
-        var user = _db.Users.FirstOrDefault(u => u.Email.Equals(model.Email, StringComparison.OrdinalIgnoreCase));
-        if (user == null)
+        var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+        if (result.Succeeded)
         {
-            ModelState.AddModelError(string.Empty, "We could not find an account with that email address.");
-            return View(model);
+            _logger.LogInformation("User {Email} logged in.", model.Email);
+            TempData["SuccessMessage"] = $"Welcome back! You are now signed in.";
+
+            if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            return RedirectToAction(nameof(Account));
         }
 
-        TempData["SuccessMessage"] = $"Welcome back, {user.Name}. You are signed in on this demo.";
-        if (!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
-        {
-            return Redirect(returnUrl);
-        }
-        return RedirectToAction(nameof(Account));
+        ModelState.AddModelError(string.Empty, "Invalid login attempt. Please check your email and password.");
+        return View(model);
     }
 
     [HttpGet]
@@ -50,21 +60,33 @@ public class AccountController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult SignUp(SignUpViewModel model)
+    public async Task<IActionResult> SignUp(SignUpViewModel model)
     {
         if (!ModelState.IsValid) return View(model);
 
-        if (_db.Users.Any(u => u.Email.Equals(model.Email, StringComparison.OrdinalIgnoreCase)))
+        var user = new ApplicationUser
         {
-            ModelState.AddModelError(nameof(model.Email), "An account already exists with this email address.");
-            return View(model);
+            UserName = model.Email,
+            Email = model.Email,
+            FullName = model.Name,
+            EmailConfirmed = true
+        };
+
+        var result = await _userManager.CreateAsync(user, model.Password);
+        if (result.Succeeded)
+        {
+            _logger.LogInformation("User {Email} created a new account.", model.Email);
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            TempData["SuccessMessage"] = "Your account has been created successfully!";
+            return RedirectToAction(nameof(Account));
         }
 
-        _db.Users.Add(new Data.AppUser { Name = model.Name, Email = model.Email, Password = model.Password });
-        _db.SaveChanges();
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
 
-        TempData["SuccessMessage"] = "Your account is ready. Sign in to pick up where you left off.";
-        return RedirectToAction(nameof(SignIn));
+        return View(model);
     }
 
     [HttpGet]
@@ -72,39 +94,149 @@ public class AccountController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult ForgotPassword(ForgotPasswordViewModel model)
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
     {
         if (!ModelState.IsValid) return View(model);
 
-        TempData["SuccessMessage"] =
-            $"If an account exists for {model.Email} we have sent a single use reset link. It expires in thirty minutes.";
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+        {
+            TempData["SuccessMessage"] = "If an account exists for this email, we have sent a password reset link.";
+            return RedirectToAction(nameof(ForgotPassword));
+        }
+
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var callbackUrl = Url.Action(nameof(ResetPassword), "Account", new { token, email = user.Email }, Request.Scheme);
+
+        _logger.LogInformation("Password reset requested for {Email}", model.Email);
+        TempData["SuccessMessage"] = $"Password reset link has been sent to {model.Email}.";
         return RedirectToAction(nameof(ForgotPassword));
     }
 
     [HttpGet]
-    public IActionResult Account(string tab = "overview")
+    public IActionResult ResetPassword(string? token, string? email)
     {
-        var profile = _db.Users.FirstOrDefault();
-        return View(profile is null
-            ? new ProfileViewModel()
-            : new ProfileViewModel { Name = profile.Name, Email = profile.Email });
+        if (token == null || email == null)
+        {
+            return RedirectToAction(nameof(SignIn));
+        }
+
+        return View(new ResetPasswordViewModel { Token = token, Email = email });
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Account(ProfileViewModel model, string tab = "overview")
+    public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
     {
         if (!ModelState.IsValid) return View(model);
 
-        TempData["SuccessMessage"] = "Your profile has been updated.";
+        var user = await _userManager.FindByEmailAsync(model.Email);
+        if (user == null)
+        {
+            TempData["SuccessMessage"] = "If an account exists for this email, the password has been reset.";
+            return RedirectToAction(nameof(SignIn));
+        }
+
+        var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+        if (result.Succeeded)
+        {
+            _logger.LogInformation("Password reset for {Email}", model.Email);
+            TempData["SuccessMessage"] = "Your password has been reset successfully.";
+            return RedirectToAction(nameof(SignIn));
+        }
+
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
+
+        return View(model);
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> Account(string tab = "overview")
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null) return NotFound();
+
+        return View(new ProfileViewModel
+        {
+            Name = user.FullName,
+            Email = user.Email!
+        });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [Authorize]
+    public async Task<IActionResult> Account(ProfileViewModel model, string tab = "overview")
+    {
+        if (!ModelState.IsValid) return View(model);
+
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null) return NotFound();
+
+        user.FullName = model.Name;
+        var result = await _userManager.UpdateAsync(user);
+
+        if (result.Succeeded)
+        {
+            TempData["SuccessMessage"] = "Your profile has been updated.";
+        }
+        else
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+
         return RedirectToAction(nameof(Account), new { tab });
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Logout()
+    [Authorize]
+    public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
     {
-        TempData["SuccessMessage"] = "You have been signed out of the demo account.";
+        if (!ModelState.IsValid)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return View("Account", new ProfileViewModel { Name = user?.FullName, Email = user?.Email! });
+        }
+
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null) return NotFound();
+
+        var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+        if (result.Succeeded)
+        {
+            await _signInManager.RefreshSignInAsync(user);
+            TempData["SuccessMessage"] = "Your password has been changed.";
+        }
+        else
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
+
+        return RedirectToAction(nameof(Account), new { tab = "security" });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
+        _logger.LogInformation("User logged out.");
+        TempData["SuccessMessage"] = "You have been signed out.";
         return RedirectToAction(nameof(SignIn));
     }
+
+    [HttpGet]
+    [AllowAnonymous]
+    public IActionResult AccessDenied() => View();
 }

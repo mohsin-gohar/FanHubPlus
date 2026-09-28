@@ -4,7 +4,17 @@
 <div id="chatWidget" class="chat-widget d-none">
     <div class="chat-header">
         <span>FanBot</span>
-        <button type="button" class="chat-close" id="chatClose" aria-label="Close chat">&times;</button>
+        <div class="chat-header__controls">
+            <button type="button" id="chatVoiceToggle" class="chat-header__btn"
+                    aria-label="Read bot replies aloud" title="Read bot replies aloud">
+                <i class="ri-speak-line" aria-hidden="true"></i>
+            </button>
+            <button type="button" id="chatVoiceStop" class="chat-header__btn"
+                    aria-label="Stop reading" title="Stop reading">
+                <i class="ri-stop-line" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="chat-close" id="chatClose" aria-label="Close chat">&times;</button>
+        </div>
     </div>
     <div class="chat-body" id="chatBody">
         <div class="chat-msg bot">Hi! I'm FanBot. Ask me about fandoms, characters, events, ratings or how the portal works.</div>
@@ -14,6 +24,9 @@
         @Html.AntiForgeryToken()
         <label class="sr-only" for="chatText">Your question</label>
         <input type="text" id="chatText" maxlength="1000" placeholder="Type your question..." autocomplete="off" required />
+        <button type="button" id="chatMicBtn" class="chat-mic" aria-label="Speak your question" title="Speak your question">
+            <i class="ri-mic-line" aria-hidden="true"></i>
+        </button>
         <button type="submit" id="chatSend">Send</button>
     </form>
 </div>

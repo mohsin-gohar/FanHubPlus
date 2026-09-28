@@ -8,6 +8,9 @@
          password and the demo-account passwords can live outside the repository.
          No credentials are ever committed (see README.md and .gitignore). -->
     <UserSecretsId>fanhubplus-local-development</UserSecretsId>
+    <!-- Enable built-in container support -->
+    <EnableSdkContainerSupport>true</EnableSdkContainerSupport>
+    <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:8.0</ContainerBaseImage>
   </PropertyGroup>
 
   <!-- Tests are a separate project; do not compile them into the deployed web app. -->
@@ -35,6 +38,38 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <!-- Caching -->
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="8.0.11" />
+    <!-- Health Checks -->
+    <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="8.0.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="8.0.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="8.0.1" />
+    <!-- OpenAPI / Swagger -->
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
+    <!-- Structured Logging -->
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Serilog.Enrichers.Environment" Version="2.3.0" />
+    <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+    <!-- HTML Sanitization for XSS prevention: dropped, Ganss.Xss is not
+         available from the configured NuGet source and no code uses it. -->
+    <!-- Validation -->
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <!-- Rate Limiting + Response Compression: NO PackageReference needed.
+         Both live in the Microsoft.AspNetCore.App shared framework that the
+         Web SDK already references, so `using Microsoft.AspNetCore.RateLimiting;`
+         and AddRateLimiter/AddResponseCompression in Program.cs compile fine.
+         (Referencing them as packages fails restore - they are not on nuget.org.) -->
+    <!-- WebOptimizer: dropped - nothing in the app calls AddWebOptimizer, and
+         LigerShark.WebOptimizer.Mvc does not exist on nuget.org. -->
+    <!-- Problem Details for RFC 9457 compliance -->
+    <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.1" />
+    <!-- Azure Key Vault (optional, for production secrets) -->
+    <PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.3.1" />
+    <PackageReference Include="Azure.Identity" Version="1.11.4" />
   </ItemGroup>
 
 </Project>
