@@ -9,8 +9,11 @@
     #0f0f0b) and type scale. Nothing in this file changes a template component.
    ========================================================================== */
 
-/* Helpers (the template ships no sr-only / display utility) */
-.d-none { display: none !important; }
+/* Helpers (the template ships no sr-only utility; the .d-none family comes
+   from Bootstrap and must NOT be redeclared here. This file loads after
+   Bootstrap, so a duplicate .d-none would tie on specificity and win on
+   source order, permanently hiding every element that pairs .d-none with a
+   responsive .d-sm-* / .d-lg-* override - e.g. the navbar logo and links. */
 .sr-only {
     position: absolute;
     width: 1px;

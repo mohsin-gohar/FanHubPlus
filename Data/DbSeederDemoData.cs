@@ -94,7 +94,33 @@ public partial class DbSeeder
                 new() { CategoryId = cat["Gaming"], Title = "The Esports Phenomenon", Type = ContentType.Documentary,
                         Genre = "Documentary, Esports", PopularityScore = 720, ViewCount = 2600,
                         ReleaseDate = new DateTime(2023, 11, 5),
-                        Description = "From basement LAN parties to sold-out arenas: how competitive gaming became a billion-dollar industry." }
+                        Description = "From basement LAN parties to sold-out arenas: how competitive gaming became a billion-dollar industry." },
+                new() { CategoryId = cat["Anime"], Title = "Unravel (Tokyo Ghoul OP)", Type = ContentType.Song,
+                        Genre = "Anime OST, Rock", Artist = "TK from Ling Tosite Sigure", AlbumName = "Tokyo Ghoul Original Soundtrack",
+                        PopularityScore = 970, ViewCount = 18900, ReleaseDate = new DateTime(2014, 7, 23),
+                        Description = "The iconic opening theme song for Tokyo Ghoul performed by TK from Ling Tosite Sigure." },
+                new() { CategoryId = cat["Anime"], Title = "Gurenge (Demon Slayer OP)", Type = ContentType.Song,
+                        Genre = "Anime OST, J-Pop", Artist = "LiSA", AlbumName = "LEO-NiNE / Demon Slayer",
+                        PopularityScore = 960, ViewCount = 17500, ReleaseDate = new DateTime(2019, 4, 22),
+                        Description = "LiSA's record-smashing opening theme song for Demon Slayer: Kimetsu no Yaiba." },
+                new() { CategoryId = cat["K-Pop"], Title = "Dynamite", Type = ContentType.Song,
+                        Genre = "K-Pop, Disco Pop", Artist = "BTS", AlbumName = "BE",
+                        PopularityScore = 995, ViewCount = 28400, ReleaseDate = new DateTime(2020, 8, 21),
+                        Description = "BTS's Grammy-nominated disco-pop single that topped the Billboard Hot 100." },
+                new() { CategoryId = cat["Gaming"], Title = "Elden Ring Main Theme", Type = ContentType.Song,
+                        Genre = "Orchestral, Game Soundtrack", Artist = "Yuka Kitamura", AlbumName = "Elden Ring Official Soundtrack",
+                        PopularityScore = 930, ViewCount = 9200, ReleaseDate = new DateTime(2022, 2, 25),
+                        Description = "The epic orchestral title screen music from Elden Ring." },
+                new() { CategoryId = cat["Gaming"], Title = "2048 Web Classic", Type = ContentType.PlayableGame,
+                        Genre = "Puzzle, Casual", PopularityScore = 880, ViewCount = 12300,
+                        ReleaseDate = new DateTime(2014, 3, 9), PlayableGameUrl = "https://play2048.co/",
+                        OfficialWebsiteUrl = "https://play2048.co/",
+                        Description = "The famous tile-matching puzzle game. Join the numbers to get to the 2048 tile!" },
+                new() { CategoryId = cat["Gaming"], Title = "Pac-Man Arcade Classic", Type = ContentType.PlayableGame,
+                        Genre = "Arcade, Retro", PopularityScore = 910, ViewCount = 14500,
+                        ReleaseDate = new DateTime(1980, 5, 22), PlayableGameUrl = "https://freepacman.org/",
+                        OfficialWebsiteUrl = "https://freepacman.org/",
+                        Description = "Guide Pac-Man through the maze, eat dots, and avoid Blinky, Pinky, Inky, and Clyde!" }
             };
             _db.Contents.AddRange(contents);
             await _db.SaveChangesAsync();
@@ -124,7 +150,13 @@ public partial class DbSeeder
                 new MediaItem { ContentId = CId("Elden Ring"), MediaType = MediaType.Trailer,
                                 EmbedUrl = "https://www.youtube.com/embed/E3Huy2cdih0", Tag = "Launch Trailer" },
                 new MediaItem { ContentId = CId("Dune: Part Two"), MediaType = MediaType.Trailer,
-                                EmbedUrl = "https://www.youtube.com/embed/Way9Dexny3w", Tag = "Official Trailer" });
+                                EmbedUrl = "https://www.youtube.com/embed/Way9Dexny3w", Tag = "Official Trailer" },
+                new MediaItem { ContentId = CId("Unravel (Tokyo Ghoul OP)"), MediaType = MediaType.Audio,
+                                EmbedUrl = "https://www.youtube.com/embed/7aMOurgDB-U", Tag = "Official Theme" },
+                new MediaItem { ContentId = CId("Dynamite"), MediaType = MediaType.Audio,
+                                EmbedUrl = "https://www.youtube.com/embed/gdZLi9oWNZg", Tag = "Official Video" },
+                new MediaItem { ContentId = CId("Gurenge (Demon Slayer OP)"), MediaType = MediaType.Audio,
+                                EmbedUrl = "https://www.youtube.com/embed/CwkzK-F0Hs0", Tag = "Official Track" });
 
             await _db.SaveChangesAsync();
         }

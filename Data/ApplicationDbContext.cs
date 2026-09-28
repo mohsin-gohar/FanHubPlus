@@ -36,6 +36,8 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<ChatbotQuery> ChatbotQueries => Set<ChatbotQuery>();
     public DbSet<FanSubmission> FanSubmissions => Set<FanSubmission>();
     public DbSet<ViewLog> ViewLogs => Set<ViewLog>();
+    public DbSet<Playlist> Playlists => Set<Playlist>();
+    public DbSet<PlaylistItem> PlaylistItems => Set<PlaylistItem>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -130,6 +132,21 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
             b.HasIndex(x => new { x.UserId, x.ItemType, x.ItemId }).IsUnique();
             b.HasOne(x => x.User).WithMany()
               .HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // ---- Playlists & PlaylistItems ----
+        builder.Entity<Playlist>(p =>
+        {
+            p.HasOne(x => x.User).WithMany()
+              .HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Cascade);
+        });
+
+        builder.Entity<PlaylistItem>(pi =>
+        {
+            pi.HasOne(x => x.Playlist).WithMany(p => p.Items)
+              .HasForeignKey(x => x.PlaylistId).OnDelete(DeleteBehavior.Cascade);
+            pi.HasOne(x => x.Content).WithMany()
+              .HasForeignKey(x => x.ContentId).OnDelete(DeleteBehavior.Cascade);
         });
 
         // ---- Feedback / chat history / view logs: user may be deleted later,

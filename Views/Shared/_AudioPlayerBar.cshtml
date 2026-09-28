@@ -1,0 +1,218 @@
+@*
+    _AudioPlayerBar.cshtml
+    Global persistent audio player bar — rendered at the bottom of Music pages.
+    Controlled entirely via JavaScript (playAudioTrack / window.fhpPlayer).
+*@
+<div id="audioPlayerBar"
+     class="fixed bottom-0 left-0 right-0 z-[100] bg-[#0e0e14] border-t border-white/10 shadow-2xl transform translate-y-full transition-transform duration-500 ease-in-out"
+     role="region"
+     aria-label="Audio Player">
+
+    <div class="container py-3">
+        <div class="flex items-center gap-4">
+
+            <!-- Album Art -->
+            <img id="apBarCover"
+                 src="/assets/images/categories/category1.jpg"
+                 alt="Now Playing"
+                 class="w-12 h-12 rounded-lg object-cover flex-none border border-white/10 shadow" />
+
+            <!-- Track Info -->
+            <div class="flex-1 min-w-0">
+                <p id="apBarTitle" class="text-white font-bold text-sm truncate leading-tight">Track Title</p>
+                <p id="apBarArtist" class="text-white/50 text-xs truncate">Artist</p>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center gap-3">
+                <button id="apBarPrev" type="button"
+                        class="text-white/60 hover:text-white text-xl transition-colors"
+                        aria-label="Previous track" title="Previous">
+                    <i class="ri-skip-back-fill"></i>
+                </button>
+
+                <button id="apBarPlay" type="button"
+                        class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center text-xl hover:scale-110 transition-transform shadow-lg"
+                        aria-label="Play / Pause">
+                    <i class="ri-play-fill" id="apBarPlayIcon"></i>
+                </button>
+
+                <button id="apBarNext" type="button"
+                        class="text-white/60 hover:text-white text-xl transition-colors"
+                        aria-label="Next track" title="Next">
+                    <i class="ri-skip-forward-fill"></i>
+                </button>
+            </div>
+
+            <!-- Progress -->
+            <div class="hidden md:flex items-center gap-2 flex-1 max-w-[280px]">
+                <span id="apBarCurrentTime" class="text-xs text-white/50 tabular-nums w-[38px] text-right">0:00</span>
+                <input id="apBarSeek" type="range" min="0" max="100" value="0"
+                       class="flex-1 accent-primary h-[3px] cursor-pointer"
+                       aria-label="Seek" />
+                <span id="apBarDuration" class="text-xs text-white/50 tabular-nums w-[38px]">0:00</span>
+            </div>
+
+            <!-- Volume -->
+            <div class="hidden lg:flex items-center gap-2">
+                <button id="apBarMute" type="button" class="text-white/60 hover:text-white transition-colors text-lg" aria-label="Mute">
+                    <i class="ri-volume-up-line" id="apBarMuteIcon"></i>
+                </button>
+                <input id="apBarVolume" type="range" min="0" max="1" step="0.05" value="0.8"
+                       class="w-[80px] accent-primary h-[3px] cursor-pointer"
+                       aria-label="Volume" />
+            </div>
+
+            <!-- Close -->
+            <button id="apBarClose" type="button"
+                    class="text-white/40 hover:text-white transition-colors text-lg ms-2"
+                    aria-label="Close player">
+                <i class="ri-close-line"></i>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- Hidden native audio element -->
+    <audio id="apBarAudio" preload="none"></audio>
+</div>
+
+<script>
+(function () {
+    'use strict';
+
+    var bar       = document.getElementById('audioPlayerBar');
+    var audio     = document.getElementById('apBarAudio');
+    var cover     = document.getElementById('apBarCover');
+    var titleEl   = document.getElementById('apBarTitle');
+    var artistEl  = document.getElementById('apBarArtist');
+    var playBtn   = document.getElementById('apBarPlay');
+    var playIcon  = document.getElementById('apBarPlayIcon');
+    var muteBtn   = document.getElementById('apBarMute');
+    var muteIcon  = document.getElementById('apBarMuteIcon');
+    var seekEl    = document.getElementById('apBarSeek');
+    var volEl     = document.getElementById('apBarVolume');
+    var curTimeEl = document.getElementById('apBarCurrentTime');
+    var durEl     = document.getElementById('apBarDuration');
+    var closeBtn  = document.getElementById('apBarClose');
+
+    // Queue support
+    var queue = [];
+    var queueIndex = 0;
+
+    function fmt(sec) {
+        if (!isFinite(sec)) return '0:00';
+        var m = Math.floor(sec / 60);
+        var s = Math.floor(sec % 60);
+        return m + ':' + (s < 10 ? '0' : '') + s;
+    }
+
+    function showBar() { bar.style.transform = 'translateY(0)'; }
+    function hideBar() { bar.style.transform = 'translateY(100%)'; }
+
+    function loadTrack(url, title, artist, imgSrc) {
+        titleEl.textContent  = title  || 'Unknown Track';
+        artistEl.textContent = artist || '';
+        cover.src = imgSrc || '/assets/images/categories/category1.jpg';
+        cover.alt = title;
+        audio.src = url || '';
+        audio.load();
+        audio.play().catch(function() {});
+        showBar();
+    }
+
+    function syncPlayIcon() {
+        playIcon.className = audio.paused ? 'ri-play-fill' : 'ri-pause-fill';
+    }
+
+    // Public API
+    window.fhpPlayer = {
+        play: function(url, title, artist, imgSrc) {
+            loadTrack(url, title, artist, imgSrc);
+            queue = [{ url: url, title: title, artist: artist, imgSrc: imgSrc }];
+            queueIndex = 0;
+        },
+        setQueue: function(tracks, startIndex) {
+            queue = tracks || [];
+            queueIndex = Math.max(0, Math.min(startIndex || 0, queue.length - 1));
+            if (queue[queueIndex]) {
+                var t = queue[queueIndex];
+                loadTrack(t.url, t.title, t.artist, t.imgSrc);
+            }
+        }
+    };
+
+    // Legacy inline helper used in Music views
+    window.playAudioTrack = function (title, artist, url, imgSrc) {
+        window.fhpPlayer.play(url, title, artist, imgSrc);
+    };
+
+    // Play / Pause
+    playBtn.addEventListener('click', function () {
+        if (audio.paused) { audio.play(); } else { audio.pause(); }
+    });
+    audio.addEventListener('play',  syncPlayIcon);
+    audio.addEventListener('pause', syncPlayIcon);
+
+    // Seek
+    audio.addEventListener('timeupdate', function () {
+        if (!audio.duration) return;
+        var pct = (audio.currentTime / audio.duration) * 100;
+        seekEl.value = pct;
+        curTimeEl.textContent = fmt(audio.currentTime);
+        durEl.textContent     = fmt(audio.duration);
+    });
+    seekEl.addEventListener('input', function () {
+        if (audio.duration) {
+            audio.currentTime = (seekEl.value / 100) * audio.duration;
+        }
+    });
+
+    // Volume
+    audio.volume = parseFloat(volEl.value);
+    volEl.addEventListener('input', function () {
+        audio.volume = parseFloat(volEl.value);
+        muteIcon.className = audio.volume === 0 ? 'ri-volume-mute-line' : 'ri-volume-up-line';
+    });
+    muteBtn.addEventListener('click', function () {
+        audio.muted = !audio.muted;
+        muteIcon.className = audio.muted ? 'ri-volume-mute-line' : 'ri-volume-up-line';
+    });
+
+    // Prev
+    document.getElementById('apBarPrev').addEventListener('click', function () {
+        if (queueIndex > 0) {
+            queueIndex--;
+            var t = queue[queueIndex];
+            loadTrack(t.url, t.title, t.artist, t.imgSrc);
+        }
+    });
+
+    // Next
+    document.getElementById('apBarNext').addEventListener('click', function () {
+        if (queueIndex < queue.length - 1) {
+            queueIndex++;
+            var t = queue[queueIndex];
+            loadTrack(t.url, t.title, t.artist, t.imgSrc);
+        } else {
+            audio.pause();
+            audio.currentTime = 0;
+        }
+    });
+
+    // Auto-advance
+    audio.addEventListener('ended', function () {
+        if (queueIndex < queue.length - 1) {
+            queueIndex++;
+            var t = queue[queueIndex];
+            loadTrack(t.url, t.title, t.artist, t.imgSrc);
+        }
+    });
+
+    // Close
+    closeBtn.addEventListener('click', function () {
+        audio.pause();
+        hideBar();
+    });
+})();
+</script>

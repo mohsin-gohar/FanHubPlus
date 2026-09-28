@@ -1,0 +1,101 @@
+@model GamingViewModel
+@{
+    ViewData["Title"] = "Gaming Discovery Hub";
+    var trail = new List<BreadcrumbItem> { new("Gaming Hub") };
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<div class="py-[60px] md:py-[80px]">
+    <div class="container">
+        <!-- Hero Gaming Banner -->
+        <div class="bg-gradient-to-r from-[#181828] to-[#122822] border border-white/10 rounded-2xl p-6 md:p-10 mb-10 text-white shadow-2xl relative overflow-hidden">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <span class="inline-block uppercase text-xs font-bold px-3 py-1 bg-success/20 text-success border border-success/30 rounded-full mb-3">
+                        <i class="ri-gamepad-line me-1"></i> Interactive Gaming Realm
+                    </span>
+                    <h1 class="text-3xl md:text-5xl font-extrabold mb-3">Gaming Discovery &amp; Playable Hub</h1>
+                    <p class="text-white/70 text-base max-w-2xl mb-4">
+                        Discover top esports titles, open-world RPGs, and retro classics. Watch official launch trailers, explore game specs, or play legally authorized web games directly in your browser.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter controls -->
+        <form method="get" asp-controller="Gaming" asp-action="Index" class="mb-8">
+            <div class="flex items-center flex-wrap gap-3">
+                <input type="search" name="search" value="@Model.Search" class="form-control form-input !w-auto !h-[44px]" placeholder="Search game or franchise..." />
+
+                <select name="categoryId" class="form-select !w-auto !h-[44px]" onchange="this.form.submit()">
+                    <option value="">All Fandom Categories</option>
+                    @foreach (var cat in Model.Categories)
+                    {
+                        <option value="@cat.CategoryId" selected="@(Model.CategoryId == cat.CategoryId ? "selected" : null)">@cat.Name</option>
+                    }
+                </select>
+
+                <div class="form-check form-switch flex items-center gap-2 text-white text-sm ms-2">
+                    <input class="form-check-input" type="checkbox" name="playableOnly" value="true" id="playableOnly" @(Model.PlayableOnly ? "checked" : "") onchange="this.form.submit()" />
+                    <label class="form-check-label cursor-pointer" for="playableOnly">Browser-Playable Only</label>
+                </div>
+
+                <button class="primary-btn" type="submit">Filter</button>
+                <a asp-controller="Gaming" asp-action="Index" class="btn btn-link text-white text-decoration-none">Reset</a>
+            </div>
+        </form>
+
+        <!-- Game Cards Grid -->
+        @if (Model.Games.Count == 0)
+        {
+            <div class="text-center py-16 bg-white/5 rounded-2xl border border-white/10">
+                <i class="ri-gamepad-line text-6xl text-white/30 mb-3 block"></i>
+                <h3 class="text-xl font-bold text-white mb-2">No Games Found</h3>
+                <p class="text-white/60 mb-4">Try clearing filters or search terms.</p>
+                <a asp-controller="Gaming" asp-action="Index" class="primary-btn">Explore All Games</a>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var game in Model.Games)
+                {
+                    var cover = string.IsNullOrWhiteSpace(game.ThumbnailUrl) ? "/assets/images/categories/category2.jpg" : game.ThumbnailUrl;
+                    var isPlayable = game.Type == ContentType.PlayableGame || !string.IsNullOrWhiteSpace(game.PlayableGameUrl);
+
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="bg-[#18181f] border border-white/10 rounded-xl overflow-hidden group hover:border-success/50 transition-all duration-300">
+                            <div class="relative aspect-[16/9] overflow-hidden bg-black/40">
+                                <img src="@cover" alt="@game.Title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                                @if (isPlayable)
+                                {
+                                    <span class="absolute top-2 right-2 px-2 py-0.5 rounded text-[10px] font-bold bg-success text-black uppercase tracking-wider shadow">
+                                        <i class="ri-play-circle-fill me-1"></i> Playable
+                                    </span>
+                                }
+                            </div>
+                            <div class="p-4">
+                                <span class="text-[11px] font-bold text-success uppercase tracking-wider block mb-1">@(game.Genre ?? "Video Game")</span>
+                                <h4 class="text-white font-bold text-base truncate mb-2" title="@game.Title">
+                                    <a asp-controller="Gaming" asp-action="Details" asp-route-id="@game.ContentId" class="hover:text-success transition-colors">@game.Title</a>
+                                </h4>
+                                <div class="flex items-center justify-between text-xs text-white/50 pt-2 border-t border-white/10">
+                                    <span><i class="ri-fire-line text-warning"></i> @game.PopularityScore Score</span>
+                                    @if (isPlayable)
+                                    {
+                                        <a asp-controller="Gaming" asp-action="Play" asp-route-id="@game.ContentId" class="text-success font-bold hover:underline">Play Now &rarr;</a>
+                                    }
+                                    else
+                                    {
+                                        <a asp-controller="Gaming" asp-action="Details" asp-route-id="@game.ContentId" class="text-white/70 hover:text-white">Details &rarr;</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

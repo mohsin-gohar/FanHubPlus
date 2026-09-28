@@ -1,0 +1,81 @@
+@model MusicDetailViewModel
+@{
+    ViewData["Title"] = Model.Song.Title;
+    var trail = new List<BreadcrumbItem>
+    {
+        new("Music & Soundtracks", Url.Action("Index", "Music")),
+        new(Model.Song.Title)
+    };
+    var cover = string.IsNullOrWhiteSpace(Model.Song.ThumbnailUrl) ? "/assets/images/categories/category1.jpg" : Model.Song.ThumbnailUrl;
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<div class="py-[60px] md:py-[80px]">
+    <div class="container">
+        <div class="bg-[#18181f] border border-white/10 rounded-2xl p-6 md:p-10 mb-10">
+            <div class="row g-6 align-items-center">
+                <div class="col-md-4 col-lg-3">
+                    <img src="@cover" alt="@Model.Song.Title" class="w-full rounded-xl shadow-2xl border border-white/10 aspect-square object-cover" />
+                </div>
+                <div class="col-md-8 col-lg-9">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-full text-xs font-bold uppercase">
+                            @Model.Song.Category.Name
+                        </span>
+                        <span class="text-white/60 text-xs">@Model.Song.Genre</span>
+                    </div>
+
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-2">@Model.Song.Title</h1>
+                    <h3 class="text-xl text-primary font-bold mb-4">@(Model.Song.Artist ?? "Original Soundtrack")</h3>
+
+                    @if (Model.MainAudio != null)
+                    {
+                        <div class="mb-6">
+                            <button type="button" class="primary-btn me-3"
+                                    onclick="playAudioTrack('@Model.Song.Title', '@(Model.Song.Artist ?? "Soundtrack")', '@Model.MainAudio.EmbedUrl', '@cover')">
+                                <i class="ri-play-fill me-2"></i> Listen Now
+                            </button>
+                        </div>
+                    }
+
+                    <p class="text-white/70 text-base leading-relaxed mb-6">
+                        @(Model.Song.Description ?? "No description available for this music track.")
+                    </p>
+
+                    <div class="flex items-center gap-6 pt-4 border-t border-white/10 text-sm text-white/60">
+                        <div><i class="ri-eye-line me-1"></i> @Model.Song.ViewCount.ToString("N0") Views</div>
+                        <div><i class="ri-star-fill text-warning me-1"></i> @Model.AverageRating / 5.0 (@Model.RatingCount ratings)</div>
+                        @if (Model.Song.ReleaseDate.HasValue)
+                        {
+                            <div><i class="ri-calendar-line me-1"></i> @Model.Song.ReleaseDate.Value.ToString("yyyy-MM-dd")</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Music -->
+        @if (Model.RelatedSongs.Count > 0)
+        {
+            <h3 class="text-2xl font-bold text-white mb-6">Related Tracks &amp; Soundtracks</h3>
+            <div class="row g-4">
+                @foreach (var song in Model.RelatedSongs)
+                {
+                    var relCover = string.IsNullOrWhiteSpace(song.ThumbnailUrl) ? "/assets/images/categories/category1.jpg" : song.ThumbnailUrl;
+                    <div class="col-6 col-md-3">
+                        <div class="bg-[#18181f] border border-white/10 rounded-xl p-3 text-center">
+                            <img src="@relCover" alt="@song.Title" class="w-full aspect-square object-cover rounded-lg mb-3" />
+                            <h5 class="text-white font-bold text-sm truncate mb-1">
+                                <a asp-controller="Music" asp-action="Details" asp-route-id="@song.ContentId" class="hover:text-primary">@song.Title</a>
+                            </h5>
+                            <p class="text-white/50 text-xs truncate">@(song.Artist ?? "Soundtrack")</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<partial name="_AudioPlayerBar" />

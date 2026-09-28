@@ -150,7 +150,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("Slug");
 
-                    b.ToTable("Articles");
+                    b.ToTable("Articles", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.Bookmark", b =>
@@ -186,7 +186,7 @@ namespace FanHubPlus.Migrations
                     b.HasIndex("UserId", "ItemType", "ItemId")
                         .IsUnique();
 
-                    b.ToTable("Bookmarks");
+                    b.ToTable("Bookmarks", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.Category", b =>
@@ -215,7 +215,7 @@ namespace FanHubPlus.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.CharacterProfile", b =>
@@ -250,7 +250,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("CharacterProfiles");
+                    b.ToTable("CharacterProfiles", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.ChatFaq", b =>
@@ -277,7 +277,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasKey("FaqId");
 
-                    b.ToTable("ChatFaqs");
+                    b.ToTable("ChatFaqs", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.ChatbotQuery", b =>
@@ -309,7 +309,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ChatbotQueries");
+                    b.ToTable("ChatbotQueries", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.Content", b =>
@@ -365,7 +365,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("Title");
 
-                    b.ToTable("Contents");
+                    b.ToTable("Contents", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.ContentTag", b =>
@@ -380,7 +380,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("ContentTags");
+                    b.ToTable("ContentTags", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.EventItem", b =>
@@ -426,7 +426,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("EventDate");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.FanSubmission", b =>
@@ -468,7 +468,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("FanSubmissions");
+                    b.ToTable("FanSubmissions", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.Feedback", b =>
@@ -505,7 +505,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Feedbacks");
+                    b.ToTable("Feedbacks", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.MediaItem", b =>
@@ -537,7 +537,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("ContentId");
 
-                    b.ToTable("MediaItems");
+                    b.ToTable("MediaItems", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.MerchandiseItem", b =>
@@ -580,7 +580,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("IsUpcoming");
 
-                    b.ToTable("MerchandiseItems");
+                    b.ToTable("MerchandiseItems", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.Rating", b =>
@@ -612,7 +612,7 @@ namespace FanHubPlus.Migrations
                     b.HasIndex("UserId", "ContentId")
                         .IsUnique();
 
-                    b.ToTable("Ratings");
+                    b.ToTable("Ratings", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.Tag", b =>
@@ -630,7 +630,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasKey("TagId");
 
-                    b.ToTable("Tags");
+                    b.ToTable("Tags", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.UserCategory", b =>
@@ -646,7 +646,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("UserCategories");
+                    b.ToTable("UserCategories", (string)null);
                 });
 
             modelBuilder.Entity("FanHubPlus.Models.Entities.ViewLog", b =>
@@ -676,7 +676,7 @@ namespace FanHubPlus.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ViewLogs");
+                    b.ToTable("ViewLogs", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

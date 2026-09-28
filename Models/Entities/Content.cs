@@ -31,6 +31,18 @@ public class Content
     [StringLength(300)]
     public string? ThumbnailUrl { get; set; }            // card cover image
 
+    [StringLength(200)]
+    public string? Artist { get; set; }                  // Singer / Band / Composer for Music
+
+    [StringLength(200)]
+    public string? AlbumName { get; set; }               // Album or OST name for Music
+
+    [StringLength(500)]
+    public string? OfficialWebsiteUrl { get; set; }      // Official game / movie site link
+
+    [StringLength(500)]
+    public string? PlayableGameUrl { get; set; }         // Legal HTML5 browser game embed link
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     // Navigation properties

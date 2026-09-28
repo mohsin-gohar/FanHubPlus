@@ -24,7 +24,7 @@
         ? "py-[15px] lg:!py-0 bg-[#585151]/44 backdrop-blur-[4.5px] mx-[10px] mt-[10px] rounded-t-[10px] fixed top-0 left-0 right-0 z-[4] transition-all duration-300 ease-in-out"
         : "py-[15px] lg:py-0 xl:py-[10px] fixed top-0 left-0 right-0 z-[4] !rounded-none transition-all duration-300 ease-in-out";
 
-    string Mark(string name) => controller == name ? " active" : "";
+    string Mark(string name) => (controller == name || (name == "explore" && controller == "streaming")) ? " active" : "";
 
     // ---- header class strings ----------------------------------------
     // They are declared here instead of inline because Razor will not
@@ -207,34 +207,34 @@
                     <li class="nav-item dropdown">
                         <a
                             href="javascript:void(0);"
-                            class="@NavDrop@Mark("explore")"
+                            class="@NavDrop@Mark("streaming")"
                         >
-                            Movies <i class="ri-arrow-down-s-line"></i>
+                            Movies &amp; TV <i class="ri-arrow-down-s-line"></i>
                         </a>
                         <ul class="dropdown-menu fhp-nav__dropdown">
                             <li class="nav-item">
+                                <a class="@NavPlain@Mark("streaming")" asp-controller="Streaming" asp-action="Index">
+                                    Streaming Library
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="@NavPlain" asp-controller="Streaming" asp-action="Index" asp-route-contentType="Movie">
+                                    Movies
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="@NavPlain" asp-controller="Streaming" asp-action="Index" asp-route-contentType="Series">
+                                    TV Shows / Series
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="@NavPlain" asp-controller="Streaming" asp-action="Index" asp-route-contentType="Documentary">
+                                    Documentaries
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="@NavPlain@Mark("explore")" asp-controller="Explore" asp-action="Index">
-                                    All Titles
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="@NavPlain" asp-controller="Explore" asp-action="Index" asp-route-search="Anime">
-                                    Anime Fandom
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="@NavPlain" asp-controller="Explore" asp-action="Index" asp-route-search="Movies">
-                                    Cinematic Blockbusters
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="@NavPlain" asp-controller="Explore" asp-action="Index" asp-route-search="Gaming">
-                                    Gaming Fandom
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="@NavPlain" asp-controller="Explore" asp-action="Index" asp-route-search="K-Pop">
-                                    K-Pop Universe
+                                    Full Explorer
                                 </a>
                             </li>
                         </ul>
@@ -285,6 +285,24 @@
                             asp-controller="Explore" asp-action="Index"
                         >
                             Movies &amp; TV Shows
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a
+                            class="@NavPlain@Mark("gaming")"
+                            asp-controller="Gaming" asp-action="Index"
+                        >
+                            Gaming
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a
+                            class="@NavPlain@Mark("music")"
+                            asp-controller="Music" asp-action="Index"
+                        >
+                            Music
                         </a>
                     </li>
                 </ul>
@@ -431,6 +449,16 @@
                         <li class="nav-item px-[20px] mb-[15px] last:mb-0">
                             <a asp-controller="Merch" asp-action="Index" class="@SideItem@Mark("merch")">
                                 Merchandise
+                            </a>
+                        </li>
+                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                            <a asp-controller="Gaming" asp-action="Index" class="@SideItem@Mark("gaming")">
+                                Gaming Hub
+                            </a>
+                        </li>
+                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                            <a asp-controller="Music" asp-action="Index" class="@SideItem@Mark("music")">
+                                Music &amp; Soundtracks
                             </a>
                         </li>
                         <li class="nav-item px-[20px] mb-[15px] last:mb-0">

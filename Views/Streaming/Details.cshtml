@@ -1,0 +1,208 @@
+@model StreamingDetailViewModel
+@{
+    ViewData["Title"] = Model.Item.Title;
+    ViewData["fhpDark"] = true;
+    var trail = new List<BreadcrumbItem>
+    {
+        new("Movies & TV Shows", Url.Action("Index", "Streaming")),
+        new(Model.Item.Title)
+    };
+    var cover = string.IsNullOrWhiteSpace(Model.Item.ThumbnailUrl)
+        ? "/assets/images/categories/category3.jpg"
+        : Model.Item.ThumbnailUrl;
+    var typeLabel = Model.Item.Type switch
+    {
+        FanHubPlus.Models.Enums.ContentType.Movie       => "Movie",
+        FanHubPlus.Models.Enums.ContentType.Series      => "Series",
+        FanHubPlus.Models.Enums.ContentType.Documentary => "Documentary",
+        FanHubPlus.Models.Enums.ContentType.Special     => "Special / OVA",
+        _ => Model.Item.Type.ToString()
+    };
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<div class="py-[60px] md:py-[80px]">
+    <div class="container">
+
+        <!-- Hero Detail Card -->
+        <div class="bg-[#18181f] border border-white/10 rounded-2xl overflow-hidden shadow-2xl mb-10">
+            <div class="row g-0">
+
+                <!-- Poster -->
+                <div class="col-sm-5 col-md-4 col-lg-3">
+                    <div class="relative min-h-[320px] h-full overflow-hidden">
+                        <img src="@cover" alt="@Model.Item.Title"
+                             class="w-full h-full object-cover" loading="eager" />
+                        <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[#18181f]/60 d-none d-sm-block"></div>
+                    </div>
+                </div>
+
+                <!-- Info -->
+                <div class="col-sm-7 col-md-8 col-lg-9">
+                    <div class="p-6 md:p-10 h-full flex flex-col justify-between">
+                        <div>
+                            <!-- Badges -->
+                            <div class="flex flex-wrap items-center gap-2 mb-3">
+                                <span class="px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-full text-xs font-bold uppercase">
+                                    <i class="ri-film-line me-1"></i> @typeLabel
+                                </span>
+                                <span class="px-3 py-1 bg-white/10 text-white/80 rounded-full text-xs">
+                                    @Model.Item.Category.Name
+                                </span>
+                                @if (!string.IsNullOrWhiteSpace(Model.Item.Genre))
+                                {
+                                    foreach (var g in Model.Item.Genre.Split(',').Take(3))
+                                    {
+                                        <span class="px-2 py-0.5 bg-white/5 text-white/60 rounded text-[11px]">@g.Trim()</span>
+                                    }
+                                }
+                            </div>
+
+                            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">@Model.Item.Title</h1>
+
+                            <!-- Stars + Meta -->
+                            <div class="flex flex-wrap items-center gap-4 mb-4 text-sm">
+                                <div class="flex items-center gap-1">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <i class="@(i <= Math.Round(Model.AverageRating) ? "ri-star-fill text-warning" : "ri-star-line text-white/30")"></i>
+                                    }
+                                    <span class="text-white/70 ms-1">@Model.AverageRating / 5 (@Model.RatingCount ratings)</span>
+                                </div>
+                                <span class="text-white/60"><i class="ri-eye-line me-1"></i>@Model.Item.ViewCount.ToString("N0") views</span>
+                                @if (Model.Item.ReleaseDate.HasValue)
+                                {
+                                    <span class="text-white/60"><i class="ri-calendar-line me-1"></i>@Model.Item.ReleaseDate.Value.Year</span>
+                                }
+                            </div>
+
+                            <p class="text-white/70 text-base leading-relaxed mb-6">
+                                @(string.IsNullOrWhiteSpace(Model.Item.Description)
+                                    ? "No synopsis available for this title."
+                                    : Model.Item.Description)
+                            </p>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex flex-wrap gap-3 pt-4 border-t border-white/10">
+                            @if (Model.Trailer != null)
+                            {
+                                <button type="button"
+                                        class="primary-btn"
+                                        onclick="document.getElementById('trailerSection').scrollIntoView({behavior:'smooth'})">
+                                    <i class="ri-play-circle-line me-2"></i> Watch Trailer
+                                </button>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.Item.OfficialWebsiteUrl))
+                            {
+                                <a href="@Model.Item.OfficialWebsiteUrl" target="_blank" rel="noopener"
+                                   class="btn btn-outline-secondary text-white border-white/30 hover:bg-white/10 transition-all px-5 py-2 rounded-full">
+                                    <i class="ri-external-link-line me-1"></i> Official Site
+                                </a>
+                            }
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <button type="button"
+                                        id="bookmarkBtn"
+                                        class="btn @(Model.IsBookmarked ? "btn-danger" : "btn-outline-secondary text-white border-white/30") rounded-full px-4 py-2 transition-all"
+                                        data-id="@Model.Item.ContentId"
+                                        data-type="Content">
+                                    <i class="@(Model.IsBookmarked ? "ri-heart-fill" : "ri-heart-line") me-1"></i>
+                                    @(Model.IsBookmarked ? "Saved" : "Save")
+                                </button>
+                            }
+                            <a asp-controller="Streaming" asp-action="Index"
+                               class="btn btn-link text-white/60 text-decoration-none">
+                                <i class="ri-arrow-left-line me-1"></i> Back
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trailer / Embed -->
+        @if (Model.Trailer != null && !string.IsNullOrWhiteSpace(Model.Trailer.EmbedUrl))
+        {
+            <div id="trailerSection" class="mb-10">
+                <h2 class="text-2xl font-bold text-white mb-4">
+                    <i class="ri-play-circle-line me-2 text-primary"></i>Official Trailer
+                </h2>
+                <div class="relative bg-black rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
+                     style="padding-top: 56.25%;">
+                    <iframe src="@Model.Trailer.EmbedUrl"
+                            class="absolute inset-0 w-full h-full border-0"
+                            title="@Model.Item.Title – Official Trailer"
+                            allowfullscreen loading="lazy"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                    </iframe>
+                </div>
+                <p class="text-white/40 text-xs mt-2 text-center">
+                    <i class="ri-information-line me-1"></i>
+                    Trailers are embedded directly from official distributor channels (YouTube, Vimeo, etc.) and remain the property of their respective copyright holders.
+                </p>
+            </div>
+        }
+
+        <!-- Related Titles -->
+        @if (Model.Related.Count > 0)
+        {
+            <h2 class="text-2xl font-bold text-white mb-6">You Might Also Like</h2>
+            <div class="row g-4">
+                @foreach (var r in Model.Related)
+                {
+                    var rc = string.IsNullOrWhiteSpace(r.ThumbnailUrl) ? "/assets/images/categories/category3.jpg" : r.ThumbnailUrl;
+                    <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                        <div class="group bg-[#18181f] border border-white/10 rounded-xl overflow-hidden hover:border-primary/40 transition-all">
+                            <div class="relative aspect-[2/3] overflow-hidden">
+                                <img src="@rc" alt="@r.Title"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                     loading="lazy" />
+                            </div>
+                            <div class="p-3">
+                                <h5 class="text-white font-bold text-xs truncate" title="@r.Title">
+                                    <a asp-controller="Streaming" asp-action="Details" asp-route-id="@r.ContentId"
+                                       class="hover:text-primary transition-colors">@r.Title</a>
+                                </h5>
+                                <span class="text-white/40 text-[10px]">@r.Category.Name</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var btn = document.getElementById('bookmarkBtn');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+        fetch('/Bookmarks/Toggle', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+            },
+            body: JSON.stringify({ id: parseInt(btn.dataset.id), type: btn.dataset.type })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+            if (d.bookmarked) {
+                btn.innerHTML = '<i class="ri-heart-fill me-1"></i> Saved';
+                btn.classList.remove('btn-outline-secondary','text-white','border-white/30');
+                btn.classList.add('btn-danger');
+            } else {
+                btn.innerHTML = '<i class="ri-heart-line me-1"></i> Save';
+                btn.classList.add('btn-outline-secondary','text-white','border-white/30');
+                btn.classList.remove('btn-danger');
+            }
+        });
+    });
+})();
+</script>
+}

@@ -7,5 +7,8 @@ public enum ContentType
     Series,      // multi-season show
     Game,        // video game
     Documentary, // real-life documentary
-    Special      // OVA / special / one-off release
+    Special,     // OVA / special / one-off release
+    Song,        // music track / song
+    Album,       // music album / OST
+    PlayableGame // browser-playable game
 }

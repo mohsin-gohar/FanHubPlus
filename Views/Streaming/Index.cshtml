@@ -1,0 +1,185 @@
+@model StreamingViewModel
+@{
+    ViewData["Title"] = "Movies & TV Shows";
+    ViewData["fhpDark"] = true;
+    var trail = new List<BreadcrumbItem> { new("Movies & TV Shows") };
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<div class="py-[60px] md:py-[80px]">
+    <div class="container">
+
+        <!-- Hero Section -->
+        <div class="bg-gradient-to-br from-[#0f0f1a] via-[#1a0a2e] to-[#0f1a0a] border border-white/10 rounded-2xl p-6 md:p-10 mb-10 shadow-2xl relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10 bg-[url('/assets/images/bg-images/bg-image3.jpg')] bg-cover bg-center pointer-events-none"></div>
+            <div class="relative row align-items-center">
+                <div class="col-lg-8">
+                    <span class="inline-block uppercase text-xs font-bold px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-full mb-3">
+                        <i class="ri-film-line me-1"></i> Fandom Streaming Library
+                    </span>
+                    <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-3 leading-tight">
+                        Movies &amp; TV Shows
+                    </h1>
+                    <p class="text-white/70 text-base max-w-2xl mb-5">
+                        Explore legally embedded trailers and clips from blockbuster movies, anime series, K-dramas, and more. Watch official previews, browse genres, and discover your next obsession.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <a asp-action="Index" asp-route-contentType="Movie" class="primary-btn">
+                            <i class="ri-movie-line me-2"></i> Browse Movies
+                        </a>
+                        <a asp-action="Index" asp-route-contentType="Series" class="btn btn-outline-secondary text-white border-white/30 hover:bg-white/10 transition-all px-5 py-2 rounded-full">
+                            <i class="ri-tv-2-line me-2"></i> Browse TV Shows
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-4 d-none d-lg-flex justify-content-end">
+                    <div class="grid grid-cols-2 gap-3 opacity-80">
+                        @foreach (var f in Model.Featured.Take(4))
+                        {
+                            var fc = string.IsNullOrWhiteSpace(f.ThumbnailUrl) ? "/assets/images/categories/category3.jpg" : f.ThumbnailUrl;
+                            <div class="rounded-xl overflow-hidden aspect-[2/3] w-[80px]">
+                                <img src="@fc" alt="@f.Title" class="w-full h-full object-cover" loading="lazy" />
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <form method="get" asp-controller="Streaming" asp-action="Index" class="mb-8">
+            <div class="flex flex-wrap items-center gap-3">
+
+                <input type="search" name="search" value="@Model.Search"
+                       class="form-control form-input !w-auto !h-[44px]"
+                       placeholder="Search title, genre, or description…" />
+
+                <select name="contentType" class="form-select !w-auto !h-[44px]" onchange="this.form.submit()">
+                    <option value="">All Types</option>
+                    <option value="Movie" selected="@(Model.ContentType == "Movie" ? "selected" : null)">🎬 Movies</option>
+                    <option value="Series" selected="@(Model.ContentType == "Series" ? "selected" : null)">📺 TV Shows / Series</option>
+                    <option value="Documentary" selected="@(Model.ContentType == "Documentary" ? "selected" : null)">🎥 Documentaries</option>
+                    <option value="Special" selected="@(Model.ContentType == "Special" ? "selected" : null)">⭐ Specials / OVAs</option>
+                </select>
+
+                <select name="categoryId" class="form-select !w-auto !h-[44px]" onchange="this.form.submit()">
+                    <option value="">All Fandoms</option>
+                    @foreach (var cat in Model.Categories)
+                    {
+                        <option value="@cat.CategoryId" selected="@(Model.CategoryId == cat.CategoryId ? "selected" : null)">
+                            @cat.Name
+                        </option>
+                    }
+                </select>
+
+                <select name="sort" class="form-select !w-auto !h-[44px]" onchange="this.form.submit()">
+                    <option value="popular" selected="@(Model.Sort == "popular" ? "selected" : null)">Most Popular</option>
+                    <option value="newest"  selected="@(Model.Sort == "newest"  ? "selected" : null)">Newest Release</option>
+                    <option value="views"   selected="@(Model.Sort == "views"   ? "selected" : null)">Most Viewed</option>
+                    <option value="title"   selected="@(Model.Sort == "title"   ? "selected" : null)">A – Z</option>
+                </select>
+
+                <button class="primary-btn" type="submit">Filter</button>
+                <a asp-controller="Streaming" asp-action="Index" class="btn btn-link text-white/60 text-decoration-none">Reset</a>
+            </div>
+        </form>
+
+        <!-- Results Summary -->
+        @if (!string.IsNullOrWhiteSpace(Model.Search) || Model.CategoryId.HasValue || !string.IsNullOrWhiteSpace(Model.ContentType))
+        {
+            <div class="text-white/60 text-sm mb-6">
+                Showing <strong class="text-white">@Model.TotalItems</strong> result@(Model.TotalItems != 1 ? "s" : "")
+                @if (!string.IsNullOrWhiteSpace(Model.Search)) { <span> for "<em class="text-primary">@Model.Search</em>"</span> }
+            </div>
+        }
+
+        <!-- Grid -->
+        @if (Model.Items.Count == 0)
+        {
+            <div class="text-center py-20 bg-white/5 rounded-2xl border border-white/10">
+                <i class="ri-film-line text-7xl text-white/20 mb-4 block"></i>
+                <h3 class="text-2xl font-bold text-white mb-2">No Titles Found</h3>
+                <p class="text-white/60 mb-5">Try adjusting your filters or search term.</p>
+                <a asp-controller="Streaming" asp-action="Index" class="primary-btn">View All Titles</a>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4 mb-10">
+                @foreach (var item in Model.Items)
+                {
+                    var cover = string.IsNullOrWhiteSpace(item.ThumbnailUrl) ? "/assets/images/categories/category3.jpg" : item.ThumbnailUrl;
+                    var hasTrailer = item.MediaItems.Any(m => m.MediaType == FanHubPlus.Models.Enums.MediaType.Trailer ||
+                                                              m.MediaType == FanHubPlus.Models.Enums.MediaType.Video);
+                    var typeLabel = item.Type switch
+                    {
+                        FanHubPlus.Models.Enums.ContentType.Movie        => "Movie",
+                        FanHubPlus.Models.Enums.ContentType.Series       => "Series",
+                        FanHubPlus.Models.Enums.ContentType.Documentary  => "Documentary",
+                        FanHubPlus.Models.Enums.ContentType.Special      => "Special",
+                        _ => item.Type.ToString()
+                    };
+
+                    <div class="col-6 col-sm-4 col-md-3 col-xl-2">
+                        <div class="group bg-[#18181f] border border-white/10 rounded-xl overflow-hidden hover:border-primary/50 transition-all duration-300 h-full flex flex-col">
+
+                            <!-- Poster -->
+                            <div class="relative aspect-[2/3] overflow-hidden bg-black/40">
+                                <img src="@cover" alt="@item.Title"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                     loading="lazy" />
+
+                                <!-- Hover Overlay -->
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-3">
+                                    <a asp-controller="Streaming" asp-action="Details" asp-route-id="@item.ContentId"
+                                       class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white text-lg mx-auto mb-2 hover:scale-110 transition-transform shadow-lg">
+                                        @if (hasTrailer) { <i class="ri-play-fill"></i> }
+                                        else             { <i class="ri-information-line"></i> }
+                                    </a>
+                                </div>
+
+                                <!-- Type Badge -->
+                                <span class="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold bg-primary/80 text-white uppercase tracking-wide backdrop-blur-sm">
+                                    @typeLabel
+                                </span>
+
+                                @if (hasTrailer)
+                                {
+                                    <span class="absolute top-2 right-2 px-2 py-0.5 rounded text-[10px] font-bold bg-success/80 text-black uppercase backdrop-blur-sm">
+                                        <i class="ri-play-circle-fill me-0.5"></i> Trailer
+                                    </span>
+                                }
+                            </div>
+
+                            <!-- Info -->
+                            <div class="p-3 flex flex-col flex-1">
+                                <span class="text-[10px] text-white/40 uppercase tracking-wider mb-1">@item.Category.Name</span>
+                                <h4 class="text-white font-bold text-sm leading-snug mb-1 line-clamp-2 flex-1" title="@item.Title">
+                                    <a asp-controller="Streaming" asp-action="Details" asp-route-id="@item.ContentId"
+                                       class="hover:text-primary transition-colors">
+                                        @item.Title
+                                    </a>
+                                </h4>
+                                <div class="flex items-center justify-between text-[10px] text-white/40 mt-auto pt-2 border-t border-white/10">
+                                    <span>@(item.Genre?.Split(',').FirstOrDefault()?.Trim() ?? "—")</span>
+                                    @if (item.ReleaseDate.HasValue)
+                                    {
+                                        <span>@item.ReleaseDate.Value.Year</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Pager -->
+            <partial name="_Pager" model="new {
+                Page = Model.Page,
+                TotalPages = Model.TotalPages,
+                UrlFor = (Func<int, string>)(p => Model.PageUrl(p)) }" />
+        }
+
+    </div>
+</div>

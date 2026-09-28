@@ -1,0 +1,209 @@
+@model GameDetailViewModel
+@{
+    ViewData["Title"] = Model.Game.Title;
+    ViewData["fhpDark"] = true;
+    var trail = new List<BreadcrumbItem>
+    {
+        new("Gaming Hub", Url.Action("Index", "Gaming")),
+        new(Model.Game.Title)
+    };
+    var cover = string.IsNullOrWhiteSpace(Model.Game.ThumbnailUrl)
+        ? "/assets/images/categories/category2.jpg"
+        : Model.Game.ThumbnailUrl;
+    var isPlayable = Model.Game.Type == ContentType.PlayableGame
+                     || !string.IsNullOrWhiteSpace(Model.Game.PlayableGameUrl);
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<div class="py-[60px] md:py-[80px]">
+    <div class="container">
+
+        <!-- Game Hero Card -->
+        <div class="bg-[#18181f] border border-white/10 rounded-2xl overflow-hidden shadow-2xl mb-10">
+            <div class="row g-0">
+                <!-- Cover -->
+                <div class="col-lg-4">
+                    <div class="relative aspect-[3/4] md:aspect-auto md:h-full min-h-[280px] overflow-hidden">
+                        <img src="@cover" alt="@Model.Game.Title"
+                             class="w-full h-full object-cover" loading="eager" />
+                        @if (isPlayable)
+                        {
+                            <div class="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                                <a asp-controller="Gaming" asp-action="Play" asp-route-id="@Model.Game.ContentId"
+                                   class="w-16 h-16 rounded-full bg-success flex items-center justify-center text-3xl text-black shadow-2xl hover:scale-110 transition-transform">
+                                    <i class="ri-play-fill"></i>
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Details -->
+                <div class="col-lg-8">
+                    <div class="p-6 md:p-10 h-full flex flex-col justify-between">
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-3">
+                                <span class="px-3 py-1 bg-success/20 text-success border border-success/30 rounded-full text-xs font-bold uppercase">
+                                    <i class="ri-gamepad-line me-1"></i>
+                                    @(Model.Game.Genre ?? "Video Game")
+                                </span>
+                                @if (isPlayable)
+                                {
+                                    <span class="px-3 py-1 bg-warning/20 text-warning border border-warning/30 rounded-full text-xs font-bold uppercase">
+                                        <i class="ri-play-circle-fill me-1"></i> Browser Playable
+                                    </span>
+                                }
+                                <span class="text-white/50 text-xs">@Model.Game.Category.Name</span>
+                            </div>
+
+                            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">@Model.Game.Title</h1>
+
+                            <!-- Rating Row -->
+                            <div class="flex items-center gap-4 mb-4 text-sm">
+                                <div class="flex items-center gap-1">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <i class="@(i <= Math.Round(Model.AverageRating) ? "ri-star-fill text-warning" : "ri-star-line text-white/30")"></i>
+                                    }
+                                    <span class="text-white/70 ms-1">@Model.AverageRating / 5.0 (@Model.RatingCount ratings)</span>
+                                </div>
+                                <span class="text-white/40">|</span>
+                                <span class="text-white/60"><i class="ri-eye-line me-1"></i>@Model.Game.ViewCount.ToString("N0") views</span>
+                                <span class="text-white/40">|</span>
+                                <span class="text-white/60"><i class="ri-fire-line text-warning me-1"></i>@Model.Game.PopularityScore score</span>
+                            </div>
+
+                            <p class="text-white/70 text-base leading-relaxed mb-6">
+                                @(string.IsNullOrWhiteSpace(Model.Game.Description)
+                                    ? "No description available for this title."
+                                    : Model.Game.Description)
+                            </p>
+
+                            @if (Model.Game.ReleaseDate.HasValue)
+                            {
+                                <div class="text-white/50 text-sm mb-4">
+                                    <i class="ri-calendar-line me-1"></i>
+                                    Released: <strong class="text-white">@Model.Game.ReleaseDate.Value.ToString("MMMM d, yyyy")</strong>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex flex-wrap gap-3 pt-4 border-t border-white/10">
+                            @if (isPlayable)
+                            {
+                                <a asp-controller="Gaming" asp-action="Play" asp-route-id="@Model.Game.ContentId"
+                                   class="primary-btn">
+                                    <i class="ri-play-circle-line me-2"></i> Play Now
+                                </a>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(Model.Game.OfficialWebsiteUrl))
+                            {
+                                <a href="@Model.Game.OfficialWebsiteUrl" target="_blank" rel="noopener"
+                                   class="btn btn-outline-secondary text-white border-white/30 hover:bg-white/10 transition-all px-5 py-2 rounded-full">
+                                    <i class="ri-external-link-line me-1"></i> Official Site
+                                </a>
+                            }
+                            @if (User.Identity?.IsAuthenticated == true)
+                            {
+                                <button type="button"
+                                        id="bookmarkBtn"
+                                        class="btn @(Model.IsBookmarked ? "btn-danger" : "btn-outline-secondary text-white border-white/30") rounded-full px-4 py-2 transition-all"
+                                        data-id="@Model.Game.ContentId"
+                                        data-type="Content"
+                                        title="@(Model.IsBookmarked ? "Remove Bookmark" : "Add Bookmark")">
+                                    <i class="@(Model.IsBookmarked ? "ri-heart-fill" : "ri-heart-line") me-1"></i>
+                                    @(Model.IsBookmarked ? "Saved" : "Save")
+                                </button>
+                            }
+                            <a asp-controller="Gaming" asp-action="Index"
+                               class="btn btn-link text-white/60 hover:text-white text-decoration-none px-4">
+                                <i class="ri-arrow-left-line me-1"></i> Back to Gaming Hub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trailer -->
+        @if (Model.Trailer != null && !string.IsNullOrWhiteSpace(Model.Trailer.EmbedUrl))
+        {
+            <div class="mb-10">
+                <h2 class="text-2xl font-bold text-white mb-4"><i class="ri-film-line me-2 text-success"></i>Official Trailer</h2>
+                <div class="relative bg-black rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
+                     style="padding-top: 56.25%;">
+                    <iframe src="@Model.Trailer.EmbedUrl"
+                            class="absolute inset-0 w-full h-full"
+                            title="@Model.Game.Title Trailer"
+                            allowfullscreen
+                            loading="lazy"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                    </iframe>
+                </div>
+            </div>
+        }
+
+        <!-- Related Games -->
+        @if (Model.RelatedGames.Count > 0)
+        {
+            <h2 class="text-2xl font-bold text-white mb-6">Related Games</h2>
+            <div class="row g-4">
+                @foreach (var g in Model.RelatedGames)
+                {
+                    var relCover = string.IsNullOrWhiteSpace(g.ThumbnailUrl) ? "/assets/images/categories/category2.jpg" : g.ThumbnailUrl;
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="bg-[#18181f] border border-white/10 rounded-xl overflow-hidden group hover:border-success/50 transition-all">
+                            <div class="relative aspect-[16/9] overflow-hidden">
+                                <img src="@relCover" alt="@g.Title"
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+                            </div>
+                            <div class="p-3">
+                                <span class="text-[11px] font-bold text-success uppercase tracking-wider block mb-1">@(g.Genre ?? "Game")</span>
+                                <h5 class="text-white font-bold text-sm truncate mb-1" title="@g.Title">
+                                    <a asp-controller="Gaming" asp-action="Details" asp-route-id="@g.ContentId"
+                                       class="hover:text-success transition-colors">@g.Title</a>
+                                </h5>
+                                <div class="text-xs text-white/40">
+                                    <i class="ri-fire-line text-warning me-1"></i> @g.PopularityScore Score
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var btn = document.getElementById('bookmarkBtn');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+        var id   = btn.dataset.id;
+        var type = btn.dataset.type;
+        fetch('/Bookmarks/Toggle', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || '' },
+            body: JSON.stringify({ id: parseInt(id), type: type })
+        })
+        .then(function (r) { return r.json(); })
+        .then(function (d) {
+            if (d.bookmarked) {
+                btn.innerHTML = '<i class="ri-heart-fill me-1"></i> Saved';
+                btn.classList.remove('btn-outline-secondary', 'text-white', 'border-white/30');
+                btn.classList.add('btn-danger');
+            } else {
+                btn.innerHTML = '<i class="ri-heart-line me-1"></i> Save';
+                btn.classList.add('btn-outline-secondary', 'text-white', 'border-white/30');
+                btn.classList.remove('btn-danger');
+            }
+        });
+    });
+})();
+</script>
+}

@@ -1,0 +1,135 @@
+@model FanHubPlus.Models.Entities.Content
+@{
+    ViewData["Title"] = "Play: " + Model.Title;
+    ViewData["fhpDark"] = true;
+    var trail = new List<BreadcrumbItem>
+    {
+        new("Gaming Hub", Url.Action("Index", "Gaming")),
+        new(Model.Title, Url.Action("Details", "Gaming", new { id = Model.ContentId })),
+        new("Play")
+    };
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<div class="py-[60px] md:py-[80px]">
+    <div class="container">
+
+        <!-- Game Title Row -->
+        <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+            <div>
+                <span class="inline-block px-3 py-1 bg-success/20 text-success border border-success/30 rounded-full text-xs font-bold uppercase mb-2">
+                    <i class="ri-gamepad-line me-1"></i> Browser Game
+                </span>
+                <h1 class="text-2xl md:text-4xl font-extrabold text-white">@Model.Title</h1>
+                @if (!string.IsNullOrWhiteSpace(Model.Genre))
+                {
+                    <p class="text-white/60 text-sm mt-1">@Model.Genre</p>
+                }
+            </div>
+            <div class="flex gap-3">
+                <a asp-controller="Gaming" asp-action="Details" asp-route-id="@Model.ContentId"
+                   class="btn btn-outline-secondary text-white border-white/30 hover:bg-white/10 transition-all px-4 py-2 rounded-full">
+                    <i class="ri-information-line me-1"></i> Game Info
+                </a>
+                <a asp-controller="Gaming" asp-action="Index"
+                   class="btn btn-link text-white/60 text-decoration-none">
+                    <i class="ri-arrow-left-line me-1"></i> Back
+                </a>
+            </div>
+        </div>
+
+        <!-- Notice Banner -->
+        <div class="bg-warning/10 border border-warning/30 rounded-xl p-4 mb-6 flex items-start gap-3">
+            <i class="ri-shield-check-line text-warning text-xl flex-none mt-0.5"></i>
+            <p class="text-warning/90 text-sm leading-relaxed mb-0">
+                <strong>Legal Notice:</strong> Only legally authorized, royalty-free browser games are available here.
+                All games are embedded from their official or approved sources and remain the property of their respective owners.
+            </p>
+        </div>
+
+        <!-- Game Embed -->
+        <div class="bg-black rounded-2xl border border-white/10 shadow-2xl overflow-hidden mb-8"
+             style="min-height: 520px;">
+            <div id="gameLoadingOverlay"
+                 class="absolute inset-0 bg-black flex flex-col items-center justify-center gap-4 z-10 transition-opacity duration-500">
+                <div class="w-12 h-12 rounded-full border-4 border-success border-t-transparent animate-spin"></div>
+                <p class="text-white/60 text-sm">Loading game…</p>
+            </div>
+            <iframe id="gameFrame"
+                    src="@Model.PlayableGameUrl"
+                    class="w-full block border-0"
+                    style="height: 620px;"
+                    title="@Model.Title"
+                    allowfullscreen
+                    allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; pointer-lock"
+                    sandbox="allow-scripts allow-same-origin allow-forms allow-pointer-lock allow-orientation-lock allow-top-navigation-by-user-activation"
+                    loading="lazy">
+            </iframe>
+        </div>
+
+        <!-- Fullscreen + Controls -->
+        <div class="flex flex-wrap gap-3 mb-10">
+            <button id="btnFullscreen" type="button"
+                    class="primary-btn">
+                <i class="ri-fullscreen-line me-2"></i> Fullscreen
+            </button>
+            <button id="btnReload" type="button"
+                    class="btn btn-outline-secondary text-white border-white/30 hover:bg-white/10 transition-all px-5 py-2 rounded-full">
+                <i class="ri-restart-line me-2"></i> Reload Game
+            </button>
+            @if (!string.IsNullOrWhiteSpace(Model.OfficialWebsiteUrl))
+            {
+                <a href="@Model.OfficialWebsiteUrl" target="_blank" rel="noopener"
+                   class="btn btn-outline-secondary text-white border-white/30 hover:bg-white/10 transition-all px-5 py-2 rounded-full">
+                    <i class="ri-external-link-line me-1"></i> Official Site
+                </a>
+            }
+        </div>
+
+        <!-- Description -->
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <div class="bg-[#18181f] border border-white/10 rounded-2xl p-6 md:p-8">
+                <h2 class="text-xl font-bold text-white mb-4">About This Game</h2>
+                <p class="text-white/70 text-base leading-relaxed">@Model.Description</p>
+            </div>
+        }
+
+    </div>
+</div>
+
+@section Scripts {
+<script>
+(function () {
+    var frame = document.getElementById('gameFrame');
+    var overlay = document.getElementById('gameLoadingOverlay');
+
+    if (frame && overlay) {
+        frame.addEventListener('load', function () {
+            overlay.style.opacity = '0';
+            setTimeout(function () { overlay.style.display = 'none'; }, 500);
+        });
+    }
+
+    // Fullscreen
+    document.getElementById('btnFullscreen').addEventListener('click', function () {
+        var el = frame || document.documentElement;
+        if (el.requestFullscreen)       el.requestFullscreen();
+        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+        else if (el.mozRequestFullScreen)    el.mozRequestFullScreen();
+    });
+
+    // Reload
+    document.getElementById('btnReload').addEventListener('click', function () {
+        if (frame) {
+            frame.src = frame.src;
+            if (overlay) {
+                overlay.style.display = 'flex';
+                overlay.style.opacity = '1';
+            }
+        }
+    });
+})();
+</script>
+}
