@@ -59,6 +59,46 @@ namespace FanHubPlus.Migrations
                 type: "int",
                 nullable: true);
 
+            // ------------------------------------------------------------------
+            //  The model stores its converted enums as nvarchar(30) so they can
+            //  carry an index (see ApplicationDbContext.OnModelCreating). The
+            //  database still has the original nvarchar(max) columns, and SQL
+            //  Server refuses to build an index on nvarchar(max) ("Column 'Tag'
+            //  ... is of a type that is invalid for use as a key column in an
+            //  index"). Narrow the three indexed enum columns first; the index
+            //  statements further down then succeed. Every stored value is an
+            //  enum name, so nothing truncates.
+            // ------------------------------------------------------------------
+            migrationBuilder.AlterColumn<string>(
+                name: "Type",
+                table: "Contents",
+                type: "nvarchar(30)",
+                maxLength: 30,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: false);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Tag",
+                table: "MerchandiseItems",
+                type: "nvarchar(30)",
+                maxLength: 30,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: false);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Status",
+                table: "FanSubmissions",
+                type: "nvarchar(30)",
+                maxLength: 30,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)",
+                oldNullable: false);
+
             migrationBuilder.CreateIndex(
                 name: "IX_MerchandiseItems_CategoryId_Tag",
                 table: "MerchandiseItems",
@@ -185,6 +225,37 @@ namespace FanHubPlus.Migrations
             migrationBuilder.DropColumn(
                 name: "RuntimeMinutes",
                 table: "Contents");
+
+            // Put the converted enum columns back the way the old schema had them.
+            migrationBuilder.AlterColumn<string>(
+                name: "Status",
+                table: "FanSubmissions",
+                type: "nvarchar(max)",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(30)",
+                oldMaxLength: 30,
+                oldNullable: false);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Tag",
+                table: "MerchandiseItems",
+                type: "nvarchar(max)",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(30)",
+                oldMaxLength: 30,
+                oldNullable: false);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Type",
+                table: "Contents",
+                type: "nvarchar(max)",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(30)",
+                oldMaxLength: 30,
+                oldNullable: false);
 
             migrationBuilder.CreateIndex(
                 name: "IX_MerchandiseItems_CategoryId",

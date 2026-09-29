@@ -1,7 +1,8 @@
 @*
     _AudioPlayerBar.cshtml
     Global persistent audio player bar — rendered at the bottom of Music pages.
-    Controlled entirely via JavaScript (playAudioTrack / window.fhpPlayer).
+    Controlled entirely via JavaScript (window.fhpPlayer plus a delegated
+    click handler on the .js-play-track buttons rendered by the Music views).
 *@
 <div id="audioPlayerBar"
      class="position-fixed bottom-0 start-0 end-0 fhp-z-100 fhp-bg-0e0e14 border-top fhp-border-white-10 shadow-lg fhp-transform fhp-translate-y-full fhp-transition-transform fhp-dur500 fhp-ease"
@@ -21,6 +22,9 @@
             <div class="flex-grow-1 fhp-minw-0">
                 <p id="apBarTitle" class="text-white fw-bold fhp-fs-14 text-truncate lh-sm">Track Title</p>
                 <p id="apBarArtist" class="fhp-text-white-50 fhp-fs-12 text-truncate">Artist</p>
+                @* A source can 404, be blocked, or serve an HTML page instead of
+                   media. Without this line the bar just sits at 0:00 forever. *@
+                <p id="apBarError" class="d-none text-danger fhp-fs-12 text-truncate" role="alert"></p>
             </div>
 
             <!-- Controls -->
@@ -104,6 +108,17 @@
     var curTimeEl = document.getElementById('apBarCurrentTime');
     var durEl     = document.getElementById('apBarDuration');
     var closeBtn  = document.getElementById('apBarClose');
+    var errorEl   = document.getElementById('apBarError');
+
+    // MEDIA_ERR_SRC_NOT_SUPPORTED covers a dead URL, a 403, and an HTML page
+    // served where media was expected - all indistinguishable to the element,
+    // so they share one friendly message rather than a silent dead bar.
+    var ERRORS = {
+        1: 'Playback was aborted.',
+        2: 'This track could not be loaded - the source is unavailable.',
+        3: 'This track could not be decoded - the file may be damaged.',
+        4: 'This track cannot be played here - the source is unavailable or unsupported.'
+    };
     var frame     = document.getElementById('apBarFrame');
     var frameWrap = document.getElementById('apBarFrameWrap');
     var progressEl = document.getElementById('apBarProgress');
@@ -137,7 +152,17 @@
     function showBar() { bar.style.transform = 'translateY(0)'; }
     function hideBar() { bar.style.transform = 'translateY(100%)'; }
 
+    function showError(message) {
+        errorEl.textContent = message;
+        errorEl.classList.remove('d-none');
+    }
+    function clearError() {
+        errorEl.textContent = '';
+        errorEl.classList.add('d-none');
+    }
+
     function loadTrack(url, title, artist, imgSrc) {
+        clearError();
         titleEl.textContent  = title  || 'Unknown Track';
         artistEl.textContent = artist || '';
         cover.src = imgSrc || '/assets/images/categories/category1.jpg';
@@ -190,10 +215,20 @@
         }
     };
 
-    // Legacy inline helper used in Music views
-    window.playAudioTrack = function (title, artist, url, imgSrc) {
-        window.fhpPlayer.play(url, title, artist, imgSrc);
-    };
+    // Track buttons rendered by the Music views (.js-play-track). A single
+    // delegated listener is used instead of inline onclick attributes so that
+    // titles containing apostrophes or quotes cannot break the markup.
+    document.addEventListener('click', function (e) {
+        var btn = e.target && e.target.closest ? e.target.closest('.js-play-track') : null;
+        if (!btn) return;
+        e.preventDefault();
+        window.fhpPlayer.play(
+            btn.getAttribute('data-url') || '',
+            btn.getAttribute('data-title'),
+            btn.getAttribute('data-artist'),
+            btn.getAttribute('data-cover')
+        );
+    });
 
     // Play / Pause
     playBtn.addEventListener('click', function () {
@@ -201,6 +236,13 @@
     });
     audio.addEventListener('play',  syncPlayIcon);
     audio.addEventListener('pause', syncPlayIcon);
+
+    // A failed source must say so: without this the bar looks loaded but sits
+    // at 0:00 forever. Rejections are handled where play() is actually called.
+    audio.addEventListener('error', function () {
+        syncPlayIcon();
+        showError(ERRORS[audio.error ? audio.error.code : 4]);
+    });
 
     // Seek
     audio.addEventListener('timeupdate', function () {

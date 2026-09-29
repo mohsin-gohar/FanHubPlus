@@ -54,9 +54,16 @@
     applyPref(readPref());
 
     // ---------- Page spinner ----------
+    // custom.js also handles #preloader; this is a safety net
     function hideLoader() {
-        var loader = document.getElementById('pageLoader');
-        if (loader) loader.classList.add('hidden');
+        var loader = document.getElementById('preloader');
+        if (loader) {
+            loader.style.opacity = '0';
+            loader.style.pointerEvents = 'none';
+            setTimeout(function () { 
+                if (loader.parentNode) loader.parentNode.removeChild(loader); 
+            }, 300);
+        }
     }
     document.addEventListener('DOMContentLoaded', hideLoader);
     window.addEventListener('load', hideLoader);

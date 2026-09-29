@@ -170,12 +170,15 @@
                     <div class="fhp-mvgrid2">
                         @foreach (var media in watch.Take(4))
                         {
+                            // Built outside the tag: a Razor attribute value may not
+                            // contain an interpolated string literal.
+                            var mediaTitle = item.Title + " - " + (media.Tag ?? media.MediaType.ToString());
                             <div>
                                 <partial name="_MediaPlayer" model="new MediaPlayerViewModel
                                         {
                                             Url = media.EmbedUrl,
                                             Poster = cover,
-                                            Title = $"{item.Title} - {media.Tag ?? media.MediaType.ToString()}"
+                                            Title = mediaTitle
                                         }" />
                             </div>
                         }
@@ -448,7 +451,6 @@
                     }
                 </div>
             </div>
-        }
         }
     </div>
 </section>

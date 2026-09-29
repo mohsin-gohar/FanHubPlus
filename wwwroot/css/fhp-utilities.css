@@ -354,10 +354,13 @@
   height: 100vh;
 }
 .fhp-leading-1-07 {
-  line-height: 0.142857142857143;
+  line-height: 1.07;
 }
 .fhp-leading-1-3 {
-  line-height: 0.333333333333333;
+  line-height: 1.3;
+}
+.fhp-leading-1-4 {
+  line-height: 1.4;
 }
 .fhp-left-8 {
   left: 8px;

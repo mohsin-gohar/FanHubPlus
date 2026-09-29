@@ -250,8 +250,22 @@ public partial class DbSeeder
             ("Elephants Dream", MediaType.Video, "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4", "Full Film"),
             ("SoundHelix Session 1", MediaType.Audio, "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", "Full Track"),
             ("SoundHelix Session 2", MediaType.Audio, "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", "Full Track"),
-            ("Moonlight Sonata", MediaType.Audio, "https://upload.wikimedia.org/wikipedia/commons/4/47/Beethoven_Moonlight_1st_movement.ogg", "Public Domain"),
+            ("Moonlight Sonata", MediaType.Audio, "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3", "Piano Recording"),
         };
+        // The Moonlight Sonata row was seeded against a Wikimedia Commons .ogg
+        // that now 404s, leaving the track pointing at a dead player. Repair the
+        // existing row in place - mediaEmbeds is keyed on EmbedUrl, so changing
+        // the URL above alone would only append a second, duplicate row.
+        var deadMoonlight = "https://upload.wikimedia.org/wikipedia/commons/4/47/Beethoven_Moonlight_1st_movement.ogg";
+        var moonlightRows = _db.MediaItems.Where(m => m.EmbedUrl == deadMoonlight).ToList();
+        if (moonlightRows.Count > 0)
+        {
+            var workingMoonlight = mediaEmbeds.First(a => a.Title == "Moonlight Sonata").Url;
+            foreach (var row in moonlightRows)
+                row.EmbedUrl = workingMoonlight;
+            await _db.SaveChangesAsync();
+        }
+
         var embeddedUrls = _db.MediaItems.Select(m => m.EmbedUrl).ToList();
         var mediaToAdd = mediaEmbeds.Where(a => !embeddedUrls.Contains(a.Url)).ToList();
         if (mediaToAdd.Count > 0)

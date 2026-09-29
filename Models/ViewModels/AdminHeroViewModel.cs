@@ -10,8 +10,10 @@ public class AdminHeroViewModel
     public string Eyebrow { get; set; } = "FanHub Plus · Control Room";
     public string Title { get; set; } = string.Empty;
 
-    /// <summary>Rendered after the title in the champagne/gold gradient.</summary>
-    public string Accent { get; set; } = string.Empty;
+    /// <summary>Rendered after the title in the champagne/gold gradient.
+    /// Nullable: the form pages pass <c>null</c> for "no accent word" when
+    /// creating a record, which the hero treats as "omit it".</summary>
+    public string? Accent { get; set; }
 
     public string Lede { get; set; } = string.Empty;
 
