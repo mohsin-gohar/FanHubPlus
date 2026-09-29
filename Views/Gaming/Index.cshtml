@@ -9,14 +9,14 @@
 <div class="fhp-py-60 fhp-md-py-80">
     <div class="container">
         <!-- Hero Gaming Banner -->
-        <div class="fhp-grad-r fhp-from-181828 fhp-to-122822 border fhp-border-white-10 rounded-5 p-4 fhp-md-p-40 fhp-mb-40 text-white shadow-lg position-relative overflow-hidden">
+        <div class="fhp-grad-r fhp-from-181828 fhp-to-122822 border fhp-border-white-10 rounded-5 fhp-p-12 fhp-md-p-40 fhp-mb-40 text-white shadow-lg position-relative overflow-hidden">
             <div class="row align-items-center">
                 <div class="col-lg-8">
                     <span class="d-inline-block text-uppercase fhp-fs-12 fw-bold fhp-px-12 py-1 fhp-bg-success-20 text-success border fhp-border-success-30 rounded-pill fhp-mb-12">
                         <i class="ri-gamepad-line me-1"></i> Interactive Gaming Realm
                     </span>
                     <h1 class="fhp-fs-30 fs-1 fw-bolder fhp-mb-12">Gaming Discovery &amp; Playable Hub</h1>
-                    <p class="fhp-text-white-70 fs-6 fhp-maxw-672 mb-3">
+                    <p class="fhp-text-white-70 fs-6 fhp-maxw-672 fhp-mb-12">
                         Discover top esports titles, open-world RPGs, and retro classics. Watch official launch trailers, explore game specs, or play legally authorized web games directly in your browser.
                     </p>
                 </div>
@@ -52,7 +52,7 @@
             <div class="text-center fhp-py-64 fhp-bg-white-5 rounded-5 border fhp-border-white-10">
                 <i class="ri-gamepad-line fhp-fs-60 fhp-text-white-30 fhp-mb-12 d-block"></i>
                 <h3 class="fhp-fs-20 fw-bold text-white mb-2">No Games Found</h3>
-                <p class="fhp-text-white-60 mb-3">Try clearing filters or search terms.</p>
+                <p class="fhp-text-white-60 fhp-mb-12">Try clearing filters or search terms.</p>
                 <a asp-controller="Gaming" asp-action="Index" class="primary-btn">Explore All Games</a>
             </div>
         }
@@ -75,7 +75,7 @@
                                     </span>
                                 }
                             </div>
-                            <div class="p-3">
+                            <div class="fhp-p-12">
                                 <span class="fhp-fs-11 fw-bold text-success text-uppercase fhp-ls-wider d-block mb-1">@(game.Genre ?? "Video Game")</span>
                                 <h4 class="text-white fw-bold fs-6 text-truncate mb-2" title="@game.Title">
                                     <a asp-controller="Gaming" asp-action="Details" asp-route-id="@game.ContentId" class="fhp-hover-text-success fhp-transition-colors">@game.Title</a>

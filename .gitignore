@@ -1,6 +1,33 @@
 # ---------------------------------------------------------------------------
 #  FanHubPlus - files that must never be committed, zipped or handed in
+#
+#  Only the ASP.NET Core project belongs in this repository:
+#     Areas/ Controllers/ Data/ Migrations/ Models/ Properties/ Repositories/
+#     Services/ Views/ wwwroot/ tests/  + the .sln, .csproj, Program.cs,
+#     appsettings*.json and the Markdown docs.
+#  Everything else below is machine-local scratch.
 # ---------------------------------------------------------------------------
+
+# Node / npm. The UI ships pre-built CSS under wwwroot/css, so the app never
+# needs an npm step - do not reinstall or recommit these.
+node_modules/
+package-lock.json
+package.json
+npm-debug.log*
+
+# One-off scratch scripts and captured output written by tooling/debugging
+# sessions. They are prefixed with "_" or live in a tool-named file.
+_*.ps1
+_*.sh
+_*.sql
+_*.tsv
+_*.txt
+_*.html
+_*.css
+_*.js
+audit-*.js
+audit-*.ps1
+*.pid
 
 # Build output. The patterns match any folder depth and any casing, so they
 # also cover tests/FanHubPlus.Tests/bin and tests/FanHubPlus.Tests/obj.
@@ -48,6 +75,8 @@ packages/
 # Scratch files left behind by error/emitted by ad-hoc tooling
 *.err
 *.log
+missing.txt
+tw.check.css
 
 # Machine-local secrets and configuration overrides.
 #   Credentials for the demo accounts are supplied through environment
@@ -82,10 +111,20 @@ Desktop.ini
 # Local build output used for smoke-testing the app
 .verify-build/
 
+# Before/after UI screenshots captured by the CDP screenshot scripts
+shots/
+
+# Raw HTML pages of the bought template, kept only while porting views.
+# They are reference material, not project source - never hand these in.
+.tpl/
+
 # Headless-browser scratch directories (Chrome/Edge profiles and screenshots
 # created while debugging the UI). These are machine-local and can be several
 # hundred MB - they must never be committed.
 .chrome-cdp/
+.chrome-cdp2/
+.chrome-dom/
+.chrome-verify/
 chrome-prof*/
 chrome-profile*/
 navbar-shots/

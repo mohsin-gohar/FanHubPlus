@@ -489,12 +489,15 @@
     }
 
     // custom.js puts .show on the sidebar modal; mirror it onto the burger
-    // so the three bars fold into an X while the drawer is open.
+    // so the three bars fold into an X while the drawer is open, and lock
+    // body scroll so the page behind the drawer does not move.
     var burger = document.getElementById('navbarBurgerToggle');
     var sidebar = document.querySelector('.sidebar-modal');
     if (burger && sidebar && typeof MutationObserver !== 'undefined') {
         new MutationObserver(function () {
-            burger.classList.toggle('is-open', sidebar.classList.contains('show'));
+            var open = sidebar.classList.contains('show');
+            burger.classList.toggle('is-open', open);
+            document.body.classList.toggle('sidebar-open', open);
         }).observe(sidebar, { attributes: true, attributeFilter: ['class'] });
     }
 

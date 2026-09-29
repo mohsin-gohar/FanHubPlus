@@ -24,11 +24,11 @@
 
         @if (TempData["StatusMessage"] != null)
         {
-            <div class="alert alert-success fhp-bg-success-20 fhp-border-success-40 text-success mb-4">@TempData["StatusMessage"]</div>
+            <div class="alert alert-success fhp-bg-success-20 fhp-border-success-40 text-success fhp-mb-12">@TempData["StatusMessage"]</div>
         }
         @if (TempData["StatusError"] != null)
         {
-            <div class="alert alert-danger fhp-bg-danger-20 fhp-border-danger-40 text-danger mb-4">@TempData["StatusError"]</div>
+            <div class="alert alert-danger fhp-bg-danger-20 fhp-border-danger-40 text-danger fhp-mb-12">@TempData["StatusError"]</div>
         }
 
         @if (Model.Count == 0)
@@ -36,7 +36,7 @@
             <div class="text-center fhp-py-64 fhp-bg-white-5 rounded-5 border fhp-border-white-10">
                 <i class="ri-playlist-2-line fhp-fs-60 fhp-text-white-30 fhp-mb-12 d-block"></i>
                 <h3 class="fhp-fs-20 fw-bold text-white mb-2">No Playlists Yet</h3>
-                <p class="fhp-text-white-60 mb-3">Create your first custom playlist to save music tracks.</p>
+                <p class="fhp-text-white-60 fhp-mb-12">Create your first custom playlist to save music tracks.</p>
                 <button type="button" class="primary-btn" data-bs-toggle="modal" data-bs-target="#createPlaylistModal">Create Playlist</button>
             </div>
         }
@@ -46,16 +46,16 @@
                 @foreach (var pl in Model)
                 {
                     <div class="col-md-6 col-lg-4">
-                        <div class="fhp-bg-18181f border fhp-border-white-10 rounded-5 p-4">
+                        <div class="fhp-bg-18181f border fhp-border-white-10 rounded-5 fhp-p-12">
                             <div class="d-flex align-items-center justify-content-between fhp-mb-12">
                                 <h4 class="fhp-fs-20 fw-bold text-white">@pl.Title</h4>
                                 <span class="fhp-fs-12 fhp-px-10 py-1 fhp-bg-white-10 rounded-pill fhp-text-white-70">@pl.Items.Count Tracks</span>
                             </div>
-                            <p class="fhp-text-white-60 fhp-fs-14 mb-3">@(string.IsNullOrWhiteSpace(pl.Description) ? "No description." : pl.Description)</p>
+                            <p class="fhp-text-white-60 fhp-fs-14 fhp-mb-12">@(string.IsNullOrWhiteSpace(pl.Description) ? "No description." : pl.Description)</p>
 
                             @if (pl.Items.Count > 0)
                             {
-                                <ul class="fhp-divide-y fhp-divide-white-10 mb-3">
+                                <ul class="fhp-divide-y fhp-divide-white-10 fhp-mb-12">
                                     @foreach (var item in pl.Items.Take(4))
                                     {
                                         <li class="py-2 fhp-fs-14 fhp-text-white-80 d-flex align-items-center justify-content-between">

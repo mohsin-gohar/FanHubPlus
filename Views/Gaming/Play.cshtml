@@ -16,7 +16,7 @@
     <div class="container">
 
         <!-- Game Title Row -->
-        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap fhp-gap-12">
+        <div class="d-flex align-items-center justify-content-between fhp-mb-12 flex-wrap fhp-gap-12">
             <div>
                 <span class="d-inline-block fhp-px-12 py-1 fhp-bg-success-20 text-success border fhp-border-success-30 rounded-pill fhp-fs-12 fw-bold text-uppercase mb-2">
                     <i class="ri-gamepad-line me-1"></i> Browser Game
@@ -29,7 +29,7 @@
             </div>
             <div class="d-flex fhp-gap-12">
                 <a asp-controller="Gaming" asp-action="Details" asp-route-id="@Model.ContentId"
-                   class="btn btn-outline-secondary text-white fhp-border-white-30 fhp-hover-bg-white-10 fhp-transition px-3 py-2 rounded-pill">
+                   class="btn btn-outline-secondary text-white fhp-border-white-30 fhp-hover-bg-white-10 fhp-transition fhp-px-12 py-2 rounded-pill">
                     <i class="ri-information-line me-1"></i> Game Info
                 </a>
                 <a asp-controller="Gaming" asp-action="Index"
@@ -40,7 +40,7 @@
         </div>
 
         <!-- Notice Banner -->
-        <div class="fhp-bg-warning-10 border fhp-border-warning-30 rounded-4 p-3 mb-4 d-flex align-items-start fhp-gap-12">
+        <div class="fhp-bg-warning-10 border fhp-border-warning-30 rounded-4 fhp-p-12 fhp-mb-12 d-flex align-items-start fhp-gap-12">
             <i class="ri-shield-check-line text-warning fhp-fs-20 flex-shrink-0 fhp-mt-2"></i>
             <p class="fhp-text-warning-90 fhp-fs-14 lh-lg mb-0">
                 <strong>Legal Notice:</strong> Only legally authorized, royalty-free browser games are available here.
@@ -52,7 +52,7 @@
         <div class="bg-black rounded-5 border fhp-border-white-10 shadow-lg overflow-hidden fhp-mb-32"
              style="min-height: 520px;">
             <div id="gameLoadingOverlay"
-                 class="position-absolute top-0 bottom-0 start-0 end-0 bg-black d-flex flex-column align-items-center justify-content-center gap-3 fhp-z-10 fhp-transition-opacity fhp-dur500">
+                 class="position-absolute top-0 bottom-0 start-0 end-0 bg-black d-flex flex-column align-items-center justify-content-center fhp-gap-12 fhp-z-10 fhp-transition-opacity fhp-dur500">
                 <div class="fhp-w-48 fhp-h-48 rounded-pill border-4 border-success fhp-border-t-transparent fhp-spin"></div>
                 <p class="fhp-text-white-60 fhp-fs-14">Loading game…</p>
             </div>
@@ -90,8 +90,8 @@
         <!-- Description -->
         @if (!string.IsNullOrWhiteSpace(Model.Description))
         {
-            <div class="fhp-bg-18181f border fhp-border-white-10 rounded-5 p-4 fhp-md-p-32">
-                <h2 class="fhp-fs-20 fw-bold text-white mb-3">About This Game</h2>
+            <div class="fhp-bg-18181f border fhp-border-white-10 rounded-5 fhp-p-12 fhp-md-p-32">
+                <h2 class="fhp-fs-20 fw-bold text-white fhp-mb-12">About This Game</h2>
                 <p class="fhp-text-white-70 fs-6 lh-lg">@Model.Description</p>
             </div>
         }

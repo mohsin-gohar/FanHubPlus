@@ -16,11 +16,11 @@
     var to = from == 0 ? 0 : from + Model.Items.Count - 1;
 
     string Tab(bool active) =>
-        "inline-block font-bold text-lg md:text-xl lg:text-[22px] transition-all ease-in-out duration-300 hover:text-primary"
-        + (active ? " text-primary underline" : "");
+        "inline-block fw-bold fhp-fs-18 fhp-md-fs-20 fhp-lg-fs-22 fhp-transition fhp-ease fhp-dur300 fhp-hover-text-primary"
+        + (active ? " text-primary text-decoration-underline" : "");
 
     // The filter row's own controls, copied from the template.
-    const string Select = "form-select !w-auto !h-auto !px-0 ltr:!pr-[25px] rtl:!pl-[25px] !bg-transparent !border-none !text-black font-bold ltr:!bg-[right_0px_center] rtl:!bg-[left_0px_center]";
+    const string Select = "form-select w-auto h-auto px-0 fhp-ltr-pr-25px fhp-rtl-pl-25px bg-transparent border-0 text-black fw-bold fhp-ltr-bg-right-center fhp-rtl-bg-left-center";
 
     string Label(ContentType t) => t switch
     {
@@ -97,7 +97,7 @@
                 <p class="!mb-0 flex-shrink-0">
                     Showing results @from–@to of @Model.TotalItems
                 </p>
-                <div class="d-flex align-items-center fhp-gap-5 fhp-mt-10 sm-mt-0">
+                <div class="d-flex align-items-center fhp-gap-5 fhp-mt-10 fhp-sm-mt-0">
                     <span class="d-block flex-shrink-0">
                         Sort by:
                     </span>

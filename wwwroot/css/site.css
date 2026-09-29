@@ -420,6 +420,66 @@ html.dark-mode .fhp-admin-main .table-light {
 footer ul, footer ol { padding-left: 0; margin-bottom: 0; list-style: none; }
 .sidebar-modal .nav-link { padding-left: 0; padding-right: 0; }
 
+/* ---------- Desktop mega-menu: hidden until hover ---------------------- */
+/* The base rule above flips .dropdown-menu back to display:block (the panel
+   has to exist in the flow for the :hover bridge to work), so the "closed"
+   state has to be expressed with visibility/opacity instead. */
+#navbar .navbar-nav .nav-item > .dropdown-menu {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity .28s var(--fhp-ease), visibility .28s var(--fhp-ease),
+                transform .28s var(--fhp-ease);
+    z-index: 40;
+}
+#navbar .navbar-nav .nav-item:hover > .dropdown-menu,
+#navbar .navbar-nav .nav-item:focus-within > .dropdown-menu,
+#navbar .navbar-nav .nav-item > .dropdown-menu.show {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+/* Keyboard users tabbing into a closed panel must still be able to reach it. */
+#navbar .navbar-nav .nav-item:focus-within > .dropdown-menu { visibility: visible; opacity: 1; }
+
+/* ---------- Mobile off-canvas sidebar ---------------------------------- */
+/* custom.js puts .show on both .sidebar-modal and .backdrop when the burger
+   button is pressed. Closed = off-canvas + inert, so it never occupies flow. */
+.sidebar-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 340px;
+    max-width: 86vw;
+    background: #0b0b0b;
+    color: #dddddd;
+    overflow-y: auto;
+    z-index: 1060;
+    transform: translateX(-100%);
+    visibility: hidden;
+    box-shadow: 25px 0 60px -20px rgba(0, 0, 0, .9);
+    transition: transform .35s var(--fhp-ease), visibility .35s var(--fhp-ease);
+}
+.sidebar-modal.show { transform: translateX(0); visibility: visible; }
+html[dir="rtl"] .sidebar-modal { left: auto; right: 0; transform: translateX(100%); }
+html[dir="rtl"] .sidebar-modal.show { transform: translateX(0); }
+
+.backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .65);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
+    z-index: 1050;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .3s var(--fhp-ease), visibility .3s var(--fhp-ease);
+}
+.backdrop.show { opacity: 1; visibility: visible; }
+/* While the drawer is open the page behind it must not scroll. */
+body.sidebar-open { overflow: hidden; }
+
 /* ---------- Bootstrap widgets in the FanHubPlus palette ------------------ */
 html.dark-mode .btn-primary,
 html.dark-mode .btn-primary:focus {

@@ -14,19 +14,32 @@ bookmarks and a chatbot assistant - plus a role-protected admin area for all of 
 
 ## Repository layout
 
+The repository holds exactly one ASP.NET Core project plus its test project. Anything
+not listed here (npm folders, screenshots, browser profiles, scratch scripts) is
+machine-local and is excluded by `.gitignore`.
+
 | Path | Purpose |
 |---|---|
 | `FanHubPlus.sln` | Solution file - open it in Visual Studio/Rider, or drive it with the .NET CLI |
 | `FanHubPlus.csproj` | Web application project (repository root) |
+| `Program.cs` | Startup: DI wiring, EF Core, Identity, auth cookie, rate limiting, routing |
 | `Areas/Admin/` | Admin area, `[Area("Admin")]` + `[Authorize(Roles = "Admin")]` |
 | `Controllers/`, `Views/` | Public MVC controllers and Razor views |
 | `Data/` | `ApplicationDbContext`, design-time factory, seeder (`DbSeeder`, `DbSeederDemoData`) |
-| `Migrations/` | EF Core migrations (`InitialCreate`, `AddFanSubmissionImageUrl`) |
-| `Models/` | Entities, enums, view models |
-| `Repositories/`, `Services/` | Data access and application services |
+| `Migrations/` | EF Core migrations (`InitialCreate`, `AddFanSubmissionImageUrl`, `AddArticleSlug`, `AddContentMediaColumnsAndPlaylists`) |
+| `Models/` | `Entities/` (tables), `Enums/` (content/media/status types), `ViewModels/` (form and list models) |
+| `Repositories/` | Generic data access (`IRepository<>` / `Repository<>`) |
+| `Services/` | Application services (content, article, bookmark, chatbot, upload, stats, support) |
+| `Properties/` | `launchSettings.json` - the `http`/`https` profiles used by `dotnet run` |
 | `wwwroot/` | Static assets: the FanHubPlus theme (`assets/`), `css/site.css`, `js/site.js`, Bootstrap + jQuery libraries, runtime uploads |
 | `tests/FanHubPlus.Tests/` | xUnit test project (unit, security and SQL Server integration tests) |
+| `README.md` | This file - features, setup, configuration, migrations, tests |
 | `AUDIT_REPORT.md` | Audit trail and deployment runbook for this submission |
+| `THEME_MIGRATION.md` | Tailwind to Bootstrap migration record and theme rename map |
+| `ARCHITECTURE_ANALYSIS.md` | Notes on the layers and how a request flows through them |
+
+The project is a plain ASP.NET Core MVC app. It has **no** npm build step - the CSS under
+`wwwroot/css/` is committed as-is, so `dotnet build` is the only thing needed to run it.
 
 ## Prerequisites
 

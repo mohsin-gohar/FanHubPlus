@@ -24,7 +24,7 @@
             <div class="row g-0">
                 <!-- Cover -->
                 <div class="col-lg-4">
-                    <div class="position-relative fhp-aspect-3-4 fhp-md-aspect-auto md-h-100 fhp-minh-280 overflow-hidden">
+                    <div class="position-relative fhp-aspect-3-4 fhp-md-aspect-auto fhp-md-h-100 fhp-minh-280 overflow-hidden">
                         <img src="@cover" alt="@Model.Game.Title"
                              class="w-100 h-100 fhp-object-cover" loading="eager" />
                         @if (isPlayable)
@@ -41,7 +41,7 @@
 
                 <!-- Details -->
                 <div class="col-lg-8">
-                    <div class="p-4 fhp-md-p-40 h-100 d-flex flex-column justify-content-between">
+                    <div class="fhp-p-12 fhp-md-p-40 h-100 d-flex flex-column justify-content-between">
                         <div>
                             <div class="d-flex flex-wrap align-items-center gap-2 fhp-mb-12">
                                 <span class="fhp-px-12 py-1 fhp-bg-success-20 text-success border fhp-border-success-30 rounded-pill fhp-fs-12 fw-bold text-uppercase">
@@ -57,10 +57,10 @@
                                 <span class="fhp-text-white-50 fhp-fs-12">@Model.Game.Category.Name</span>
                             </div>
 
-                            <h1 class="fhp-fs-30 fs-1 fw-bolder text-white mb-3 lh-sm">@Model.Game.Title</h1>
+                            <h1 class="fhp-fs-30 fs-1 fw-bolder text-white fhp-mb-12 lh-sm">@Model.Game.Title</h1>
 
                             <!-- Rating Row -->
-                            <div class="d-flex align-items-center gap-3 mb-3 fhp-fs-14">
+                            <div class="d-flex align-items-center fhp-gap-12 fhp-mb-12 fhp-fs-14">
                                 <div class="d-flex align-items-center gap-1">
                                     @for (int i = 1; i <= 5; i++)
                                     {
@@ -74,7 +74,7 @@
                                 <span class="fhp-text-white-60"><i class="ri-fire-line text-warning me-1"></i>@Model.Game.PopularityScore score</span>
                             </div>
 
-                            <p class="fhp-text-white-70 fs-6 lh-lg mb-4">
+                            <p class="fhp-text-white-70 fs-6 lh-lg fhp-mb-12">
                                 @(string.IsNullOrWhiteSpace(Model.Game.Description)
                                     ? "No description available for this title."
                                     : Model.Game.Description)
@@ -82,7 +82,7 @@
 
                             @if (Model.Game.ReleaseDate.HasValue)
                             {
-                                <div class="fhp-text-white-50 fhp-fs-14 mb-3">
+                                <div class="fhp-text-white-50 fhp-fs-14 fhp-mb-12">
                                     <i class="ri-calendar-line me-1"></i>
                                     Released: <strong class="text-white">@Model.Game.ReleaseDate.Value.ToString("MMMM d, yyyy")</strong>
                                 </div>
@@ -90,7 +90,7 @@
                         </div>
 
                         <!-- Action Buttons -->
-                        <div class="d-flex flex-wrap fhp-gap-12 pt-3 border-top fhp-border-white-10">
+                        <div class="d-flex flex-wrap fhp-gap-12 fhp-pt-12 border-top fhp-border-white-10">
                             @if (isPlayable)
                             {
                                 <a asp-controller="Gaming" asp-action="Play" asp-route-id="@Model.Game.ContentId"
@@ -118,7 +118,7 @@
                                 </button>
                             }
                             <a asp-controller="Gaming" asp-action="Index"
-                               class="btn btn-link fhp-text-white-60 fhp-hover-text-white text-decoration-none px-3">
+                               class="btn btn-link fhp-text-white-60 fhp-hover-text-white text-decoration-none fhp-px-12">
                                 <i class="ri-arrow-left-line me-1"></i> Back to Gaming Hub
                             </a>
                         </div>
@@ -131,7 +131,7 @@
         @if (Model.Trailer != null && !string.IsNullOrWhiteSpace(Model.Trailer.EmbedUrl))
         {
             <div class="fhp-mb-40">
-                <h2 class="fhp-fs-24 fw-bold text-white mb-3"><i class="ri-film-line me-2 text-success"></i>Official Trailer</h2>
+                <h2 class="fhp-fs-24 fw-bold text-white fhp-mb-12"><i class="ri-film-line me-2 text-success"></i>Official Trailer</h2>
                 <div class="position-relative bg-black rounded-5 overflow-hidden border fhp-border-white-10 shadow-lg"
                      style="padding-top: 56.25%;">
                     <iframe src="@Model.Trailer.EmbedUrl"
@@ -148,7 +148,7 @@
         <!-- Related Games -->
         @if (Model.RelatedGames.Count > 0)
         {
-            <h2 class="fhp-fs-24 fw-bold text-white mb-4">Related Games</h2>
+            <h2 class="fhp-fs-24 fw-bold text-white fhp-mb-12">Related Games</h2>
             <div class="row g-4">
                 @foreach (var g in Model.RelatedGames)
                 {

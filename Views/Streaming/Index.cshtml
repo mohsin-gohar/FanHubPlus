@@ -11,7 +11,7 @@
     <div class="container">
 
         <!-- Hero Section -->
-        <div class="fhp-grad-br fhp-from-0f0f1a fhp-via-1a0a2e fhp-to-0f1a0a border fhp-border-white-10 rounded-5 p-4 fhp-md-p-40 fhp-mb-40 shadow-lg position-relative overflow-hidden">
+        <div class="fhp-grad-br fhp-from-0f0f1a fhp-via-1a0a2e fhp-to-0f1a0a border fhp-border-white-10 rounded-5 fhp-p-12 fhp-md-p-40 fhp-mb-40 shadow-lg position-relative overflow-hidden">
             <div class="position-absolute top-0 bottom-0 start-0 end-0 fhp-opacity-10 fhp-bg-url fhp-bg-cover fhp-bg-center pe-none"></div>
             <div class="position-relative row align-items-center">
                 <div class="col-lg-8">
@@ -88,7 +88,7 @@
         <!-- Results Summary -->
         @if (!string.IsNullOrWhiteSpace(Model.Search) || Model.CategoryId.HasValue || !string.IsNullOrWhiteSpace(Model.ContentType))
         {
-            <div class="fhp-text-white-60 fhp-fs-14 mb-4">
+            <div class="fhp-text-white-60 fhp-fs-14 fhp-mb-12">
                 Showing <strong class="text-white">@Model.TotalItems</strong> result@(Model.TotalItems != 1 ? "s" : "")
                 @if (!string.IsNullOrWhiteSpace(Model.Search)) { <span> for "<em class="text-primary">@Model.Search</em>"</span> }
             </div>
@@ -98,7 +98,7 @@
         @if (Model.Items.Count == 0)
         {
             <div class="text-center fhp-py-80 fhp-bg-white-5 rounded-5 border fhp-border-white-10">
-                <i class="ri-film-line fhp-fs-72 fhp-text-white-20 mb-3 d-block"></i>
+                <i class="ri-film-line fhp-fs-72 fhp-text-white-20 fhp-mb-12 d-block"></i>
                 <h3 class="fhp-fs-24 fw-bold text-white mb-2">No Titles Found</h3>
                 <p class="fhp-text-white-60 fhp-mb-20">Try adjusting your filters or search term.</p>
                 <a asp-controller="Streaming" asp-action="Index" class="primary-btn">View All Titles</a>

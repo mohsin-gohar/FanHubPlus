@@ -21,8 +21,8 @@
     var isHome = controller == "home" && action == "index";
     var darkBed = ViewData["fhpDark"] is true;
     var headerClass = isHome
-        ? "py-[15px] lg:!py-0 bg-[#585151]/44 backdrop-blur-[4.5px] mx-[10px] mt-[10px] rounded-t-[10px] fixed top-0 left-0 right-0 z-[4] transition-all duration-300 ease-in-out"
-        : "py-[15px] lg:py-0 xl:py-[10px] fixed top-0 left-0 right-0 z-[4] !rounded-none transition-all duration-300 ease-in-out";
+        ? "fhp-py-15 fhp-lg-py-0 fhp-bg-585151-44 fhp-backdrop-blur fhp-mx-10 fhp-mt-10 fhp-rt-10 fixed top-0 left-0 right-0 fhp-z-4 fhp-transition fhp-dur300 fhp-ease"
+        : "fhp-py-15 fhp-lg-py-0 fhp-xl-py-10 fixed top-0 left-0 right-0 fhp-z-4 rounded-0 fhp-transition fhp-dur300 fhp-ease";
 
     string Mark(string name) => (controller == name || (name == "explore" && controller == "streaming")) ? " active" : "";
 
@@ -34,13 +34,13 @@
     const string NavPlain = "nav-link";
     const string NavDrop = "nav-link dropdown-toggle";
     // ---- sidebar class strings (unchanged) --------------------------
-    const string SideDrop = "nav-link dropdown-toggle font-bold text-15 lg:text-base relative block text-white transition-all duration-300 ease-in-out hover:text-secondary";
-    const string SidePlain = "nav-link font-bold text-15 lg:text-base relative block text-white transition-all duration-300 ease-in-out hover:text-secondary";
-    const string SideItem = "nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary";
-    const string SideMenu = "dropdown-menu hidden transition-all duration-300 ease-in-out mt-[15px] py-[10px] ltr:border-l rtl:border-r border-white/15";
+    const string SideDrop = "nav-link dropdown-toggle fw-bold fhp-fs-15 fhp-lg-fs-16 relative block text-white fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary";
+    const string SidePlain = "nav-link fw-bold fhp-fs-15 fhp-lg-fs-16 relative block text-white fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary";
+    const string SideItem = "nav-link fw-bold fhp-fs-13 fhp-lg-fs-15 relative text-white block fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary";
+    const string SideMenu = "dropdown-menu d-none fhp-transition fhp-dur300 fhp-ease fhp-mt-15 fhp-py-10 fhp-ltr-border-l fhp-rtl-border-r fhp-border-white-15";
 }
 <!DOCTYPE html>
-<html lang="en" dir="ltr" style="font-size: @(fontPx)px">
+<html lang="en" dir="ltr" data-theme-lock="dark" style="font-size: @(fontPx)px">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -56,15 +56,15 @@
        Loads before the utility sheet so the utility layer wins on shared
        selectors. *@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    @* Utility classes used by the Razor views (replaces the previous Tailwind
-       build). Provides every .flex / .bg-white etc. utility the markup needs. *@
+    @* Utility layer #1: the .fhp-* pixel/alpha utility set (exact px values,
+       Bootstrap's rem scale cannot express them). *@
     <link rel="stylesheet" href="~/css/fhp-utilities.css" asp-append-version="true" />
-    @* Regenerated Tailwind build (tailwind.config.js + tailwind.src.css). The
-       utility sheet above is a pre-purged build that predates several views, so
-       it lacks things like .h-full / .aspect-[16/9] / .object-cover / .truncate;
-       without them media and cards lose their sizing. Loaded last so the
-       utilities win over the older sheet's copies of the same names. *@
-    <link rel="stylesheet" href="~/css/tailwind.css" asp-append-version="true" />
+    @* Utility layer #2: the framework-style utility classes the template
+       markup is written in (flex/grid, spacing, alpha colours, breakpoint
+       variants). Static, checked-in build - the project no longer carries a
+       Tailwind dependency, config file or build step. Loaded after the
+       component sheet so the utility layer wins on shared selectors. *@
+    <link rel="stylesheet" href="~/css/fhp-compat.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/assets/css/swiper-bundle.min.css" />
     <link rel="stylesheet" href="~/assets/css/flaticon_fanhubplus.css" />
     <link rel="stylesheet" href="~/assets/css/scrollCue.css" />
@@ -82,8 +82,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Montez&amp;family=Montserrat:ital,wght@0,100..900;1,100..900&amp;family=Play:wght@400;700&amp;display=swap" rel="stylesheet" />
 
     <script>
-        // Apply the stored font-size preference before the first paint.
+        // The public shell is a dark-only design (data-theme-lock="dark" above),
+        // so paint the dark canvas on the very first frame - otherwise visitors
+        // see a white flash before site.js runs at the end of <body>.
         (function () {
+            document.documentElement.classList.add('dark-mode');
+            // Apply the stored font-size preference before the first paint.
             try {
                 var ls = localStorage.getItem('fhp_pref');
                 if (ls) {
@@ -615,7 +619,9 @@
             </form>
         </div>
     </div>
-    <div class="fhp-backdrop"></div>
+    @* The template's custom.js toggles .show on ".backdrop"; the fhp-backdrop
+       hook is kept so project styles can still target it. *@
+    <div class="fhp-backdrop fhp-backdrop"></div>
     <!-- End Sidebar Modal -->
 
     <!-- Main content -->
@@ -767,7 +773,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="fhp-gspan-2 lg:col-span-1">
+                <div class="fhp-gspan-2 fhp-lg-col-span-1">
                     <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
                         Address
                     </h3>
@@ -796,7 +802,7 @@
                 <a asp-controller="Home" asp-action="Index" class="d-inline-block">
                     <img src="~/assets/images/logo-big.svg" alt="FanHubPlus logo">
                 </a>
-                <p class="flex-shrink-0 fhp-mt-15 md-mt-0">
+                <p class="flex-shrink-0 fhp-mt-15 fhp-md-mt-0">
                     Copyright <span class="text-secondary fw-bold">FanHubPlus</span> All Rights Reserved <a href="https://envytheme.com/" class="text-secondary fw-bold fhp-transition fhp-ease fhp-dur300 fhp-hover-text-primary" target="_blank">EnvyTheme</a>
                 </p>
             </div>

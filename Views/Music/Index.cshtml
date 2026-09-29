@@ -9,7 +9,7 @@
 <div class="fhp-py-60 fhp-md-py-80">
     <div class="container">
         <!-- Hero Music Player Header -->
-        <div class="fhp-grad-r fhp-from-18181f fhp-to-2a1b28 border fhp-border-white-10 rounded-5 p-4 fhp-md-p-32 fhp-mb-40 text-white shadow-lg position-relative overflow-hidden">
+        <div class="fhp-grad-r fhp-from-18181f fhp-to-2a1b28 border fhp-border-white-10 rounded-5 fhp-p-12 fhp-md-p-32 fhp-mb-40 text-white shadow-lg position-relative overflow-hidden">
             <div class="row align-items-center">
                 <div class="col-lg-8">
                     <span class="d-inline-block text-uppercase fhp-fs-12 fw-bold fhp-px-12 py-1 fhp-bg-primary-20 text-primary border fhp-border-primary-30 rounded-pill fhp-mb-12">
@@ -59,7 +59,7 @@
             <div class="text-center fhp-py-64 fhp-bg-white-5 rounded-5 border fhp-border-white-10">
                 <i class="ri-music-2-line fhp-fs-60 fhp-text-white-30 fhp-mb-12 d-block"></i>
                 <h3 class="fhp-fs-20 fw-bold text-white mb-2">No Music Found</h3>
-                <p class="fhp-text-white-60 mb-3">Try adjusting your search terms or filters.</p>
+                <p class="fhp-text-white-60 fhp-mb-12">Try adjusting your search terms or filters.</p>
                 <a asp-controller="Music" asp-action="Index" class="primary-btn">View All Music</a>
             </div>
         }
@@ -92,7 +92,7 @@
                                     @song.Category.Name
                                 </span>
                             </div>
-                            <div class="p-3">
+                            <div class="fhp-p-12">
                                 <h4 class="text-white fw-bold fs-6 text-truncate mb-1" title="@song.Title">
                                     <a asp-controller="Music" asp-action="Details" asp-route-id="@song.ContentId" class="fhp-hover-text-primary fhp-transition-colors">@song.Title</a>
                                 </h4>

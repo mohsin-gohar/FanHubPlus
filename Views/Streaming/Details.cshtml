@@ -40,7 +40,7 @@
 
                 <!-- Info -->
                 <div class="col-sm-7 col-md-8 col-lg-9">
-                    <div class="p-4 fhp-md-p-40 h-100 d-flex flex-column justify-content-between">
+                    <div class="fhp-p-12 fhp-md-p-40 h-100 d-flex flex-column justify-content-between">
                         <div>
                             <!-- Badges -->
                             <div class="d-flex flex-wrap align-items-center gap-2 fhp-mb-12">
@@ -59,10 +59,10 @@
                                 }
                             </div>
 
-                            <h1 class="fhp-fs-30 fs-1 fw-bolder text-white mb-3 lh-sm">@Model.Item.Title</h1>
+                            <h1 class="fhp-fs-30 fs-1 fw-bolder text-white fhp-mb-12 lh-sm">@Model.Item.Title</h1>
 
                             <!-- Stars + Meta -->
-                            <div class="d-flex flex-wrap align-items-center gap-3 mb-3 fhp-fs-14">
+                            <div class="d-flex flex-wrap align-items-center fhp-gap-12 fhp-mb-12 fhp-fs-14">
                                 <div class="d-flex align-items-center gap-1">
                                     @for (int i = 1; i <= 5; i++)
                                     {
@@ -77,7 +77,7 @@
                                 }
                             </div>
 
-                            <p class="fhp-text-white-70 fs-6 lh-lg mb-4">
+                            <p class="fhp-text-white-70 fs-6 lh-lg fhp-mb-12">
                                 @(string.IsNullOrWhiteSpace(Model.Item.Description)
                                     ? "No synopsis available for this title."
                                     : Model.Item.Description)
@@ -85,7 +85,7 @@
                         </div>
 
                         <!-- Actions -->
-                        <div class="d-flex flex-wrap fhp-gap-12 pt-3 border-top fhp-border-white-10">
+                        <div class="d-flex flex-wrap fhp-gap-12 fhp-pt-12 border-top fhp-border-white-10">
                             @if (Model.Trailer != null)
                             {
                                 <button type="button"
@@ -126,7 +126,7 @@
         @if (Model.Trailer != null && !string.IsNullOrWhiteSpace(Model.Trailer.EmbedUrl))
         {
             <div id="trailerSection" class="fhp-mb-40">
-                <h2 class="fhp-fs-24 fw-bold text-white mb-3">
+                <h2 class="fhp-fs-24 fw-bold text-white fhp-mb-12">
                     <i class="ri-play-circle-line me-2 text-primary"></i>Official Trailer
                 </h2>
                 <div class="position-relative bg-black rounded-5 overflow-hidden border fhp-border-white-10 shadow-lg"
@@ -148,7 +148,7 @@
         <!-- Related Titles -->
         @if (Model.Related.Count > 0)
         {
-            <h2 class="fhp-fs-24 fw-bold text-white mb-4">You Might Also Like</h2>
+            <h2 class="fhp-fs-24 fw-bold text-white fhp-mb-12">You Might Also Like</h2>
             <div class="row g-4">
                 @foreach (var r in Model.Related)
                 {

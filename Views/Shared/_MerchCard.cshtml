@@ -9,8 +9,8 @@
     var cover = string.IsNullOrWhiteSpace(Model.ImageUrl)
         ? $"/assets/images/products/product{(Model.ItemId % 9) + 1}.jpg"
         : Model.ImageUrl;
-    var name = (dark ? "" : "!text-black ") + "mb-0 text-base md:text-lg lg:text-xl leading-none";
-    var hover = dark ? "hover:text-secondary" : "hover:text-primary";
+    var name = (dark ? "" : "fhp-text-black ") + "mb-0 fhp-fs-16 fhp-md-fs-18 fhp-lg-fs-20 lh-1";
+    var hover = dark ? "fhp-hover-text-secondary" : "fhp-hover-text-primary";
     var accent = dark ? "text-secondary" : "text-primary";
     var status = Model.IsUpcoming && Model.ReleaseDate is { } d
         ? $"{Model.Tag} · drops {d:dd MMM yyyy}"

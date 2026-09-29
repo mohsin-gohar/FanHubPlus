@@ -13,7 +13,7 @@
 
 <div class="fhp-py-60 fhp-md-py-80">
     <div class="container">
-        <div class="fhp-bg-18181f border fhp-border-white-10 rounded-5 p-4 fhp-md-p-40 fhp-mb-40">
+        <div class="fhp-bg-18181f border fhp-border-white-10 rounded-5 fhp-p-12 fhp-md-p-40 fhp-mb-40">
             <div class="row g-4 align-items-center">
                 <div class="col-md-4 col-lg-3">
                     <img src="@cover" alt="@Model.Song.Title" class="w-100 rounded-4 shadow-lg border fhp-border-white-10 fhp-aspect-square fhp-object-cover" />
@@ -27,11 +27,11 @@
                     </div>
 
                     <h1 class="fhp-fs-30 fs-1 fw-bolder text-white mb-2">@Model.Song.Title</h1>
-                    <h3 class="fhp-fs-20 text-primary fw-bold mb-3">@(Model.Song.Artist ?? "Original Soundtrack")</h3>
+                    <h3 class="fhp-fs-20 text-primary fw-bold fhp-mb-12">@(Model.Song.Artist ?? "Original Soundtrack")</h3>
 
                     @if (Model.MainAudio != null)
                     {
-                        <div class="mb-4">
+                        <div class="fhp-mb-12">
                             <button type="button" class="primary-btn fhp-me-12"
                                     onclick="playAudioTrack('@Model.Song.Title', '@(Model.Song.Artist ?? "Soundtrack")', '@Model.MainAudio.EmbedUrl', '@cover')">
                                 <i class="ri-play-fill me-2"></i> Listen Now
@@ -39,11 +39,11 @@
                         </div>
                     }
 
-                    <p class="fhp-text-white-70 fs-6 lh-lg mb-4">
+                    <p class="fhp-text-white-70 fs-6 lh-lg fhp-mb-12">
                         @(Model.Song.Description ?? "No description available for this music track.")
                     </p>
 
-                    <div class="d-flex align-items-center gap-4 pt-3 border-top fhp-border-white-10 fhp-fs-14 fhp-text-white-60">
+                    <div class="d-flex align-items-center fhp-gap-12 fhp-pt-12 border-top fhp-border-white-10 fhp-fs-14 fhp-text-white-60">
                         <div><i class="ri-eye-line me-1"></i> @Model.Song.ViewCount.ToString("N0") Views</div>
                         <div><i class="ri-star-fill text-warning me-1"></i> @Model.AverageRating / 5.0 (@Model.RatingCount ratings)</div>
                         @if (Model.Song.ReleaseDate.HasValue)
@@ -58,7 +58,7 @@
         <!-- Related Music -->
         @if (Model.RelatedSongs.Count > 0)
         {
-            <h3 class="fhp-fs-24 fw-bold text-white mb-4">Related Tracks &amp; Soundtracks</h3>
+            <h3 class="fhp-fs-24 fw-bold text-white fhp-mb-12">Related Tracks &amp; Soundtracks</h3>
             <div class="row g-4">
                 @foreach (var song in Model.RelatedSongs)
                 {

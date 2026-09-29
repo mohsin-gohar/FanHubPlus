@@ -11,13 +11,13 @@
     var cover = $"/assets/images/blogs/blog{(Model.ArticleId % 6) + 1}.jpg";
     var author = string.IsNullOrWhiteSpace(Model.Author?.Name) ? "FanHubPlus Editorial" : Model.Author!.Name;
 
-    var meta = "text-13 md:text-sm uppercase font-bold flex items-center flex-wrap gap-[13px] mb-[9px] md:mb-[11px]"
-               + (dark ? " text-body/70" : "");
-    var divider = dark ? "bg-white/20" : "bg-black/20";
-    var byLink = "inline-block text-[#ae99fa] transition-all duration-300 ease-in-out "
-                 + (dark ? "hover:text-secondary" : "hover:text-primary");
-    var title = (dark ? "" : "!text-black ") + "mb-0 text-base md:text-lg lg:text-xl leading-[1.4]";
-    var hover = dark ? "group-hover:text-secondary" : "group-hover:text-primary";
+    var meta = "fhp-fs-13 fhp-md-fs-14 text-uppercase fw-bold fhp-flex fhp-items-center fhp-flex-wrap fhp-gap-13 fhp-mb-9 fhp-md-mb-11"
+               + (dark ? " fhp-text-body-70" : "");
+    var divider = dark ? "fhp-bg-white-20" : "fhp-bg-black-20";
+    var byLink = "d-inline-block fhp-text-ae99fa fhp-transition fhp-dur300 fhp-ease "
+                 + (dark ? "fhp-hover-text-secondary" : "fhp-hover-text-primary");
+    var title = (dark ? "" : "fhp-text-black ") + "mb-0 fhp-fs-16 fhp-md-fs-18 fhp-lg-fs-20 fhp-leading-1-4";
+    var hover = dark ? "fhp-group-hover-text-secondary" : "fhp-group-hover-text-primary";
 }
 <div class="fhp-group">
     <a
