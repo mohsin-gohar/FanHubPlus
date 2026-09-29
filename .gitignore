@@ -125,6 +125,12 @@ shots/
 .chrome-cdp2/
 .chrome-dom/
 .chrome-verify/
+.chrome-mine*/
+shots/
+fhp-run*.log
+fhp-run*.err.log
+build*.log
+build*.err.log
 chrome-prof*/
 chrome-profile*/
 navbar-shots/

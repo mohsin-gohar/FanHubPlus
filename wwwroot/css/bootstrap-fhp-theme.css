@@ -203,17 +203,36 @@ h1, h2, h3, h4, h5, h6,
     border-color: var(--fhp-orange);
 }
 
-/* Template button classes (also defined in fhp-utilities, kept for clarity) */
+/* Template button classes. The colour-only version of these rules never
+   declared a box model, so every <a>/<button> using them collapsed to a
+   tight, underlined text blob. The metrics below mirror .fhp-btn in
+   site.css, which is the project's own button vocabulary. */
+.primary-btn,
+.secondary-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 30px;
+    border: 1px solid transparent;
+    border-radius: var(--fhp-r-sm);
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color .3s var(--fhp-ease), border-color .3s var(--fhp-ease), color .3s var(--fhp-ease);
+}
 .primary-btn {
     background: var(--fhp-red);
-    border: 1px solid var(--fhp-red);
+    border-color: var(--fhp-red);
     color: #fff;
 }
 .primary-btn:hover { background: var(--fhp-red-deep); border-color: var(--fhp-red-deep); }
 
 .secondary-btn {
     background: var(--fhp-yellow);
-    border: 1px solid var(--fhp-yellow);
+    border-color: var(--fhp-yellow);
     color: #000;
 }
 .secondary-btn:hover { background: var(--fhp-orange); border-color: var(--fhp-orange); }
