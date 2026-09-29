@@ -178,7 +178,17 @@
             playBtn.classList.remove('d-none');
             audio.src = url;
             audio.load();
-            audio.play().catch(function() {});
+            // An interrupted or autoplay-blocked play() must not raise a false
+            // alarm. audio.src always reads back absolute, so the requested URL
+            // is normalised before comparing, and a stale rejection from a track
+            // that has since been replaced is ignored.
+            var requested = audio.src;
+            audio.play().catch(function (err) {
+                if (audio.error) return;                       // "error" handler reports this
+                if (audio.src !== requested) return;           // a newer track took over
+                if (err && err.name === 'AbortError') return;  // superseded by a newer load
+                showError('Your browser blocked autoplay. Press play to start this track.');
+            });
             syncPlayIcon();
         } else {
             // Provider embed: hand it to the iframe. Seek/volume are not
