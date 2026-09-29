@@ -1,0 +1,276 @@
+/* =====================================================================
+   fhp-fixes.css
+   Corrections + gaps for the generated utility sheets. Loaded AFTER
+   fhp-utilities.css and fhp-compat.css so these declarations win.
+   Nothing here restyles on purpose: every rule either repairs a value the
+   generator emitted wrong, or supplies a utility the markup has always used
+   but that no sheet ever defined.
+   ===================================================================== */
+
+/* ---------- 1. values the generator copied straight from the scale ----
+   Tailwind writes opacity-10 as the number 10, scale-105 as 105 etc. Those
+   are scale KEYS, not CSS values: "opacity: 10" and "scale(105)" are invalid
+   / catastrophic, so the browser dropped the fade and zoomed cards 105x. -- */
+.fhp-opacity-10 { opacity: .1; }
+.fhp-opacity-80 { opacity: .8; }
+.fhp-hover-opacity-100:hover { opacity: 1; }
+.fhp-group:hover .fhp-group-hover-opacity-100 { opacity: 1; }
+.fhp-hover-scale-110:hover {
+  transform: translate(var(--fhp-tx, 0), var(--fhp-ty, 0)) scale(1.1);
+}
+.fhp-group:hover .fhp-group-hover-scale-105 {
+  transform: translate(var(--fhp-tx, 0), var(--fhp-ty, 0)) scale(1.05);
+}
+.fhp-group:hover .fhp-group-hover-scale-110 {
+  transform: translate(var(--fhp-tx, 0), var(--fhp-ty, 0)) scale(1.1);
+}
+/* "transition-property: colors" is not a keyword - the whole transition was
+   discarded, so card and link hovers snapped instead of animating. */
+.fhp-transition-colors {
+  transition-property: color, background-color, border-color,
+                       text-decoration-color, fill, stroke;
+}
+
+/* ---------- 2. directional utilities --------------------------------
+   The generated sheet wrote these as ".fhp-ltr-x[dir=ltr] &, :dir(ltr) &".
+   "&" is only legal inside a nested rule, so at the top level the browser
+   throws every one of them away - the icon insets and badge paddings never
+   applied. Redeclared with a plain [dir] ancestor selector. */
+html:not([dir="rtl"]) .fhp-ltr-end-0   { inset-inline-end: 0; }
+html:not([dir="rtl"]) .fhp-ltr-start-0 { inset-inline-start: 0; }
+html:not([dir="rtl"]) .fhp-ltr-left-9px  { left: 9px; }
+html:not([dir="rtl"]) .fhp-ltr-right-20px { right: 20px; }
+html[dir="rtl"] .fhp-rtl-end-0   { inset-inline-end: 0; }
+html[dir="rtl"] .fhp-rtl-start-0 { inset-inline-start: 0; }
+html[dir="rtl"] .fhp-rtl-left-20px { left: 20px; }
+html[dir="rtl"] .fhp-rtl-right-9px { right: 9px; }
+
+/* paddings / margins the cards are built with (_ContentCard, _MerchCard,
+   Explore + Home overlays) - never defined by any sheet */
+html:not([dir="rtl"]) .fhp-ltr-pl-\[20px\] { padding-left: 20px; }
+html:not([dir="rtl"]) .fhp-ltr-pl-\[30px\] { padding-left: 30px; }
+html:not([dir="rtl"]) .fhp-ltr-pr-\[10px\] { padding-right: 10px; }
+html:not([dir="rtl"]) .fhp-ltr-ml-\[5px\]  { margin-left: 5px; }
+html[dir="rtl"] .fhp-rtl-pr-\[20px\] { padding-right: 20px; }
+html[dir="rtl"] .fhp-rtl-pr-\[30px\] { padding-right: 30px; }
+html[dir="rtl"] .fhp-rtl-pl-\[10px\] { padding-left: 10px; }
+html[dir="rtl"] .fhp-rtl-mr-\[5px\]  { margin-right: 5px; }
+
+/* the "What Our Fans Are Saying" vector points the other way in RTL */
+html[dir="rtl"] .fhp-rtl--scale-x-100 { transform: scaleX(-1); }
+
+/* ---------- 3. plain utilities the markup uses with no rule anywhere -- */
+.fhp-pt-12 { padding-top: 12px; }
+/* Streaming hero overlay: the element carries fhp-bg-cover/fhp-bg-center and an
+   opacity, but no sheet ever gave it the image itself, so it painted nothing. */
+.fhp-bg-url { background-image: url('../assets/images/bg-images/bg-image1.jpg'); }
+/* _JoinNow's yellow button flips to solid black on hover; the "!" is Tailwind's
+   important flag, which the generator never emitted a rule for, so the yellow
+   secondary-btn styles won and the hover did nothing at all. */
+.fhp-hover-\!bg-black:hover    { background-color: #000 !important; }
+.fhp-hover-\!text-white:hover  { color: #fff !important; }
+.fhp-hover-\!border-black:hover { border-color: #000 !important; }
+
+/* ---------- 4. breakpoint variants ------------------------------------ */
+@media (min-width: 576px) {
+  .fhp-sm-justify-start { justify-content: flex-start; }
+  .fhp-sm-mt-0 { margin-top: 0; }
+  html:not([dir="rtl"]) .fhp-ltr-sm\:text-left  { text-align: left; }
+  html[dir="rtl"] .fhp-rtl-sm\:text-right { text-align: right; }
+}
+
+@media (min-width: 768px) {
+  .fhp-md-h-100          { height: 100%; }
+  .fhp-md-justify-start  { justify-content: flex-start; }
+  .fhp-md-mb-0           { margin-bottom: 0; }
+  .fhp-md-mt-0           { margin-top: 0; }
+  .fhp-md-mx-0           { margin-left: 0; margin-right: 0; }
+  .fhp-md-mx-auto        { margin-left: auto; margin-right: auto; }
+  .fhp-md-absolute       { position: absolute; }
+  .fhp-md-top-50         { top: 50%; }
+  .fhp-md-transform      { transform: translate(var(--fhp-tx, 0), var(--fhp-ty, 0)); }
+  .fhp-md-aspect-auto    { aspect-ratio: auto; }
+
+  html:not([dir="rtl"]) .fhp-ltr-md\:text-left { text-align: left; }
+  html[dir="rtl"] .fhp-rtl-md\:text-right      { text-align: right; }
+  html:not([dir="rtl"]) .fhp-ltr-md\:pl-\[20px\] { padding-left: 20px; }
+  html[dir="rtl"] .fhp-rtl-md\:pr-\[20px\]       { padding-right: 20px; }
+  html:not([dir="rtl"]) .fhp-ltr-md\:right-\[12px\] { right: 12px; }
+  html[dir="rtl"] .fhp-rtl-md\:left-\[12px\]        { left: 12px; }
+  /* only the width + style: the alpha colour class beside it stays in charge */
+  html:not([dir="rtl"]) .fhp-ltr-md\:border-l { border-left-width: 1px; border-left-style: solid; }
+  html[dir="rtl"] .fhp-rtl-md\:border-r       { border-right-width: 1px; border-right-style: solid; }
+
+  /* slider arrows: both spellings appear in the markup (dash form and the
+     original "!important" colon form), so both are honoured */
+  html:not([dir="rtl"]) .fhp-ltr-md-left-0,
+  html:not([dir="rtl"]) .fhp-ltr-md\:left-0,
+  html:not([dir="rtl"]) .fhp-ltr-md\:\!left-0   { left: 0; }
+  html:not([dir="rtl"]) .fhp-ltr-md-right-0,
+  html:not([dir="rtl"]) .fhp-ltr-md\:right-0    { right: 0; }
+  html:not([dir="rtl"]) .fhp-ltr-md-right-auto,
+  html:not([dir="rtl"]) .fhp-ltr-md\:right-auto { right: auto; }
+  html:not([dir="rtl"]) .fhp-ltr-md-left-auto,
+  html:not([dir="rtl"]) .fhp-ltr-md\:left-auto  { left: auto; }
+  html[dir="rtl"] .fhp-rtl-md-right-0,
+  html[dir="rtl"] .fhp-rtl-md\:right-0,
+  html[dir="rtl"] .fhp-rtl-md\:\!right-0   { right: 0; }
+  html[dir="rtl"] .fhp-rtl-md-left-0,
+  html[dir="rtl"] .fhp-rtl-md\:left-0     { left: 0; }
+  html[dir="rtl"] .fhp-rtl-md-left-auto,
+  html[dir="rtl"] .fhp-rtl-md\:left-auto  { left: auto; }
+  html[dir="rtl"] .fhp-rtl-md-right-auto,
+  html[dir="rtl"] .fhp-rtl-md\:right-auto { right: auto; }
+}
+
+@media (min-width: 992px) {
+  .fhp-lg-tracking-n0-05em { letter-spacing: -0.05em; }
+  .fhp-lg-col-span-1       { grid-column: span 1 / span 1; }
+}
+
+@media (min-width: 1200px) {
+  .fhp-xl-d-block { display: block; }
+  html:not([dir="rtl"]) .fhp-ltr-xl\:right-\[18px\] { right: 18px; }
+  html[dir="rtl"] .fhp-rtl-xl\:left-\[18px\]        { left: 18px; }
+}
+
+@media (min-width: 1400px) {
+  html:not([dir="rtl"]) .fhp-ltr-2xl\:right-\[35px\] { right: 35px; }
+  html[dir="rtl"] .fhp-rtl-2xl\:left-\[35px\]        { left: 35px; }
+}
+
+/* =====================================================================
+   5. rules the migration dropped
+   Both classes were hand-written in the pre-migration fhp-utilities.css and
+   the regenerated sheet lost them. They are not utilities, so nothing else
+   covers them: the sidebar submenus stopped opening entirely and the current
+   page lost its yellow marker.
+   ===================================================================== */
+
+/* 5a. banner thumbnails. Swiper marks the selected thumb's slide with
+   .swiper-slide-thumb-active; the eight framing strips inside the item are
+   white-27 until that slide is the current one, then they turn yellow. */
+.swiper-slide-thumb-active .banner-thumb-item .active {
+  background-color: var(--bs-secondary);
+}
+
+/* 5b. sidebar menu. custom.js toggles .active on the <li class="nav-item">,
+   the CSS is what opened the submenu. The list carries Bootstrap's d-none
+   (display:none !important today, Tailwind's plain "hidden" before), so the
+   reopening rule needs the same flag to outrank it. */
+.sidebar-modal .sidebar-navbar-nav .nav-item .dropdown-menu {
+  display: none;
+}
+.sidebar-modal .sidebar-navbar-nav .nav-item.active .dropdown-menu {
+  display: block !important;
+}
+
+/* the row for the page you are on, and the hovered row, are yellow.
+   .text-white on the link is !important, so this rule needs it too - the
+   more specific selector then wins the tie. */
+.sidebar-modal .sidebar-navbar-nav .nav-item .nav-link.active {
+  color: var(--bs-secondary) !important;
+}
+
+/* chevron for the dropdown parents, drawn by the template's icon font:
+   f134 points down while the group is closed, f133 points up once it is open. */
+.sidebar-modal .sidebar-navbar-nav .nav-item .nav-link.dropdown-toggle::before {
+  font-family: flaticon_fanhubplus;
+  content: "\f134";
+  position: absolute;
+  top: 50%;
+  display: inline-block;
+  translate: 0 -50%;
+}
+html:not([dir="rtl"]) .sidebar-modal .sidebar-navbar-nav .nav-item .nav-link.dropdown-toggle {
+  padding-right: 20px;
+}
+html:not([dir="rtl"]) .sidebar-modal .sidebar-navbar-nav .nav-item .nav-link.dropdown-toggle::before {
+  right: -2px;
+}
+html[dir="rtl"] .sidebar-modal .sidebar-navbar-nav .nav-item .nav-link.dropdown-toggle {
+  padding-left: 20px;
+}
+html[dir="rtl"] .sidebar-modal .sidebar-navbar-nav .nav-item .nav-link.dropdown-toggle::before {
+  left: -2px;
+}
+.sidebar-modal .sidebar-navbar-nav .nav-item.active .nav-link.dropdown-toggle::before {
+  content: "\f133";
+}
+
+
+/* ---------- 5. utilities the markup uses that no sheet ever defined --------
+   Found by cross-referencing every class in Views/ + Areas/ against the
+   rules actually present in wwwroot/**/*.css. Without these the section
+   headers collapsed (the "View More" row had no flex, so the title and the
+   link stacked vertically) and the card hover overlays lost their scrim. */
+
+/* the section head: title on the left, underlined "View More" on the right */
+.fhp-flex          { display: flex; }
+.fhp-flex-none     { flex: none; }
+.fhp-items-center  { align-items: center; }
+
+@media (min-width: 768px) {
+  .fhp-md-flex          { display: flex; }
+  .fhp-md-items-center  { align-items: center; }
+  .fhp-md-justify-between { justify-content: space-between; }
+}
+
+/* the "View More" underline is drawn with a ::before rule, so every
+   pseudo-element utility has to name ::before explicitly. */
+.fhp-before-absolute    { position: absolute; }
+.fhp-before-bottom-0    { bottom: 0; }
+.fhp-before-left-0      { left: 0; }
+.fhp-before-right-0     { right: 0; }
+.fhp-before-h-px        { height: 1px; }
+.fhp-before-bg-secondary { background-color: rgb(174 153 250); }
+.fhp-before-transition  { transition-property: all; }
+.fhp-before-dur300      { transition-duration: 300ms; }
+.fhp-before-ease        { transition-timing-function: var(--fhp-ease, ease); }
+
+.fhp-before-absolute::before,
+.fhp-before-bottom-0::before,
+.fhp-before-left-0::before,
+.fhp-before-right-0::before,
+.fhp-before-h-px::before,
+.fhp-before-bg-secondary::before,
+.fhp-before-transition::before,
+.fhp-before-dur300::before,
+.fhp-before-ease::before {
+  content: "";
+}
+
+.fhp-hover-before-bg-primary:hover::before { background-color: var(--fhp-primary); }
+.fhp-hover-before-scale-x-0:hover::before    { transform: scaleX(0); }
+
+/* RTL: the template mirrors the section vector with scaleX(-1) */
+html[dir="rtl"] .fhp-rtl-scale-x-n100 { transform: scaleX(-1); }
+
+/* gradient stops: the .fhp-grad-* helpers read these three variables, so a
+   stop class only has to set one of them. */
+.fhp-to-18181f-60 { --fhp-grad-to: rgb(24 24 31 / 0.6); }
+.fhp-via-black-30 { --fhp-grad-via: rgb(0 0 0 / 0.3); }
+
+/* ---------- 6. preloader spinner ----------------------------------------
+   The markup is <div class="loader"></div> inside #preloader, but no sheet
+   ever styled .loader, so the overlay opened on a black screen with nothing
+   in it. A plain conic spinner - no extra asset, no extra markup. */
+.loader {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, .15);
+  border-top-color: var(--fhp-primary, #f41b3b);
+  animation: fhp-loader-spin .8s linear infinite;
+}
+
+@keyframes fhp-loader-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader { animation-duration: 2.4s; }
+}
+
+
+

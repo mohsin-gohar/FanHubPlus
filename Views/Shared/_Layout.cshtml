@@ -65,6 +65,13 @@
        Tailwind dependency, config file or build step. Loaded after the
        component sheet so the utility layer wins on shared selectors. *@
     <link rel="stylesheet" href="~/css/fhp-compat.css" asp-append-version="true" />
+    @* Patch layer: repairs the handful of declarations the static utility build
+       emitted with raw scale numbers (opacity: 10, scale(105), the invalid
+       "transition-property: colors") and adds the .fhp-* utilities the markup has
+       always used that neither sheet defined. Must stay after both utility
+       layers so these declarations win. *@
+    <link rel="stylesheet" href="~/css/fhp-fixes.css" asp-append-version="true" />
+
     <link rel="stylesheet" href="~/assets/css/swiper-bundle.min.css" />
     <link rel="stylesheet" href="~/assets/css/flaticon_fanhubplus.css" />
     <link rel="stylesheet" href="~/assets/css/scrollCue.css" />

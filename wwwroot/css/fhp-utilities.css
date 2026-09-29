@@ -710,22 +710,25 @@
   border: 1px solid var(--fhp-body, #1d2433);
 }
 .fhp-z-1 {
-  z-index: 1px;
+  z-index: 1;
+}
+.fhp-z-4 {
+  z-index: 4;
 }
 .fhp-z-10 {
-  z-index: 10px;
+  z-index: 10;
 }
 .fhp-z-100 {
-  z-index: 100px;
+  z-index: 100;
 }
 .fhp-z-5 {
-  z-index: 5px;
+  z-index: 5;
 }
 .fhp-z-999 {
-  z-index: 999px;
+  z-index: 999;
 }
 .fhp-z-n1 {
-  z-index: -1px;
+  z-index: -1;
 }
 
 /* ---- hover / focus variants ---- */

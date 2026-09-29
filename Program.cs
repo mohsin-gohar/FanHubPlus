@@ -188,7 +188,6 @@ app.Use(async (ctx, next) =>
 });
 
 app.UseResponseCompression();
-app.UseResponseCaching();
 
 if (app.Environment.IsDevelopment())
 {
@@ -205,18 +204,28 @@ app.UseStatusCodePagesWithReExecute("/Home/Error", "?statusCode={0}");
 
 app.UseHttpsRedirection();
 
-// Static files: long cache for versioned libraries, short for uploads
+// Static files
 app.UseStaticFiles(new StaticFileOptions
 {
     OnPrepareResponse = ctx =>
     {
         var path = ctx.Context.Request.Path.Value ?? string.Empty;
         ctx.Context.Response.Headers["X-Content-Type-Options"] = "nosniff";
-        ctx.Context.Response.Headers["Cache-Control"] = path.StartsWith("/uploads/", StringComparison.OrdinalIgnoreCase)
-            ? "public,max-age=86400"
-            : "public,max-age=604800";
+        ctx.Context.Response.Headers["Cache-Control"] =
+            path.StartsWith("/uploads/", StringComparison.OrdinalIgnoreCase)
+                ? "public,max-age=86400"                       // user uploads: cache a day
+                : path.StartsWith("/lib/", StringComparison.OrdinalIgnoreCase)
+                  || path.StartsWith("/assets/", StringComparison.OrdinalIgnoreCase)
+                    ? "public,max-age=604800"                   // vendored libs / images
+                    : "no-cache";                               // our own css/js: revalidate
     }
 });
+
+// Must be registered AFTER UseStaticFiles. Static files short-circuit the
+// pipeline, so keeping this below them stops the 7-day Cache-Control above
+// from being captured by the in-memory response cache - which otherwise
+// serves a stale stylesheet/script until the process restarts.
+app.UseResponseCaching();
 
 app.UseRouting();
 

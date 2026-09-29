@@ -5,6 +5,34 @@
    its CSS custom properties + key components ourselves.
    ========================================================= */
 
+/* ---------- Element preflight (Tailwind base equivalents) -------------
+   The template markup was authored against Tailwind's preflight layer, which
+   Bootstrap's reboot does not reproduce. The one rule that matters visually is
+   the media clamp below: without it a <img> falls back to its intrinsic pixel
+   size and bursts out of its grid column (a 720px poster inside a 175px tile
+   stretched the whole row to 1066px tall). Bootstrap only offers this as the
+   opt-in .img-fluid helper, so the reset is restated here at element level.
+   Component rules further down the cascade still win on specificity. */
+img,
+video,
+canvas,
+svg {
+    display: block;
+    vertical-align: middle;
+}
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Bootstrap's reboot gives every <img> a bottom margin; the template's cards
+   never had one and the extra 8px opened gaps inside the tile wrappers. */
+img {
+    margin-bottom: 0;
+}
+
 :root {
     --fhp-primary: #6d5dfc;
     --fhp-primary-2: #4f8cff;
@@ -558,12 +586,12 @@ html.dark-mode .hero { background: var(--fhp-hero); }
    and merch cards have consistent dimensions while maintaining aspect ratio.
    Uses object-fit: cover to prevent distortion and clip overflow. */
 .explore-card-img,
-.group .rounded-\[5px\],
+.fhp-group .fhp-r-5,
 ._ContentCard img,
 ._ArtworkCard img,
 ._CharacterCard img,
 ._MerchCard img,
-.group img[class*="rounded"] {
+.fhp-group img[class*="fhp-r-"] {
     height: 240px;
     width: 100%;
     object-fit: cover;
@@ -571,27 +599,37 @@ html.dark-mode .hero { background: var(--fhp-hero); }
     display: block;
 }
 
+/* Category tiles are the exception to the 240px content-card height above.
+   They sit in a 7-up grid (~131px columns) where a portrait crop would turn
+   them into tall slivers, so they keep a near-square badge shape instead.
+   They are identified by their translucent card shell (.fhp-bg-white-8),
+   which the poster/content tiles do not use. */
+.fhp-group.fhp-bg-white-8 img[class*="fhp-r-"] {
+    height: auto;
+    aspect-ratio: 1 / 1;
+}
+
 /* Responsive adjustments for smaller screens */
 @media (max-width: 768px) {
     .explore-card-img,
-    .group .rounded-\[5px\],
+    .fhp-group .fhp-r-5,
     ._ContentCard img,
     ._ArtworkCard img,
     ._CharacterCard img,
     ._MerchCard img,
-    .group img[class*="rounded"] {
+    .fhp-group img[class*="fhp-r-"] {
         height: 200px;
     }
 }
 
 @media (max-width: 480px) {
     .explore-card-img,
-    .group .rounded-\[5px\],
+    .fhp-group .fhp-r-5,
     ._ContentCard img,
     ._ArtworkCard img,
     ._CharacterCard img,
     ._MerchCard img,
-    .group img[class*="rounded"] {
+    .fhp-group img[class*="fhp-r-"] {
         height: 160px;
     }
 }

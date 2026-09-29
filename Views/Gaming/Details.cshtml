@@ -132,15 +132,18 @@
         {
             <div class="fhp-mb-40">
                 <h2 class="fhp-fs-24 fw-bold text-white fhp-mb-12"><i class="ri-film-line me-2 text-success"></i>Official Trailer</h2>
-                <div class="position-relative bg-black rounded-5 overflow-hidden border fhp-border-white-10 shadow-lg"
-                     style="padding-top: 56.25%;">
-                    <iframe src="@Model.Trailer.EmbedUrl"
-                            class="position-absolute top-0 bottom-0 start-0 end-0 w-100 h-100"
-                            title="@Model.Game.Title Trailer"
-                            allowfullscreen
-                            loading="lazy"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
-                    </iframe>
+                @* _MediaPlayer decides <video> vs <iframe> from the url itself and runs it
+                   through MediaUrl.Normalize. A raw <iframe> here used to be handed an
+                   /assets/videos/*.mp4 path, which no embed host can play - the box stayed
+                   blank. The wrapper keeps the frame styling, the partial supplies the
+                   16:9 box (.fhp-media__player). *@
+                <div class="bg-black rounded-5 overflow-hidden border fhp-border-white-10 shadow-lg">
+                    <partial name="_MediaPlayer" model="new MediaPlayerViewModel
+                           {
+                               Url = Model.Trailer.EmbedUrl,
+                               Poster = cover,
+                               Title = Model.Game.Title
+                           }" />
                 </div>
             </div>
         }

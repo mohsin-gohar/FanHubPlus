@@ -34,7 +34,7 @@
                     <div class="position-relative fhp-minh-320 h-100 overflow-hidden">
                         <img src="@cover" alt="@Model.Item.Title"
                              class="w-100 h-100 fhp-object-cover" loading="eager" />
-                        <div class="position-absolute top-0 bottom-0 start-0 end-0 fhp-grad-r fhp-from-transparent to-[#18181f]/60 d-none d-sm-block"></div>
+                        <div class="position-absolute top-0 bottom-0 start-0 end-0 fhp-grad-r fhp-from-transparent fhp-to-18181f-60 d-none d-sm-block"></div>
                     </div>
                 </div>
 
@@ -129,14 +129,16 @@
                 <h2 class="fhp-fs-24 fw-bold text-white fhp-mb-12">
                     <i class="ri-play-circle-line me-2 text-primary"></i>Official Trailer
                 </h2>
-                <div class="position-relative bg-black rounded-5 overflow-hidden border fhp-border-white-10 shadow-lg"
-                     style="padding-top: 56.25%;">
-                    <iframe src="@Model.Trailer.EmbedUrl"
-                            class="position-absolute top-0 bottom-0 start-0 end-0 w-100 h-100 border-0"
-                            title="@Model.Item.Title – Official Trailer"
-                            allowfullscreen loading="lazy"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
-                    </iframe>
+                @* Same as Gaming/Details: let _MediaPlayer choose the element. A raw
+                   <iframe> cannot play the self-hosted /assets/videos/*.mp4 files that
+                   most trailers in this database point at, so the trailer never played. *@
+                <div class="bg-black rounded-5 overflow-hidden border fhp-border-white-10 shadow-lg">
+                    <partial name="_MediaPlayer" model="new MediaPlayerViewModel
+                           {
+                               Url = Model.Trailer.EmbedUrl,
+                               Poster = cover,
+                               Title = Model.Item.Title
+                           }" />
                 </div>
                 <p class="fhp-text-white-40 fhp-fs-12 mt-2 text-center">
                     <i class="ri-information-line me-1"></i>
