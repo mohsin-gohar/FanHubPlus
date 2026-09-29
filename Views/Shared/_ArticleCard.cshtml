@@ -19,14 +19,14 @@
     var title = (dark ? "" : "!text-black ") + "mb-0 text-base md:text-lg lg:text-xl leading-[1.4]";
     var hover = dark ? "group-hover:text-secondary" : "group-hover:text-primary";
 }
-<div class="group">
+<div class="fhp-group">
     <a
         asp-controller="@controller" asp-action="Details" asp-route-id="@Model.ArticleId"
-        class="overflow-hidden block rounded-[5px] mb-[20px] lg:mb-[25px]"
+        class="overflow-hidden d-block fhp-r-5 fhp-mb-20 fhp-lg-mb-25"
     >
         <img
             src="@cover"
-            class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110"
+            class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110"
             alt="@Model.Title"
             loading="lazy"
         >
@@ -36,7 +36,7 @@
             @Model.PublishedAt.ToString("dd MMM, yyyy")
         </li>
         <li>
-            <div class="w-px @divider h-[12px]"></div>
+            <div class="fhp-w-1px @divider fhp-h-12"></div>
         </li>
         <li>
             By
@@ -46,7 +46,7 @@
         </li>
     </ul>
     <h3 class="@title">
-        <a asp-controller="@controller" asp-action="Details" asp-route-id="@Model.ArticleId" class="transition-all duration-300 ease-in-out @hover">
+        <a asp-controller="@controller" asp-action="Details" asp-route-id="@Model.ArticleId" class="fhp-transition fhp-dur300 fhp-ease @hover">
             @Model.Title
         </a>
     </h3>

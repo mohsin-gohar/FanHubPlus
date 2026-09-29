@@ -12,53 +12,53 @@
 
 <partial name="_PageBanner" model="trail" />
 
-<div class="py-[60px] md:py-[80px]">
+<div class="fhp-py-60 fhp-md-py-80">
     <div class="container">
 
         <!-- Game Title Row -->
-        <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap fhp-gap-12">
             <div>
-                <span class="inline-block px-3 py-1 bg-success/20 text-success border border-success/30 rounded-full text-xs font-bold uppercase mb-2">
+                <span class="d-inline-block fhp-px-12 py-1 fhp-bg-success-20 text-success border fhp-border-success-30 rounded-pill fhp-fs-12 fw-bold text-uppercase mb-2">
                     <i class="ri-gamepad-line me-1"></i> Browser Game
                 </span>
-                <h1 class="text-2xl md:text-4xl font-extrabold text-white">@Model.Title</h1>
+                <h1 class="fhp-fs-24 fs-2 fw-bolder text-white">@Model.Title</h1>
                 @if (!string.IsNullOrWhiteSpace(Model.Genre))
                 {
-                    <p class="text-white/60 text-sm mt-1">@Model.Genre</p>
+                    <p class="fhp-text-white-60 fhp-fs-14 mt-1">@Model.Genre</p>
                 }
             </div>
-            <div class="flex gap-3">
+            <div class="d-flex fhp-gap-12">
                 <a asp-controller="Gaming" asp-action="Details" asp-route-id="@Model.ContentId"
-                   class="btn btn-outline-secondary text-white border-white/30 hover:bg-white/10 transition-all px-4 py-2 rounded-full">
+                   class="btn btn-outline-secondary text-white fhp-border-white-30 fhp-hover-bg-white-10 fhp-transition px-3 py-2 rounded-pill">
                     <i class="ri-information-line me-1"></i> Game Info
                 </a>
                 <a asp-controller="Gaming" asp-action="Index"
-                   class="btn btn-link text-white/60 text-decoration-none">
+                   class="btn btn-link fhp-text-white-60 text-decoration-none">
                     <i class="ri-arrow-left-line me-1"></i> Back
                 </a>
             </div>
         </div>
 
         <!-- Notice Banner -->
-        <div class="bg-warning/10 border border-warning/30 rounded-xl p-4 mb-6 flex items-start gap-3">
-            <i class="ri-shield-check-line text-warning text-xl flex-none mt-0.5"></i>
-            <p class="text-warning/90 text-sm leading-relaxed mb-0">
+        <div class="fhp-bg-warning-10 border fhp-border-warning-30 rounded-4 p-3 mb-4 d-flex align-items-start fhp-gap-12">
+            <i class="ri-shield-check-line text-warning fhp-fs-20 flex-shrink-0 fhp-mt-2"></i>
+            <p class="fhp-text-warning-90 fhp-fs-14 lh-lg mb-0">
                 <strong>Legal Notice:</strong> Only legally authorized, royalty-free browser games are available here.
                 All games are embedded from their official or approved sources and remain the property of their respective owners.
             </p>
         </div>
 
         <!-- Game Embed -->
-        <div class="bg-black rounded-2xl border border-white/10 shadow-2xl overflow-hidden mb-8"
+        <div class="bg-black rounded-5 border fhp-border-white-10 shadow-lg overflow-hidden fhp-mb-32"
              style="min-height: 520px;">
             <div id="gameLoadingOverlay"
-                 class="absolute inset-0 bg-black flex flex-col items-center justify-center gap-4 z-10 transition-opacity duration-500">
-                <div class="w-12 h-12 rounded-full border-4 border-success border-t-transparent animate-spin"></div>
-                <p class="text-white/60 text-sm">Loading game…</p>
+                 class="position-absolute top-0 bottom-0 start-0 end-0 bg-black d-flex flex-column align-items-center justify-content-center gap-3 fhp-z-10 fhp-transition-opacity fhp-dur500">
+                <div class="fhp-w-48 fhp-h-48 rounded-pill border-4 border-success fhp-border-t-transparent fhp-spin"></div>
+                <p class="fhp-text-white-60 fhp-fs-14">Loading game…</p>
             </div>
             <iframe id="gameFrame"
                     src="@Model.PlayableGameUrl"
-                    class="w-full block border-0"
+                    class="w-100 d-block border-0"
                     style="height: 620px;"
                     title="@Model.Title"
                     allowfullscreen
@@ -69,19 +69,19 @@
         </div>
 
         <!-- Fullscreen + Controls -->
-        <div class="flex flex-wrap gap-3 mb-10">
+        <div class="d-flex flex-wrap fhp-gap-12 fhp-mb-40">
             <button id="btnFullscreen" type="button"
                     class="primary-btn">
                 <i class="ri-fullscreen-line me-2"></i> Fullscreen
             </button>
             <button id="btnReload" type="button"
-                    class="btn btn-outline-secondary text-white border-white/30 hover:bg-white/10 transition-all px-5 py-2 rounded-full">
+                    class="btn btn-outline-secondary text-white fhp-border-white-30 fhp-hover-bg-white-10 fhp-transition fhp-px-20 py-2 rounded-pill">
                 <i class="ri-restart-line me-2"></i> Reload Game
             </button>
             @if (!string.IsNullOrWhiteSpace(Model.OfficialWebsiteUrl))
             {
                 <a href="@Model.OfficialWebsiteUrl" target="_blank" rel="noopener"
-                   class="btn btn-outline-secondary text-white border-white/30 hover:bg-white/10 transition-all px-5 py-2 rounded-full">
+                   class="btn btn-outline-secondary text-white fhp-border-white-30 fhp-hover-bg-white-10 fhp-transition fhp-px-20 py-2 rounded-pill">
                     <i class="ri-external-link-line me-1"></i> Official Site
                 </a>
             }
@@ -90,9 +90,9 @@
         <!-- Description -->
         @if (!string.IsNullOrWhiteSpace(Model.Description))
         {
-            <div class="bg-[#18181f] border border-white/10 rounded-2xl p-6 md:p-8">
-                <h2 class="text-xl font-bold text-white mb-4">About This Game</h2>
-                <p class="text-white/70 text-base leading-relaxed">@Model.Description</p>
+            <div class="fhp-bg-18181f border fhp-border-white-10 rounded-5 p-4 fhp-md-p-32">
+                <h2 class="fhp-fs-20 fw-bold text-white mb-3">About This Game</h2>
+                <p class="fhp-text-white-70 fs-6 lh-lg">@Model.Description</p>
             </div>
         }
 

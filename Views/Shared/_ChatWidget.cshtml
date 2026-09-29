@@ -22,7 +22,7 @@
     <div class="chat-suggestions" id="chatSuggestions"></div>
     <form class="chat-input" id="chatForm">
         @Html.AntiForgeryToken()
-        <label class="sr-only" for="chatText">Your question</label>
+        <label class="visually-hidden" for="chatText">Your question</label>
         <input type="text" id="chatText" maxlength="1000" placeholder="Type your question..." autocomplete="off" required />
         <button type="button" id="chatMicBtn" class="chat-mic" aria-label="Speak your question" title="Speak your question">
             <i class="ri-mic-line" aria-hidden="true"></i>

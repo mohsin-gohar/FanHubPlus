@@ -6,17 +6,17 @@
 
 <partial name="_PageBanner" model="trail" />
 
-<div class="py-[60px] md:py-[80px]">
+<div class="fhp-py-60 fhp-md-py-80">
     <div class="container">
         <!-- Hero Music Player Header -->
-        <div class="bg-gradient-to-r from-[#18181f] to-[#2a1b28] border border-white/10 rounded-2xl p-6 md:p-8 mb-10 text-white shadow-2xl relative overflow-hidden">
+        <div class="fhp-grad-r fhp-from-18181f fhp-to-2a1b28 border fhp-border-white-10 rounded-5 p-4 fhp-md-p-32 fhp-mb-40 text-white shadow-lg position-relative overflow-hidden">
             <div class="row align-items-center">
                 <div class="col-lg-8">
-                    <span class="inline-block uppercase text-xs font-bold px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-full mb-3">
+                    <span class="d-inline-block text-uppercase fhp-fs-12 fw-bold fhp-px-12 py-1 fhp-bg-primary-20 text-primary border fhp-border-primary-30 rounded-pill fhp-mb-12">
                         <i class="ri-disc-line me-1"></i> Fandom Audio Universe
                     </span>
-                    <h1 class="text-3xl md:text-5xl font-extrabold mb-3">Music, Soundtracks &amp; Playlists</h1>
-                    <p class="text-body-secondary text-base max-w-2xl">
+                    <h1 class="fhp-fs-30 fs-1 fw-bolder fhp-mb-12">Music, Soundtracks &amp; Playlists</h1>
+                    <p class="text-body-secondary fs-6 fhp-maxw-672">
                         Listen to iconic anime openings, blockbuster soundtracks, K-Pop hits, and gaming themes. Play tracks directly, filter by fandom, or build custom playlists.
                     </p>
                 </div>
@@ -29,11 +29,11 @@
         </div>
 
         <!-- Filter Bar -->
-        <form method="get" asp-controller="Music" asp-action="Index" class="mb-8">
-            <div class="flex items-center flex-wrap gap-3">
-                <input type="search" name="search" value="@Model.Search" class="form-control form-input !w-auto !h-[44px]" placeholder="Search song or artist..." />
+        <form method="get" asp-controller="Music" asp-action="Index" class="fhp-mb-32">
+            <div class="d-flex align-items-center flex-wrap fhp-gap-12">
+                <input type="search" name="search" value="@Model.Search" class="form-control form-input !w-auto fhp-h-44" placeholder="Search song or artist..." />
                 
-                <select name="categoryId" class="form-select !w-auto !h-[44px]" onchange="this.form.submit()">
+                <select name="categoryId" class="form-select !w-auto fhp-h-44" onchange="this.form.submit()">
                     <option value="">All Fandoms</option>
                     @foreach (var cat in Model.Categories)
                     {
@@ -41,7 +41,7 @@
                     }
                 </select>
 
-                <select name="sort" class="form-select !w-auto !h-[44px]" onchange="this.form.submit()">
+                <select name="sort" class="form-select !w-auto fhp-h-44" onchange="this.form.submit()">
                     <option value="popular" selected="@(Model.Sort == "popular" ? "selected" : null)">Most Popular</option>
                     <option value="newest" selected="@(Model.Sort == "newest" ? "selected" : null)">Recently Added</option>
                     <option value="artist" selected="@(Model.Sort == "artist" ? "selected" : null)">By Artist</option>
@@ -56,16 +56,16 @@
         <!-- Song Cards Grid -->
         @if (Model.Songs.Count == 0)
         {
-            <div class="text-center py-16 bg-white/5 rounded-2xl border border-white/10">
-                <i class="ri-music-2-line text-6xl text-white/30 mb-3 block"></i>
-                <h3 class="text-xl font-bold text-white mb-2">No Music Found</h3>
-                <p class="text-white/60 mb-4">Try adjusting your search terms or filters.</p>
+            <div class="text-center fhp-py-64 fhp-bg-white-5 rounded-5 border fhp-border-white-10">
+                <i class="ri-music-2-line fhp-fs-60 fhp-text-white-30 fhp-mb-12 d-block"></i>
+                <h3 class="fhp-fs-20 fw-bold text-white mb-2">No Music Found</h3>
+                <p class="fhp-text-white-60 mb-3">Try adjusting your search terms or filters.</p>
                 <a asp-controller="Music" asp-action="Index" class="primary-btn">View All Music</a>
             </div>
         }
         else
         {
-            <div class="row g-4 mb-10">
+            <div class="row g-4 fhp-mb-40">
                 @foreach (var song in Model.Songs)
                 {
                     var audio = song.MediaItems.FirstOrDefault(m => m.MediaType == FanHubPlus.Models.Enums.MediaType.Audio)
@@ -73,31 +73,31 @@
                     var cover = string.IsNullOrWhiteSpace(song.ThumbnailUrl) ? "/assets/images/categories/category1.jpg" : song.ThumbnailUrl;
 
                     <div class="col-6 col-md-4 col-lg-3">
-                        <div class="bg-[#18181f] border border-white/10 rounded-xl overflow-hidden group hover:border-primary/50 transition-all duration-300">
-                            <div class="relative aspect-square overflow-hidden bg-black/40">
-                                <img src="@cover" alt="@song.Title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                                <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
+                        <div class="fhp-bg-18181f border fhp-border-white-10 rounded-4 overflow-hidden fhp-group fhp-hover-border-primary-50 fhp-transition fhp-dur300">
+                            <div class="position-relative fhp-aspect-square overflow-hidden fhp-bg-black-40">
+                                <img src="@cover" alt="@song.Title" class="w-100 h-100 fhp-object-cover fhp-group-hover-scale-105 fhp-transition-transform fhp-dur500" loading="lazy" />
+                                <div class="position-absolute top-0 bottom-0 start-0 end-0 fhp-bg-black-40 opacity-0 fhp-group-hover-opacity-100 fhp-transition-opacity d-flex align-items-center justify-content-center fhp-gap-12">
                                     @if (audio != null)
                                     {
-                                        <button type="button" class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center text-xl shadow-lg hover:scale-110 transition-transform"
+                                        <button type="button" class="fhp-w-48 fhp-h-48 rounded-pill bg-primary text-white d-flex align-items-center justify-content-center fhp-fs-20 shadow-lg fhp-hover-scale-110 fhp-transition-transform"
                                                 onclick="playAudioTrack('@song.Title', '@(song.Artist ?? "Unknown Artist")', '@audio.EmbedUrl', '@cover')">
                                             <i class="ri-play-fill"></i>
                                         </button>
                                     }
-                                    <a asp-controller="Music" asp-action="Details" asp-route-id="@song.ContentId" class="w-10 h-10 rounded-full bg-white/20 text-white flex items-center justify-center text-lg hover:bg-white/40">
+                                    <a asp-controller="Music" asp-action="Details" asp-route-id="@song.ContentId" class="fhp-w-40 fhp-h-40 rounded-pill fhp-bg-white-20 text-white d-flex align-items-center justify-content-center fhp-fs-18 fhp-hover-bg-white-40">
                                         <i class="ri-information-line"></i>
                                     </a>
                                 </div>
-                                <span class="absolute top-2 left-2 px-2 py-0.5 rounded text-[10px] font-bold bg-black/60 text-white uppercase tracking-wider backdrop-blur-sm">
+                                <span class="position-absolute fhp-top-8 fhp-left-8 px-2 fhp-py-2 rounded fhp-fs-10 fw-bold fhp-bg-black-60 text-white text-uppercase fhp-ls-wider fhp-backdrop-blur">
                                     @song.Category.Name
                                 </span>
                             </div>
-                            <div class="p-4">
-                                <h4 class="text-white font-bold text-base truncate mb-1" title="@song.Title">
-                                    <a asp-controller="Music" asp-action="Details" asp-route-id="@song.ContentId" class="hover:text-primary transition-colors">@song.Title</a>
+                            <div class="p-3">
+                                <h4 class="text-white fw-bold fs-6 text-truncate mb-1" title="@song.Title">
+                                    <a asp-controller="Music" asp-action="Details" asp-route-id="@song.ContentId" class="fhp-hover-text-primary fhp-transition-colors">@song.Title</a>
                                 </h4>
-                                <p class="text-white/60 text-xs truncate mb-2">@(song.Artist ?? "Original Soundtrack")</p>
-                                <div class="flex items-center justify-between text-xs text-white/40">
+                                <p class="fhp-text-white-60 fhp-fs-12 text-truncate mb-2">@(song.Artist ?? "Original Soundtrack")</p>
+                                <div class="d-flex align-items-center justify-content-between fhp-fs-12 fhp-text-white-40">
                                     <span><i class="ri-customer-service-2-line me-1"></i> @song.ViewCount.ToString("N0") plays</span>
                                     <span>@song.Genre</span>
                                 </div>

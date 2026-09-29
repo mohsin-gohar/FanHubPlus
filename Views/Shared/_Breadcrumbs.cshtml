@@ -3,7 +3,7 @@
 @model List<FanHubPlus.Models.ViewModels.BreadcrumbItem>
 @if (Model is { Count: > 0 })
 {
-    <nav aria-label="breadcrumb" class="mb-3">
+    <nav aria-label="breadcrumb" class="fhp-mb-12">
         <ol class="breadcrumb small mb-0">
             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
             @foreach (var crumb in Model)

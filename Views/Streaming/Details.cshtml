@@ -22,62 +22,62 @@
 
 <partial name="_PageBanner" model="trail" />
 
-<div class="py-[60px] md:py-[80px]">
+<div class="fhp-py-60 fhp-md-py-80">
     <div class="container">
 
         <!-- Hero Detail Card -->
-        <div class="bg-[#18181f] border border-white/10 rounded-2xl overflow-hidden shadow-2xl mb-10">
+        <div class="fhp-bg-18181f border fhp-border-white-10 rounded-5 overflow-hidden shadow-lg fhp-mb-40">
             <div class="row g-0">
 
                 <!-- Poster -->
                 <div class="col-sm-5 col-md-4 col-lg-3">
-                    <div class="relative min-h-[320px] h-full overflow-hidden">
+                    <div class="position-relative fhp-minh-320 h-100 overflow-hidden">
                         <img src="@cover" alt="@Model.Item.Title"
-                             class="w-full h-full object-cover" loading="eager" />
-                        <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[#18181f]/60 d-none d-sm-block"></div>
+                             class="w-100 h-100 fhp-object-cover" loading="eager" />
+                        <div class="position-absolute top-0 bottom-0 start-0 end-0 fhp-grad-r fhp-from-transparent to-[#18181f]/60 d-none d-sm-block"></div>
                     </div>
                 </div>
 
                 <!-- Info -->
                 <div class="col-sm-7 col-md-8 col-lg-9">
-                    <div class="p-6 md:p-10 h-full flex flex-col justify-between">
+                    <div class="p-4 fhp-md-p-40 h-100 d-flex flex-column justify-content-between">
                         <div>
                             <!-- Badges -->
-                            <div class="flex flex-wrap items-center gap-2 mb-3">
-                                <span class="px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-full text-xs font-bold uppercase">
+                            <div class="d-flex flex-wrap align-items-center gap-2 fhp-mb-12">
+                                <span class="fhp-px-12 py-1 fhp-bg-primary-20 text-primary border fhp-border-primary-30 rounded-pill fhp-fs-12 fw-bold text-uppercase">
                                     <i class="ri-film-line me-1"></i> @typeLabel
                                 </span>
-                                <span class="px-3 py-1 bg-white/10 text-white/80 rounded-full text-xs">
+                                <span class="fhp-px-12 py-1 fhp-bg-white-10 fhp-text-white-80 rounded-pill fhp-fs-12">
                                     @Model.Item.Category.Name
                                 </span>
                                 @if (!string.IsNullOrWhiteSpace(Model.Item.Genre))
                                 {
                                     foreach (var g in Model.Item.Genre.Split(',').Take(3))
                                     {
-                                        <span class="px-2 py-0.5 bg-white/5 text-white/60 rounded text-[11px]">@g.Trim()</span>
+                                        <span class="px-2 fhp-py-2 fhp-bg-white-5 fhp-text-white-60 rounded fhp-fs-11">@g.Trim()</span>
                                     }
                                 }
                             </div>
 
-                            <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-4 leading-tight">@Model.Item.Title</h1>
+                            <h1 class="fhp-fs-30 fs-1 fw-bolder text-white mb-3 lh-sm">@Model.Item.Title</h1>
 
                             <!-- Stars + Meta -->
-                            <div class="flex flex-wrap items-center gap-4 mb-4 text-sm">
-                                <div class="flex items-center gap-1">
+                            <div class="d-flex flex-wrap align-items-center gap-3 mb-3 fhp-fs-14">
+                                <div class="d-flex align-items-center gap-1">
                                     @for (int i = 1; i <= 5; i++)
                                     {
                                         <i class="@(i <= Math.Round(Model.AverageRating) ? "ri-star-fill text-warning" : "ri-star-line text-white/30")"></i>
                                     }
-                                    <span class="text-white/70 ms-1">@Model.AverageRating / 5 (@Model.RatingCount ratings)</span>
+                                    <span class="fhp-text-white-70 ms-1">@Model.AverageRating / 5 (@Model.RatingCount ratings)</span>
                                 </div>
-                                <span class="text-white/60"><i class="ri-eye-line me-1"></i>@Model.Item.ViewCount.ToString("N0") views</span>
+                                <span class="fhp-text-white-60"><i class="ri-eye-line me-1"></i>@Model.Item.ViewCount.ToString("N0") views</span>
                                 @if (Model.Item.ReleaseDate.HasValue)
                                 {
-                                    <span class="text-white/60"><i class="ri-calendar-line me-1"></i>@Model.Item.ReleaseDate.Value.Year</span>
+                                    <span class="fhp-text-white-60"><i class="ri-calendar-line me-1"></i>@Model.Item.ReleaseDate.Value.Year</span>
                                 }
                             </div>
 
-                            <p class="text-white/70 text-base leading-relaxed mb-6">
+                            <p class="fhp-text-white-70 fs-6 lh-lg mb-4">
                                 @(string.IsNullOrWhiteSpace(Model.Item.Description)
                                     ? "No synopsis available for this title."
                                     : Model.Item.Description)
@@ -85,7 +85,7 @@
                         </div>
 
                         <!-- Actions -->
-                        <div class="flex flex-wrap gap-3 pt-4 border-t border-white/10">
+                        <div class="d-flex flex-wrap fhp-gap-12 pt-3 border-top fhp-border-white-10">
                             @if (Model.Trailer != null)
                             {
                                 <button type="button"
@@ -97,7 +97,7 @@
                             @if (!string.IsNullOrWhiteSpace(Model.Item.OfficialWebsiteUrl))
                             {
                                 <a href="@Model.Item.OfficialWebsiteUrl" target="_blank" rel="noopener"
-                                   class="btn btn-outline-secondary text-white border-white/30 hover:bg-white/10 transition-all px-5 py-2 rounded-full">
+                                   class="btn btn-outline-secondary text-white fhp-border-white-30 fhp-hover-bg-white-10 fhp-transition fhp-px-20 py-2 rounded-pill">
                                     <i class="ri-external-link-line me-1"></i> Official Site
                                 </a>
                             }
@@ -113,7 +113,7 @@
                                 </button>
                             }
                             <a asp-controller="Streaming" asp-action="Index"
-                               class="btn btn-link text-white/60 text-decoration-none">
+                               class="btn btn-link fhp-text-white-60 text-decoration-none">
                                 <i class="ri-arrow-left-line me-1"></i> Back
                             </a>
                         </div>
@@ -125,20 +125,20 @@
         <!-- Trailer / Embed -->
         @if (Model.Trailer != null && !string.IsNullOrWhiteSpace(Model.Trailer.EmbedUrl))
         {
-            <div id="trailerSection" class="mb-10">
-                <h2 class="text-2xl font-bold text-white mb-4">
+            <div id="trailerSection" class="fhp-mb-40">
+                <h2 class="fhp-fs-24 fw-bold text-white mb-3">
                     <i class="ri-play-circle-line me-2 text-primary"></i>Official Trailer
                 </h2>
-                <div class="relative bg-black rounded-2xl overflow-hidden border border-white/10 shadow-2xl"
+                <div class="position-relative bg-black rounded-5 overflow-hidden border fhp-border-white-10 shadow-lg"
                      style="padding-top: 56.25%;">
                     <iframe src="@Model.Trailer.EmbedUrl"
-                            class="absolute inset-0 w-full h-full border-0"
+                            class="position-absolute top-0 bottom-0 start-0 end-0 w-100 h-100 border-0"
                             title="@Model.Item.Title – Official Trailer"
                             allowfullscreen loading="lazy"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
                     </iframe>
                 </div>
-                <p class="text-white/40 text-xs mt-2 text-center">
+                <p class="fhp-text-white-40 fhp-fs-12 mt-2 text-center">
                     <i class="ri-information-line me-1"></i>
                     Trailers are embedded directly from official distributor channels (YouTube, Vimeo, etc.) and remain the property of their respective copyright holders.
                 </p>
@@ -148,24 +148,24 @@
         <!-- Related Titles -->
         @if (Model.Related.Count > 0)
         {
-            <h2 class="text-2xl font-bold text-white mb-6">You Might Also Like</h2>
+            <h2 class="fhp-fs-24 fw-bold text-white mb-4">You Might Also Like</h2>
             <div class="row g-4">
                 @foreach (var r in Model.Related)
                 {
                     var rc = string.IsNullOrWhiteSpace(r.ThumbnailUrl) ? "/assets/images/categories/category3.jpg" : r.ThumbnailUrl;
                     <div class="col-6 col-sm-4 col-md-3 col-xl-2">
-                        <div class="group bg-[#18181f] border border-white/10 rounded-xl overflow-hidden hover:border-primary/40 transition-all">
-                            <div class="relative aspect-[2/3] overflow-hidden">
+                        <div class="fhp-group fhp-bg-18181f border fhp-border-white-10 rounded-4 overflow-hidden fhp-hover-border-primary-40 fhp-transition">
+                            <div class="position-relative fhp-aspect-2-3 overflow-hidden">
                                 <img src="@rc" alt="@r.Title"
-                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                     class="w-100 h-100 fhp-object-cover fhp-group-hover-scale-105 fhp-transition-transform fhp-dur500"
                                      loading="lazy" />
                             </div>
-                            <div class="p-3">
-                                <h5 class="text-white font-bold text-xs truncate" title="@r.Title">
+                            <div class="fhp-p-12">
+                                <h5 class="text-white fw-bold fhp-fs-12 text-truncate" title="@r.Title">
                                     <a asp-controller="Streaming" asp-action="Details" asp-route-id="@r.ContentId"
-                                       class="hover:text-primary transition-colors">@r.Title</a>
+                                       class="fhp-hover-text-primary fhp-transition-colors">@r.Title</a>
                                 </h5>
-                                <span class="text-white/40 text-[10px]">@r.Category.Name</span>
+                                <span class="fhp-text-white-40 fhp-fs-10">@r.Category.Name</span>
                             </div>
                         </div>
                     </div>

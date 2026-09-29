@@ -1,49 +1,49 @@
 @* Closing call-to-action, copied from the template: a red panel over the page
    artwork, the headline, the yellow Join Now button and the rotating badge -
    sitting half on the white bed and half on the navy one. *@
-<div class="relative z-[1]">
-    <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
+<div class="position-relative fhp-z-1">
+    <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
         <div
-            class="bg-primary py-[60px] md:py-[80px] lg:py-[100px] px-[20px] md:px-[40px] lg:px-[60px] xl:px-[100px] 2xl:px-[145px] relative z-[1] bg-cover bg-center bg-no-repeat rounded-[10px] md:flex items-center justify-between gap-[25px] text-center ltr:md:text-left rtl:md:text-right"
+            class="bg-primary fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-px-20 fhp-md-px-40 fhp-lg-px-60 fhp-xl-px-100 fhp-xxl-px-145 position-relative fhp-z-1 fhp-bg-cover fhp-bg-center fhp-bg-norepeat fhp-r-10 d-md-flex align-items-center justify-content-between fhp-gap-25 text-center fhp-ltr-md:text-left fhp-rtl-md:text-right"
             style="background-image: url(/assets/images/bg-images/bg-image2.jpg);"
         >
-            <div class="lg:max-w-[450px] mb-[25px] md:mb-0">
-                <h2 class="mb-[20px] md:mb-[25px] lg:mb-[30px] text-[22px] md:text-[26px] lg:text-[32px] xl:text-[40px] leading-[1.07] text_animation">
+            <div class="fhp-lg-maxw-450 fhp-mb-25 md-mb-0">
+                <h2 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fhp-fs-22 fhp-md-fs-26 fhp-lg-fs-32 fhp-xl-fs-40 fhp-leading-1-07 fhp-text-animation">
                     Join FanHubPlus And Explore Endless Fandoms
                 </h2>
                 <a
                     asp-controller="Account" asp-action="Register"
-                    class="secondary-btn hover:!bg-black hover:!text-white hover:!border-black"
+                    class="secondary-btn fhp-hover-!bg-black fhp-hover-!text-white fhp-hover-!border-black"
                 >
                     Join Now
                 </a>
             </div>
             <div
-                class="w-[200px] h-[200px] mx-auto md:mx-0 rounded-full bg-black relative text-center"
+                class="fhp-w-200 fhp-h-200 mx-auto md-mx-0 rounded-pill bg-black position-relative text-center"
                 data-cue="zoomIn"
             >
                 <img
                     src="~/assets/images/icons/ico.svg"
-                    class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                    class="position-absolute top-50 start-50 fhp-transform fhp-tx-n50 fhp-ty-n50"
                     alt="FanHubPlus"
                 >
                 <a
                     asp-controller="Account" asp-action="Register"
-                    class="absolute inset-0 z-[1] rounded-full block"
+                    class="position-absolute top-0 bottom-0 start-0 end-0 fhp-z-1 rounded-pill d-block"
                 ></a>
-                <div class="absolute left-0 right-0 mx-auto top-1/2 transform -translate-y-1/2">
+                <div class="position-absolute start-0 end-0 mx-auto top-50 fhp-transform fhp-ty-n50">
                     <img
                         src="~/assets/images/icons/dashed-border.png"
-                        class="rotateme"
+                        class="fhp-rotateme"
                         alt=""
                     >
                 </div>
             </div>
             <div
-                class="absolute inset-0 -z-[1] rounded-[10px] backdrop-blur-[0.5px]"
+                class="position-absolute top-0 bottom-0 start-0 end-0 fhp-z-n1 fhp-r-10 fhp-backdrop-blur-0-5px"
                 style="background: linear-gradient(89.8deg, rgba(244, 27, 59, 0) 42.83%, rgba(154, 5, 27, 0.67) 99.82%);"
             ></div>
         </div>
     </div>
-    <div class="absolute left-0 right-0 bottom-0 h-[50%] -z-[1] bg-navy-black"></div>
+    <div class="position-absolute start-0 end-0 bottom-0 fhp-h-50pct fhp-z-n1 fhp-bg-navy"></div>
 </div>

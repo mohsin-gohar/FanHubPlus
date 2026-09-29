@@ -16,34 +16,34 @@
         ? $"{Model.Tag} · drops {d:dd MMM yyyy}"
         : Model.Tag.ToString();
 }
-<div class="group">
-    <div class="text-center relative mb-[15px] md:mb-[20px]">
-        <a asp-controller="Merch" asp-action="Details" asp-route-id="@Model.ItemId" class="block rounded-[5px] overflow-hidden">
+<div class="fhp-group">
+    <div class="text-center position-relative fhp-mb-15 fhp-md-mb-20">
+        <a asp-controller="Merch" asp-action="Details" asp-route-id="@Model.ItemId" class="d-block fhp-r-5 overflow-hidden">
             <img
                 src="@cover"
-                class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110"
+                class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110"
                 alt="@Model.Name"
                 loading="lazy"
             >
         </a>
         <a
             asp-controller="Merch" asp-action="Details" asp-route-id="@Model.ItemId"
-            class="secondary-btn uppercase absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 opacity-0 invisible group-hover:opacity-100 group-hover:visible"
+            class="secondary-btn text-uppercase position-absolute top-50 start-50 fhp-ty-n50 fhp-tx-n50 opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible"
         >
             View Product
         </a>
     </div>
-    <div class="flex items-center justify-between mb-[8px] gap-[10px]">
+    <div class="d-flex align-items-center justify-content-between fhp-mb-8 fhp-gap-10">
         <h3 class="@name">
-            <a asp-controller="Merch" asp-action="Details" asp-route-id="@Model.ItemId" class="transition-all ease-in-out duration-300 @hover">
+            <a asp-controller="Merch" asp-action="Details" asp-route-id="@Model.ItemId" class="fhp-transition fhp-ease fhp-dur300 @hover">
                 @Model.Name
             </a>
         </h3>
-        <div class="inline-block relative font-bold ltr:pl-[20px] rtl:pr-[20px] flex-none">
-            <i class="ri-eye-line text-[#FF962E] absolute ltr:left-0 rtl:right-0 top-1/2 transform -translate-y-1/2"></i>(@Model.ViewCount)
+        <div class="d-inline-block position-relative fw-bold fhp-ltr-pl-[20px] fhp-rtl-pr-[20px] flex-shrink-0">
+            <i class="ri-eye-line fhp-text-ff962e position-absolute fhp-ltr-start-0 fhp-rtl-end-0 top-50 fhp-transform fhp-ty-n50"></i>(@Model.ViewCount)
         </div>
     </div>
-    <span class="block font-bold @accent">
+    <span class="d-block fw-bold @accent">
         @status
     </span>
 </div>

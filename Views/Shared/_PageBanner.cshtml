@@ -48,16 +48,16 @@
     var middle = trail.Take(Math.Max(0, trail.Count - 1)).ToList();
 }
 <div
-    class="pt-[130px] md:pt-[140px] lg:pt-[155px] xl:pt-[195px] 2xl:pt-[205px] pb-[60px] md:pb-[80px] lg:pb-[105px] xl:pb-[125px] 2xl:pb-[140px] rounded-b-[10px] relative bg-no-repeat bg-center bg-cover text-center"
+    class="fhp-pt-130 fhp-md-pt-140 fhp-lg-pt-155 fhp-xl-pt-195 fhp-xxl-pt-205 fhp-pb-60 fhp-md-pb-80 fhp-lg-pb-105 fhp-xl-pb-125 fhp-xxl-pb-140 fhp-rb-10 position-relative fhp-bg-norepeat fhp-bg-center fhp-bg-cover text-center"
     style="background-image: url(@art);"
 >
     <div class="container">
-        <h1 class="!font-black font-secondary uppercase tracking-[0.05em] text-[22px] md:text-[26px] lg:text-[32px] leading-none mb-[15px]">
+        <h1 class="!font-black fhp-font-secondary text-uppercase fhp-tracking-0-05em fhp-fs-22 fhp-md-fs-26 fhp-lg-fs-32 lh-1 fhp-mb-15">
             @current
         </h1>
-        <ul class="flex items-center justify-center flex-wrap gap-[10px] uppercase font-bold tracking-[0.1em] text-13 md:text-sm text-body">
+        <ul class="d-flex align-items-center justify-content-center flex-wrap fhp-gap-10 text-uppercase fw-bold fhp-tracking-0-1em fhp-fs-13 fhp-md-fs-14 fhp-text-body">
             <li>
-                <a asp-controller="Home" asp-action="Index" class="transition-all duration-300 ease-in-out hover:text-primary">
+                <a asp-controller="Home" asp-action="Index" class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-primary">
                     Home
                 </a>
             </li>
@@ -69,7 +69,7 @@
                 <li>
                     @if (!string.IsNullOrWhiteSpace(crumb.Url))
                     {
-                        <a href="@crumb.Url" class="transition-all duration-300 ease-in-out hover:text-primary">@crumb.Text</a>
+                        <a href="@crumb.Url" class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-primary">@crumb.Text</a>
                     }
                     else
                     {
@@ -85,5 +85,5 @@
             </li>
         </ul>
     </div>
-    <div class="h-[15px] mx-auto max-w-[535px] xl:max-w-[635px] absolute bottom-0 left-0 right-0 bg-white rounded-t-[10px] hidden lg:block"></div>
+    <div class="fhp-h-15 mx-auto fhp-maxw-535 fhp-xl-maxw-635 position-absolute bottom-0 start-0 end-0 bg-white fhp-rt-10 d-none d-lg-block"></div>
 </div>

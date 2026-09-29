@@ -4,68 +4,68 @@
     Controlled entirely via JavaScript (playAudioTrack / window.fhpPlayer).
 *@
 <div id="audioPlayerBar"
-     class="fixed bottom-0 left-0 right-0 z-[100] bg-[#0e0e14] border-t border-white/10 shadow-2xl transform translate-y-full transition-transform duration-500 ease-in-out"
+     class="position-fixed bottom-0 start-0 end-0 fhp-z-100 fhp-bg-0e0e14 border-top fhp-border-white-10 shadow-lg fhp-transform fhp-translate-y-full fhp-transition-transform fhp-dur500 fhp-ease"
      role="region"
      aria-label="Audio Player">
 
-    <div class="container py-3">
-        <div class="flex items-center gap-4">
+    <div class="container fhp-py-12">
+        <div class="d-flex align-items-center gap-3">
 
             <!-- Album Art -->
             <img id="apBarCover"
                  src="/assets/images/categories/category1.jpg"
                  alt="Now Playing"
-                 class="w-12 h-12 rounded-lg object-cover flex-none border border-white/10 shadow" />
+                 class="fhp-w-48 fhp-h-48 rounded-3 fhp-object-cover flex-shrink-0 border fhp-border-white-10 shadow" />
 
             <!-- Track Info -->
-            <div class="flex-1 min-w-0">
-                <p id="apBarTitle" class="text-white font-bold text-sm truncate leading-tight">Track Title</p>
-                <p id="apBarArtist" class="text-white/50 text-xs truncate">Artist</p>
+            <div class="flex-grow-1 fhp-minw-0">
+                <p id="apBarTitle" class="text-white fw-bold fhp-fs-14 text-truncate lh-sm">Track Title</p>
+                <p id="apBarArtist" class="fhp-text-white-50 fhp-fs-12 text-truncate">Artist</p>
             </div>
 
             <!-- Controls -->
-            <div class="flex items-center gap-3">
+            <div class="d-flex align-items-center fhp-gap-12">
                 <button id="apBarPrev" type="button"
-                        class="text-white/60 hover:text-white text-xl transition-colors"
+                        class="fhp-text-white-60 fhp-hover-text-white fhp-fs-20 fhp-transition-colors"
                         aria-label="Previous track" title="Previous">
                     <i class="ri-skip-back-fill"></i>
                 </button>
 
                 <button id="apBarPlay" type="button"
-                        class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center text-xl hover:scale-110 transition-transform shadow-lg"
+                        class="fhp-w-40 fhp-h-40 rounded-pill bg-primary text-white d-flex align-items-center justify-content-center fhp-fs-20 fhp-hover-scale-110 fhp-transition-transform shadow-lg"
                         aria-label="Play / Pause">
                     <i class="ri-play-fill" id="apBarPlayIcon"></i>
                 </button>
 
                 <button id="apBarNext" type="button"
-                        class="text-white/60 hover:text-white text-xl transition-colors"
+                        class="fhp-text-white-60 fhp-hover-text-white fhp-fs-20 fhp-transition-colors"
                         aria-label="Next track" title="Next">
                     <i class="ri-skip-forward-fill"></i>
                 </button>
             </div>
 
             <!-- Progress -->
-            <div class="hidden md:flex items-center gap-2 flex-1 max-w-[280px]">
-                <span id="apBarCurrentTime" class="text-xs text-white/50 tabular-nums w-[38px] text-right">0:00</span>
+            <div class="d-none d-md-flex align-items-center gap-2 flex-grow-1 fhp-maxw-280">
+                <span id="apBarCurrentTime" class="fhp-fs-12 fhp-text-white-50 fhp-nums fhp-w-38 text-end">0:00</span>
                 <input id="apBarSeek" type="range" min="0" max="100" value="0"
-                       class="flex-1 accent-primary h-[3px] cursor-pointer"
+                       class="flex-grow-1 fhp-accent-primary fhp-h-3 fhp-cursor-pointer"
                        aria-label="Seek" />
-                <span id="apBarDuration" class="text-xs text-white/50 tabular-nums w-[38px]">0:00</span>
+                <span id="apBarDuration" class="fhp-fs-12 fhp-text-white-50 fhp-nums fhp-w-38">0:00</span>
             </div>
 
             <!-- Volume -->
-            <div class="hidden lg:flex items-center gap-2">
-                <button id="apBarMute" type="button" class="text-white/60 hover:text-white transition-colors text-lg" aria-label="Mute">
+            <div class="d-none d-lg-flex align-items-center gap-2">
+                <button id="apBarMute" type="button" class="fhp-text-white-60 fhp-hover-text-white fhp-transition-colors fhp-fs-18" aria-label="Mute">
                     <i class="ri-volume-up-line" id="apBarMuteIcon"></i>
                 </button>
                 <input id="apBarVolume" type="range" min="0" max="1" step="0.05" value="0.8"
-                       class="w-[80px] accent-primary h-[3px] cursor-pointer"
+                       class="fhp-w-80 fhp-accent-primary fhp-h-3 fhp-cursor-pointer"
                        aria-label="Volume" />
             </div>
 
             <!-- Close -->
             <button id="apBarClose" type="button"
-                    class="text-white/40 hover:text-white transition-colors text-lg ms-2"
+                    class="fhp-text-white-40 fhp-hover-text-white fhp-transition-colors fhp-fs-18 ms-2"
                     aria-label="Close player">
                 <i class="ri-close-line"></i>
             </button>

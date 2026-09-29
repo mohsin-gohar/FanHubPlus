@@ -11,34 +11,34 @@
     var story = (Model.Body ?? string.Empty).Trim();
     var excerpt = story.Length > 120 ? story[..120].TrimEnd() + "…" : story;
 }
-<div class="group text-center">
-    <div class="relative rounded-[5px] mb-[20px] lg:mb-[22px]">
-        <a href="@art" data-fslightbox="fan-art" class="block overflow-hidden rounded-[5px]">
+<div class="fhp-group text-center">
+    <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
+        <a href="@art" data-fslightbox="fan-art" class="d-block overflow-hidden fhp-r-5">
             <img
                 src="@art"
-                class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110"
+                class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110"
                 alt="@Model.Title"
                 loading="lazy"
             >
         </a>
-        <div class="flex items-center justify-center flex-wrap gap-[5px] absolute bottom-[10px] left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:bottom-[20px]">
-            <span class="flex items-center justify-center text-white bg-white/30 rounded-full px-[12px] h-[30px] text-13 font-bold">
+        <div class="d-flex align-items-center justify-content-center flex-wrap fhp-gap-5 position-absolute fhp-bottom-10px start-50 fhp-transform fhp-tx-n50 fhp-transition fhp-dur300 fhp-ease opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible fhp-group-hover-bottom-20px">
+            <span class="d-flex align-items-center justify-content-center text-white fhp-bg-white-30 rounded-pill fhp-px-12 fhp-h-30 fhp-fs-13 fw-bold">
                 @author
             </span>
-            <a href="@art" data-fslightbox="fan-art" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="View the full artwork">
+            <a href="@art" data-fslightbox="fan-art" class="d-flex align-items-center justify-content-center text-white fhp-bg-white-30 rounded-pill fhp-w-30 fhp-h-30 fhp-transition fhp-dur300 fhp-ease fhp-hover-bg-primary fhp-hover-text-white" title="View the full artwork">
                 <i class="ri-eye-line"></i>
             </a>
         </div>
     </div>
-    <h3 class="text-base md:text-lg lg:text-xl leading-none mb-[10px]">
+    <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
         @Model.Title
     </h3>
-    <ul class="text-13 md:text-sm font-bold text-body/70 flex items-center justify-center flex-wrap gap-[11px] uppercase tracking-[0.1em]">
+    <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
         <li>
             @Model.CreatedAt.ToString("dd MMM yyyy")
         </li>
         <li>
-            <div class="w-px bg-white/15 h-[12px]"></div>
+            <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
         </li>
         <li>
             Fan Art
@@ -46,7 +46,7 @@
     </ul>
     @if (!string.IsNullOrEmpty(excerpt))
     {
-        <p class="mt-[12px] mb-0">
+        <p class="fhp-mt-12 mb-0">
             @excerpt
         </p>
     }

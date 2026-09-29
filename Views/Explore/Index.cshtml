@@ -33,10 +33,10 @@
 <partial name="_PageBanner" model="trail" />
 
 <!-- Movies & TV Shows -->
-<div class="py-[60px] md:py-[80px] lg:py-[100px] xl:py-[120px] 2xl:py-[140px]">
-    <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
+<div class="fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-xl-py-120 fhp-xxl-py-140">
+    <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
         <form method="get" asp-controller="Explore" asp-action="Index">
-            <div class="flex items-center flex-wrap gap-[15px] md:gap-[20px] lg:gap-[25px] mb-[20px]">
+            <div class="d-flex align-items-center flex-wrap fhp-gap-15 fhp-md-gap-20 fhp-lg-gap-25 fhp-mb-20">
                 <a
                     asp-controller="Explore" asp-action="Index"
                     asp-route-search="@Model.Search" asp-route-categoryId="@Model.CategoryId" asp-route-sort="@Model.Sort"
@@ -55,8 +55,8 @@
                         @Label(type)
                     </a>
                 }
-                <span class="inline-block relative ltr:pl-[20px] rtl:pr-[20px]">
-                    <i class="ri-filter-2-fill absolute top-1/2 -translate-y-1/2 ltr:left-0 rtl:right-0"></i>
+                <span class="d-inline-block position-relative fhp-ltr-pl-[20px] fhp-rtl-pr-[20px]">
+                    <i class="ri-filter-2-fill position-absolute top-50 fhp-ty-n50 fhp-ltr-start-0 fhp-rtl-end-0"></i>
                     Filters
                 </span>
                 <select name="categoryId" class="@Select" onchange="this.form.submit()" aria-label="Fandom">
@@ -81,24 +81,24 @@
                         </option>
                     }
                 </select>
-                <label class="sr-only" for="exploreSearch">Search titles</label>
+                <label class="visually-hidden" for="exploreSearch">Search titles</label>
                 <input
                     id="exploreSearch" type="search" name="search" value="@Model.Search"
-                    class="form-input !w-auto !h-[44px]" placeholder="Search titles"
+                    class="form-input !w-auto fhp-h-44" placeholder="Search titles"
                 />
                 <button class="primary-btn" type="submit">
                     Apply
                 </button>
-                <a asp-controller="Explore" asp-action="Index" class="inline-block text-primary transition-all ease-in-out duration-300 hover:text-black">
+                <a asp-controller="Explore" asp-action="Index" class="d-inline-block text-primary fhp-transition fhp-ease fhp-dur300 fhp-hover-text-black">
                     Reset
                 </a>
             </div>
-            <div class="sm:flex items-center justify-between gap-[15px] mb-[25px]">
-                <p class="!mb-0 flex-none">
+            <div class="d-sm-flex align-items-center justify-content-between fhp-gap-15 fhp-mb-25">
+                <p class="!mb-0 flex-shrink-0">
                     Showing results @from–@to of @Model.TotalItems
                 </p>
-                <div class="flex items-center gap-[5px] mt-[10px] sm:mt-0">
-                    <span class="block flex-none">
+                <div class="d-flex align-items-center fhp-gap-5 fhp-mt-10 sm-mt-0">
+                    <span class="d-block flex-shrink-0">
                         Sort by:
                     </span>
                     <select name="sort" class="@Select" onchange="this.form.submit()" aria-label="Sort by">
@@ -114,11 +114,11 @@
         </form>
         @if (Model.Items.Count == 0)
         {
-            <div class="text-center py-[40px] md:py-[60px]">
-                <h3 class="text-[22px] md:text-[26px] leading-[1.07] mb-[15px]">
+            <div class="text-center fhp-py-40 fhp-md-py-60">
+                <h3 class="fhp-fs-22 fhp-md-fs-26 fhp-leading-1-07 fhp-mb-15">
                     Nothing matches those filters
                 </h3>
-                <p class="mb-[25px]">
+                <p class="fhp-mb-25">
                     Try a broader search, or reset the filters to see the whole library.
                 </p>
                 <a asp-controller="Explore" asp-action="Index" class="primary-btn">
@@ -128,7 +128,7 @@
         }
         else
         {
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-[25px]">
+            <div class="d-grid fhp-gcol-1 fhp-sm-gcol-2 fhp-lg-gcol-3 fhp-xl-gcol-5 fhp-gap-25">
                 @foreach (var item in Model.Items)
                 {
                     <partial name="_ContentCard" model="item" />

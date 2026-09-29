@@ -94,12 +94,12 @@
         })();
     </script>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-vh-100 d-flex flex-column">
 
     <!-- Preloader -->
     <div
         id="preloader"
-        class="fixed top-0 left-0 right-0 bottom-0 z-[999] bg-black flex items-center justify-center"
+        class="position-fixed top-0 start-0 end-0 bottom-0 fhp-z-999 bg-black d-flex align-items-center justify-content-center"
     >
         <div class="loader"></div>
     </div>
@@ -351,7 +351,7 @@
                             >
                                 <input type="text" name="search" class="form-control form-input" placeholder="Search for anything" aria-label="Search">
                                 <button
-                                    class="position-absolute top-50 translate-middle-y end-0 me-3 border-0 bg-transparent p-0 fs-5 lh-1"
+                                    class="position-absolute top-50 translate-middle-y end-0 fhp-me-12 border-0 bg-transparent p-0 fs-5 lh-1"
                                     type="submit"
                                     aria-label="Submit search"
                                 >
@@ -423,26 +423,26 @@
 
     <!-- Sidebar Modal -->
     <div class="sidebar-modal">
-        <div class="p-[20px] md:p-[30px] lg:px-[40px] flex items-center justify-between bg-black border-b border-white/8">
+        <div class="fhp-p-20 fhp-md-p-30 fhp-lg-px-40 d-flex align-items-center justify-content-between bg-black border-bottom fhp-border-white-8">
             <a
                 asp-controller="Home" asp-action="Index"
-                class="flex-none inline-block"
+                class="flex-shrink-0 d-inline-block"
             >
                 <img src="~/assets/images/logo.svg" alt="FanHubPlus logo">
             </a>
             <button
                 type="button"
-                class="inline-block text-xl leading-none text-white transition-all duration-300 ease-in-out hover:text-secondary"
+                class="d-inline-block fhp-fs-20 lh-1 text-white fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary"
             >
                 <i class="flaticon-close"></i>
             </button>
         </div>
         <div
-            class="overflow-y-scroll h-screen scrollbar"
+            class="overflow-y-scroll fhp-h-screen fhp-scrollbar"
             data-lenis-prevent
         >
-            <ul class="sidebar-navbar-nav p-[20px] md:p-[30px] lg:px-[40px]">
-                <li class="nav-item mb-[20px] last:mb-0">
+            <ul class="sidebar-navbar-nav fhp-p-20 fhp-md-p-30 fhp-lg-px-40">
+                <li class="nav-item fhp-mb-20 fhp-last-mb-0">
                     <a
                         asp-controller="Home" asp-action="Index"
                         class="@SidePlain@Mark("home")"
@@ -450,7 +450,7 @@
                         Home
                     </a>
                 </li>
-                <li class="nav-item mb-[20px] last:mb-0">
+                <li class="nav-item fhp-mb-20 fhp-last-mb-0">
                     <a
                         href="javascript:void(0);"
                         class="@SideDrop@Mark("explore")"
@@ -458,44 +458,44 @@
                         Explore
                     </a>
                     <ul class="@SideMenu">
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Explore" asp-action="Index" class="@SideItem@Mark("explore")">
                                 All Titles
                             </a>
                         </li>
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Characters" asp-action="Index" class="@SideItem@Mark("characters")">
                                 Characters
                             </a>
                         </li>
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="FanArt" asp-action="Index" class="@SideItem@Mark("fanart")">
                                 Fan Art
                             </a>
                         </li>
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Merch" asp-action="Index" class="@SideItem@Mark("merch")">
                                 Merchandise
                             </a>
                         </li>
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Gaming" asp-action="Index" class="@SideItem@Mark("gaming")">
                                 Gaming Hub
                             </a>
                         </li>
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Music" asp-action="Index" class="@SideItem@Mark("music")">
                                 Music &amp; Soundtracks
                             </a>
                         </li>
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Bookmarks" asp-action="Index" class="@SideItem@Mark("bookmarks")">
                                 My Bookmarks
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item mb-[20px] last:mb-0">
+                <li class="nav-item fhp-mb-20 fhp-last-mb-0">
                     <a
                         href="javascript:void(0);"
                         class="@SideDrop@Mark("news")"
@@ -503,34 +503,34 @@
                         Community
                     </a>
                     <ul class="@SideMenu">
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="News" asp-action="Index" class="@SideItem@Mark("news")">
                                 News &amp; Timeline
                             </a>
                         </li>
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Blog" asp-action="Index" class="@SideItem@Mark("blog")">
                                 Blog
                             </a>
                         </li>
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Events" asp-action="Index" class="@SideItem@Mark("events")">
                                 Events
                             </a>
                         </li>
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Chatbot" asp-action="Index" class="@SideItem@Mark("chatbot")">
                                 FanBot Chat
                             </a>
                         </li>
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Sitemap" asp-action="Index" class="@SideItem@Mark("sitemap")">
                                 Sitemap
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item mb-[20px] last:mb-0">
+                <li class="nav-item fhp-mb-20 fhp-last-mb-0">
                     <a
                         href="javascript:void(0);"
                         class="@SideDrop@Mark("support")"
@@ -538,34 +538,34 @@
                         Pages
                     </a>
                     <ul class="@SideMenu">
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Support" asp-action="Index" class="@SideItem@Mark("support")">
                                 FAQ &amp; Support
                             </a>
                         </li>
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Contact" asp-action="Index" class="@SideItem@Mark("contact")">
                                 Contact Us
                             </a>
                         </li>
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Bookmarks" asp-action="Index" class="@SideItem@Mark("bookmarks")">
                                 My Bookmarks
                             </a>
                         </li>
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Account" asp-action="Profile" class="@SideItem@Mark("account")">
                                 My Account
                             </a>
                         </li>
-                        <li class="nav-item px-[20px] mb-[15px] last:mb-0">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
                             <a asp-controller="Account" asp-action="ResetPassword" class="@SideItem">
                                 Forgot Password
                             </a>
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item mb-[20px] last:mb-0">
+                <li class="nav-item fhp-mb-20 fhp-last-mb-0">
                     <a
                         asp-controller="Blog" asp-action="Index"
                         class="@SidePlain@Mark("blog")"
@@ -575,11 +575,11 @@
                 </li>
             </ul>
         </div>
-        <div class="p-[20px] md:p-[30px] lg:px-[40px] bg-black border-t border-white/8">
-            <div class="flex items-center gap-[25px] md:gap-[30px] mb-[20px] md:mb-[25px]">
+        <div class="fhp-p-20 fhp-md-p-30 fhp-lg-px-40 bg-black border-top fhp-border-white-8">
+            <div class="d-flex align-items-center fhp-gap-25 fhp-md-gap-30 fhp-mb-20 fhp-md-mb-25">
                 <a
                     asp-controller="Bookmarks" asp-action="Index"
-                    class="text-xl relative inline-block text-white transition-all duration-300 ease-in-out hover:text-secondary"
+                    class="fhp-fs-20 position-relative d-inline-block text-white fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary"
                 >
                     <i class="ri-heart-3-line"></i>
                 </a>
@@ -603,11 +603,11 @@
             </div>
             <form
                 asp-controller="Explore" asp-action="Index" method="get"
-                class="relative"
+                class="position-relative"
             >
                 <input type="text" name="search" class="form-input" placeholder="Search for anything">
                 <button
-                    class="absolute top-1/2 -translate-y-1/2 ltr:right-[20px] rtl:left-[20px] text-xl leading-none transition-all duration-300 ease-in-out hover:text-primary"
+                    class="position-absolute top-50 fhp-ty-n50 fhp-ltr-right-20px fhp-rtl-left-20px fhp-fs-20 lh-1 fhp-transition fhp-dur300 fhp-ease fhp-hover-text-primary"
                     type="submit"
                 >
                     <i class="ri-search-line"></i>
@@ -615,14 +615,14 @@
             </form>
         </div>
     </div>
-    <div class="backdrop"></div>
+    <div class="fhp-backdrop"></div>
     <!-- End Sidebar Modal -->
 
     <!-- Main content -->
-    <main class="flex-1@(darkBed ? "" : " bg-white text-[#666666]")">
+    <main class="flex-grow-1@(darkBed ? "" : " bg-white text-[#666666]")">
         @if (TempData["StatusMessage"] != null || TempData["StatusError"] != null || TempData["PasswordError"] != null)
         {
-            <div class="fixed top-[90px] md:top-[100px] left-0 right-0 z-[5] px-[15px]">
+            <div class="position-fixed fhp-top-90px fhp-md-top-100px start-0 end-0 fhp-z-5 fhp-px-15">
                 <div class="container">
                     <partial name="_Alerts" />
                 </div>
@@ -634,173 +634,173 @@
 
     <!-- Footer -->
     <footer
-        class="pt-[60px] md:pt-[80px] lg:pt-[100px] xl:pt-[120px] 2xl:pt-[140px] bg-navy-black bg-cover bg-center bg-no-repeat"
+        class="fhp-pt-60 fhp-md-pt-80 fhp-lg-pt-100 fhp-xl-pt-120 fhp-xxl-pt-140 fhp-bg-navy fhp-bg-cover fhp-bg-center fhp-bg-norepeat"
         style="background-image: url(/assets/images/bg-images/bg-image3.jpg);"
     >
         <div class="container">
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-[25px]">
+            <div class="d-grid fhp-gcol-2 fhp-sm-gcol-3 fhp-md-gcol-4 fhp-lg-gcol-5 fhp-gap-25">
                 <div>
-                    <h3 class="mb-[20px] md:mb-[25px] lg:mb-[30px] text-base md:text-lg lg:text-xl leading-none">
+                    <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
                         Explore
                     </h3>
-                    <ul class="text-body/80 font-bold text-13 md:text-sm lg:text-15 ltr:md:border-l rtl:md:border-r md:border-white/10 ltr:md:pl-[20px] rtl:md:pr-[20px]">
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Explore" asp-action="Index" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Explore" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 All Titles
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Characters" asp-action="Index" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Characters" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Characters
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="FanArt" asp-action="Index" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="FanArt" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Fan Art
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Merch" asp-action="Index" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Merch" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Merchandise
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Events" asp-action="Index" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Events" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Events
                             </a>
                         </li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="mb-[20px] md:mb-[25px] lg:mb-[30px] text-base md:text-lg lg:text-xl leading-none">
+                    <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
                         Community
                     </h3>
-                    <ul class="text-body/80 font-bold text-13 md:text-sm lg:text-15 ltr:md:border-l rtl:md:border-r md:border-white/10 ltr:md:pl-[20px] rtl:md:pr-[20px]">
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="News" asp-action="Index" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="News" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 News &amp; Timeline
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Blog" asp-action="Index" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Blog" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Blog
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Chatbot" asp-action="Index" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Chatbot" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 FanBot Chat
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Bookmarks" asp-action="Index" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Bookmarks" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 My Bookmarks
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Sitemap" asp-action="Index" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Sitemap" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Sitemap
                             </a>
                         </li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="mb-[20px] md:mb-[25px] lg:mb-[30px] text-base md:text-lg lg:text-xl leading-none">
+                    <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
                         Company
                     </h3>
-                    <ul class="text-body/80 font-bold text-13 md:text-sm lg:text-15 ltr:md:border-l rtl:md:border-r md:border-white/10 ltr:md:pl-[20px] rtl:md:pr-[20px]">
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Support" asp-action="Index" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Support" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 FAQ &amp; Support
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Contact" asp-action="Index" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Contact" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Contact Us
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Account" asp-action="Login" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Account" asp-action="Login" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Sign In
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Account" asp-action="Register" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Account" asp-action="Register" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Create Account
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Account" asp-action="Profile" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Account" asp-action="Profile" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 My Account
                             </a>
                         </li>
                     </ul>
                 </div>
                 <div>
-                    <h3 class="mb-[20px] md:mb-[25px] lg:mb-[30px] text-base md:text-lg lg:text-xl leading-none">
+                    <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
                         Fandoms
                     </h3>
-                    <ul class="text-body/80 font-bold text-13 md:text-sm lg:text-15 ltr:md:border-l rtl:md:border-r md:border-white/10 ltr:md:pl-[20px] rtl:md:pr-[20px]">
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Explore" asp-action="Index" asp-route-type="Movie" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Explore" asp-action="Index" asp-route-type="Movie" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Movies
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Explore" asp-action="Index" asp-route-type="Series" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Explore" asp-action="Index" asp-route-type="Series" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 TV Shows
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Explore" asp-action="Index" asp-route-type="Anime" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Explore" asp-action="Index" asp-route-type="Anime" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Anime
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Explore" asp-action="Index" asp-route-type="Game" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Explore" asp-action="Index" asp-route-type="Game" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Gaming
                             </a>
                         </li>
-                        <li class="mb-[13px] md:mb-[15px] last:mb-0">
-                            <a asp-controller="Explore" asp-action="Index" asp-route-sort="views" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Explore" asp-action="Index" asp-route-sort="views" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Most Watched
                             </a>
                         </li>
                     </ul>
                 </div>
-                <div class="col-span-2 lg:col-span-1">
-                    <h3 class="mb-[20px] md:mb-[25px] lg:mb-[30px] text-base md:text-lg lg:text-xl leading-none">
+                <div class="fhp-gspan-2 lg:col-span-1">
+                    <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
                         Address
                     </h3>
-                    <ul class="text-body/80 font-bold text-13 md:text-sm lg:text-15 ltr:md:border-l rtl:md:border-r md:border-white/10 ltr:md:pl-[20px] rtl:md:pr-[20px]">
-                        <li class="mb-[15px] md:mb-[17px] last:mb-0">
-                            <a href="mailto:support@fanhubplus.com" class="text-white text-sm md:text-15 lg:text-base">
+                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                        <li class="fhp-mb-15 fhp-md-mb-17 fhp-last-mb-0">
+                            <a href="mailto:support@fanhubplus.com" class="text-white fhp-fs-14 fhp-md-fs-15 fs-6">
                                 support@fanhubplus.com
                             </a>
-                            <p class="mt-[5px]">
+                            <p class="fhp-mt-5">
                                 (for customer service and support)
                             </p>
                         </li>
-                        <li class="mb-[15px] md:mb-[17px] last:mb-0">
-                            <a href="tel:+12125550147" class="text-white text-sm md:text-15 lg:text-base">
+                        <li class="fhp-mb-15 fhp-md-mb-17 fhp-last-mb-0">
+                            <a href="tel:+12125550147" class="text-white fhp-fs-14 fhp-md-fs-15 fs-6">
                                 +1 (212) 555-0147
                             </a>
-                            <p class="mt-[5px]">
+                            <p class="fhp-mt-5">
                                 (for press, partners and creators)
                             </p>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="pt-[60px] md:pt-[80px] lg:pt-[100px] xl:pt-[120px] 2xl:pt-[140px]"></div>
-            <div class="md:flex items-center justify-between gap-[25px] text-center ltr:md:text-left rtl:md:text-right">
-                <a asp-controller="Home" asp-action="Index" class="inline-block">
+            <div class="fhp-pt-60 fhp-md-pt-80 fhp-lg-pt-100 fhp-xl-pt-120 fhp-xxl-pt-140"></div>
+            <div class="d-md-flex align-items-center justify-content-between fhp-gap-25 text-center fhp-ltr-md:text-left fhp-rtl-md:text-right">
+                <a asp-controller="Home" asp-action="Index" class="d-inline-block">
                     <img src="~/assets/images/logo-big.svg" alt="FanHubPlus logo">
                 </a>
-                <p class="flex-none mt-[15px] md:mt-0">
-                    Copyright <span class="text-secondary font-bold">FanHubPlus</span> All Rights Reserved <a href="https://envytheme.com/" class="text-secondary font-bold transition-all ease-in-out duration-300 hover:text-primary" target="_blank">EnvyTheme</a>
+                <p class="flex-shrink-0 fhp-mt-15 md-mt-0">
+                    Copyright <span class="text-secondary fw-bold">FanHubPlus</span> All Rights Reserved <a href="https://envytheme.com/" class="text-secondary fw-bold fhp-transition fhp-ease fhp-dur300 fhp-hover-text-primary" target="_blank">EnvyTheme</a>
                 </p>
             </div>
-            <div class="pb-[20px] md:pb-[30px] lg:pb-[40px] xl:pb-[50px]"></div>
+            <div class="fhp-pb-20 fhp-md-pb-30 fhp-lg-pb-40 fhp-xl-pb-50"></div>
         </div>
     </footer>
     <!-- End Footer -->

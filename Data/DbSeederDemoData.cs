@@ -34,10 +34,11 @@ public partial class DbSeeder
         }
 
         // ---------- Contents (Explorer catalogue) ----------
-        if (!_db.Contents.Any())
+        // The list lives outside the empty-table guard below so the backfill
+        // after it can reuse it. Both paths are title-keyed and never touch a
+        // row that already exists.
+        var contents = new List<Content>
         {
-            var contents = new List<Content>
-            {
                 new() { CategoryId = cat["Anime"], Title = "Attack on Titan", Type = ContentType.Series,
                         Genre = "Action, Dark Fantasy", PopularityScore = 980, ViewCount = 15400,
                         ReleaseDate = new DateTime(2013, 4, 7),
@@ -121,7 +122,9 @@ public partial class DbSeeder
                         ReleaseDate = new DateTime(1980, 5, 22), PlayableGameUrl = "https://freepacman.org/",
                         OfficialWebsiteUrl = "https://freepacman.org/",
                         Description = "Guide Pac-Man through the maze, eat dots, and avoid Blinky, Pinky, Inky, and Clyde!" }
-            };
+        };
+        if (!_db.Contents.Any())
+        {
             _db.Contents.AddRange(contents);
             await _db.SaveChangesAsync();
 
@@ -160,6 +163,50 @@ public partial class DbSeeder
 
             await _db.SaveChangesAsync();
         }
+
+        // ---------- Catalogue backfill (title-keyed, idempotent) ----------
+        // A database seeded by an older demo script predates rows the catalogue
+        // gained later (the four music tracks and the two playable games), and
+        // the empty-table guard above can never add them. Insert only demo
+        // titles the table is still missing, then wire up the audio embeds —
+        // keyed by EmbedUrl so a re-run is a no-op. Existing rows are never
+        // updated or deleted, so admin edits stay untouched.
+        var seededTitles = _db.Contents.Select(c => c.Title).ToList();
+        var missingContents = contents.Where(c => !seededTitles.Contains(c.Title)).ToList();
+        if (missingContents.Count > 0)
+        {
+            _db.Contents.AddRange(missingContents);
+            await _db.SaveChangesAsync();
+        }
+
+        var audioEmbeds = new (string Title, string Url, string Tag)[]
+        {
+            ("Unravel (Tokyo Ghoul OP)", "https://www.youtube.com/embed/7aMOurgDB-U", "Official Theme"),
+            ("Dynamite",                  "https://www.youtube.com/embed/gdZLi9oWNZg", "Official Video"),
+            ("Gurenge (Demon Slayer OP)", "https://www.youtube.com/embed/CwkzK-F0Hs0", "Official Track"),
+        };
+        var embeddedUrls = _db.MediaItems.Select(m => m.EmbedUrl).ToList();
+        var audioToAdd = audioEmbeds.Where(a => !embeddedUrls.Contains(a.Url)).ToList();
+        if (audioToAdd.Count > 0)
+        {
+            var audioTitles = audioToAdd.Select(a => a.Title).ToList();
+            var audioIds = _db.Contents
+                .Where(c => audioTitles.Contains(c.Title))
+                .ToDictionary(c => c.Title, c => c.ContentId);
+            foreach (var (title, url, tag) in audioToAdd)
+            {
+                if (audioIds.TryGetValue(title, out var id))
+                    _db.MediaItems.Add(new MediaItem
+                    {
+                        ContentId = id,
+                        MediaType = MediaType.Audio,
+                        EmbedUrl = url,
+                        Tag = tag,
+                    });
+            }
+            await _db.SaveChangesAsync();
+        }
+
         // ---------- Articles (news + timeline stories) ----------
         if (!_db.Articles.Any())
         {

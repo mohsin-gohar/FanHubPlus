@@ -27,9 +27,14 @@ public class HomeController : Controller
     [ResponseCache(Duration = 300, VaryByQueryKeys = ["*"])]
     public async Task<IActionResult> Index()
     {
-        // Fire all independent DB queries concurrently instead of sequentially
-        var totalsTask = _stats.GetPortalTotalsAsync();
-        var categoriesTask = _categories.Query()
+        // Every service in this request shares ONE scoped ApplicationDbContext
+        // (Unit of Work), which EF Core does NOT allow to run operations on
+        // concurrently - firing these with Task.WhenAll threw
+        // "A second operation was started on this context instance" and 500'd
+        // the landing page. The queries are cheap (counts + small Take() lists)
+        // and the response is cached for 5 minutes, so they run sequentially.
+        var totals = await _stats.GetPortalTotalsAsync();
+        var categories = await _categories.Query()
             .Select(c => new CategorySummaryViewModel
             {
                 CategoryId = c.CategoryId,
@@ -40,29 +45,25 @@ public class HomeController : Controller
             })
             .OrderBy(c => c.Name)
             .ToListAsync();
-        var trendingTask = _content.GetTrendingAsync(6);
-        var trailersTask = _content.GetTrailersAsync(6);
-        var articlesTask = _content.GetLatestArticlesAsync(3);
-        var eventsTask = _content.GetUpcomingEventsAsync(3);
-        var merchTask = _content.GetFeaturedMerchAsync(4);
+        var trending = await _content.GetTrendingAsync(6);
+        var trailers = await _content.GetTrailersAsync(6);
+        var articles = await _content.GetLatestArticlesAsync(3);
+        var events = await _content.GetUpcomingEventsAsync(3);
+        var merch = await _content.GetFeaturedMerchAsync(4);
 
-        await Task.WhenAll(
-            totalsTask, categoriesTask, trendingTask,
-            trailersTask, articlesTask, eventsTask, merchTask);
-
-        var (contents, members, events) = await totalsTask;
+        var (contents, members, upcoming) = totals;
 
         var vm = new HomeViewModel
         {
-            Categories = await categoriesTask,
-            Trending = await trendingTask,
-            Trailers = await trailersTask,
-            LatestArticles = await articlesTask,
-            UpcomingEvents = await eventsTask,
-            FeaturedMerch = await merchTask,
+            Categories = categories,
+            Trending = trending,
+            Trailers = trailers,
+            LatestArticles = articles,
+            UpcomingEvents = events,
+            FeaturedMerch = merch,
             TotalContents = contents,
             TotalMembers = members,
-            TotalEvents = events
+            TotalEvents = upcoming
         };
 
         return View(vm);

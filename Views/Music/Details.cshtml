@@ -11,39 +11,39 @@
 
 <partial name="_PageBanner" model="trail" />
 
-<div class="py-[60px] md:py-[80px]">
+<div class="fhp-py-60 fhp-md-py-80">
     <div class="container">
-        <div class="bg-[#18181f] border border-white/10 rounded-2xl p-6 md:p-10 mb-10">
-            <div class="row g-6 align-items-center">
+        <div class="fhp-bg-18181f border fhp-border-white-10 rounded-5 p-4 fhp-md-p-40 fhp-mb-40">
+            <div class="row g-4 align-items-center">
                 <div class="col-md-4 col-lg-3">
-                    <img src="@cover" alt="@Model.Song.Title" class="w-full rounded-xl shadow-2xl border border-white/10 aspect-square object-cover" />
+                    <img src="@cover" alt="@Model.Song.Title" class="w-100 rounded-4 shadow-lg border fhp-border-white-10 fhp-aspect-square fhp-object-cover" />
                 </div>
                 <div class="col-md-8 col-lg-9">
-                    <div class="flex items-center gap-2 mb-2">
-                        <span class="px-3 py-1 bg-primary/20 text-primary border border-primary/30 rounded-full text-xs font-bold uppercase">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="fhp-px-12 py-1 fhp-bg-primary-20 text-primary border fhp-border-primary-30 rounded-pill fhp-fs-12 fw-bold text-uppercase">
                             @Model.Song.Category.Name
                         </span>
-                        <span class="text-white/60 text-xs">@Model.Song.Genre</span>
+                        <span class="fhp-text-white-60 fhp-fs-12">@Model.Song.Genre</span>
                     </div>
 
-                    <h1 class="text-3xl md:text-5xl font-extrabold text-white mb-2">@Model.Song.Title</h1>
-                    <h3 class="text-xl text-primary font-bold mb-4">@(Model.Song.Artist ?? "Original Soundtrack")</h3>
+                    <h1 class="fhp-fs-30 fs-1 fw-bolder text-white mb-2">@Model.Song.Title</h1>
+                    <h3 class="fhp-fs-20 text-primary fw-bold mb-3">@(Model.Song.Artist ?? "Original Soundtrack")</h3>
 
                     @if (Model.MainAudio != null)
                     {
-                        <div class="mb-6">
-                            <button type="button" class="primary-btn me-3"
+                        <div class="mb-4">
+                            <button type="button" class="primary-btn fhp-me-12"
                                     onclick="playAudioTrack('@Model.Song.Title', '@(Model.Song.Artist ?? "Soundtrack")', '@Model.MainAudio.EmbedUrl', '@cover')">
                                 <i class="ri-play-fill me-2"></i> Listen Now
                             </button>
                         </div>
                     }
 
-                    <p class="text-white/70 text-base leading-relaxed mb-6">
+                    <p class="fhp-text-white-70 fs-6 lh-lg mb-4">
                         @(Model.Song.Description ?? "No description available for this music track.")
                     </p>
 
-                    <div class="flex items-center gap-6 pt-4 border-t border-white/10 text-sm text-white/60">
+                    <div class="d-flex align-items-center gap-4 pt-3 border-top fhp-border-white-10 fhp-fs-14 fhp-text-white-60">
                         <div><i class="ri-eye-line me-1"></i> @Model.Song.ViewCount.ToString("N0") Views</div>
                         <div><i class="ri-star-fill text-warning me-1"></i> @Model.AverageRating / 5.0 (@Model.RatingCount ratings)</div>
                         @if (Model.Song.ReleaseDate.HasValue)
@@ -58,18 +58,18 @@
         <!-- Related Music -->
         @if (Model.RelatedSongs.Count > 0)
         {
-            <h3 class="text-2xl font-bold text-white mb-6">Related Tracks &amp; Soundtracks</h3>
+            <h3 class="fhp-fs-24 fw-bold text-white mb-4">Related Tracks &amp; Soundtracks</h3>
             <div class="row g-4">
                 @foreach (var song in Model.RelatedSongs)
                 {
                     var relCover = string.IsNullOrWhiteSpace(song.ThumbnailUrl) ? "/assets/images/categories/category1.jpg" : song.ThumbnailUrl;
                     <div class="col-6 col-md-3">
-                        <div class="bg-[#18181f] border border-white/10 rounded-xl p-3 text-center">
-                            <img src="@relCover" alt="@song.Title" class="w-full aspect-square object-cover rounded-lg mb-3" />
-                            <h5 class="text-white font-bold text-sm truncate mb-1">
-                                <a asp-controller="Music" asp-action="Details" asp-route-id="@song.ContentId" class="hover:text-primary">@song.Title</a>
+                        <div class="fhp-bg-18181f border fhp-border-white-10 rounded-4 fhp-p-12 text-center">
+                            <img src="@relCover" alt="@song.Title" class="w-100 fhp-aspect-square fhp-object-cover rounded-3 fhp-mb-12" />
+                            <h5 class="text-white fw-bold fhp-fs-14 text-truncate mb-1">
+                                <a asp-controller="Music" asp-action="Details" asp-route-id="@song.ContentId" class="fhp-hover-text-primary">@song.Title</a>
                             </h5>
-                            <p class="text-white/50 text-xs truncate">@(song.Artist ?? "Soundtrack")</p>
+                            <p class="fhp-text-white-50 fhp-fs-12 text-truncate">@(song.Artist ?? "Soundtrack")</p>
                         </div>
                     </div>
                 }

@@ -1,0 +1,2170 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr" style="font-size: 16px" class="lenis lenis-smooth"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | FanHubPlus</title>
+
+    <!-- Links Of CSS File -->
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css?v=PI8n5gCcz9cQqQXm3PEtDuPG8qx9oFsFctPg0S5zb8g">
+    <link rel="stylesheet" href="/css/bootstrap-fhp-theme.css?v=UhrgRMsyp5_hd601hQVGd0iq67Tss0Tgqz6WTxzoCvg">
+    <link rel="stylesheet" href="/css/site.css?v=g54ShC52xnBqmcQ2Jo0mHxjP6EW3VER_P3kSU9WKqIA">
+    <link rel="stylesheet" href="/css/fhp-utilities.css?v=L9_hdDp0kXB6yTJY9lIyy7hZacZC62af6nMD8fBQ7HY">
+    <link rel="stylesheet" href="/css/tailwind.css?v=liyN-3PUziZGD4CTeoNP-1Bs7ZCnfpaLDd8eTq-yf2I">
+    <link rel="stylesheet" href="/assets/css/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/assets/css/flaticon_fanhubplus.css">
+    <link rel="stylesheet" href="/assets/css/scrollCue.css">
+    <link rel="stylesheet" href="/assets/css/remixicon.css">
+    <link rel="stylesheet" href="/css/fanhubplus-app.css?v=2xvPkeeOSZelNMsSRlimHjsfwzCW8cXdQYa5roh6lEE">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/images/favicon.ico">
+
+    <!-- Font Family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com/">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Montez&amp;family=Montserrat:ital,wght@0,100..900;1,100..900&amp;family=Play:wght@400;700&amp;display=swap" rel="stylesheet">
+
+    <script>
+        // Apply the stored font-size preference before the first paint.
+        (function () {
+            try {
+                var ls = localStorage.getItem('fhp_pref');
+                if (ls) {
+                    var p = ls.split('|');
+                    document.documentElement.style.fontSize = (parseInt(p[1] || '16', 10)) + 'px';
+                }
+            } catch (e) { /* ignore */ }
+        })();
+    </script>
+<style class="fslightbox-styles">.fslightbox-absoluted{position:absolute;top:0;left:0}.fslightbox-fade-in{animation:fslightbox-fade-in .3s cubic-bezier(0,0,.7,1)}.fslightbox-fade-out{animation:fslightbox-fade-out .3s ease}.fslightbox-fade-in-strong{animation:fslightbox-fade-in-strong .3s cubic-bezier(0,0,.7,1)}.fslightbox-fade-out-strong{animation:fslightbox-fade-out-strong .3s ease}@keyframes fslightbox-fade-in{from{opacity:.65}to{opacity:1}}@keyframes fslightbox-fade-out{from{opacity:.35}to{opacity:0}}@keyframes fslightbox-fade-in-strong{from{opacity:.3}to{opacity:1}}@keyframes fslightbox-fade-out-strong{from{opacity:1}to{opacity:0}}.fslightbox-cursor-grabbing{cursor:grabbing}.fslightbox-full-dimension{width:100%;height:100%}.fslightbox-open{overflow:hidden;height:100%}.fslightbox-flex-centered{display:flex;justify-content:center;align-items:center}.fslightbox-opacity-0{opacity:0!important}.fslightbox-opacity-1{opacity:1!important}.fslightbox-scrollbarfix{padding-right:17px}.fslightbox-transform-transition{transition:transform .3s}.fslightbox-container{font-family:Arial,sans-serif;position:fixed;top:0;left:0;background:linear-gradient(rgba(30,30,30,.9),#000 1810%);touch-action:pinch-zoom;z-index:1000000000;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent}.fslightbox-container *{box-sizing:border-box}.fslightbox-svg{width:20px;height:20px}.fslightbox-svgp{transition:fill .15s ease;fill:#ddd}.fslightbox-nav{height:45px;width:100%;position:absolute;top:0;left:0}.fslightboxsn{z-index:0;display:flex;align-items:center;margin:14px 0 0 11px;font-size:15px;color:#d7d7d7}.fslightboxsn span{display:inline;vertical-align:middle}.fslightboxsl{display:inline-block!important;margin:0 5px;width:1px;height:12px;transform:rotate(15deg);background:white}.fslightbox-toolbar{position:absolute;z-index:3;right:0;top:0;height:100%;display:flex}.fslightbox-toolbar-button{width:45px;height:100%}.fslightbox-fsx{width:24px;height:24px}.fslightboxb{border:0;background:rgba(35,35,35,.65);cursor:pointer}.fslightboxb:focus{outline:0}.fslightboxb:focus .fslightbox-svgp{fill:#fff}.fslightboxb:hover .fslightbox-svgp{fill:#fff}.fslightbox-slide-btn-container{display:flex;align-items:center;padding:12px 12px 12px 6px;position:absolute;top:50%;cursor:pointer;z-index:3;transform:translateY(-50%)}.fslightbox-slide-btn-container-next{right:0;padding-left:12px;padding-right:3px}@media (min-width:476px){.fslightbox-slide-btn-container{padding:22px 22px 22px 6px}.fslightbox-slide-btn-container-next{padding-right:6px!important;padding-left:22px}}@media (min-width:768px){.fslightbox-slide-btn-container{padding:30px 30px 30px 6px}.fslightbox-slide-btn-container-next{padding-left:30px}.fslightbox-slide-btn{padding:10px}}.fslightbox-slide-btn-container:hover .fslightbox-svgp{fill:#fff}.fslightbox-slide-btn{padding:9px}.fslightbox-slide-btn-container-previous{left:0}@media (max-width:475.99px){.fslightbox-slide-btn-container-previous{padding-left:3px}}.fslightbox-down-event-detector{position:absolute;z-index:1}.fslightbox-slide-swiping-hoverer{z-index:4}.fslightbox-invalid-file-wrapper{font-size:22px;color:#eaebeb;margin:auto}.fslightboxv{object-fit:cover}.fslightbox-youtube-iframe{border:0}.fslightboxl{display:block;margin:auto;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:67px;height:67px}.fslightboxl div{box-sizing:border-box;display:block;position:absolute;width:54px;height:54px;margin:6px;border:5px solid;border-color:#999 transparent transparent transparent;border-radius:50%;animation:fslightboxl 1.2s cubic-bezier(.5,0,.5,1) infinite}.fslightboxl div:nth-child(1){animation-delay:-.45s}.fslightboxl div:nth-child(2){animation-delay:-.3s}.fslightboxl div:nth-child(3){animation-delay:-.15s}@keyframes fslightboxl{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}.fslightbox-source{position:relative;z-index:2;opacity:0}@media (min-width:1200px){.fslightboxsn{margin:15px 0 0 12px;font-size:16px;display:block}.fslightboxsl{margin:0 6px 1px 6px;height:14px}.fslightbox-slide-btn{padding:11px}.fslightbox-svg{width:22px;height:22px}.fslightbox-fsx{width:26px;height:26px}.fslightbox-fso{width:22px;height:22px}.fslightboxl div{width:60px;height:60px;border-width:6px;border-color:#999 transparent transparent transparent;border-radius:50%}}@media (min-width:1600px){.fslightbox-nav{height:50px}.fslightboxsn{display:flex;margin:19px 0 0 16px;font-size:20px}.fslightboxsl{margin:0 7px 1px 7px;height:16px;width:2px;background:#d7d7d7}.fslightbox-toolbar-button{width:50px}.fslightbox-slide-btn{padding:12px}.fslightbox-svg{width:24px;height:24px}.fslightbox-fsx{width:28px;height:28px}.fslightbox-fso{width:24px;height:24px}}</style><style type="text/css" id="#jarallax-clip-0">#jarallax-container-0 {
+   clip: rect(0 1389px 688.421875px 0);
+   clip: rect(0, 1389px, 688.421875px, 0);
+}</style><style type="text/css" id="#jarallax-clip-1">#jarallax-container-1 {
+   clip: rect(0 1597.35009765625px 791.68505859375px 0);
+   clip: rect(0, 1597.35009765625px, 791.68505859375px, 0);
+}</style><style type="text/css" id="#jarallax-clip-2">#jarallax-container-2 {
+   clip: rect(0 1597.35009765625px 791.68505859375px 0);
+   clip: rect(0, 1597.35009765625px, 791.68505859375px, 0);
+}</style><style type="text/css" id="#jarallax-clip-3">#jarallax-container-3 {
+   clip: rect(0 1597.35009765625px 791.68505859375px 0);
+   clip: rect(0, 1597.35009765625px, 791.68505859375px, 0);
+}</style></head>
+<body class="min-vh-100 d-flex flex-column" style="">
+
+    <!-- Preloader -->
+    <div id="preloader" class="position-fixed top-0 start-0 end-0 bottom-0 fhp-z-999 bg-black d-flex align-items-center justify-content-center hidden">
+        <div class="loader"></div>
+    </div>
+    <!-- End Preloader -->
+
+    <!-- Header -->
+    <header class="py-[15px] lg:!py-0 bg-[#585151]/44 backdrop-blur-[4.5px] mx-[10px] mt-[10px] rounded-t-[10px] fixed top-0 left-0 right-0 z-[4] transition-all duration-300 ease-in-out fhp-nav" id="navbar">
+        <nav class="navbar navbar-expand-lg" aria-label="Main navigation">
+            <div class="container">
+                <a class="navbar-brand fhp-nav__brand" href="/">
+                    <span class="fhp-nav__logo" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="15" height="15" focusable="false">
+                            <path d="M8 5.2 19 12 8 18.8V5.2Z" fill="currentColor"></path>
+                        </svg>
+                    </span>
+                    <span class="fhp-nav__wordmark">Fan<em>HubPlus</em></span>
+                    <span class="fhp-nav__mark d-inline-flex d-sm-none">FHP</span>
+                </a>
+
+                <button type="button" id="navbarBurgerToggle" class="navbar-burger-toggle fhp-nav__burger" aria-label="Open the menu">
+                    <span class="fhp-nav__burger-bar"></span>
+                    <span class="fhp-nav__burger-bar"></span>
+                    <span class="fhp-nav__burger-bar"></span>
+                </button>
+
+                <ul class="navbar-nav fhp-nav__links d-none d-lg-flex">
+                    <li class="nav-item dropdown">
+                        <a href="javascript:void(0);" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown" aria-expanded="false">
+                            Home <i class="ri-arrow-down-s-line"></i>
+                        </a>
+                        <ul class="dropdown-menu fhp-nav__dropdown">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/">
+                                    Main Portal
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            Pages <i class="ri-arrow-down-s-line"></i>
+                        </a>
+                        <ul class="dropdown-menu fhp-nav__dropdown">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Characters">
+                                    Character Profiles
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/FanArt">
+                                    Fan Art Gallery
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Merch">
+                                    Merchandise Showcase
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Bookmarks">
+                                    My Bookmarks
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Events">
+                                    Events &amp; Calendar
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Chatbot">
+                                    FanBot Assistant
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Support">
+                                    Help &amp; FAQ
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Contact">
+                                    Contact Support
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Sitemap">
+                                    Site Map
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            Movies &amp; TV <i class="ri-arrow-down-s-line"></i>
+                        </a>
+                        <ul class="dropdown-menu fhp-nav__dropdown">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Streaming">
+                                    Streaming Library
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Streaming?contentType=Movie">
+                                    Movies
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Streaming?contentType=Series">
+                                    TV Shows / Series
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Streaming?contentType=Documentary">
+                                    Documentaries
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Explore">
+                                    Full Explorer
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            Videos <i class="ri-arrow-down-s-line"></i>
+                        </a>
+                        <ul class="dropdown-menu fhp-nav__dropdown">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Explore?type=Movie">
+                                    Movie Trailers
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Explore?type=Series">
+                                    TV Show Clips
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            Blog <i class="ri-arrow-down-s-line"></i>
+                        </a>
+                        <ul class="dropdown-menu fhp-nav__dropdown">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/Blog">
+                                    Latest Articles
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/News">
+                                    News &amp; Timeline
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Explore">
+                            Movies &amp; TV Shows
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Gaming">
+                            Gaming
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Music">
+                            Music
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="fhp-nav__actions">
+                    <div class="fhp-nav__search">
+                        <button type="button" id="searchBtn" class="fhp-nav__icon" aria-label="Search" aria-expanded="false" aria-controls="searchBox">
+                            <i class="ri-search-line"></i>
+                        </button>
+                        <div id="searchBox" class="fhp-nav__searchbox" role="search">
+                            <form method="get" class="position-relative" action="/Explore">
+                                <input type="text" name="search" class="form-control form-input" placeholder="Search for anything" aria-label="Search">
+                                <button class="position-absolute top-50 translate-middle-y end-0 fhp-me-12 border-0 bg-transparent p-0 fs-5 lh-1" type="submit" aria-label="Submit search">
+                                    <i class="ri-search-line"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <a class="fhp-nav__icon fhp-nav__cart position-relative" aria-label="Merchandise Showcase, 0 items" title="Merchandise Showcase" href="/Merch">
+                        <i class="ri-shopping-cart-line"></i>
+                        <span class="fhp-nav__badge">0</span>
+                    </a>
+
+                    <a class="fhp-nav__icon d-none d-sm-inline-flex" aria-label="My bookmarks" title="My Bookmarks" href="/Bookmarks">
+                        <i class="ri-heart-3-line"></i>
+                    </a>
+
+                    <span class="fhp-nav__divider d-none d-sm-block"></span>
+
+                        <a class="fhp-nav__cta" href="/Account/Login">
+                            Sign In
+                        </a>
+                </div>
+            </div>
+
+            <div class="fhp-nav__progress" aria-hidden="true"><span style="transform: scaleX(0);"></span></div>
+        </nav>
+    </header>
+    <!-- End Header -->
+
+
+    <!-- Sidebar Modal -->
+    <div class="sidebar-modal">
+        <div class="fhp-p-20 fhp-md-p-30 fhp-lg-px-40 d-flex align-items-center justify-content-between bg-black border-bottom fhp-border-white-8">
+            <a class="flex-shrink-0 d-inline-block" href="/">
+                <img src="/assets/images/logo.svg" alt="FanHubPlus logo">
+            </a>
+            <button type="button" class="d-inline-block fhp-fs-20 lh-1 text-white fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary">
+                <i class="flaticon-close"></i>
+            </button>
+        </div>
+        <div class="overflow-y-scroll fhp-h-screen fhp-scrollbar" data-lenis-prevent="">
+            <ul class="sidebar-navbar-nav fhp-p-20 fhp-md-p-30 fhp-lg-px-40">
+                <li class="nav-item fhp-mb-20 fhp-last-mb-0">
+                    <a class="nav-link font-bold text-15 lg:text-base relative block text-white transition-all duration-300 ease-in-out hover:text-secondary active" href="/">
+                        Home
+                    </a>
+                </li>
+                <li class="nav-item fhp-mb-20 fhp-last-mb-0">
+                    <a href="javascript:void(0);" class="nav-link dropdown-toggle font-bold text-15 lg:text-base relative block text-white transition-all duration-300 ease-in-out hover:text-secondary">
+                        Explore
+                    </a>
+                    <ul class="dropdown-menu hidden transition-all duration-300 ease-in-out mt-[15px] py-[10px] ltr:border-l rtl:border-r border-white/15">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Explore">
+                                All Titles
+                            </a>
+                        </li>
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Characters">
+                                Characters
+                            </a>
+                        </li>
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/FanArt">
+                                Fan Art
+                            </a>
+                        </li>
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Merch">
+                                Merchandise
+                            </a>
+                        </li>
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Gaming">
+                                Gaming Hub
+                            </a>
+                        </li>
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Music">
+                                Music &amp; Soundtracks
+                            </a>
+                        </li>
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Bookmarks">
+                                My Bookmarks
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item fhp-mb-20 fhp-last-mb-0">
+                    <a href="javascript:void(0);" class="nav-link dropdown-toggle font-bold text-15 lg:text-base relative block text-white transition-all duration-300 ease-in-out hover:text-secondary">
+                        Community
+                    </a>
+                    <ul class="dropdown-menu hidden transition-all duration-300 ease-in-out mt-[15px] py-[10px] ltr:border-l rtl:border-r border-white/15">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/News">
+                                News &amp; Timeline
+                            </a>
+                        </li>
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Blog">
+                                Blog
+                            </a>
+                        </li>
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Events">
+                                Events
+                            </a>
+                        </li>
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Chatbot">
+                                FanBot Chat
+                            </a>
+                        </li>
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Sitemap">
+                                Sitemap
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item fhp-mb-20 fhp-last-mb-0">
+                    <a href="javascript:void(0);" class="nav-link dropdown-toggle font-bold text-15 lg:text-base relative block text-white transition-all duration-300 ease-in-out hover:text-secondary">
+                        Pages
+                    </a>
+                    <ul class="dropdown-menu hidden transition-all duration-300 ease-in-out mt-[15px] py-[10px] ltr:border-l rtl:border-r border-white/15">
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Support">
+                                FAQ &amp; Support
+                            </a>
+                        </li>
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Contact">
+                                Contact Us
+                            </a>
+                        </li>
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Bookmarks">
+                                My Bookmarks
+                            </a>
+                        </li>
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Account/Profile">
+                                My Account
+                            </a>
+                        </li>
+                        <li class="nav-item fhp-px-20 fhp-mb-15 fhp-last-mb-0">
+                            <a class="nav-link font-bold text-sm lg:text-15 relative text-white block transition-all duration-300 ease-in-out hover:text-secondary" href="/Account/ResetPassword">
+                                Forgot Password
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item fhp-mb-20 fhp-last-mb-0">
+                    <a class="nav-link font-bold text-15 lg:text-base relative block text-white transition-all duration-300 ease-in-out hover:text-secondary" href="/Blog">
+                        Blog
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="fhp-p-20 fhp-md-p-30 fhp-lg-px-40 bg-black border-top fhp-border-white-8">
+            <div class="d-flex align-items-center fhp-gap-25 fhp-md-gap-30 fhp-mb-20 fhp-md-mb-25">
+                <a class="fhp-fs-20 position-relative d-inline-block text-white fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Bookmarks">
+                    <i class="ri-heart-3-line"></i>
+                </a>
+                    <a class="primary-btn" href="/Account/Login">
+                        Sign In
+                    </a>
+            </div>
+            <form method="get" class="position-relative" action="/Explore">
+                <input type="text" name="search" class="form-input" placeholder="Search for anything">
+                <button class="position-absolute top-50 fhp-ty-n50 fhp-ltr-right-20px fhp-rtl-left-20px fhp-fs-20 lh-1 fhp-transition fhp-dur300 fhp-ease fhp-hover-text-primary" type="submit">
+                    <i class="ri-search-line"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="fhp-backdrop"></div>
+    <!-- End Sidebar Modal -->
+
+    <!-- Main content -->
+    <main class="flex-grow-1">
+        
+<!-- Banner -->
+<div class="fhp-px-10 fhp-pt-10 position-relative">
+    <div class="swiper bannerSwiper fhp-r-10 fhp-bw-4 fhp-md-bw-6 fhp-border-white-15 swiper-fade swiper-initialized swiper-horizontal swiper-autoheight swiper-watch-progress swiper-backface-hidden">
+        <div class="swiper-wrapper" id="swiper-wrapper-3c8b843a7a510262a" aria-live="off" style="height: 688px; transition-duration: 300ms;">
+                <div class="swiper-slide swiper-slide-prev" role="group" aria-label="1 / 4" data-swiper-slide-index="0" style="width: 1389px; opacity: 0; transform: translate3d(0px, 0px, 0px); transition-duration: 300ms;">
+                    <div class="fhp-pt-130 fhp-md-pt-160 fhp-lg-pt-180 fhp-xl-pt-280 fhp-xxl-pt-340 fhp-pb-60 fhp-md-pb-80 fhp-lg-pb-65 position-relative fhp-z-1">
+                        <div class="container fhp-xxl-px-30 fhp-xl-maxw-1920">
+                            <div class="text-center mx-auto">
+                                <h1 class="text-uppercase fhp-font-secondary !font-extrabold fs-2 fhp-md-fs-60 fhp-lg-fs-96 fhp-xl-fs-128 fhp-xxl-fs-150 lh-1 fhp-lg-tracking-n0-05em fhp-mb-15 fhp-text-animation" data-swiper-parallax="-400" data-swiper-parallax-opacity="0.2" data-swiper-parallax-scale="0.9" style="opacity: 0.2; transform: translate3d(-400px, 0px, 0px) scale(0.9); transition-duration: 300ms;">
+                                    One Piece
+                                </h1>
+                                <div class="d-flex align-items-center justify-content-center flex-wrap fhp-gap-15 fhp-md-gap-20 fhp-mt-25 fhp-md-mt-30" data-swiper-parallax-y="-120" data-swiper-parallax-opacity="0.6" style="opacity: 0.6; transform: translate3d(0px, -120px, 0px); transition-duration: 300ms;">
+                                    <a class="primary-btn" href="/Explore/Details/3">
+                                        <span>
+                                            <i class="ri-play-fill"></i>
+                                            Start Watching
+                                        </span>
+                                    </a>
+                                    <a class="primary-btn fhp-with-border" href="/Explore">
+                                        Explore Everything
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="fhp-mt-20 fhp-md-mt-80 fhp-lg-mt-65 text-center fhp-ltr-md:text-left fhp-rtl-md:text-right" data-swiper-parallax="200" data-swiper-parallax-opacity="0" data-swiper-parallax-scale="1.05" style="opacity: 0; transform: translate3d(200px, 0px, 0px) scale(1.05); transition-duration: 300ms;">
+                                <div class="d-flex align-items-center justify-content-center md-justify-content-start fhp-text-ff962e fs-6 fhp-md-fs-18 fhp-gap-5">
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <span class="d-block text-uppercase fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70 fhp-ltr-ml-[5px] fhp-rtl-mr-[5px]">
+                                        (<span class="text-secondary">14</span> Titles)
+                                    </span>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center md-justify-content-start flex-wrap fhp-gap-10 fhp-mt-17 fhp-fs-12 fhp-md-fs-13 fw-bold">
+                                        <a class="d-inline-block text-uppercase fhp-text-body-80 fhp-bg-white-12 fhp-r-2 fhp-tracking-0-15em fhp-backdrop-blur-3px fhp-py-3 fhp-px-10 fhp-transition fhp-ease fhp-dur300 fhp-hover-bg-primary fhp-hover-text-white" href="/Explore?search=Adventure">
+                                            Adventure
+                                        </a>
+                                        <a class="d-inline-block text-uppercase fhp-text-body-80 fhp-bg-white-12 fhp-r-2 fhp-tracking-0-15em fhp-backdrop-blur-3px fhp-py-3 fhp-px-10 fhp-transition fhp-ease fhp-dur300 fhp-hover-bg-primary fhp-hover-text-white" href="/Explore?search=Shonen">
+                                            Shonen
+                                        </a>
+                                </div>
+                                <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center md-justify-content-start flex-wrap fhp-gap-11 fhp-mt-18 fhp-md-mt-20 text-uppercase fhp-tracking-0-1em">
+                                    <li>
+                                        1997
+                                    </li>
+                                    <li>
+                                        <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                                    </li>
+                                    <li>
+                                        Series
+                                    </li>
+                                    <li>
+                                        <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                                    </li>
+                                    <li>
+                                        <a class="d-inline-block fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=7">
+                                            Fandom
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="position-absolute top-0 bottom-0 start-0 end-0 fhp-z-n1 fhp-bg-cover fhp-bg-center fhp-bg-norepeat" style="background-image: none; opacity: 0.8; transform: translate3d(0px, 0px, 0px) scale(1.15); z-index: 0; background-attachment: scroll; background-size: auto; transition-duration: 300ms;" data-jarallax="{&quot;speed&quot;: 0.3}" data-swiper-parallax-scale="1.15" data-swiper-parallax-opacity="0.8" data-jarallax-original-styles="background-image: url(&quot;/assets/images/series/series4.jpg&quot;); opacity: 1; transform: translate3d(0px, 0px, 0px) scale(1);"><div id="jarallax-container-0" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -100; transform: translateX(0px) translateY(0px) translateZ(0px);"><div style="background-position: 50% 50%; background-size: 100% auto; background-repeat: no-repeat; background-image: url(&quot;http://localhost:5124/assets/images/series/series4.jpg&quot;); position: absolute; top: 0px; left: 0px; width: 1389px; height: 1765.77px; overflow: hidden; pointer-events: none; margin-left: 0px; margin-top: -508.387px; visibility: visible; transform: translateY(-729.551px) translateZ(0px);"></div></div></div>
+                    </div>
+                </div>
+                <div class="swiper-slide swiper-slide-visible swiper-slide-fully-visible swiper-slide-active" role="group" aria-label="2 / 4" data-swiper-slide-index="1" style="width: 1389px; opacity: 1; transform: translate3d(-1389px, 0px, 0px); transition-duration: 300ms;">
+                    <div class="fhp-pt-130 fhp-md-pt-160 fhp-lg-pt-180 fhp-xl-pt-280 fhp-xxl-pt-340 fhp-pb-60 fhp-md-pb-80 fhp-lg-pb-65 position-relative fhp-z-1">
+                        <div class="container fhp-xxl-px-30 fhp-xl-maxw-1920">
+                            <div class="text-center mx-auto">
+                                <h1 class="text-uppercase fhp-font-secondary !font-extrabold fs-2 fhp-md-fs-60 fhp-lg-fs-96 fhp-xl-fs-128 fhp-xxl-fs-150 lh-1 fhp-lg-tracking-n0-05em fhp-mb-15 fhp-text-animation" data-swiper-parallax="-400" data-swiper-parallax-opacity="0.2" data-swiper-parallax-scale="0.9" style="opacity: 1; transform: translate3d(0px, 0px, 0px) scale(1); transition-duration: 300ms;">
+                                    Attack on Titan
+                                </h1>
+                                <div class="d-flex align-items-center justify-content-center flex-wrap fhp-gap-15 fhp-md-gap-20 fhp-mt-25 fhp-md-mt-30" data-swiper-parallax-y="-120" data-swiper-parallax-opacity="0.6" style="opacity: 1; transform: translate3d(0px, 0px, 0px); transition-duration: 300ms;">
+                                    <a class="primary-btn" href="/Explore/Details/1">
+                                        <span>
+                                            <i class="ri-play-fill"></i>
+                                            Start Watching
+                                        </span>
+                                    </a>
+                                    <a class="primary-btn fhp-with-border" href="/Explore">
+                                        Explore Everything
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="fhp-mt-20 fhp-md-mt-80 fhp-lg-mt-65 text-center fhp-ltr-md:text-left fhp-rtl-md:text-right" data-swiper-parallax="200" data-swiper-parallax-opacity="0" data-swiper-parallax-scale="1.05" style="opacity: 1; transform: translate3d(0px, 0px, 0px) scale(1); transition-duration: 300ms;">
+                                <div class="d-flex align-items-center justify-content-center md-justify-content-start fhp-text-ff962e fs-6 fhp-md-fs-18 fhp-gap-5">
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <span class="d-block text-uppercase fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70 fhp-ltr-ml-[5px] fhp-rtl-mr-[5px]">
+                                        (<span class="text-secondary">14</span> Titles)
+                                    </span>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center md-justify-content-start flex-wrap fhp-gap-10 fhp-mt-17 fhp-fs-12 fhp-md-fs-13 fw-bold">
+                                        <a class="d-inline-block text-uppercase fhp-text-body-80 fhp-bg-white-12 fhp-r-2 fhp-tracking-0-15em fhp-backdrop-blur-3px fhp-py-3 fhp-px-10 fhp-transition fhp-ease fhp-dur300 fhp-hover-bg-primary fhp-hover-text-white" href="/Explore?search=Action">
+                                            Action
+                                        </a>
+                                        <a class="d-inline-block text-uppercase fhp-text-body-80 fhp-bg-white-12 fhp-r-2 fhp-tracking-0-15em fhp-backdrop-blur-3px fhp-py-3 fhp-px-10 fhp-transition fhp-ease fhp-dur300 fhp-hover-bg-primary fhp-hover-text-white" href="/Explore?search=Dark%20Fantasy">
+                                            Dark Fantasy
+                                        </a>
+                                </div>
+                                <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center md-justify-content-start flex-wrap fhp-gap-11 fhp-mt-18 fhp-md-mt-20 text-uppercase fhp-tracking-0-1em">
+                                    <li>
+                                        2013
+                                    </li>
+                                    <li>
+                                        <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                                    </li>
+                                    <li>
+                                        Series
+                                    </li>
+                                    <li>
+                                        <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                                    </li>
+                                    <li>
+                                        <a class="d-inline-block fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=1">
+                                            Fandom
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="position-absolute top-0 bottom-0 start-0 end-0 fhp-z-n1 fhp-bg-cover fhp-bg-center fhp-bg-norepeat" style="background-image: none; opacity: 1; transform: translate3d(0px, 0px, 0px) scale(1); z-index: 0; background-attachment: scroll; background-size: auto; transition-duration: 300ms;" data-jarallax="{&quot;speed&quot;: 0.3}" data-swiper-parallax-scale="1.15" data-swiper-parallax-opacity="0.8" data-jarallax-original-styles="background-image: url(&quot;/assets/images/series/series2.jpg&quot;); opacity: 0.8; transform: translate3d(0px, 0px, 0px) scale(1.15);"><div id="jarallax-container-1" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -100; transform: translateX(0px) translateY(0px) translateZ(0px);"><div style="background-position: 50% 50%; background-size: 100% auto; background-repeat: no-repeat; background-image: url(&quot;http://localhost:5124/assets/images/series/series2.jpg&quot;); position: absolute; top: 0px; left: 0px; width: 1597.35px; height: 2030.64px; overflow: hidden; pointer-events: none; margin-left: 0px; margin-top: -640.82px; visibility: visible; transform: translateY(-677.919px) translateZ(0px);"></div></div></div>
+                    </div>
+                </div>
+                <div class="swiper-slide swiper-slide-next" role="group" aria-label="3 / 4" data-swiper-slide-index="2" style="width: 1389px; opacity: 0; transform: translate3d(-2778px, 0px, 0px); transition-duration: 300ms;">
+                    <div class="fhp-pt-130 fhp-md-pt-160 fhp-lg-pt-180 fhp-xl-pt-280 fhp-xxl-pt-340 fhp-pb-60 fhp-md-pb-80 fhp-lg-pb-65 position-relative fhp-z-1">
+                        <div class="container fhp-xxl-px-30 fhp-xl-maxw-1920">
+                            <div class="text-center mx-auto">
+                                <h1 class="text-uppercase fhp-font-secondary !font-extrabold fs-2 fhp-md-fs-60 fhp-lg-fs-96 fhp-xl-fs-128 fhp-xxl-fs-150 lh-1 fhp-lg-tracking-n0-05em fhp-mb-15 fhp-text-animation" data-swiper-parallax="-400" data-swiper-parallax-opacity="0.2" data-swiper-parallax-scale="0.9" style="opacity: 0.2; transform: translate3d(400px, 0px, 0px) scale(0.9); transition-duration: 300ms;">
+                                    Elden Ring
+                                </h1>
+                                <div class="d-flex align-items-center justify-content-center flex-wrap fhp-gap-15 fhp-md-gap-20 fhp-mt-25 fhp-md-mt-30" data-swiper-parallax-y="-120" data-swiper-parallax-opacity="0.6" style="opacity: 0.6; transform: translate3d(0px, 120px, 0px); transition-duration: 300ms;">
+                                    <a class="primary-btn" href="/Explore/Details/4">
+                                        <span>
+                                            <i class="ri-play-fill"></i>
+                                            Start Watching
+                                        </span>
+                                    </a>
+                                    <a class="primary-btn fhp-with-border" href="/Explore">
+                                        Explore Everything
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="fhp-mt-20 fhp-md-mt-80 fhp-lg-mt-65 text-center fhp-ltr-md:text-left fhp-rtl-md:text-right" data-swiper-parallax="200" data-swiper-parallax-opacity="0" data-swiper-parallax-scale="1.05" style="opacity: 0; transform: translate3d(-200px, 0px, 0px) scale(1.05); transition-duration: 300ms;">
+                                <div class="d-flex align-items-center justify-content-center md-justify-content-start fhp-text-ff962e fs-6 fhp-md-fs-18 fhp-gap-5">
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <span class="d-block text-uppercase fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70 fhp-ltr-ml-[5px] fhp-rtl-mr-[5px]">
+                                        (<span class="text-secondary">14</span> Titles)
+                                    </span>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center md-justify-content-start flex-wrap fhp-gap-10 fhp-mt-17 fhp-fs-12 fhp-md-fs-13 fw-bold">
+                                        <a class="d-inline-block text-uppercase fhp-text-body-80 fhp-bg-white-12 fhp-r-2 fhp-tracking-0-15em fhp-backdrop-blur-3px fhp-py-3 fhp-px-10 fhp-transition fhp-ease fhp-dur300 fhp-hover-bg-primary fhp-hover-text-white" href="/Explore?search=Action%20RPG">
+                                            Action RPG
+                                        </a>
+                                </div>
+                                <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center md-justify-content-start flex-wrap fhp-gap-11 fhp-mt-18 fhp-md-mt-20 text-uppercase fhp-tracking-0-1em">
+                                    <li>
+                                        2022
+                                    </li>
+                                    <li>
+                                        <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                                    </li>
+                                    <li>
+                                        Game
+                                    </li>
+                                    <li>
+                                        <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                                    </li>
+                                    <li>
+                                        <a class="d-inline-block fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=2">
+                                            Fandom
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="position-absolute top-0 bottom-0 start-0 end-0 fhp-z-n1 fhp-bg-cover fhp-bg-center fhp-bg-norepeat" style="background-image: none; opacity: 0.8; transform: translate3d(0px, 0px, 0px) scale(1.15); z-index: 0; background-attachment: scroll; background-size: auto; transition-duration: 300ms;" data-jarallax="{&quot;speed&quot;: 0.3}" data-swiper-parallax-scale="1.15" data-swiper-parallax-opacity="0.8" data-jarallax-original-styles="background-image: url(&quot;/assets/images/featured-movies/featured-movie5.jpg&quot;); opacity: 0.8; transform: translate3d(0px, 0px, 0px) scale(1.15);"><div id="jarallax-container-2" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -100; transform: translateX(0px) translateY(0px) translateZ(0px);"><div style="background-position: 50% 50%; background-size: 100% auto; background-repeat: no-repeat; background-image: url(&quot;http://localhost:5124/assets/images/featured-movies/featured-movie5.jpg&quot;); position: absolute; top: 0px; left: 0px; width: 1597.35px; height: 1128.67px; overflow: hidden; pointer-events: none; margin-left: 0px; margin-top: -189.833px; visibility: visible; transform: translateY(-677.919px) translateZ(0px);"></div></div></div>
+                    </div>
+                </div>
+                <div class="swiper-slide" role="group" aria-label="4 / 4" data-swiper-slide-index="3" style="width: 1389px; opacity: 0; transform: translate3d(-4167px, 0px, 0px); transition-duration: 300ms;">
+                    <div class="fhp-pt-130 fhp-md-pt-160 fhp-lg-pt-180 fhp-xl-pt-280 fhp-xxl-pt-340 fhp-pb-60 fhp-md-pb-80 fhp-lg-pb-65 position-relative fhp-z-1">
+                        <div class="container fhp-xxl-px-30 fhp-xl-maxw-1920">
+                            <div class="text-center mx-auto">
+                                <h1 class="text-uppercase fhp-font-secondary !font-extrabold fs-2 fhp-md-fs-60 fhp-lg-fs-96 fhp-xl-fs-128 fhp-xxl-fs-150 lh-1 fhp-lg-tracking-n0-05em fhp-mb-15 fhp-text-animation" data-swiper-parallax="-400" data-swiper-parallax-opacity="0.2" data-swiper-parallax-scale="0.9" style="opacity: 0.2; transform: translate3d(400px, 0px, 0px) scale(0.9); transition-duration: 300ms;">
+                                    Avengers: Endgame
+                                </h1>
+                                <div class="d-flex align-items-center justify-content-center flex-wrap fhp-gap-15 fhp-md-gap-20 fhp-mt-25 fhp-md-mt-30" data-swiper-parallax-y="-120" data-swiper-parallax-opacity="0.6" style="opacity: 0.6; transform: translate3d(0px, 120px, 0px); transition-duration: 300ms;">
+                                    <a class="primary-btn" href="/Explore/Details/6">
+                                        <span>
+                                            <i class="ri-play-fill"></i>
+                                            Start Watching
+                                        </span>
+                                    </a>
+                                    <a class="primary-btn fhp-with-border" href="/Explore">
+                                        Explore Everything
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="fhp-mt-20 fhp-md-mt-80 fhp-lg-mt-65 text-center fhp-ltr-md:text-left fhp-rtl-md:text-right" data-swiper-parallax="200" data-swiper-parallax-opacity="0" data-swiper-parallax-scale="1.05" style="opacity: 0; transform: translate3d(-200px, 0px, 0px) scale(1.05); transition-duration: 300ms;">
+                                <div class="d-flex align-items-center justify-content-center md-justify-content-start fhp-text-ff962e fs-6 fhp-md-fs-18 fhp-gap-5">
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <span class="d-block text-uppercase fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70 fhp-ltr-ml-[5px] fhp-rtl-mr-[5px]">
+                                        (<span class="text-secondary">14</span> Titles)
+                                    </span>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center md-justify-content-start flex-wrap fhp-gap-10 fhp-mt-17 fhp-fs-12 fhp-md-fs-13 fw-bold">
+                                        <a class="d-inline-block text-uppercase fhp-text-body-80 fhp-bg-white-12 fhp-r-2 fhp-tracking-0-15em fhp-backdrop-blur-3px fhp-py-3 fhp-px-10 fhp-transition fhp-ease fhp-dur300 fhp-hover-bg-primary fhp-hover-text-white" href="/Explore?search=Superhero">
+                                            Superhero
+                                        </a>
+                                        <a class="d-inline-block text-uppercase fhp-text-body-80 fhp-bg-white-12 fhp-r-2 fhp-tracking-0-15em fhp-backdrop-blur-3px fhp-py-3 fhp-px-10 fhp-transition fhp-ease fhp-dur300 fhp-hover-bg-primary fhp-hover-text-white" href="/Explore?search=Action">
+                                            Action
+                                        </a>
+                                </div>
+                                <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center md-justify-content-start flex-wrap fhp-gap-11 fhp-mt-18 fhp-md-mt-20 text-uppercase fhp-tracking-0-1em">
+                                    <li>
+                                        2019
+                                    </li>
+                                    <li>
+                                        <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                                    </li>
+                                    <li>
+                                        Movie
+                                    </li>
+                                    <li>
+                                        <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                                    </li>
+                                    <li>
+                                        <a class="d-inline-block fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=3">
+                                            Fandom
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="position-absolute top-0 bottom-0 start-0 end-0 fhp-z-n1 fhp-bg-cover fhp-bg-center fhp-bg-norepeat" style="background-image: none; opacity: 0.8; transform: translate3d(0px, 0px, 0px) scale(1.15); z-index: 0; background-attachment: scroll; background-size: auto; transition-duration: 300ms;" data-jarallax="{&quot;speed&quot;: 0.3}" data-swiper-parallax-scale="1.15" data-swiper-parallax-opacity="0.8" data-jarallax-original-styles="background-image: url(&quot;/assets/images/movies/movie7.jpg&quot;); opacity: 0.8; transform: translate3d(0px, 0px, 0px) scale(1.15);"><div id="jarallax-container-3" style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -100; transform: translateX(0px) translateY(0px) translateZ(0px);"><div style="background-position: 50% 50%; background-size: 100% auto; background-repeat: no-repeat; background-image: url(&quot;http://localhost:5124/assets/images/movies/movie7.jpg&quot;); position: absolute; top: 0px; left: 0px; width: 1597.35px; height: 942.902px; overflow: hidden; pointer-events: none; margin-left: 0px; margin-top: -96.9509px; visibility: visible; transform: translateY(-677.919px) translateZ(0px);"></div></div></div>
+                    </div>
+                </div>
+        </div>
+    <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+        <div class="container fhp-px-2 fhp-md-px-12 fhp-xxl-px-30 fhp-xl-maxw-1920 position-relative">
+            <div class="fhp-mt-25 md-mt-0 fhp-md-maxw-220 fhp-lg-maxw-340 fhp-xxl-maxw-440 md-mx-auto position-absolute fhp-md-bottom-100px fhp-lg-bottom-69px fhp-xxl-bottom-55px fhp-ltr-md:right-[12px] fhp-rtl-md:left-[12px] fhp-ltr-xl:right-[18px] fhp-rtl-xl:left-[18px] fhp-ltr-2xl:right-[35px] fhp-rtl-2xl:left-[35px]">
+                <div thumbsslider="" class="swiper bannerSwiperThumbs swiper-initialized swiper-horizontal swiper-free-mode swiper-watch-progress swiper-backface-hidden swiper-thumbs">
+                    <div class="swiper-wrapper" id="swiper-wrapper-a97aad10684da410e5" aria-live="polite" style="transform: translate3d(0px, 0px, 0px); transition-duration: 300ms;">
+                            <div class="swiper-slide swiper-slide-visible swiper-slide-fully-visible swiper-slide-active" role="group" aria-label="1 / 4" data-swiper-slide-index="0" style="width: 210px; margin-right: 20px;">
+                                <div class="banner-thumb-item position-relative fhp-p-7 fhp-cursor-pointer">
+                                    <img src="/assets/images/series/series4.jpg" class="fhp-r-5" alt="One Piece">
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute top-0 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-top-1 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute top-0 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-top-1 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute bottom-0 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-bottom-1 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute bottom-0 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-bottom-1 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide swiper-slide-visible swiper-slide-fully-visible swiper-slide-next swiper-slide-thumb-active" role="group" aria-label="2 / 4" data-swiper-slide-index="1" style="width: 210px; margin-right: 20px;">
+                                <div class="banner-thumb-item position-relative fhp-p-7 fhp-cursor-pointer">
+                                    <img src="/assets/images/series/series2.jpg" class="fhp-r-5" alt="Attack on Titan">
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute top-0 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-top-1 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute top-0 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-top-1 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute bottom-0 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-bottom-1 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute bottom-0 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-bottom-1 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide" role="group" aria-label="3 / 4" data-swiper-slide-index="2" style="width: 210px; margin-right: 20px;">
+                                <div class="banner-thumb-item position-relative fhp-p-7 fhp-cursor-pointer">
+                                    <img src="/assets/images/featured-movies/featured-movie5.jpg" class="fhp-r-5" alt="Elden Ring">
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute top-0 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-top-1 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute top-0 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-top-1 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute bottom-0 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-bottom-1 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute bottom-0 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-bottom-1 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide" role="group" aria-label="4 / 4" data-swiper-slide-index="3" style="width: 210px; margin-right: 20px;">
+                                <div class="banner-thumb-item position-relative fhp-p-7 fhp-cursor-pointer">
+                                    <img src="/assets/images/movies/movie7.jpg" class="fhp-r-5" alt="Avengers: Endgame">
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute top-0 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-top-1 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute top-0 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-top-1 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute bottom-0 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-bottom-1 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute bottom-0 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-bottom-1 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                </div>
+                            </div>
+                    </div>
+                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+            </div>
+        </div>
+</div>
+
+    <div class="fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-xl-py-120 fhp-xxl-py-140">
+        <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
+            <div class="mb-[25px] md:mb-[35px] lg:mb-[45px] md:flex items-center justify-between gap-[25px]">  <div class="flex items-center gap-[13px]">    <img src="/assets/images/icons/vector.svg" class="rtl:-scale-x-100" alt="vector">    <h2 class="mb-0 text-[22px] md:text-[26px] lg:text-[32px] leading-none text_animation" style="perspective: 600px;"><div style="display: block; text-align: start; position: relative; translate: none; rotate: none; scale: none; transform-origin: 50% 0%; transform: translate(0px, 25px) rotateX(-60deg); opacity: 0;">Trending Videos</div></h2>  </div>  <a href="/Explore" class="flex-none mt-[15px] md:mt-0 leading-none inline-block relative font-bold text-secondary transition-all duration-300 ease-in-out hover:text-primary before:absolute before:bottom-0 before:left-0 before:right-0 before:h-px before:bg-secondary before:transition-all before:duration-300 before:ease-in-out hover:before:bg-primary hover:before:scale-x-0">View More Videos</a></div>
+            <div class="d-grid fhp-gcol-1 fhp-sm-gcol-2 fhp-lg-gcol-3 fhp-xl-gcol-6 fhp-gap-25" data-cues="slideInUp" data-group="1" data-disabled="true">
+                    <div class="fhp-group text-center" data-cue="slideInUp" data-group="1">
+                        <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
+                            <a class="d-block overflow-hidden fhp-r-5" href="/Explore/Details/3">
+                                <img src="/assets/images/series/series4.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="One Piece" loading="lazy">
+                            </a>
+                            <div class="flex items-center justify-center flex-wrap gap-[5px] absolute bottom-[10px] left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:bottom-[20px]">
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Keep it in your list" href="/Bookmarks">
+                                    <i class="ri-add-line"></i>
+                                </a>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Copy a link to share">
+                                    <i class="ri-share-line"></i>
+                                </button>
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Open the title" href="/Explore/Details/3">
+                                    <i class="ri-play-fill"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/3">
+                                One Piece
+                            </a>
+                        </h3>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
+                            <li>
+                                16.2K Views
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Series
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fhp-group text-center" data-cue="slideInUp" data-group="1">
+                        <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
+                            <a class="d-block overflow-hidden fhp-r-5" href="/Explore/Details/1">
+                                <img src="/assets/images/series/series2.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Attack on Titan" loading="lazy">
+                            </a>
+                            <div class="flex items-center justify-center flex-wrap gap-[5px] absolute bottom-[10px] left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:bottom-[20px]">
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Keep it in your list" href="/Bookmarks">
+                                    <i class="ri-add-line"></i>
+                                </a>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Copy a link to share">
+                                    <i class="ri-share-line"></i>
+                                </button>
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Open the title" href="/Explore/Details/1">
+                                    <i class="ri-play-fill"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/1">
+                                Attack on Titan
+                            </a>
+                        </h3>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
+                            <li>
+                                15.5K Views
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Series
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fhp-group text-center" data-cue="slideInUp" data-group="1">
+                        <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
+                            <a class="d-block overflow-hidden fhp-r-5" href="/Explore/Details/4">
+                                <img src="/assets/images/featured-movies/featured-movie5.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Elden Ring" loading="lazy">
+                            </a>
+                            <div class="flex items-center justify-center flex-wrap gap-[5px] absolute bottom-[10px] left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:bottom-[20px]">
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Keep it in your list" href="/Bookmarks">
+                                    <i class="ri-add-line"></i>
+                                </a>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Copy a link to share">
+                                    <i class="ri-share-line"></i>
+                                </button>
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Open the title" href="/Explore/Details/4">
+                                    <i class="ri-play-fill"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/4">
+                                Elden Ring
+                            </a>
+                        </h3>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
+                            <li>
+                                13.1K Views
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Game
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fhp-group text-center" data-cue="slideInUp" data-group="1">
+                        <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
+                            <a class="d-block overflow-hidden fhp-r-5" href="/Explore/Details/6">
+                                <img src="/assets/images/movies/movie7.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Avengers: Endgame" loading="lazy">
+                            </a>
+                            <div class="flex items-center justify-center flex-wrap gap-[5px] absolute bottom-[10px] left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:bottom-[20px]">
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Keep it in your list" href="/Bookmarks">
+                                    <i class="ri-add-line"></i>
+                                </a>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Copy a link to share">
+                                    <i class="ri-share-line"></i>
+                                </button>
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Open the title" href="/Explore/Details/6">
+                                    <i class="ri-play-fill"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/6">
+                                Avengers: Endgame
+                            </a>
+                        </h3>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
+                            <li>
+                                14.8K Views
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Movie
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fhp-group text-center" data-cue="slideInUp" data-group="1">
+                        <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
+                            <a class="d-block overflow-hidden fhp-r-5" href="/Explore/Details/2">
+                                <img src="/assets/images/movies/movie3.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Spirited Away" loading="lazy">
+                            </a>
+                            <div class="flex items-center justify-center flex-wrap gap-[5px] absolute bottom-[10px] left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:bottom-[20px]">
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Keep it in your list" href="/Bookmarks">
+                                    <i class="ri-add-line"></i>
+                                </a>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Copy a link to share">
+                                    <i class="ri-share-line"></i>
+                                </button>
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Open the title" href="/Explore/Details/2">
+                                    <i class="ri-play-fill"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/2">
+                                Spirited Away
+                            </a>
+                        </h3>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
+                            <li>
+                                9.8K Views
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Movie
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fhp-group text-center" data-cue="slideInUp" data-group="1">
+                        <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
+                            <a class="d-block overflow-hidden fhp-r-5" href="/Explore/Details/8">
+                                <img src="/assets/images/series/series3.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Stranger Things" loading="lazy">
+                            </a>
+                            <div class="flex items-center justify-center flex-wrap gap-[5px] absolute bottom-[10px] left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:bottom-[20px]">
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Keep it in your list" href="/Bookmarks">
+                                    <i class="ri-add-line"></i>
+                                </a>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Copy a link to share">
+                                    <i class="ri-share-line"></i>
+                                </button>
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Open the title" href="/Explore/Details/8">
+                                    <i class="ri-play-fill"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/8">
+                                Stranger Things
+                            </a>
+                        </h3>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
+                            <li>
+                                11.2K Views
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Series
+                            </li>
+                        </ul>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-xl-py-120 fhp-xxl-py-140">
+        <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
+            <div class="mb-[25px] md:mb-[35px] lg:mb-[45px] md:flex items-center justify-between gap-[25px]">  <div class="flex items-center gap-[13px]">    <img src="/assets/images/icons/vector.svg" class="rtl:-scale-x-100" alt="vector">    <h2 class="mb-0 text-[22px] md:text-[26px] lg:text-[32px] leading-none text_animation" style="perspective: 600px;"><div style="display: block; text-align: start; position: relative; translate: none; rotate: none; scale: none; transform-origin: 50% 0%; transform: translate(0px, 25px) rotateX(-60deg); opacity: 0;">Categories</div></h2>  </div>  <a href="/Explore" class="flex-none mt-[15px] md:mt-0 leading-none inline-block relative font-bold text-secondary transition-all duration-300 ease-in-out hover:text-primary before:absolute before:bottom-0 before:left-0 before:right-0 before:h-px before:bg-secondary before:transition-all before:duration-300 before:ease-in-out hover:before:bg-primary hover:before:scale-x-0">View All Categories</a></div>
+            <div class="d-grid fhp-gcol-2 fhp-sm-gcol-3 fhp-lg-gcol-4 fhp-xl-gcol-7 fhp-gap-25" data-cues="slideInUp" data-group="3" data-disabled="true">
+                    <div class="fhp-group text-center fhp-r-5 fhp-bg-white-8 fhp-backdrop-blur-2px fhp-px-8 fhp-pt-8 fhp-transition fhp-dur300 fhp-ease fhp-hover-bg-white-10" data-cue="slideInUp" data-group="3">
+                        <a class="d-block overflow-hidden fhp-r-5" href="/Explore?categoryId=1">
+                            <img src="/assets/images/categories/category2.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Anime" loading="lazy">
+                        </a>
+                        <div class="fhp-py-15 fhp-md-py-20 fhp-px-2 fhp-md-px-7">
+                            <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-8">
+                                <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=1">
+                                    Anime
+                                </a>
+                            </h3>
+                            <span class="d-block fw-bold fhp-fs-13 fhp-md-fs-14 fhp-text-body-60 text-uppercase fhp-tracking-0-1em">
+                                2 Titles
+                            </span>
+                        </div>
+                    </div>
+                    <div class="fhp-group text-center fhp-r-5 fhp-bg-white-8 fhp-backdrop-blur-2px fhp-px-8 fhp-pt-8 fhp-transition fhp-dur300 fhp-ease fhp-hover-bg-white-10" data-cue="slideInUp" data-group="3">
+                        <a class="d-block overflow-hidden fhp-r-5" href="/Explore?categoryId=6">
+                            <img src="/assets/images/categories/category7.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Comics" loading="lazy">
+                        </a>
+                        <div class="fhp-py-15 fhp-md-py-20 fhp-px-2 fhp-md-px-7">
+                            <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-8">
+                                <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=6">
+                                    Comics
+                                </a>
+                            </h3>
+                            <span class="d-block fw-bold fhp-fs-13 fhp-md-fs-14 fhp-text-body-60 text-uppercase fhp-tracking-0-1em">
+                                1 Title
+                            </span>
+                        </div>
+                    </div>
+                    <div class="fhp-group text-center fhp-r-5 fhp-bg-white-8 fhp-backdrop-blur-2px fhp-px-8 fhp-pt-8 fhp-transition fhp-dur300 fhp-ease fhp-hover-bg-white-10" data-cue="slideInUp" data-group="3">
+                        <a class="d-block overflow-hidden fhp-r-5" href="/Explore?categoryId=8">
+                            <img src="/assets/images/categories/category2.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Cosplay" loading="lazy">
+                        </a>
+                        <div class="fhp-py-15 fhp-md-py-20 fhp-px-2 fhp-md-px-7">
+                            <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-8">
+                                <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=8">
+                                    Cosplay
+                                </a>
+                            </h3>
+                            <span class="d-block fw-bold fhp-fs-13 fhp-md-fs-14 fhp-text-body-60 text-uppercase fhp-tracking-0-1em">
+                                1 Title
+                            </span>
+                        </div>
+                    </div>
+                    <div class="fhp-group text-center fhp-r-5 fhp-bg-white-8 fhp-backdrop-blur-2px fhp-px-8 fhp-pt-8 fhp-transition fhp-dur300 fhp-ease fhp-hover-bg-white-10" data-cue="slideInUp" data-group="3">
+                        <a class="d-block overflow-hidden fhp-r-5" href="/Explore?categoryId=2">
+                            <img src="/assets/images/categories/category3.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Gaming" loading="lazy">
+                        </a>
+                        <div class="fhp-py-15 fhp-md-py-20 fhp-px-2 fhp-md-px-7">
+                            <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-8">
+                                <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=2">
+                                    Gaming
+                                </a>
+                            </h3>
+                            <span class="d-block fw-bold fhp-fs-13 fhp-md-fs-14 fhp-text-body-60 text-uppercase fhp-tracking-0-1em">
+                                3 Titles
+                            </span>
+                        </div>
+                    </div>
+                    <div class="fhp-group text-center fhp-r-5 fhp-bg-white-8 fhp-backdrop-blur-2px fhp-px-8 fhp-pt-8 fhp-transition fhp-dur300 fhp-ease fhp-hover-bg-white-10" data-cue="slideInUp" data-group="3">
+                        <a class="d-block overflow-hidden fhp-r-5" href="/Explore?categoryId=5">
+                            <img src="/assets/images/categories/category6.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="K-Pop" loading="lazy">
+                        </a>
+                        <div class="fhp-py-15 fhp-md-py-20 fhp-px-2 fhp-md-px-7">
+                            <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-8">
+                                <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=5">
+                                    K-Pop
+                                </a>
+                            </h3>
+                            <span class="d-block fw-bold fhp-fs-13 fhp-md-fs-14 fhp-text-body-60 text-uppercase fhp-tracking-0-1em">
+                                2 Titles
+                            </span>
+                        </div>
+                    </div>
+                    <div class="fhp-group text-center fhp-r-5 fhp-bg-white-8 fhp-backdrop-blur-2px fhp-px-8 fhp-pt-8 fhp-transition fhp-dur300 fhp-ease fhp-hover-bg-white-10" data-cue="slideInUp" data-group="3">
+                        <a class="d-block overflow-hidden fhp-r-5" href="/Explore?categoryId=7">
+                            <img src="/assets/images/categories/category1.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Manga" loading="lazy">
+                        </a>
+                        <div class="fhp-py-15 fhp-md-py-20 fhp-px-2 fhp-md-px-7">
+                            <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-8">
+                                <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=7">
+                                    Manga
+                                </a>
+                            </h3>
+                            <span class="d-block fw-bold fhp-fs-13 fhp-md-fs-14 fhp-text-body-60 text-uppercase fhp-tracking-0-1em">
+                                1 Title
+                            </span>
+                        </div>
+                    </div>
+                    <div class="fhp-group text-center fhp-r-5 fhp-bg-white-8 fhp-backdrop-blur-2px fhp-px-8 fhp-pt-8 fhp-transition fhp-dur300 fhp-ease fhp-hover-bg-white-10" data-cue="slideInUp" data-group="3">
+                        <a class="d-block overflow-hidden fhp-r-5" href="/Explore?categoryId=3">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtHDY4lHk8Z3NSVJCqU1GdtLFRBc-ko6AbAw9rkNFT3g&amp;s" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Movies" loading="lazy">
+                        </a>
+                        <div class="fhp-py-15 fhp-md-py-20 fhp-px-2 fhp-md-px-7">
+                            <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-8">
+                                <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=3">
+                                    Movies
+                                </a>
+                            </h3>
+                            <span class="d-block fw-bold fhp-fs-13 fhp-md-fs-14 fhp-text-body-60 text-uppercase fhp-tracking-0-1em">
+                                2 Titles
+                            </span>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-xl-py-120 fhp-xxl-py-140">
+        <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
+            <div class="mb-[25px] md:mb-[35px] lg:mb-[45px] md:flex items-center justify-between gap-[25px]">  <div class="flex items-center gap-[13px]">    <img src="/assets/images/icons/vector.svg" class="rtl:-scale-x-100" alt="vector">    <h2 class="mb-0 text-[22px] md:text-[26px] lg:text-[32px] leading-none text_animation" style="perspective: 600px;"><div style="display: block; text-align: start; position: relative; translate: none; rotate: none; scale: none; transform-origin: 50% 0%; transform: translate(0px, 25px) rotateX(-60deg); opacity: 0;">Top Rated Movies</div></h2>  </div>  <a href="/Explore?sort=views" class="flex-none mt-[15px] md:mt-0 leading-none inline-block relative font-bold text-secondary transition-all duration-300 ease-in-out hover:text-primary before:absolute before:bottom-0 before:left-0 before:right-0 before:h-px before:bg-secondary before:transition-all before:duration-300 before:ease-in-out hover:before:bg-primary hover:before:scale-x-0">View All Titles</a></div>
+            <div class="d-grid fhp-gcol-1 fhp-sm-gcol-2 fhp-lg-gcol-3 fhp-xl-gcol-5 fhp-gap-25" data-cues="slideInUp" data-group="2" data-disabled="true">
+                    <div class="fhp-group text-center position-relative" data-cue="slideInUp" data-group="2">
+    <a class="d-block overflow-hidden fhp-r-5" href="/Explore/Details/3">
+        <img src="/assets/images/series/series4.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="One Piece poster" loading="lazy">
+    </a>
+    <div class="fhp-bg-navy fhp-py-20 fhp-md-py-25 fhp-lg-py-30 position-absolute bottom-0 start-0 end-0 fhp-rb-5 fhp-transition fhp-dur300 fhp-ease opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible">
+        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-14 fhp-md-mb-16">
+            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/3">
+                One Piece
+            </a>
+        </h3>
+        <div class="d-inline-block position-relative fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70 bg-black fhp-r-5 fhp-py-4 fhp-ltr-pr-[10px] fhp-rtl-pl-[10px] fhp-ltr-pl-[30px] fhp-rtl-pr-[30px]">
+            <i class="ri-star-fill fhp-text-ff962e position-absolute fhp-ltr-left-9px fhp-rtl-right-9px top-50 fhp-transform fhp-ty-n50"></i>
+            <span class="text-secondary">ΓÇö</span>/10 IMDb
+        </div>
+        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 fhp-mt-11 fhp-md-mt-14 text-uppercase fhp-tracking-0-1em">
+            <li>
+                1997
+            </li>
+            <li>
+                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+            </li>
+            <li>
+                Series
+            </li>
+            <li>
+                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+            </li>
+            <li>
+                <a class="d-inline-block fhp-text-ae99fa fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=7">
+                    Fandom
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+                    <div class="fhp-group text-center position-relative" data-cue="slideInUp" data-group="2">
+    <a class="d-block overflow-hidden fhp-r-5" href="/Explore/Details/1">
+        <img src="/assets/images/series/series2.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Attack on Titan poster" loading="lazy">
+    </a>
+    <div class="fhp-bg-navy fhp-py-20 fhp-md-py-25 fhp-lg-py-30 position-absolute bottom-0 start-0 end-0 fhp-rb-5 fhp-transition fhp-dur300 fhp-ease opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible">
+        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-14 fhp-md-mb-16">
+            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/1">
+                Attack on Titan
+            </a>
+        </h3>
+        <div class="d-inline-block position-relative fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70 bg-black fhp-r-5 fhp-py-4 fhp-ltr-pr-[10px] fhp-rtl-pl-[10px] fhp-ltr-pl-[30px] fhp-rtl-pr-[30px]">
+            <i class="ri-star-fill fhp-text-ff962e position-absolute fhp-ltr-left-9px fhp-rtl-right-9px top-50 fhp-transform fhp-ty-n50"></i>
+            <span class="text-secondary">ΓÇö</span>/10 IMDb
+        </div>
+        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 fhp-mt-11 fhp-md-mt-14 text-uppercase fhp-tracking-0-1em">
+            <li>
+                2013
+            </li>
+            <li>
+                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+            </li>
+            <li>
+                Series
+            </li>
+            <li>
+                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+            </li>
+            <li>
+                <a class="d-inline-block fhp-text-ae99fa fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=1">
+                    Fandom
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+                    <div class="fhp-group text-center position-relative" data-cue="slideInUp" data-group="2">
+    <a class="d-block overflow-hidden fhp-r-5" href="/Explore/Details/4">
+        <img src="/assets/images/featured-movies/featured-movie5.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Elden Ring poster" loading="lazy">
+    </a>
+    <div class="fhp-bg-navy fhp-py-20 fhp-md-py-25 fhp-lg-py-30 position-absolute bottom-0 start-0 end-0 fhp-rb-5 fhp-transition fhp-dur300 fhp-ease opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible">
+        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-14 fhp-md-mb-16">
+            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/4">
+                Elden Ring
+            </a>
+        </h3>
+        <div class="d-inline-block position-relative fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70 bg-black fhp-r-5 fhp-py-4 fhp-ltr-pr-[10px] fhp-rtl-pl-[10px] fhp-ltr-pl-[30px] fhp-rtl-pr-[30px]">
+            <i class="ri-star-fill fhp-text-ff962e position-absolute fhp-ltr-left-9px fhp-rtl-right-9px top-50 fhp-transform fhp-ty-n50"></i>
+            <span class="text-secondary">ΓÇö</span>/10 IMDb
+        </div>
+        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 fhp-mt-11 fhp-md-mt-14 text-uppercase fhp-tracking-0-1em">
+            <li>
+                2022
+            </li>
+            <li>
+                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+            </li>
+            <li>
+                Game
+            </li>
+            <li>
+                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+            </li>
+            <li>
+                <a class="d-inline-block fhp-text-ae99fa fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=2">
+                    Fandom
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+                    <div class="fhp-group text-center position-relative" data-cue="slideInUp" data-group="2">
+    <a class="d-block overflow-hidden fhp-r-5" href="/Explore/Details/6">
+        <img src="/assets/images/movies/movie7.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Avengers: Endgame poster" loading="lazy">
+    </a>
+    <div class="fhp-bg-navy fhp-py-20 fhp-md-py-25 fhp-lg-py-30 position-absolute bottom-0 start-0 end-0 fhp-rb-5 fhp-transition fhp-dur300 fhp-ease opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible">
+        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-14 fhp-md-mb-16">
+            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/6">
+                Avengers: Endgame
+            </a>
+        </h3>
+        <div class="d-inline-block position-relative fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70 bg-black fhp-r-5 fhp-py-4 fhp-ltr-pr-[10px] fhp-rtl-pl-[10px] fhp-ltr-pl-[30px] fhp-rtl-pr-[30px]">
+            <i class="ri-star-fill fhp-text-ff962e position-absolute fhp-ltr-left-9px fhp-rtl-right-9px top-50 fhp-transform fhp-ty-n50"></i>
+            <span class="text-secondary">ΓÇö</span>/10 IMDb
+        </div>
+        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 fhp-mt-11 fhp-md-mt-14 text-uppercase fhp-tracking-0-1em">
+            <li>
+                2019
+            </li>
+            <li>
+                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+            </li>
+            <li>
+                Movie
+            </li>
+            <li>
+                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+            </li>
+            <li>
+                <a class="d-inline-block fhp-text-ae99fa fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=3">
+                    Fandom
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+                    <div class="fhp-group text-center position-relative" data-cue="slideInUp" data-group="2">
+    <a class="d-block overflow-hidden fhp-r-5" href="/Explore/Details/2">
+        <img src="/assets/images/movies/movie3.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Spirited Away poster" loading="lazy">
+    </a>
+    <div class="fhp-bg-navy fhp-py-20 fhp-md-py-25 fhp-lg-py-30 position-absolute bottom-0 start-0 end-0 fhp-rb-5 fhp-transition fhp-dur300 fhp-ease opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible">
+        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-14 fhp-md-mb-16">
+            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/2">
+                Spirited Away
+            </a>
+        </h3>
+        <div class="d-inline-block position-relative fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70 bg-black fhp-r-5 fhp-py-4 fhp-ltr-pr-[10px] fhp-rtl-pl-[10px] fhp-ltr-pl-[30px] fhp-rtl-pr-[30px]">
+            <i class="ri-star-fill fhp-text-ff962e position-absolute fhp-ltr-left-9px fhp-rtl-right-9px top-50 fhp-transform fhp-ty-n50"></i>
+            <span class="text-secondary">ΓÇö</span>/10 IMDb
+        </div>
+        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 fhp-mt-11 fhp-md-mt-14 text-uppercase fhp-tracking-0-1em">
+            <li>
+                2001
+            </li>
+            <li>
+                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+            </li>
+            <li>
+                Movie
+            </li>
+            <li>
+                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+            </li>
+            <li>
+                <a class="d-inline-block fhp-text-ae99fa fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=1">
+                    Fandom
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+                    <div class="fhp-group text-center position-relative" data-cue="slideInUp" data-group="2">
+    <a class="d-block overflow-hidden fhp-r-5" href="/Explore/Details/8">
+        <img src="/assets/images/series/series3.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Stranger Things poster" loading="lazy">
+    </a>
+    <div class="fhp-bg-navy fhp-py-20 fhp-md-py-25 fhp-lg-py-30 position-absolute bottom-0 start-0 end-0 fhp-rb-5 fhp-transition fhp-dur300 fhp-ease opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible">
+        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-14 fhp-md-mb-16">
+            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/8">
+                Stranger Things
+            </a>
+        </h3>
+        <div class="d-inline-block position-relative fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70 bg-black fhp-r-5 fhp-py-4 fhp-ltr-pr-[10px] fhp-rtl-pl-[10px] fhp-ltr-pl-[30px] fhp-rtl-pr-[30px]">
+            <i class="ri-star-fill fhp-text-ff962e position-absolute fhp-ltr-left-9px fhp-rtl-right-9px top-50 fhp-transform fhp-ty-n50"></i>
+            <span class="text-secondary">ΓÇö</span>/10 IMDb
+        </div>
+        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 fhp-mt-11 fhp-md-mt-14 text-uppercase fhp-tracking-0-1em">
+            <li>
+                2016
+            </li>
+            <li>
+                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+            </li>
+            <li>
+                Series
+            </li>
+            <li>
+                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+            </li>
+            <li>
+                <a class="d-inline-block fhp-text-ae99fa fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore?categoryId=4">
+                    Fandom
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+            </div>
+        </div>
+    </div>
+    <div class="fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-xl-py-120 fhp-xxl-py-140">
+        <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
+            <div class="mb-[25px] md:mb-[35px] lg:mb-[45px] md:flex items-center justify-between gap-[25px]">  <div class="flex items-center gap-[13px]">    <img src="/assets/images/icons/vector.svg" class="rtl:-scale-x-100" alt="vector">    <h2 class="mb-0 text-[22px] md:text-[26px] lg:text-[32px] leading-none text_animation" style="perspective: 600px;"><div style="display: block; text-align: start; position: relative; translate: none; rotate: none; scale: none; transform-origin: 50% 0%; transform: translate(0px, 25px) rotateX(-60deg); opacity: 0;">Trailers &amp; Clips</div></h2>  </div>  <a href="/Explore" class="flex-none mt-[15px] md:mt-0 leading-none inline-block relative font-bold text-secondary transition-all duration-300 ease-in-out hover:text-primary before:absolute before:bottom-0 before:left-0 before:right-0 before:h-px before:bg-secondary before:transition-all before:duration-300 before:ease-in-out hover:before:bg-primary hover:before:scale-x-0">Browse The Library</a></div>
+            <div class="d-grid fhp-gcol-1 fhp-sm-gcol-2 fhp-lg-gcol-3 fhp-xl-gcol-6 fhp-gap-25" data-cues="slideInUp" data-group="1" data-disabled="true">
+                    <div class="fhp-group text-center" data-cue="slideInUp" data-group="1">
+                        <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
+                            <a data-fhp-video="" data-kind="local" data-src="/assets/videos/movie.mp4" data-poster="/assets/images/series/series4.jpg" data-title="One Piece ΓÇö Official Trailer" href="/assets/videos/movie.mp4" class="d-block overflow-hidden fhp-r-5">
+                                <img src="/assets/images/series/series4.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="One Piece" loading="lazy">
+                            </a>
+                            <div class="flex items-center justify-center flex-wrap gap-[5px] absolute bottom-[10px] left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:bottom-[20px]">
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Open the title page" href="/Explore/Details/3">
+                                    <i class="ri-information-line"></i>
+                                </a>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white fhp-share" data-share-url="/Explore/Details/3" data-share-title="One Piece on FanHubPlus" title="Copy a link to share">
+                                    <i class="ri-share-line"></i>
+                                </button>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Play the Official Trailer" data-fhp-video="" data-kind="local" data-src="/assets/videos/movie.mp4" data-poster="/assets/images/series/series4.jpg" data-title="One Piece ΓÇö Official Trailer">
+                                    <i class="ri-play-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/3">
+                                One Piece
+                            </a>
+                        </h3>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
+                            <li>
+                                Official Trailer
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Series
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fhp-group text-center" data-cue="slideInUp" data-group="1">
+                        <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
+                            <a data-fhp-video="" data-kind="embed" data-src="https://www.youtube.com/embed/MGRm4IzK1SQ" data-poster="/assets/images/series/series2.jpg" data-title="Attack on Titan ΓÇö Official Trailer" href="https://www.youtube.com/embed/MGRm4IzK1SQ" class="d-block overflow-hidden fhp-r-5">
+                                <img src="/assets/images/series/series2.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Attack on Titan" loading="lazy">
+                            </a>
+                            <div class="flex items-center justify-center flex-wrap gap-[5px] absolute bottom-[10px] left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:bottom-[20px]">
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Open the title page" href="/Explore/Details/1">
+                                    <i class="ri-information-line"></i>
+                                </a>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white fhp-share" data-share-url="/Explore/Details/1" data-share-title="Attack on Titan on FanHubPlus" title="Copy a link to share">
+                                    <i class="ri-share-line"></i>
+                                </button>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Play the Official Trailer" data-fhp-video="" data-kind="embed" data-src="https://www.youtube.com/embed/MGRm4IzK1SQ" data-poster="/assets/images/series/series2.jpg" data-title="Attack on Titan ΓÇö Official Trailer">
+                                    <i class="ri-play-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/1">
+                                Attack on Titan
+                            </a>
+                        </h3>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
+                            <li>
+                                Official Trailer
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Series
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fhp-group text-center" data-cue="slideInUp" data-group="1">
+                        <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
+                            <a data-fhp-video="" data-kind="embed" data-src="https://www.youtube.com/embed/E3Huy2cdih0" data-poster="/assets/images/featured-movies/featured-movie5.jpg" data-title="Elden Ring ΓÇö Launch Trailer" href="https://www.youtube.com/embed/E3Huy2cdih0" class="d-block overflow-hidden fhp-r-5">
+                                <img src="/assets/images/featured-movies/featured-movie5.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Elden Ring" loading="lazy">
+                            </a>
+                            <div class="flex items-center justify-center flex-wrap gap-[5px] absolute bottom-[10px] left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:bottom-[20px]">
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Open the title page" href="/Explore/Details/4">
+                                    <i class="ri-information-line"></i>
+                                </a>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white fhp-share" data-share-url="/Explore/Details/4" data-share-title="Elden Ring on FanHubPlus" title="Copy a link to share">
+                                    <i class="ri-share-line"></i>
+                                </button>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Play the Launch Trailer" data-fhp-video="" data-kind="embed" data-src="https://www.youtube.com/embed/E3Huy2cdih0" data-poster="/assets/images/featured-movies/featured-movie5.jpg" data-title="Elden Ring ΓÇö Launch Trailer">
+                                    <i class="ri-play-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/4">
+                                Elden Ring
+                            </a>
+                        </h3>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
+                            <li>
+                                Launch Trailer
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Game
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fhp-group text-center" data-cue="slideInUp" data-group="1">
+                        <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
+                            <a data-fhp-video="" data-kind="local" data-src="/assets/videos/movie.mp4" data-poster="/assets/images/movies/movie7.jpg" data-title="Avengers: Endgame ΓÇö Official Trailer" href="/assets/videos/movie.mp4" class="d-block overflow-hidden fhp-r-5">
+                                <img src="/assets/images/movies/movie7.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Avengers: Endgame" loading="lazy">
+                            </a>
+                            <div class="flex items-center justify-center flex-wrap gap-[5px] absolute bottom-[10px] left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:bottom-[20px]">
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Open the title page" href="/Explore/Details/6">
+                                    <i class="ri-information-line"></i>
+                                </a>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white fhp-share" data-share-url="/Explore/Details/6" data-share-title="Avengers: Endgame on FanHubPlus" title="Copy a link to share">
+                                    <i class="ri-share-line"></i>
+                                </button>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Play the Official Trailer" data-fhp-video="" data-kind="local" data-src="/assets/videos/movie.mp4" data-poster="/assets/images/movies/movie7.jpg" data-title="Avengers: Endgame ΓÇö Official Trailer">
+                                    <i class="ri-play-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/6">
+                                Avengers: Endgame
+                            </a>
+                        </h3>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
+                            <li>
+                                Official Trailer
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Movie
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fhp-group text-center" data-cue="slideInUp" data-group="1">
+                        <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
+                            <a data-fhp-video="" data-kind="local" data-src="/assets/videos/movie.mp4" data-poster="/assets/images/movies/movie3.jpg" data-title="Spirited Away ΓÇö Official Trailer" href="/assets/videos/movie.mp4" class="d-block overflow-hidden fhp-r-5">
+                                <img src="/assets/images/movies/movie3.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Spirited Away" loading="lazy">
+                            </a>
+                            <div class="flex items-center justify-center flex-wrap gap-[5px] absolute bottom-[10px] left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:bottom-[20px]">
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Open the title page" href="/Explore/Details/2">
+                                    <i class="ri-information-line"></i>
+                                </a>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white fhp-share" data-share-url="/Explore/Details/2" data-share-title="Spirited Away on FanHubPlus" title="Copy a link to share">
+                                    <i class="ri-share-line"></i>
+                                </button>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Play the Official Trailer" data-fhp-video="" data-kind="local" data-src="/assets/videos/movie.mp4" data-poster="/assets/images/movies/movie3.jpg" data-title="Spirited Away ΓÇö Official Trailer">
+                                    <i class="ri-play-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/2">
+                                Spirited Away
+                            </a>
+                        </h3>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
+                            <li>
+                                Official Trailer
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Movie
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="fhp-group text-center" data-cue="slideInUp" data-group="1">
+                        <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
+                            <a data-fhp-video="" data-kind="local" data-src="/assets/videos/movie.mp4" data-poster="/assets/images/series/series3.jpg" data-title="Stranger Things ΓÇö Official Trailer" href="/assets/videos/movie.mp4" class="d-block overflow-hidden fhp-r-5">
+                                <img src="/assets/images/series/series3.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Stranger Things" loading="lazy">
+                            </a>
+                            <div class="flex items-center justify-center flex-wrap gap-[5px] absolute bottom-[10px] left-1/2 transform -translate-x-1/2 transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:bottom-[20px]">
+                                <a class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Open the title page" href="/Explore/Details/8">
+                                    <i class="ri-information-line"></i>
+                                </a>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white fhp-share" data-share-url="/Explore/Details/8" data-share-title="Stranger Things on FanHubPlus" title="Copy a link to share">
+                                    <i class="ri-share-line"></i>
+                                </button>
+                                <button type="button" class="flex items-center justify-center text-white bg-white/30 rounded-full w-[30px] h-[30px] transition-all duration-300 ease-in-out hover:bg-primary hover:text-white" title="Play the Official Trailer" data-fhp-video="" data-kind="local" data-src="/assets/videos/movie.mp4" data-poster="/assets/images/series/series3.jpg" data-title="Stranger Things ΓÇö Official Trailer">
+                                    <i class="ri-play-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Explore/Details/8">
+                                Stranger Things
+                            </a>
+                        </h3>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
+                            <li>
+                                Official Trailer
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Series
+                            </li>
+                        </ul>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-xl-py-120 fhp-xxl-py-140">
+        <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
+            <div class="mb-[25px] md:mb-[35px] lg:mb-[45px] md:flex items-center justify-between gap-[25px]">  <div class="flex items-center gap-[13px]">    <img src="/assets/images/icons/vector.svg" class="rtl:-scale-x-100" alt="vector">    <h2 class="mb-0 text-[22px] md:text-[26px] lg:text-[32px] leading-none text_animation" style="perspective: 600px;"><div style="display: block; text-align: start; position: relative; translate: none; rotate: none; scale: none; transform-origin: 50% 0%; transform: translate(0px, 25px) rotateX(-60deg); opacity: 0;">Fan Merchandise</div></h2>  </div>  <a href="/Merch" class="flex-none mt-[15px] md:mt-0 leading-none inline-block relative font-bold text-secondary transition-all duration-300 ease-in-out hover:text-primary before:absolute before:bottom-0 before:left-0 before:right-0 before:h-px before:bg-secondary before:transition-all before:duration-300 before:ease-in-out hover:before:bg-primary hover:before:scale-x-0">Visit The Shop</a></div>
+            <div class="d-grid fhp-gcol-1 fhp-sm-gcol-2 fhp-lg-gcol-4 fhp-gap-25 fhp-xl-gap-35" data-cues="slideInUp" data-group="4" data-disabled="true">
+                    <div class="fhp-group" data-cue="slideInUp" data-group="4">
+                        <div class="text-center position-relative fhp-mb-15 fhp-md-mb-20">
+                            <a class="d-block fhp-r-5 overflow-hidden" href="/Merch/Details/1">
+                                <img src="/assets/images/products/product2.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Attack on Titan Scout Regiment Hoodie" loading="lazy">
+                            </a>
+                            <a class="secondary-btn text-uppercase position-absolute top-50 start-50 fhp-ty-n50 fhp-tx-n50 opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible" href="/Merch/Details/1">
+                                View Product
+                            </a>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between fhp-mb-8 fhp-gap-10">
+                            <h3 class="mb-0 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
+                                <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Merch/Details/1">
+                                    Attack on Titan Scout Regiment Hoodie
+                                </a>
+                            </h3>
+                            <div class="d-inline-block position-relative fw-bold fhp-ltr-pl-[20px] fhp-rtl-pr-[20px] flex-shrink-0">
+                                <i class="ri-eye-line fhp-text-ff962e position-absolute fhp-ltr-start-0 fhp-rtl-end-0 top-50 fhp-transform fhp-ty-n50"></i>(1223)
+                            </div>
+                        </div>
+                        <span class="d-block fw-bold text-secondary">
+                            LimitedEdition
+                        </span>
+                    </div>
+                    <div class="fhp-group" data-cue="slideInUp" data-group="4">
+                        <div class="text-center position-relative fhp-mb-15 fhp-md-mb-20">
+                            <a class="d-block fhp-r-5 overflow-hidden" href="/Merch/Details/2">
+                                <img src="/assets/images/products/product3.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Elden Ring Malenia Collectible Figure" loading="lazy">
+                            </a>
+                            <a class="secondary-btn text-uppercase position-absolute top-50 start-50 fhp-ty-n50 fhp-tx-n50 opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible" href="/Merch/Details/2">
+                                View Product
+                            </a>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between fhp-mb-8 fhp-gap-10">
+                            <h3 class="mb-0 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
+                                <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Merch/Details/2">
+                                    Elden Ring Malenia Collectible Figure
+                                </a>
+                            </h3>
+                            <div class="d-inline-block position-relative fw-bold fhp-ltr-pl-[20px] fhp-rtl-pr-[20px] flex-shrink-0">
+                                <i class="ri-eye-line fhp-text-ff962e position-absolute fhp-ltr-start-0 fhp-rtl-end-0 top-50 fhp-transform fhp-ty-n50"></i>(983)
+                            </div>
+                        </div>
+                        <span class="d-block fw-bold text-secondary">
+                            Collectible
+                        </span>
+                    </div>
+                    <div class="fhp-group" data-cue="slideInUp" data-group="4">
+                        <div class="text-center position-relative fhp-mb-15 fhp-md-mb-20">
+                            <a class="d-block fhp-r-5 overflow-hidden" href="/Merch/Details/3">
+                                <img src="/assets/images/products/product4.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Zelda Master Sword Replica" loading="lazy">
+                            </a>
+                            <a class="secondary-btn text-uppercase position-absolute top-50 start-50 fhp-ty-n50 fhp-tx-n50 opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible" href="/Merch/Details/3">
+                                View Product
+                            </a>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between fhp-mb-8 fhp-gap-10">
+                            <h3 class="mb-0 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
+                                <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Merch/Details/3">
+                                    Zelda Master Sword Replica
+                                </a>
+                            </h3>
+                            <div class="d-inline-block position-relative fw-bold fhp-ltr-pl-[20px] fhp-rtl-pr-[20px] flex-shrink-0">
+                                <i class="ri-eye-line fhp-text-ff962e position-absolute fhp-ltr-start-0 fhp-rtl-end-0 top-50 fhp-transform fhp-ty-n50"></i>(871)
+                            </div>
+                        </div>
+                        <span class="d-block fw-bold text-secondary">
+                            Collectible
+                        </span>
+                    </div>
+                    <div class="fhp-group" data-cue="slideInUp" data-group="4">
+                        <div class="text-center position-relative fhp-mb-15 fhp-md-mb-20">
+                            <a class="d-block fhp-r-5 overflow-hidden" href="/Merch/Details/4">
+                                <img src="/assets/images/products/product5.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Avengers Infinity Gauntlet Replica" loading="lazy">
+                            </a>
+                            <a class="secondary-btn text-uppercase position-absolute top-50 start-50 fhp-ty-n50 fhp-tx-n50 opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible" href="/Merch/Details/4">
+                                View Product
+                            </a>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between fhp-mb-8 fhp-gap-10">
+                            <h3 class="mb-0 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
+                                <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Merch/Details/4">
+                                    Avengers Infinity Gauntlet Replica
+                                </a>
+                            </h3>
+                            <div class="d-inline-block position-relative fw-bold fhp-ltr-pl-[20px] fhp-rtl-pr-[20px] flex-shrink-0">
+                                <i class="ri-eye-line fhp-text-ff962e position-absolute fhp-ltr-start-0 fhp-rtl-end-0 top-50 fhp-transform fhp-ty-n50"></i>(761)
+                            </div>
+                        </div>
+                        <span class="d-block fw-bold text-secondary">
+                            LimitedEdition
+                        </span>
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-xl-py-120 fhp-xxl-py-140">
+        <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
+            <div class="mb-[25px] md:mb-[35px] lg:mb-[45px] md:flex items-center justify-between gap-[25px]">  <div class="flex items-center gap-[13px]">    <img src="/assets/images/icons/vector.svg" class="rtl:-scale-x-100" alt="vector">    <h2 class="mb-0 text-[22px] md:text-[26px] lg:text-[32px] leading-none text_animation" style="perspective: 600px;"><div style="display: block; text-align: start; position: relative; translate: none; rotate: none; scale: none; transform-origin: 50% 0%; transform: translate(0px, 25px) rotateX(-60deg); opacity: 0;">Upcoming Fan Events</div></h2>  </div>  <a href="/Events" class="flex-none mt-[15px] md:mt-0 leading-none inline-block relative font-bold text-secondary transition-all duration-300 ease-in-out hover:text-primary before:absolute before:bottom-0 before:left-0 before:right-0 before:h-px before:bg-secondary before:transition-all before:duration-300 before:ease-in-out hover:before:bg-primary hover:before:scale-x-0">Open The Event Map</a></div>
+            <div class="d-grid fhp-gcol-1 fhp-sm-gcol-2 fhp-lg-gcol-3 fhp-gap-25 fhp-lg-gap-35" data-cues="slideInUp" data-group="3" data-disabled="true">
+                    <div class="fhp-group" data-cue="slideInUp" data-group="3">
+                        <a class="overflow-hidden d-block fhp-r-5 fhp-mb-20 fhp-lg-mb-25" href="/Events#6">
+                            <img src="/assets/images/banners/banner-bg3.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Online Cosplay Contest" loading="lazy">
+                        </a>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 text-uppercase fw-bold d-flex align-items-center flex-wrap fhp-gap-13 fhp-mb-9 fhp-md-mb-11">
+                            <li>
+                                01 Oct, 2026
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-20 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Online
+                            </li>
+                        </ul>
+                        <h3 class="fhp-fs-18 fhp-md-fs-20 fhp-lg-fs-24 fhp-leading-1-3 fhp-mb-10 fhp-md-mb-13">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Events#6">
+                                Online Cosplay Contest
+                            </a>
+                        </h3>
+                            <p class="fhp-mb-15 fhp-md-mb-18">
+                                Submit your best cosplay photos online ΓÇö community voting decides the winners.
+                            </p>
+                        <a class="text-primary fw-bold d-inline-block fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Events#6">
+                            Event Details
+                        </a>
+                    </div>
+                    <div class="fhp-group" data-cue="slideInUp" data-group="3">
+                        <a class="overflow-hidden d-block fhp-r-5 fhp-mb-20 fhp-lg-mb-25" href="/Events#5">
+                            <img src="/assets/images/banners/banner-bg4.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="K-Pop Fan Meet: Gangnam" loading="lazy">
+                        </a>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 text-uppercase fw-bold d-flex align-items-center flex-wrap fhp-gap-13 fhp-mb-9 fhp-md-mb-11">
+                            <li>
+                                08 Oct, 2026
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-20 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Seoul
+                            </li>
+                        </ul>
+                        <h3 class="fhp-fs-18 fhp-md-fs-20 fhp-lg-fs-24 fhp-leading-1-3 fhp-mb-10 fhp-md-mb-13">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Events#5">
+                                K-Pop Fan Meet: Gangnam
+                            </a>
+                        </h3>
+                            <p class="fhp-mb-15 fhp-md-mb-18">
+                                A community-run fan meet with dance covers, photocard trading and lightstick ocean photos.
+                            </p>
+                        <a class="text-primary fw-bold d-inline-block fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Events#5">
+                            Event Details
+                        </a>
+                    </div>
+                    <div class="fhp-group" data-cue="slideInUp" data-group="3">
+                        <a class="overflow-hidden d-block fhp-r-5 fhp-mb-20 fhp-lg-mb-25" href="/Events#4">
+                            <img src="/assets/images/banners/banner-bg5.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Tokyo Game Show" loading="lazy">
+                        </a>
+                        <ul class="fhp-fs-13 fhp-md-fs-14 text-uppercase fw-bold d-flex align-items-center flex-wrap fhp-gap-13 fhp-mb-9 fhp-md-mb-11">
+                            <li>
+                                15 Oct, 2026
+                            </li>
+                            <li>
+                                <div class="fhp-w-1px fhp-bg-white-20 fhp-h-12"></div>
+                            </li>
+                            <li>
+                                Tokyo
+                            </li>
+                        </ul>
+                        <h3 class="fhp-fs-18 fhp-md-fs-20 fhp-lg-fs-24 fhp-leading-1-3 fhp-mb-10 fhp-md-mb-13">
+                            <a class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Events#4">
+                                Tokyo Game Show
+                            </a>
+                        </h3>
+                            <p class="fhp-mb-15 fhp-md-mb-18">
+                                Japan's premier games expo at Makuhari Messe with playable demos of next year's biggest titles.
+                            </p>
+                        <a class="text-primary fw-bold d-inline-block fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary" href="/Events#4">
+                            Event Details
+                        </a>
+                    </div>
+            </div>
+        </div>
+    </div>
+<div class="fhp-pb-60 fhp-md-pb-80 fhp-lg-pb-100 fhp-xl-pb-120 fhp-xxl-pb-140">
+    <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
+        <div class="fhp-mb-25 fhp-md-mb-35 fhp-lg-mb-45 fhp-xl-mb-55 d-flex align-items-center justify-content-center fhp-gap-13">
+            <img src="/assets/images/icons/vector.svg" class="fhp-rtl--scale-x-100" alt="vector">
+            <h2 class="mb-0 fhp-fs-22 fhp-md-fs-26 fhp-lg-fs-32 lh-1 fhp-text-animation">
+                What Our Fans Are Saying
+            </h2>
+        </div>
+        <div class="position-relative">
+            <div class="mx-auto fhp-md-maxw-550 fhp-lg-maxw-680 fhp-xl-maxw-1300 position-relative fhp-z-1">
+                <div class="swiper feedbackSwiper swiper-initialized swiper-horizontal swiper-backface-hidden">
+                    <div class="swiper-wrapper" id="swiper-wrapper-a2fb101b5dfbeb37b" aria-live="off" style="transition-duration: 300ms; transform: translate3d(-570px, 0px, 0px);">
+                            <div class="swiper-slide swiper-slide-prev" role="group" aria-label="1 / 3" data-swiper-slide-index="0" style="width: 430px; margin-right: 140px;">
+                                <div class="d-sm-flex align-items-start fhp-gap-20 fhp-md-gap-25 fhp-xl-gap-30 text-center fhp-ltr-sm:text-left fhp-rtl-sm:text-right">
+                                    <div class="flex-shrink-0 fhp-bw-10 fhp-border-white-12 fhp-r-10 fhp-w-130 mx-auto">
+                                        <img src="/assets/images/users/user4.jpg" class="fhp-r-4" alt="Ayesha Khan" loading="lazy">
+                                    </div>
+                                    <div class="fhp-mt-12 sm-mt-0">
+                                        <div class="d-flex align-items-center justify-content-center sm-justify-content-start fhp-text-ff962e fs-6 fhp-md-fs-18 fhp-gap-5 fhp-mb-6">
+                                            <i class="ri-star-fill"></i>
+                                            <i class="ri-star-fill"></i>
+                                            <i class="ri-star-fill"></i>
+                                            <i class="ri-star-fill"></i>
+                                            <i class="ri-star-fill"></i>
+                                        </div>
+                                        <span class="fhp-mb-15 fhp-md-mb-20 d-block text-uppercase fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70">
+                                            (<span class="text-secondary">5</span> Members)
+                                        </span>
+                                        <p class="fhp-fs-18 fhp-md-fs-20 fhp-lg-fs-22 fw-bold text-white">
+                                            ΓÇ£Ratings, bookmarks and fan art in one place - finally a hub that understands how fandoms actually work.ΓÇ¥
+                                        </p>
+                                        <h3 class="fs-6 lh-1 fhp-mt-25 fhp-md-mt-30 fhp-lg-mt-35 fhp-mb-8">
+                                            ΓÇö Ayesha Khan
+                                        </h3>
+                                        <span class="d-block fhp-text-body-70 fw-bold fhp-fs-13 fhp-md-fs-14 text-uppercase fhp-tracking-0-1em">
+                                            Anime fan
+                                        </span>
+                                    </div>
+                                </div>
+                                    <div class="position-absolute fhp-w-1px top-0 bottom-0 start-50 fhp-transform fhp-tx-n50 border-start fhp-border-dashed fhp-border-white-17 d-none xl-d-block"></div>
+                            </div>
+                            <div class="swiper-slide swiper-slide-active" role="group" aria-label="2 / 3" data-swiper-slide-index="1" style="width: 430px; margin-right: 140px;">
+                                <div class="d-sm-flex align-items-start fhp-gap-20 fhp-md-gap-25 fhp-xl-gap-30 text-center fhp-ltr-sm:text-left fhp-rtl-sm:text-right">
+                                    <div class="flex-shrink-0 fhp-bw-10 fhp-border-white-12 fhp-r-10 fhp-w-130 mx-auto">
+                                        <img src="/assets/images/users/user5.jpg" class="fhp-r-4" alt="Daniel Reyes" loading="lazy">
+                                    </div>
+                                    <div class="fhp-mt-12 sm-mt-0">
+                                        <div class="d-flex align-items-center justify-content-center sm-justify-content-start fhp-text-ff962e fs-6 fhp-md-fs-18 fhp-gap-5 fhp-mb-6">
+                                            <i class="ri-star-fill"></i>
+                                            <i class="ri-star-fill"></i>
+                                            <i class="ri-star-fill"></i>
+                                            <i class="ri-star-fill"></i>
+                                            <i class="ri-star-fill"></i>
+                                        </div>
+                                        <span class="fhp-mb-15 fhp-md-mb-20 d-block text-uppercase fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70">
+                                            (<span class="text-secondary">5</span> Members)
+                                        </span>
+                                        <p class="fhp-fs-18 fhp-md-fs-20 fhp-lg-fs-22 fw-bold text-white">
+                                            ΓÇ£The events board never lets me down. I bookmark what I love and I actually show up now.ΓÇ¥
+                                        </p>
+                                        <h3 class="fs-6 lh-1 fhp-mt-25 fhp-md-mt-30 fhp-lg-mt-35 fhp-mb-8">
+                                            ΓÇö Daniel Reyes
+                                        </h3>
+                                        <span class="d-block fhp-text-body-70 fw-bold fhp-fs-13 fhp-md-fs-14 text-uppercase fhp-tracking-0-1em">
+                                            Convention regular
+                                        </span>
+                                    </div>
+                                </div>
+                                    <div class="position-absolute fhp-w-1px top-0 bottom-0 start-50 fhp-transform fhp-tx-n50 border-start fhp-border-dashed fhp-border-white-17 d-none xl-d-block"></div>
+                            </div>
+                            <div class="swiper-slide swiper-slide-next" role="group" aria-label="3 / 3" data-swiper-slide-index="2" style="width: 430px; margin-right: 140px;">
+                                <div class="d-sm-flex align-items-start fhp-gap-20 fhp-md-gap-25 fhp-xl-gap-30 text-center fhp-ltr-sm:text-left fhp-rtl-sm:text-right">
+                                    <div class="flex-shrink-0 fhp-bw-10 fhp-border-white-12 fhp-r-10 fhp-w-130 mx-auto">
+                                        <img src="/assets/images/users/user6.jpg" class="fhp-r-4" alt="Mei Tanaka" loading="lazy">
+                                    </div>
+                                    <div class="fhp-mt-12 sm-mt-0">
+                                        <div class="d-flex align-items-center justify-content-center sm-justify-content-start fhp-text-ff962e fs-6 fhp-md-fs-18 fhp-gap-5 fhp-mb-6">
+                                            <i class="ri-star-fill"></i>
+                                            <i class="ri-star-fill"></i>
+                                            <i class="ri-star-fill"></i>
+                                            <i class="ri-star-fill"></i>
+                                            <i class="ri-star-fill"></i>
+                                        </div>
+                                        <span class="fhp-mb-15 fhp-md-mb-20 d-block text-uppercase fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70">
+                                            (<span class="text-secondary">5</span> Members)
+                                        </span>
+                                        <p class="fhp-fs-18 fhp-md-fs-20 fhp-lg-fs-22 fw-bold text-white">
+                                            ΓÇ£Uploading my cosplay took seconds, and the feedback is what keeps me creating.ΓÇ¥
+                                        </p>
+                                        <h3 class="fs-6 lh-1 fhp-mt-25 fhp-md-mt-30 fhp-lg-mt-35 fhp-mb-8">
+                                            ΓÇö Mei Tanaka
+                                        </h3>
+                                        <span class="d-block fhp-text-body-70 fw-bold fhp-fs-13 fhp-md-fs-14 text-uppercase fhp-tracking-0-1em">
+                                            Cosplayer
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span></div>
+                <div class="d-flex align-items-center justify-content-center fhp-gap-15 fhp-mt-25 md-mt-0">
+                    <div class="feedback-button-prev swiper-button-prev md:!absolute md:!top-1/2 md:!transform fhp-md-ty-n50 fhp-ltr-md:!left-0 fhp-rtl-md:!right-0 fhp-ltr-md:!right-auto fhp-rtl-md:!left-auto" tabindex="0" role="button" aria-label="Previous slide" aria-controls="swiper-wrapper-a2fb101b5dfbeb37b">
+                        <i class="ri-arrow-left-line"></i>
+                    <svg class="swiper-navigation-icon" width="11" height="20" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.38296 20.0762C0.111788 19.805 0.111788 19.3654 0.38296 19.0942L9.19758 10.2796L0.38296 1.46497C0.111788 1.19379 0.111788 0.754138 0.38296 0.482966C0.654131 0.211794 1.09379 0.211794 1.36496 0.482966L10.4341 9.55214C10.8359 9.9539 10.8359 10.6053 10.4341 11.007L1.36496 20.0762C1.09379 20.3474 0.654131 20.3474 0.38296 20.0762Z" fill="currentColor"></path></svg></div>
+                    <div class="feedback-button-next swiper-button-next md:!absolute md:!top-1/2 md:!transform fhp-md-ty-n50 fhp-ltr-md:!right-0 fhp-rtl-md:!left-0 fhp-ltr-md:!left-auto fhp-rtl-md:!right-auto" tabindex="0" role="button" aria-label="Next slide" aria-controls="swiper-wrapper-a2fb101b5dfbeb37b">
+                        <i class="ri-arrow-right-line"></i>
+                    <svg class="swiper-navigation-icon" width="11" height="20" viewBox="0 0 11 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.38296 20.0762C0.111788 19.805 0.111788 19.3654 0.38296 19.0942L9.19758 10.2796L0.38296 1.46497C0.111788 1.19379 0.111788 0.754138 0.38296 0.482966C0.654131 0.211794 1.09379 0.211794 1.36496 0.482966L10.4341 9.55214C10.8359 9.9539 10.8359 10.6053 10.4341 11.007L1.36496 20.0762C1.09379 20.3474 0.654131 20.3474 0.38296 20.0762Z" fill="currentColor"></path></svg></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="fhp-pb-60 fhp-md-pb-80 fhp-lg-pb-100 fhp-xl-pb-120 fhp-xxl-pb-140">
+        <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
+            <div class="mb-[25px] md:mb-[35px] lg:mb-[45px] md:flex items-center justify-between gap-[25px]">  <div class="flex items-center gap-[13px]">    <img src="/assets/images/icons/vector.svg" class="rtl:-scale-x-100" alt="vector">    <h2 class="mb-0 text-[22px] md:text-[26px] lg:text-[32px] leading-none text_animation" style="perspective: 600px;"><div style="display: block; text-align: start; position: relative; translate: none; rotate: none; scale: none; transform-origin: 50% 0%; transform: translate(0px, 25px) rotateX(-60deg); opacity: 0;">News &amp; Editorials</div></h2>  </div>  <a href="/Blog" class="flex-none mt-[15px] md:mt-0 leading-none inline-block relative font-bold text-secondary transition-all duration-300 ease-in-out hover:text-primary before:absolute before:bottom-0 before:left-0 before:right-0 before:h-px before:bg-secondary before:transition-all before:duration-300 before:ease-in-out hover:before:bg-primary hover:before:scale-x-0">Read The Blog</a></div>
+            <div class="d-grid fhp-gcol-1 fhp-sm-gcol-2 fhp-lg-gcol-3 fhp-gap-25 fhp-lg-gap-35" data-cues="slideInUp" data-group="3" data-disabled="true">
+                    <div class="fhp-group" data-cue="slideInUp" data-group="3">
+    <a class="overflow-hidden d-block fhp-r-5 fhp-mb-20 fhp-lg-mb-25" href="/News/Details/4">
+        <img src="/assets/images/blogs/blog5.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="BTS announces long-awaited reunion world tour" loading="lazy">
+    </a>
+    <ul class="text-13 md:text-sm uppercase font-bold flex items-center flex-wrap gap-[13px] mb-[9px] md:mb-[11px] text-body/70">
+        <li>
+            23 Sep, 2026
+        </li>
+        <li>
+            <div class="fhp-w-1px bg-white/20 fhp-h-12"></div>
+        </li>
+        <li>
+            By
+            <a class="inline-block text-[#ae99fa] transition-all duration-300 ease-in-out hover:text-secondary" href="/News/Details/4">
+                FanHubPlus Editorial
+            </a>
+        </li>
+    </ul>
+    <h3 class="mb-0 text-base md:text-lg lg:text-xl leading-[1.4]">
+        <a class="fhp-transition fhp-dur300 fhp-ease group-hover:text-secondary" href="/News/Details/4">
+            BTS announces long-awaited reunion world tour
+        </a>
+    </h3>
+</div>
+
+                    <div class="fhp-group" data-cue="slideInUp" data-group="3">
+    <a class="overflow-hidden d-block fhp-r-5 fhp-mb-20 fhp-lg-mb-25" href="/News/Details/1">
+        <img src="/assets/images/blogs/blog2.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="Attack on Titan finale breaks global streaming records" loading="lazy">
+    </a>
+    <ul class="text-13 md:text-sm uppercase font-bold flex items-center flex-wrap gap-[13px] mb-[9px] md:mb-[11px] text-body/70">
+        <li>
+            22 Sep, 2026
+        </li>
+        <li>
+            <div class="fhp-w-1px bg-white/20 fhp-h-12"></div>
+        </li>
+        <li>
+            By
+            <a class="inline-block text-[#ae99fa] transition-all duration-300 ease-in-out hover:text-secondary" href="/News/Details/1">
+                FanHubPlus Editorial
+            </a>
+        </li>
+    </ul>
+    <h3 class="mb-0 text-base md:text-lg lg:text-xl leading-[1.4]">
+        <a class="fhp-transition fhp-dur300 fhp-ease group-hover:text-secondary" href="/News/Details/1">
+            Attack on Titan finale breaks global streaming records
+        </a>
+    </h3>
+</div>
+
+                    <div class="fhp-group" data-cue="slideInUp" data-group="3">
+    <a class="overflow-hidden d-block fhp-r-5 fhp-mb-20 fhp-lg-mb-25" href="/News/Details/2">
+        <img src="/assets/images/blogs/blog3.jpg" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="GTA VI trailer shatters YouTube records in 24 hours" loading="lazy">
+    </a>
+    <ul class="text-13 md:text-sm uppercase font-bold flex items-center flex-wrap gap-[13px] mb-[9px] md:mb-[11px] text-body/70">
+        <li>
+            20 Sep, 2026
+        </li>
+        <li>
+            <div class="fhp-w-1px bg-white/20 fhp-h-12"></div>
+        </li>
+        <li>
+            By
+            <a class="inline-block text-[#ae99fa] transition-all duration-300 ease-in-out hover:text-secondary" href="/News/Details/2">
+                FanHubPlus Editorial
+            </a>
+        </li>
+    </ul>
+    <h3 class="mb-0 text-base md:text-lg lg:text-xl leading-[1.4]">
+        <a class="fhp-transition fhp-dur300 fhp-ease group-hover:text-secondary" href="/News/Details/2">
+            GTA VI trailer shatters YouTube records in 24 hours
+        </a>
+    </h3>
+</div>
+
+            </div>
+        </div>
+    </div>
+
+<div class="position-relative fhp-z-1">
+    <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
+        <div class="bg-primary fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-px-20 fhp-md-px-40 fhp-lg-px-60 fhp-xl-px-100 fhp-xxl-px-145 position-relative fhp-z-1 fhp-bg-cover fhp-bg-center fhp-bg-norepeat fhp-r-10 d-md-flex align-items-center justify-content-between fhp-gap-25 text-center fhp-ltr-md:text-left fhp-rtl-md:text-right" style="background-image: url(/assets/images/bg-images/bg-image2.jpg);">
+            <div class="fhp-lg-maxw-450 fhp-mb-25 md-mb-0">
+                <h2 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fhp-fs-22 fhp-md-fs-26 fhp-lg-fs-32 fhp-xl-fs-40 fhp-leading-1-07 fhp-text-animation">
+                    Join FanHubPlus And Explore Endless Fandoms
+                </h2>
+                <a class="secondary-btn fhp-hover-!bg-black fhp-hover-!text-white fhp-hover-!border-black" href="/Account/Register">
+                    Join Now
+                </a>
+            </div>
+            <div class="fhp-w-200 fhp-h-200 mx-auto md-mx-0 rounded-pill bg-black position-relative text-center" data-cue="zoomIn">
+                <img src="/assets/images/icons/ico.svg" class="position-absolute top-50 start-50 fhp-transform fhp-tx-n50 fhp-ty-n50" alt="FanHubPlus">
+                <a class="position-absolute top-0 bottom-0 start-0 end-0 fhp-z-1 rounded-pill d-block" href="/Account/Register"></a>
+                <div class="position-absolute start-0 end-0 mx-auto top-50 fhp-transform fhp-ty-n50">
+                    <img src="/assets/images/icons/dashed-border.png" class="fhp-rotateme" alt="">
+                </div>
+            </div>
+            <div class="position-absolute top-0 bottom-0 start-0 end-0 fhp-z-n1 fhp-r-10 fhp-backdrop-blur-0-5px" style="background: linear-gradient(89.8deg, rgba(244, 27, 59, 0) 42.83%, rgba(154, 5, 27, 0.67) 99.82%);"></div>
+        </div>
+    </div>
+    <div class="position-absolute start-0 end-0 bottom-0 fhp-h-50pct fhp-z-n1 fhp-bg-navy"></div>
+</div>
+
+
+
+
+
+
+
+
+    </main>
+    <!-- End Main content -->
+
+    <!-- Footer -->
+    <footer class="fhp-pt-60 fhp-md-pt-80 fhp-lg-pt-100 fhp-xl-pt-120 fhp-xxl-pt-140 fhp-bg-navy fhp-bg-cover fhp-bg-center fhp-bg-norepeat" style="background-image: url(/assets/images/bg-images/bg-image3.jpg);">
+        <div class="container">
+            <div class="d-grid fhp-gcol-2 fhp-sm-gcol-3 fhp-md-gcol-4 fhp-lg-gcol-5 fhp-gap-25">
+                <div>
+                    <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
+                        Explore
+                    </h3>
+                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Explore">
+                                All Titles
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Characters">
+                                Characters
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/FanArt">
+                                Fan Art
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Merch">
+                                Merchandise
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Events">
+                                Events
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
+                        Community
+                    </h3>
+                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/News">
+                                News &amp; Timeline
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Blog">
+                                Blog
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Chatbot">
+                                FanBot Chat
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Bookmarks">
+                                My Bookmarks
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Sitemap">
+                                Sitemap
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
+                        Company
+                    </h3>
+                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Support">
+                                FAQ &amp; Support
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Contact">
+                                Contact Us
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Account/Login">
+                                Sign In
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Account/Register">
+                                Create Account
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Account/Profile">
+                                My Account
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
+                        Fandoms
+                    </h3>
+                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Explore?type=Movie">
+                                Movies
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Explore?type=Series">
+                                TV Shows
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Explore?type=Anime">
+                                Anime
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Explore?type=Game">
+                                Gaming
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary" href="/Explore?sort=views">
+                                Most Watched
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="fhp-gspan-2 lg:col-span-1">
+                    <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
+                        Address
+                    </h3>
+                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                        <li class="fhp-mb-15 fhp-md-mb-17 fhp-last-mb-0">
+                            <a href="mailto:support@fanhubplus.com" class="text-white fhp-fs-14 fhp-md-fs-15 fs-6">
+                                support@fanhubplus.com
+                            </a>
+                            <p class="fhp-mt-5">
+                                (for customer service and support)
+                            </p>
+                        </li>
+                        <li class="fhp-mb-15 fhp-md-mb-17 fhp-last-mb-0">
+                            <a href="tel:+12125550147" class="text-white fhp-fs-14 fhp-md-fs-15 fs-6">
+                                +1 (212) 555-0147
+                            </a>
+                            <p class="fhp-mt-5">
+                                (for press, partners and creators)
+                            </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="fhp-pt-60 fhp-md-pt-80 fhp-lg-pt-100 fhp-xl-pt-120 fhp-xxl-pt-140"></div>
+            <div class="d-md-flex align-items-center justify-content-between fhp-gap-25 text-center fhp-ltr-md:text-left fhp-rtl-md:text-right">
+                <a class="d-inline-block" href="/">
+                    <img src="/assets/images/logo-big.svg" alt="FanHubPlus logo">
+                </a>
+                <p class="flex-shrink-0 fhp-mt-15 md-mt-0">
+                    Copyright <span class="text-secondary fw-bold">FanHubPlus</span> All Rights Reserved <a href="https://envytheme.com/" class="text-secondary fw-bold fhp-transition fhp-ease fhp-dur300 fhp-hover-text-primary" target="_blank">EnvyTheme</a>
+                </p>
+            </div>
+            <div class="fhp-pb-20 fhp-md-pb-30 fhp-lg-pb-40 fhp-xl-pb-50"></div>
+        </div>
+    </footer>
+    <!-- End Footer -->
+
+    <!-- Back To Top -->
+    <button type="button" id="backToTopBtn">
+        <i class="flaticon-up-arrow"></i>
+    </button>
+    <!-- End Back To Top -->
+
+    <!-- LTR/RTL Mode -->
+    <button type="button" id="ltrRtlToggle">
+        <i class="ri-text-direction-r"></i>
+    </button>
+    <!-- End LTR/RTL Mode -->
+
+    <div id="chatWidget" class="chat-widget d-none">
+    <div class="chat-header">
+        <span>FanBot</span>
+        <div class="chat-header__controls">
+            <button type="button" id="chatVoiceToggle" class="chat-header__btn" aria-label="Read bot replies aloud" title="Read bot replies aloud">
+                <i class="ri-speak-line" aria-hidden="true"></i>
+            </button>
+            <button type="button" id="chatVoiceStop" class="chat-header__btn" aria-label="Stop reading" title="Stop reading">
+                <i class="ri-stop-line" aria-hidden="true"></i>
+            </button>
+            <button type="button" class="chat-close" id="chatClose" aria-label="Close chat">├ù</button>
+        </div>
+    </div>
+    <div class="chat-body" id="chatBody">
+        <div class="chat-msg bot">Hi! I'm FanBot. Ask me about fandoms, characters, events, ratings or how the portal works.</div>
+    </div>
+    <div class="chat-suggestions" id="chatSuggestions"></div>
+    <form class="chat-input" id="chatForm">
+        <input name="__RequestVerificationToken" type="hidden" value="CfDJ8FUL9LW6d6pCgkZzjLpGOdz5w3dCVmaGFUZtUeu4piwKdcC9O-BpZLVVuyvOgifLxKxzNuPaWax4igXabIxA6u8HkSX90ytZ0Go4vfzDhIFmCNraFCaqoZt3FgeUV7mEOUYGRaFbGWMqvnPuM__5MrY">
+        <label class="visually-hidden" for="chatText">Your question</label>
+        <input type="text" id="chatText" maxlength="1000" placeholder="Type your question..." autocomplete="off" required="">
+        <button type="button" id="chatMicBtn" class="chat-mic" aria-label="Speak your question" title="Speak your question">
+            <i class="ri-mic-line" aria-hidden="true"></i>
+        </button>
+        <button type="submit" id="chatSend">Send</button>
+    </form>
+</div>
+
+<button type="button" id="chatToggle" class="chat-fab" aria-label="Open the FanBot chat" title="Chat with FanBot">
+    <i class="ri-chat-3-line" aria-hidden="true"></i>
+</button>
+
+
+    <div class="modal fade fhp-vmodal" id="fhpVideoModal" tabindex="-1" aria-hidden="true" aria-labelledby="fhpVideoModalTitle">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="fhp-vmodal__head">
+                <h2 class="fhp-vmodal__title" id="fhpVideoModalTitle">Video</h2>
+                <button type="button" class="fhp-vmodal__close" data-bs-dismiss="modal" aria-label="Close the player">
+                    <i class="ri-close-line" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="fhp-vmodal__body" data-fhp-video-body="">
+                <div class="fhp-vmodal__stage"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- Links Of JS File -->
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/js/swiper-bundle.min.js"></script>
+    <script src="/assets/js/scrollCue.min.js"></script>
+    <script src="/assets/js/parallax.min.js"></script>
+    <script src="/assets/js/fslightbox.js"></script>
+    <script src="/assets/js/gsap.min.js"></script>
+    <script src="/assets/js/ScrollTrigger.min.js"></script>
+    <script src="/assets/js/SplitText.min.js"></script>
+    <script src="/assets/js/ukiyo.min.js"></script>
+    <script src="/assets/js/lenis.js"></script>
+    <script src="/assets/js/gsap-custom.js"></script>
+    <script src="/assets/js/custom.js"></script>
+
+    <!-- Application scripts -->
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/js/speech.js?v=3vswn_rNS499t7jyAitOOO0gR0TJ4DxhVSW-fbkLkeA"></script>
+    <script src="/js/site.js?v=tkJjfPWD2TYDzmgCjdMykVy0dzWg8HGKiAc3a_UDFyY"></script>
+    
+
+
+
+
+
+
+
+
+
+
+
+</body></html>

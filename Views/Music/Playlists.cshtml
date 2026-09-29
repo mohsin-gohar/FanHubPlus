@@ -10,12 +10,12 @@
 
 <partial name="_PageBanner" model="trail" />
 
-<div class="py-[60px] md:py-[80px]">
+<div class="fhp-py-60 fhp-md-py-80">
     <div class="container">
-        <div class="flex items-center justify-between mb-8">
+        <div class="d-flex align-items-center justify-content-between fhp-mb-32">
             <div>
-                <h1 class="text-3xl font-extrabold text-white mb-2">My Custom Playlists</h1>
-                <p class="text-white/60">Create and organize your favorite music, soundtracks, and media tracks.</p>
+                <h1 class="fhp-fs-30 fw-bolder text-white mb-2">My Custom Playlists</h1>
+                <p class="fhp-text-white-60">Create and organize your favorite music, soundtracks, and media tracks.</p>
             </div>
             <button type="button" class="primary-btn" data-bs-toggle="modal" data-bs-target="#createPlaylistModal">
                 <i class="ri-add-line me-1"></i> New Playlist
@@ -24,19 +24,19 @@
 
         @if (TempData["StatusMessage"] != null)
         {
-            <div class="alert alert-success bg-success/20 border-success/40 text-success mb-6">@TempData["StatusMessage"]</div>
+            <div class="alert alert-success fhp-bg-success-20 fhp-border-success-40 text-success mb-4">@TempData["StatusMessage"]</div>
         }
         @if (TempData["StatusError"] != null)
         {
-            <div class="alert alert-danger bg-danger/20 border-danger/40 text-danger mb-6">@TempData["StatusError"]</div>
+            <div class="alert alert-danger fhp-bg-danger-20 fhp-border-danger-40 text-danger mb-4">@TempData["StatusError"]</div>
         }
 
         @if (Model.Count == 0)
         {
-            <div class="text-center py-16 bg-white/5 rounded-2xl border border-white/10">
-                <i class="ri-playlist-2-line text-6xl text-white/30 mb-3 block"></i>
-                <h3 class="text-xl font-bold text-white mb-2">No Playlists Yet</h3>
-                <p class="text-white/60 mb-4">Create your first custom playlist to save music tracks.</p>
+            <div class="text-center fhp-py-64 fhp-bg-white-5 rounded-5 border fhp-border-white-10">
+                <i class="ri-playlist-2-line fhp-fs-60 fhp-text-white-30 fhp-mb-12 d-block"></i>
+                <h3 class="fhp-fs-20 fw-bold text-white mb-2">No Playlists Yet</h3>
+                <p class="fhp-text-white-60 mb-3">Create your first custom playlist to save music tracks.</p>
                 <button type="button" class="primary-btn" data-bs-toggle="modal" data-bs-target="#createPlaylistModal">Create Playlist</button>
             </div>
         }
@@ -46,26 +46,26 @@
                 @foreach (var pl in Model)
                 {
                     <div class="col-md-6 col-lg-4">
-                        <div class="bg-[#18181f] border border-white/10 rounded-2xl p-6">
-                            <div class="flex items-center justify-between mb-3">
-                                <h4 class="text-xl font-bold text-white">@pl.Title</h4>
-                                <span class="text-xs px-2.5 py-1 bg-white/10 rounded-full text-white/70">@pl.Items.Count Tracks</span>
+                        <div class="fhp-bg-18181f border fhp-border-white-10 rounded-5 p-4">
+                            <div class="d-flex align-items-center justify-content-between fhp-mb-12">
+                                <h4 class="fhp-fs-20 fw-bold text-white">@pl.Title</h4>
+                                <span class="fhp-fs-12 fhp-px-10 py-1 fhp-bg-white-10 rounded-pill fhp-text-white-70">@pl.Items.Count Tracks</span>
                             </div>
-                            <p class="text-white/60 text-sm mb-4">@(string.IsNullOrWhiteSpace(pl.Description) ? "No description." : pl.Description)</p>
+                            <p class="fhp-text-white-60 fhp-fs-14 mb-3">@(string.IsNullOrWhiteSpace(pl.Description) ? "No description." : pl.Description)</p>
 
                             @if (pl.Items.Count > 0)
                             {
-                                <ul class="divide-y divide-white/10 mb-4">
+                                <ul class="fhp-divide-y fhp-divide-white-10 mb-3">
                                     @foreach (var item in pl.Items.Take(4))
                                     {
-                                        <li class="py-2 text-sm text-white/80 flex items-center justify-between">
-                                            <span class="truncate me-2">@item.Content.Title</span>
-                                            <a asp-controller="Music" asp-action="Details" asp-route-id="@item.ContentId" class="text-primary hover:underline text-xs">View</a>
+                                        <li class="py-2 fhp-fs-14 fhp-text-white-80 d-flex align-items-center justify-content-between">
+                                            <span class="text-truncate me-2">@item.Content.Title</span>
+                                            <a asp-controller="Music" asp-action="Details" asp-route-id="@item.ContentId" class="text-primary fhp-hover-text-decoration-underline fhp-fs-12">View</a>
                                         </li>
                                     }
                                 </ul>
                             }
-                            <div class="text-xs text-white/40">Created @pl.CreatedAt.ToString("MMM dd, yyyy")</div>
+                            <div class="fhp-fs-12 fhp-text-white-40">Created @pl.CreatedAt.ToString("MMM dd, yyyy")</div>
                         </div>
                     </div>
                 }
@@ -77,24 +77,24 @@
 <!-- Modal -->
 <div class="modal fade" id="createPlaylistModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-[#18181f] border border-white/20 text-white">
+        <div class="modal-content fhp-bg-18181f border fhp-border-white-20 text-white">
             <form asp-controller="Music" asp-action="CreatePlaylist" method="post">
                 @Html.AntiForgeryToken()
-                <div class="modal-header border-b border-white/10">
-                    <h5 class="modal-title font-bold">Create New Playlist</h5>
+                <div class="modal-header border-bottom fhp-border-white-10">
+                    <h5 class="modal-title fw-bold">Create New Playlist</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body space-y-4">
+                <div class="modal-body fhp-space-y-16">
                     <div>
-                        <label class="form-label text-sm">Playlist Name</label>
+                        <label class="form-label fhp-fs-14">Playlist Name</label>
                         <input type="text" name="title" class="form-control form-input" required placeholder="e.g. Favorite Anime Tracks" />
                     </div>
                     <div>
-                        <label class="form-label text-sm">Description (Optional)</label>
+                        <label class="form-label fhp-fs-14">Description (Optional)</label>
                         <textarea name="description" class="form-control form-input" rows="3" placeholder="Add a short summary..."></textarea>
                     </div>
                 </div>
-                <div class="modal-footer border-t border-white/10">
+                <div class="modal-footer border-top fhp-border-white-10">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="submit" class="primary-btn">Create</button>
                 </div>

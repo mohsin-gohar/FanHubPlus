@@ -47,8 +47,8 @@
 }
 
 <!-- Banner -->
-<div class="px-[10px] pt-[10px] relative">
-    <div class="swiper bannerSwiper rounded-[10px] border-[4px] md:border-[6px] border-white/15">
+<div class="fhp-px-10 fhp-pt-10 position-relative">
+    <div class="swiper bannerSwiper fhp-r-10 fhp-bw-4 fhp-md-bw-6 fhp-border-white-15">
         <div class="swiper-wrapper">
             @for (var i = 0; i < slides.Count; i++)
             {
@@ -58,65 +58,65 @@
                     .Take(4)
                     .ToList();
                 <div class="swiper-slide">
-                    <div class="pt-[130px] md:pt-[160px] lg:pt-[180px] xl:pt-[280px] 2xl:pt-[340px] pb-[60px] md:pb-[80px] lg:pb-[65px] relative z-[1]">
-                        <div class="container 2xl:!px-[30px] xl:!max-w-[1920px]">
+                    <div class="fhp-pt-130 fhp-md-pt-160 fhp-lg-pt-180 fhp-xl-pt-280 fhp-xxl-pt-340 fhp-pb-60 fhp-md-pb-80 fhp-lg-pb-65 position-relative fhp-z-1">
+                        <div class="container fhp-xxl-px-30 fhp-xl-maxw-1920">
                             <div class="text-center mx-auto">
-                                <h1 class="uppercase font-secondary !font-extrabold text-4xl md:text-6xl lg:text-8xl xl:text-9xl 2xl:text-[150px] leading-none lg:-tracking-[0.05em] mb-[15px] text_animation" data-swiper-parallax="-400" data-swiper-parallax-opacity="0.2" data-swiper-parallax-scale="0.9">
+                                <h1 class="text-uppercase fhp-font-secondary !font-extrabold fs-2 fhp-md-fs-60 fhp-lg-fs-96 fhp-xl-fs-128 fhp-xxl-fs-150 lh-1 fhp-lg-tracking-n0-05em fhp-mb-15 fhp-text-animation" data-swiper-parallax="-400" data-swiper-parallax-opacity="0.2" data-swiper-parallax-scale="0.9">
                                     @slide.Title
                                 </h1>
-                                <div class="flex items-center justify-center flex-wrap gap-[15px] md:gap-[20px] mt-[25px] md:mt-[30px]" data-swiper-parallax-y="-120" data-swiper-parallax-opacity="0.6">
+                                <div class="d-flex align-items-center justify-content-center flex-wrap fhp-gap-15 fhp-md-gap-20 fhp-mt-25 fhp-md-mt-30" data-swiper-parallax-y="-120" data-swiper-parallax-opacity="0.6">
                                     <a asp-controller="Explore" asp-action="Details" asp-route-id="@slide.ContentId" class="primary-btn">
                                         <span>
                                             <i class="ri-play-fill"></i>
                                             Start Watching
                                         </span>
                                     </a>
-                                    <a asp-controller="Explore" asp-action="Index" class="primary-btn with-border">
+                                    <a asp-controller="Explore" asp-action="Index" class="primary-btn fhp-with-border">
                                         Explore Everything
                                     </a>
                                 </div>
                             </div>
-                            <div class="mt-[20px] md:mt-[80px] lg:mt-[65px] text-center ltr:md:text-left rtl:md:text-right" data-swiper-parallax="200" data-swiper-parallax-opacity="0" data-swiper-parallax-scale="1.05">
-                                <div class="flex items-center justify-center md:justify-start text-[#ff962e] text-base md:text-lg gap-[5px]">
+                            <div class="fhp-mt-20 fhp-md-mt-80 fhp-lg-mt-65 text-center fhp-ltr-md:text-left fhp-rtl-md:text-right" data-swiper-parallax="200" data-swiper-parallax-opacity="0" data-swiper-parallax-scale="1.05">
+                                <div class="d-flex align-items-center justify-content-center md-justify-content-start fhp-text-ff962e fs-6 fhp-md-fs-18 fhp-gap-5">
                                     <i class="ri-star-fill"></i>
                                     <i class="ri-star-fill"></i>
                                     <i class="ri-star-fill"></i>
                                     <i class="ri-star-fill"></i>
                                     <i class="ri-star-fill"></i>
-                                    <span class="block uppercase font-bold text-13 md:text-sm tracking-[0.15em] text-body/70 ltr:ml-[5px] rtl:mr-[5px]">
+                                    <span class="d-block text-uppercase fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70 fhp-ltr-ml-[5px] fhp-rtl-mr-[5px]">
                                         (<span class="text-secondary">@Model.TotalContents.ToString("N0")</span> Titles)
                                     </span>
                                 </div>
-                                <div class="flex items-center justify-center md:justify-start flex-wrap gap-[10px] mt-[17px] text-xs md:text-13 font-bold">
+                                <div class="d-flex align-items-center justify-content-center md-justify-content-start flex-wrap fhp-gap-10 fhp-mt-17 fhp-fs-12 fhp-md-fs-13 fw-bold">
                                     @foreach (var genre in genres)
                                     {
-                                        <a asp-controller="Explore" asp-action="Index" asp-route-search="@genre" class="inline-block uppercase text-body/80 bg-white/12 rounded-[2px] tracking-[0.15em] backdrop-blur-[3px] py-[3px] px-[10px] transition-all ease-in-out duration-300 hover:bg-primary hover:text-white">
+                                        <a asp-controller="Explore" asp-action="Index" asp-route-search="@genre" class="d-inline-block text-uppercase fhp-text-body-80 fhp-bg-white-12 fhp-r-2 fhp-tracking-0-15em fhp-backdrop-blur-3px fhp-py-3 fhp-px-10 fhp-transition fhp-ease fhp-dur300 fhp-hover-bg-primary fhp-hover-text-white">
                                             @genre
                                         </a>
                                     }
                                 </div>
-                                <ul class="text-13 md:text-sm font-bold text-body/70 flex items-center justify-center md:justify-start flex-wrap gap-[11px] mt-[18px] md:mt-[20px] uppercase tracking-[0.1em]">
+                                <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center md-justify-content-start flex-wrap fhp-gap-11 fhp-mt-18 fhp-md-mt-20 text-uppercase fhp-tracking-0-1em">
                                     <li>
                                         @(slide.ReleaseDate?.ToString("yyyy") ?? slide.CreatedAt.ToString("yyyy"))
                                     </li>
                                     <li>
-                                        <div class="w-px bg-white/15 h-[12px]"></div>
+                                        <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
                                     </li>
                                     <li>
                                         @slide.Type
                                     </li>
                                     <li>
-                                        <div class="w-px bg-white/15 h-[12px]"></div>
+                                        <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
                                     </li>
                                     <li>
-                                        <a asp-controller="Explore" asp-action="Index" asp-route-categoryId="@slide.CategoryId" class="inline-block transition-all duration-300 ease-in-out hover:text-secondary">
+                                        <a asp-controller="Explore" asp-action="Index" asp-route-categoryId="@slide.CategoryId" class="d-inline-block fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary">
                                             @(slide.Category?.Name ?? "Fandom")
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
-                        <div class="absolute inset-0 -z-[1] bg-cover bg-center bg-no-repeat" style="background-image: url(@Art(slide.ThumbnailUrl, posterArt, i));" data-jarallax='{"speed": 0.3}' data-swiper-parallax-scale="1.15" data-swiper-parallax-opacity="0.8"></div>
+                        <div class="position-absolute top-0 bottom-0 start-0 end-0 fhp-z-n1 fhp-bg-cover fhp-bg-center fhp-bg-norepeat" style="background-image: url(@Art(slide.ThumbnailUrl, posterArt, i));" data-jarallax='{"speed": 0.3}' data-swiper-parallax-scale="1.15" data-swiper-parallax-opacity="0.8"></div>
                     </div>
                 </div>
             }
@@ -124,24 +124,24 @@
     </div>
     @if (slides.Count > 1)
     {
-        <div class="container !px-[2px] md:!px-[12px] 2xl:!px-[30px] xl:!max-w-[1920px] relative">
-            <div class="mt-[25px] md:mt-0 md:max-w-[220px] lg:max-w-[340px] 2xl:max-w-[440px] md:mx-auto md:absolute md:bottom-[100px] lg:bottom-[69px] 2xl:bottom-[55px] ltr:md:right-[12px] rtl:md:left-[12px] ltr:xl:right-[18px] rtl:xl:left-[18px] ltr:2xl:right-[35px] rtl:2xl:left-[35px]">
+        <div class="container fhp-px-2 fhp-md-px-12 fhp-xxl-px-30 fhp-xl-maxw-1920 position-relative">
+            <div class="fhp-mt-25 md-mt-0 fhp-md-maxw-220 fhp-lg-maxw-340 fhp-xxl-maxw-440 md-mx-auto position-absolute fhp-md-bottom-100px fhp-lg-bottom-69px fhp-xxl-bottom-55px fhp-ltr-md:right-[12px] fhp-rtl-md:left-[12px] fhp-ltr-xl:right-[18px] fhp-rtl-xl:left-[18px] fhp-ltr-2xl:right-[35px] fhp-rtl-2xl:left-[35px]">
                 <div thumbsSlider class="swiper bannerSwiperThumbs">
                     <div class="swiper-wrapper">
                         @for (var i = 0; i < slides.Count; i++)
                         {
                             var thumb = slides[i];
                             <div class="swiper-slide">
-                                <div class="banner-thumb-item relative p-[7px] cursor-pointer">
-                                    <img src="@Art(thumb.ThumbnailUrl, thumbArt, i)" class="rounded-[5px]" alt="@thumb.Title">
-                                    <div class="active transition-all ease-in-out duration-300 absolute top-0 ltr:left-0 rtl:right-0 h-px w-[20px] lg:w-[50px] bg-white/27"></div>
-                                    <div class="active transition-all ease-in-out duration-300 absolute top-px ltr:left-0 rtl:right-0 h-[19px] lg:h-[49px] w-px bg-white/27"></div>
-                                    <div class="active transition-all ease-in-out duration-300 absolute top-0 ltr:right-0 rtl:left-0 h-px w-[20px] lg:w-[50px] bg-white/27"></div>
-                                    <div class="active transition-all ease-in-out duration-300 absolute top-px ltr:right-0 rtl:left-0 h-[19px] lg:h-[49px] w-px bg-white/27"></div>
-                                    <div class="active transition-all ease-in-out duration-300 absolute bottom-0 ltr:left-0 rtl:right-0 h-px w-[20px] lg:w-[50px] bg-white/27"></div>
-                                    <div class="active transition-all ease-in-out duration-300 absolute bottom-px ltr:left-0 rtl:right-0 h-[19px] lg:h-[49px] w-px bg-white/27"></div>
-                                    <div class="active transition-all ease-in-out duration-300 absolute bottom-0 ltr:right-0 rtl:left-0 h-px w-[20px] lg:w-[50px] bg-white/27"></div>
-                                    <div class="active transition-all ease-in-out duration-300 absolute bottom-px ltr:right-0 rtl:left-0 h-[19px] lg:h-[49px] w-px bg-white/27"></div>
+                                <div class="banner-thumb-item position-relative fhp-p-7 fhp-cursor-pointer">
+                                    <img src="@Art(thumb.ThumbnailUrl, thumbArt, i)" class="fhp-r-5" alt="@thumb.Title">
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute top-0 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-top-1 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute top-0 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-top-1 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute bottom-0 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-bottom-1 fhp-ltr-start-0 fhp-rtl-end-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute bottom-0 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-1px fhp-w-20 fhp-lg-w-50 fhp-bg-white-27"></div>
+                                    <div class="active fhp-transition fhp-ease fhp-dur300 position-absolute fhp-bottom-1 fhp-ltr-end-0 fhp-rtl-start-0 fhp-h-19 fhp-lg-h-49 fhp-w-1px fhp-bg-white-27"></div>
                                 </div>
                             </div>
                         }
@@ -155,17 +155,17 @@
 @* ============================ TRENDING ============================ *@
 @if (Model.Trending.Count > 0)
 {
-    <div class="py-[60px] md:py-[80px] lg:py-[100px] xl:py-[120px] 2xl:py-[140px]">
-        <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
+    <div class="fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-xl-py-120 fhp-xxl-py-140">
+        <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
             @Head("Trending Videos", Url.Action("Index", "Explore")!, "View More Videos")
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-[25px]" data-cues="slideInUp" data-group="1">
+            <div class="d-grid fhp-gcol-1 fhp-sm-gcol-2 fhp-lg-gcol-3 fhp-xl-gcol-6 fhp-gap-25" data-cues="slideInUp" data-group="1">
                 @foreach (var item in Model.Trending.Take(6))
                 {
                     var views = item.ViewCount >= 1000 ? (item.ViewCount / 1000d).ToString("0.#") + "K" : item.ViewCount.ToString();
-                    <div class="group text-center">
-                        <div class="relative rounded-[5px] mb-[20px] lg:mb-[22px]">
-                            <a asp-controller="Explore" asp-action="Details" asp-route-id="@item.ContentId" class="block overflow-hidden rounded-[5px]">
-                                <img src="@Art(item.ThumbnailUrl, movieArt, item.ContentId)" class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110" alt="@item.Title" loading="lazy">
+                    <div class="fhp-group text-center">
+                        <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
+                            <a asp-controller="Explore" asp-action="Details" asp-route-id="@item.ContentId" class="d-block overflow-hidden fhp-r-5">
+                                <img src="@Art(item.ThumbnailUrl, movieArt, item.ContentId)" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="@item.Title" loading="lazy">
                             </a>
                             <div class="@tileActions">
                                 <a asp-controller="Bookmarks" asp-action="Index" class="@tileAction" title="Keep it in your list">
@@ -179,17 +179,17 @@
                                 </a>
                             </div>
                         </div>
-                        <h3 class="text-base md:text-lg lg:text-xl leading-none mb-[10px]">
-                            <a asp-controller="Explore" asp-action="Details" asp-route-id="@item.ContentId" class="transition-all duration-300 ease-in-out hover:text-secondary">
+                        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
+                            <a asp-controller="Explore" asp-action="Details" asp-route-id="@item.ContentId" class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary">
                                 @item.Title
                             </a>
                         </h3>
-                        <ul class="text-13 md:text-sm font-bold text-body/70 flex items-center justify-center flex-wrap gap-[11px] uppercase tracking-[0.1em]">
+                        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
                             <li>
                                 @views Views
                             </li>
                             <li>
-                                <div class="w-px bg-white/15 h-[12px]"></div>
+                                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
                             </li>
                             <li>
                                 @item.Type
@@ -205,23 +205,23 @@
 @* ============================ CATEGORIES ============================ *@
 @if (Model.Categories.Count > 0)
 {
-    <div class="py-[60px] md:py-[80px] lg:py-[100px] xl:py-[120px] 2xl:py-[140px]">
-        <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
+    <div class="fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-xl-py-120 fhp-xxl-py-140">
+        <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
             @Head("Categories", Url.Action("Index", "Explore")!, "View All Categories")
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-[25px]" data-cues="slideInUp" data-group="3">
+            <div class="d-grid fhp-gcol-2 fhp-sm-gcol-3 fhp-lg-gcol-4 fhp-xl-gcol-7 fhp-gap-25" data-cues="slideInUp" data-group="3">
                 @foreach (var category in Model.Categories.Take(7))
                 {
-                    <div class="group text-center rounded-[5px] bg-white/8 backdrop-blur-[2px] px-[8px] pt-[8px] transition-all duration-300 ease-in-out hover:bg-white/10">
-                        <a asp-controller="Explore" asp-action="Index" asp-route-categoryId="@category.CategoryId" class="block overflow-hidden rounded-[5px]">
-                            <img src="@Art(category.IconUrl, categoryArt, category.CategoryId)" class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110" alt="@category.Name" loading="lazy">
+                    <div class="fhp-group text-center fhp-r-5 fhp-bg-white-8 fhp-backdrop-blur-2px fhp-px-8 fhp-pt-8 fhp-transition fhp-dur300 fhp-ease fhp-hover-bg-white-10">
+                        <a asp-controller="Explore" asp-action="Index" asp-route-categoryId="@category.CategoryId" class="d-block overflow-hidden fhp-r-5">
+                            <img src="@Art(category.IconUrl, categoryArt, category.CategoryId)" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="@category.Name" loading="lazy">
                         </a>
-                        <div class="py-[15px] md:py-[20px] px-[2px] md:px-[7px]">
-                            <h3 class="text-base md:text-lg lg:text-xl leading-none mb-[8px]">
-                                <a asp-controller="Explore" asp-action="Index" asp-route-categoryId="@category.CategoryId" class="transition-all duration-300 ease-in-out hover:text-secondary">
+                        <div class="fhp-py-15 fhp-md-py-20 fhp-px-2 fhp-md-px-7">
+                            <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-8">
+                                <a asp-controller="Explore" asp-action="Index" asp-route-categoryId="@category.CategoryId" class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary">
                                     @category.Name
                                 </a>
                             </h3>
-                            <span class="block font-bold text-13 md:text-sm text-body/60 uppercase tracking-[0.1em]">
+                            <span class="d-block fw-bold fhp-fs-13 fhp-md-fs-14 fhp-text-body-60 text-uppercase fhp-tracking-0-1em">
                                 @category.ContentCount @(category.ContentCount == 1 ? "Title" : "Titles")
                             </span>
                         </div>
@@ -235,10 +235,10 @@
 @* ============================ TOP RATED ============================ *@
 @if (Model.Trending.Count > 0)
 {
-    <div class="py-[60px] md:py-[80px] lg:py-[100px] xl:py-[120px] 2xl:py-[140px]">
-        <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
+    <div class="fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-xl-py-120 fhp-xxl-py-140">
+        <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
             @Head("Top Rated Movies", Url.Action("Index", "Explore", new { sort = "views" })!, "View All Titles")
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-[25px]" data-cues="slideInUp" data-group="2">
+            <div class="d-grid fhp-gcol-1 fhp-sm-gcol-2 fhp-lg-gcol-3 fhp-xl-gcol-5 fhp-gap-25" data-cues="slideInUp" data-group="2">
                 @foreach (var item in Model.Trending.OrderByDescending(i => i.PopularityScore).ThenByDescending(i => i.ViewCount).Take(10))
                 {
                     <partial name="_ContentCard" model="item" />
@@ -251,21 +251,21 @@
 @* ============================ TRAILERS ============================ *@
 @if (Model.Trailers.Count > 0)
 {
-    <div class="py-[60px] md:py-[80px] lg:py-[100px] xl:py-[120px] 2xl:py-[140px]">
-        <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
+    <div class="fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-xl-py-120 fhp-xxl-py-140">
+        <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
             @Head("Trailers & Clips", Url.Action("Index", "Explore")!, "Browse The Library")
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-[25px]" data-cues="slideInUp" data-group="1">
+            <div class="d-grid fhp-gcol-1 fhp-sm-gcol-2 fhp-lg-gcol-3 fhp-xl-gcol-6 fhp-gap-25" data-cues="slideInUp" data-group="1">
                 @foreach (var trailer in Model.Trailers)
                 {
                     var poster = string.IsNullOrWhiteSpace(trailer.Poster)
                         ? movieArt(trailer.Content.ContentId)
                         : trailer.Poster;
-                    <div class="group text-center">
-                        <div class="relative rounded-[5px] mb-[20px] lg:mb-[22px]">
+                    <div class="fhp-group text-center">
+                        <div class="position-relative fhp-r-5 fhp-mb-20 fhp-lg-mb-22">
                             <a data-fhp-video data-kind="@trailer.Kind" data-src="@trailer.Url" data-poster="@poster"
                                data-title="@trailer.Content.Title — @trailer.Label"
-                               href="@trailer.Url" class="block overflow-hidden rounded-[5px]">
-                                <img src="@poster" class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110" alt="@trailer.Content.Title" loading="lazy">
+                               href="@trailer.Url" class="d-block overflow-hidden fhp-r-5">
+                                <img src="@poster" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="@trailer.Content.Title" loading="lazy">
                             </a>
                             <div class="@tileActions">
                                 <a asp-controller="Explore" asp-action="Details" asp-route-id="@trailer.Content.ContentId" class="@tileAction" title="Open the title page">
@@ -284,17 +284,17 @@
                                 </button>
                             </div>
                         </div>
-                        <h3 class="text-base md:text-lg lg:text-xl leading-none mb-[10px]">
-                            <a asp-controller="Explore" asp-action="Details" asp-route-id="@trailer.Content.ContentId" class="transition-all duration-300 ease-in-out hover:text-secondary">
+                        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-10">
+                            <a asp-controller="Explore" asp-action="Details" asp-route-id="@trailer.Content.ContentId" class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary">
                                 @trailer.Content.Title
                             </a>
                         </h3>
-                        <ul class="text-13 md:text-sm font-bold text-body/70 flex items-center justify-center flex-wrap gap-[11px] uppercase tracking-[0.1em]">
+                        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
                             <li>
                                 @trailer.Label
                             </li>
                             <li>
-                                <div class="w-px bg-white/15 h-[12px]"></div>
+                                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
                             </li>
                             <li>
                                 @trailer.Content.Type
@@ -310,35 +310,35 @@
 @* ============================ MERCH ============================ *@
 @if (Model.FeaturedMerch.Count > 0)
 {
-    <div class="py-[60px] md:py-[80px] lg:py-[100px] xl:py-[120px] 2xl:py-[140px]">
-        <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
+    <div class="fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-xl-py-120 fhp-xxl-py-140">
+        <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
             @Head("Fan Merchandise", Url.Action("Index", "Merch")!, "Visit The Shop")
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[25px] xl:gap-[35px]" data-cues="slideInUp" data-group="4">
+            <div class="d-grid fhp-gcol-1 fhp-sm-gcol-2 fhp-lg-gcol-4 fhp-gap-25 fhp-xl-gap-35" data-cues="slideInUp" data-group="4">
                 @foreach (var item in Model.FeaturedMerch)
                 {
                     var product = string.IsNullOrWhiteSpace(item.ImageUrl)
                         ? $"/assets/images/products/product{(item.ItemId % 9) + 1}.jpg"
                         : item.ImageUrl;
-                    <div class="group">
-                        <div class="text-center relative mb-[15px] md:mb-[20px]">
-                            <a asp-controller="Merch" asp-action="Details" asp-route-id="@item.ItemId" class="block rounded-[5px] overflow-hidden">
-                                <img src="@product" class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110" alt="@item.Name" loading="lazy">
+                    <div class="fhp-group">
+                        <div class="text-center position-relative fhp-mb-15 fhp-md-mb-20">
+                            <a asp-controller="Merch" asp-action="Details" asp-route-id="@item.ItemId" class="d-block fhp-r-5 overflow-hidden">
+                                <img src="@product" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="@item.Name" loading="lazy">
                             </a>
-                            <a asp-controller="Merch" asp-action="Details" asp-route-id="@item.ItemId" class="secondary-btn uppercase absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 opacity-0 invisible group-hover:opacity-100 group-hover:visible">
+                            <a asp-controller="Merch" asp-action="Details" asp-route-id="@item.ItemId" class="secondary-btn text-uppercase position-absolute top-50 start-50 fhp-ty-n50 fhp-tx-n50 opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible">
                                 View Product
                             </a>
                         </div>
-                        <div class="flex items-center justify-between mb-[8px] gap-[10px]">
-                            <h3 class="mb-0 text-base md:text-lg lg:text-xl leading-none">
-                                <a asp-controller="Merch" asp-action="Details" asp-route-id="@item.ItemId" class="transition-all ease-in-out duration-300 hover:text-secondary">
+                        <div class="d-flex align-items-center justify-content-between fhp-mb-8 fhp-gap-10">
+                            <h3 class="mb-0 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
+                                <a asp-controller="Merch" asp-action="Details" asp-route-id="@item.ItemId" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                     @item.Name
                                 </a>
                             </h3>
-                            <div class="inline-block relative font-bold ltr:pl-[20px] rtl:pr-[20px] flex-none">
-                                <i class="ri-eye-line text-[#FF962E] absolute ltr:left-0 rtl:right-0 top-1/2 transform -translate-y-1/2"></i>(@item.ViewCount)
+                            <div class="d-inline-block position-relative fw-bold fhp-ltr-pl-[20px] fhp-rtl-pr-[20px] flex-shrink-0">
+                                <i class="ri-eye-line fhp-text-ff962e position-absolute fhp-ltr-start-0 fhp-rtl-end-0 top-50 fhp-transform fhp-ty-n50"></i>(@item.ViewCount)
                             </div>
                         </div>
-                        <span class="block font-bold text-secondary">
+                        <span class="d-block fw-bold text-secondary">
                             @(item.IsUpcoming && item.ReleaseDate is not null
                                 ? $"{item.Tag} · {item.ReleaseDate:dd MMM yyyy}"
                                 : item.Tag.ToString())
@@ -353,40 +353,40 @@
 @* ============================ EVENTS ============================ *@
 @if (Model.UpcomingEvents.Count > 0)
 {
-    <div class="py-[60px] md:py-[80px] lg:py-[100px] xl:py-[120px] 2xl:py-[140px]">
-        <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
+    <div class="fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-xl-py-120 fhp-xxl-py-140">
+        <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
             @Head("Upcoming Fan Events", Url.Action("Index", "Events")!, "Open The Event Map")
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[25px] lg:gap-[35px]" data-cues="slideInUp" data-group="3">
+            <div class="d-grid fhp-gcol-1 fhp-sm-gcol-2 fhp-lg-gcol-3 fhp-gap-25 fhp-lg-gap-35" data-cues="slideInUp" data-group="3">
                 @for (var i = 0; i < Model.UpcomingEvents.Count; i++)
                 {
                     var ev = Model.UpcomingEvents[i];
-                    <div class="group">
-                        <a asp-controller="Events" asp-action="Index" asp-fragment="@ev.EventId" class="overflow-hidden block rounded-[5px] mb-[20px] lg:mb-[25px]">
-                            <img src="@posterArt(i + 2)" class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110" alt="@ev.Title" loading="lazy">
+                    <div class="fhp-group">
+                        <a asp-controller="Events" asp-action="Index" asp-fragment="@ev.EventId" class="overflow-hidden d-block fhp-r-5 fhp-mb-20 fhp-lg-mb-25">
+                            <img src="@posterArt(i + 2)" class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110" alt="@ev.Title" loading="lazy">
                         </a>
-                        <ul class="text-13 md:text-sm uppercase font-bold flex items-center flex-wrap gap-[13px] mb-[9px] md:mb-[11px]">
+                        <ul class="fhp-fs-13 fhp-md-fs-14 text-uppercase fw-bold d-flex align-items-center flex-wrap fhp-gap-13 fhp-mb-9 fhp-md-mb-11">
                             <li>
                                 @ev.EventDate.ToString("dd MMM, yyyy")
                             </li>
                             <li>
-                                <div class="w-px bg-white/20 h-[12px]"></div>
+                                <div class="fhp-w-1px fhp-bg-white-20 fhp-h-12"></div>
                             </li>
                             <li>
                                 @ev.City
                             </li>
                         </ul>
-                        <h3 class="text-lg md:text-xl lg:text-2xl leading-[1.3] mb-[10px] md:mb-[13px]">
-                            <a asp-controller="Events" asp-action="Index" asp-fragment="@ev.EventId" class="transition-all duration-300 ease-in-out hover:text-secondary">
+                        <h3 class="fhp-fs-18 fhp-md-fs-20 fhp-lg-fs-24 fhp-leading-1-3 fhp-mb-10 fhp-md-mb-13">
+                            <a asp-controller="Events" asp-action="Index" asp-fragment="@ev.EventId" class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary">
                                 @ev.Title
                             </a>
                         </h3>
                         @if (!string.IsNullOrWhiteSpace(ev.Story))
                         {
-                            <p class="mb-[15px] md:mb-[18px]">
+                            <p class="fhp-mb-15 fhp-md-mb-18">
                                 @(ev.Story.Length > 120 ? ev.Story[..120] + "…" : ev.Story)
                             </p>
                         }
-                        <a asp-controller="Events" asp-action="Index" asp-fragment="@ev.EventId" class="text-primary font-bold inline-block transition-all duration-300 ease-in-out hover:text-secondary">
+                        <a asp-controller="Events" asp-action="Index" asp-fragment="@ev.EventId" class="text-primary fw-bold d-inline-block fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary">
                             Event Details
                         </a>
                     </div>
@@ -397,61 +397,61 @@
 }
 
 @* ============================ FEEDBACK ============================ *@
-<div class="pb-[60px] md:pb-[80px] lg:pb-[100px] xl:pb-[120px] 2xl:pb-[140px]">
-    <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
-        <div class="mb-[25px] md:mb-[35px] lg:mb-[45px] xl:mb-[55px] flex items-center justify-center gap-[13px]">
-            <img src="/assets/images/icons/vector.svg" class="rtl:-scale-x-100" alt="vector">
-            <h2 class="mb-0 text-[22px] md:text-[26px] lg:text-[32px] leading-none text_animation">
+<div class="fhp-pb-60 fhp-md-pb-80 fhp-lg-pb-100 fhp-xl-pb-120 fhp-xxl-pb-140">
+    <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
+        <div class="fhp-mb-25 fhp-md-mb-35 fhp-lg-mb-45 fhp-xl-mb-55 d-flex align-items-center justify-content-center fhp-gap-13">
+            <img src="/assets/images/icons/vector.svg" class="fhp-rtl--scale-x-100" alt="vector">
+            <h2 class="mb-0 fhp-fs-22 fhp-md-fs-26 fhp-lg-fs-32 lh-1 fhp-text-animation">
                 What Our Fans Are Saying
             </h2>
         </div>
-        <div class="relative">
-            <div class="mx-auto md:max-w-[550px] lg:max-w-[680px] xl:max-w-[1300px] relative z-[1]">
+        <div class="position-relative">
+            <div class="mx-auto fhp-md-maxw-550 fhp-lg-maxw-680 fhp-xl-maxw-1300 position-relative fhp-z-1">
                 <div class="swiper feedbackSwiper">
                     <div class="swiper-wrapper">
                         @for (var i = 0; i < feedback.Length; i++)
                         {
                             var row = feedback[i];
                             <div class="swiper-slide">
-                                <div class="sm:flex items-start gap-[20px] md:gap-[25px] xl:gap-[30px] text-center ltr:sm:text-left rtl:sm:text-right">
-                                    <div class="flex-none border-[10px] border-white/12 rounded-[10px] w-[130px] mx-auto">
-                                        <img src="@userArt(i + 3)" class="rounded-[4px]" alt="@row.Name" loading="lazy">
+                                <div class="d-sm-flex align-items-start fhp-gap-20 fhp-md-gap-25 fhp-xl-gap-30 text-center fhp-ltr-sm:text-left fhp-rtl-sm:text-right">
+                                    <div class="flex-shrink-0 fhp-bw-10 fhp-border-white-12 fhp-r-10 fhp-w-130 mx-auto">
+                                        <img src="@userArt(i + 3)" class="fhp-r-4" alt="@row.Name" loading="lazy">
                                     </div>
-                                    <div class="mt-[12px] sm:mt-0">
-                                        <div class="flex items-center justify-center sm:justify-start text-[#ff962e] text-base md:text-lg gap-[5px] mb-[6px]">
+                                    <div class="fhp-mt-12 sm-mt-0">
+                                        <div class="d-flex align-items-center justify-content-center sm-justify-content-start fhp-text-ff962e fs-6 fhp-md-fs-18 fhp-gap-5 fhp-mb-6">
                                             <i class="ri-star-fill"></i>
                                             <i class="ri-star-fill"></i>
                                             <i class="ri-star-fill"></i>
                                             <i class="ri-star-fill"></i>
                                             <i class="ri-star-fill"></i>
                                         </div>
-                                        <span class="mb-[15px] md:mb-[20px] block uppercase font-bold text-13 md:text-sm tracking-[0.15em] text-body/70">
+                                        <span class="fhp-mb-15 fhp-md-mb-20 d-block text-uppercase fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70">
                                             (<span class="text-secondary">@Model.TotalMembers.ToString("N0")</span> Members)
                                         </span>
-                                        <p class="text-lg md:text-xl lg:text-[22px] font-bold text-white">
+                                        <p class="fhp-fs-18 fhp-md-fs-20 fhp-lg-fs-22 fw-bold text-white">
                                             &ldquo;@row.Quote&rdquo;
                                         </p>
-                                        <h3 class="text-base leading-none mt-[25px] md:mt-[30px] lg:mt-[35px] mb-[8px]">
+                                        <h3 class="fs-6 lh-1 fhp-mt-25 fhp-md-mt-30 fhp-lg-mt-35 fhp-mb-8">
                                             &mdash; @row.Name
                                         </h3>
-                                        <span class="block text-body/70 font-bold text-13 md:text-sm uppercase tracking-[0.1em]">
+                                        <span class="d-block fhp-text-body-70 fw-bold fhp-fs-13 fhp-md-fs-14 text-uppercase fhp-tracking-0-1em">
                                             @row.Role
                                         </span>
                                     </div>
                                 </div>
                                 @if (i < feedback.Length - 1)
                                 {
-                                    <div class="absolute w-px top-0 bottom-0 left-1/2 transform -translate-x-1/2 border-l border-dashed border-white/17 hidden xl:block"></div>
+                                    <div class="position-absolute fhp-w-1px top-0 bottom-0 start-50 fhp-transform fhp-tx-n50 border-start fhp-border-dashed fhp-border-white-17 d-none xl-d-block"></div>
                                 }
                             </div>
                         }
                     </div>
                 </div>
-                <div class="flex items-center justify-center gap-[15px] mt-[25px] md:mt-0">
-                    <div class="feedback-button-prev swiper-button-prev md:!absolute md:!top-1/2 md:!transform md:!-translate-y-1/2 ltr:md:!left-0 rtl:md:!right-0 ltr:md:!right-auto rtl:md:!left-auto">
+                <div class="d-flex align-items-center justify-content-center fhp-gap-15 fhp-mt-25 md-mt-0">
+                    <div class="feedback-button-prev swiper-button-prev md:!absolute md:!top-1/2 md:!transform fhp-md-ty-n50 fhp-ltr-md:!left-0 fhp-rtl-md:!right-0 fhp-ltr-md:!right-auto fhp-rtl-md:!left-auto">
                         <i class="ri-arrow-left-line"></i>
                     </div>
-                    <div class="feedback-button-next swiper-button-next md:!absolute md:!top-1/2 md:!transform md:!-translate-y-1/2 ltr:md:!right-0 rtl:md:!left-0 ltr:md:!left-auto rtl:md:!right-auto">
+                    <div class="feedback-button-next swiper-button-next md:!absolute md:!top-1/2 md:!transform fhp-md-ty-n50 fhp-ltr-md:!right-0 fhp-rtl-md:!left-0 fhp-ltr-md:!left-auto fhp-rtl-md:!right-auto">
                         <i class="ri-arrow-right-line"></i>
                     </div>
                 </div>
@@ -463,10 +463,10 @@
 @* ============================ BLOG ============================ *@
 @if (Model.LatestArticles.Count > 0)
 {
-    <div class="pb-[60px] md:pb-[80px] lg:pb-[100px] xl:pb-[120px] 2xl:pb-[140px]">
-        <div class="container 2xl:!px-[100px] xl:!max-w-[1920px]">
+    <div class="fhp-pb-60 fhp-md-pb-80 fhp-lg-pb-100 fhp-xl-pb-120 fhp-xxl-pb-140">
+        <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
             @Head("News & Editorials", Url.Action("Index", "Blog")!, "Read The Blog")
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[25px] lg:gap-[35px]" data-cues="slideInUp" data-group="3">
+            <div class="d-grid fhp-gcol-1 fhp-sm-gcol-2 fhp-lg-gcol-3 fhp-gap-25 fhp-lg-gap-35" data-cues="slideInUp" data-group="3">
                 @foreach (var article in Model.LatestArticles)
                 {
                     <partial name="_ArticleCard" model="article" />

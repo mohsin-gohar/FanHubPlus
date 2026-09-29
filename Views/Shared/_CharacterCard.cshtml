@@ -10,38 +10,38 @@
         ? Model.Category?.Name ?? "Fandom"
         : Model.Fandom;
 }
-<div class="group text-center relative">
+<div class="fhp-group text-center position-relative">
     <a
         asp-controller="Characters" asp-action="Details" asp-route-id="@Model.CharacterId"
-        class="block overflow-hidden rounded-[5px]"
+        class="d-block overflow-hidden fhp-r-5"
     >
         <img
             src="@portrait"
-            class="rounded-[5px] transition-all duration-300 ease-in-out group-hover:scale-110"
+            class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110"
             alt="@Model.Name"
             loading="lazy"
         >
     </a>
-    <div class="bg-navy-black py-[20px] md:py-[25px] lg:py-[30px] absolute bottom-0 left-0 right-0 rounded-b-[5px] transition-all duration-300 ease-in-out opacity-0 invisible group-hover:opacity-100 group-hover:visible">
-        <h3 class="text-base md:text-lg lg:text-xl leading-none mb-[14px] md:mb-[16px]">
+    <div class="fhp-bg-navy fhp-py-20 fhp-md-py-25 fhp-lg-py-30 position-absolute bottom-0 start-0 end-0 fhp-rb-5 fhp-transition fhp-dur300 fhp-ease opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible">
+        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-14 fhp-md-mb-16">
             <a
                 asp-controller="Characters" asp-action="Details" asp-route-id="@Model.CharacterId"
-                class="transition-all duration-300 ease-in-out hover:text-secondary"
+                class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary"
             >
                 @Model.Name
             </a>
         </h3>
-        <ul class="text-13 md:text-sm font-bold text-body/70 flex items-center justify-center flex-wrap gap-[11px] uppercase tracking-[0.1em]">
+        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 text-uppercase fhp-tracking-0-1em">
             <li>
                 @lore
             </li>
             <li>
-                <div class="w-px bg-white/15 h-[12px]"></div>
+                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
             </li>
             <li>
                 <a
                     asp-controller="Characters" asp-action="Details" asp-route-id="@Model.CharacterId"
-                    class="inline-block text-[#ae99fa] transition-all duration-300 ease-in-out hover:text-secondary"
+                    class="d-inline-block fhp-text-ae99fa fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary"
                 >
                     View Profile
                 </a>
