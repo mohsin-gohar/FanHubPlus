@@ -264,6 +264,16 @@ html[dir="rtl"] .fhp-rtl-scale-x-n100 { transform: scaleX(-1); }
   animation: fhp-loader-spin .8s linear infinite;
 }
 
+/* The overlay writes Tailwind's `position-fixed` spelling, which Bootstrap
+   never defined, so #preloader was laid out in normal flow - a black band
+   that pushed the whole page down instead of covering it (and z-index does
+   nothing on a static box). Anchor it here, and let it fade on dismissal. */
+#preloader {
+  position: fixed;
+  inset: 0;
+  transition: opacity .3s ease;
+}
+
 @keyframes fhp-loader-spin {
   to { transform: rotate(360deg); }
 }

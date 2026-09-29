@@ -215,9 +215,11 @@ app.UseStaticFiles(new StaticFileOptions
             path.StartsWith("/uploads/", StringComparison.OrdinalIgnoreCase)
                 ? "public,max-age=86400"                       // user uploads: cache a day
                 : path.StartsWith("/lib/", StringComparison.OrdinalIgnoreCase)
-                  || path.StartsWith("/assets/", StringComparison.OrdinalIgnoreCase)
-                    ? "public,max-age=604800"                   // vendored libs / images
-                    : "no-cache";                               // our own css/js: revalidate
+                    ? "public,max-age=604800"                   // vendored libraries
+                    : path.StartsWith("/assets/images/", StringComparison.OrdinalIgnoreCase)
+                      || path.StartsWith("/assets/fonts/", StringComparison.OrdinalIgnoreCase)
+                        ? "public,max-age=604800"               // template media
+                        : "no-cache";                           // our own css/js: revalidate
     }
 });
 

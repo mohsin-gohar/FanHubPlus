@@ -45,7 +45,7 @@
             </div>
 
             <!-- Progress -->
-            <div class="d-none d-md-flex align-items-center gap-2 flex-grow-1 fhp-maxw-280">
+            <div id="apBarProgress" class="d-none d-md-flex align-items-center gap-2 flex-grow-1 fhp-maxw-280">
                 <span id="apBarCurrentTime" class="fhp-fs-12 fhp-text-white-50 fhp-nums fhp-w-38 text-end">0:00</span>
                 <input id="apBarSeek" type="range" min="0" max="100" value="0"
                        class="flex-grow-1 fhp-accent-primary fhp-h-3 fhp-cursor-pointer"
@@ -54,7 +54,7 @@
             </div>
 
             <!-- Volume -->
-            <div class="d-none d-lg-flex align-items-center gap-2">
+            <div id="apBarVolumeWrap" class="d-none d-lg-flex align-items-center gap-2">
                 <button id="apBarMute" type="button" class="fhp-text-white-60 fhp-hover-text-white fhp-transition-colors fhp-fs-18" aria-label="Mute">
                     <i class="ri-volume-up-line" id="apBarMuteIcon"></i>
                 </button>
@@ -73,8 +73,17 @@
         </div>
     </div>
 
-    <!-- Hidden native audio element -->
+    <!-- Native playback for self-hosted files -->
     <audio id="apBarAudio" preload="none"></audio>
+
+    @* YouTube / Vimeo tracks cannot be played by an <audio> element - a plain
+       watch?v= link is an HTML page, not a media file, and the browser rejects
+       it with MEDIA_ELEMENT_ERROR. Those get a real iframe player instead. *@
+    <div id="apBarFrameWrap" class="d-none border-bottom fhp-border-white-10">
+        <iframe id="apBarFrame" title="Track player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+    </div>
 </div>
 
 <script>
@@ -95,6 +104,24 @@
     var curTimeEl = document.getElementById('apBarCurrentTime');
     var durEl     = document.getElementById('apBarDuration');
     var closeBtn  = document.getElementById('apBarClose');
+    var frame     = document.getElementById('apBarFrame');
+    var frameWrap = document.getElementById('apBarFrameWrap');
+    var progressEl = document.getElementById('apBarProgress');
+    var volumeEl2  = document.getElementById('apBarVolumeWrap');
+
+    // A track is only playable by the native <audio> element when its URL is
+    // an actual media file (or a site-relative path). YouTube/Vimeo links are
+    // HTML pages, so they have to go through an iframe instead.
+    var DIRECT_EXT = /\.(mp3|ogg|wav|m4a|aac|flac|mp4|webm|ogv|m4v|mov)(\?|#|$)/i;
+    function isDirectFile(url) {
+        if (!url) return false;
+        var v = String(url).trim();
+        if (v.charAt(0) === '/') return true;   // /uploads/track.mp3
+        return DIRECT_EXT.test(v);
+    }
+    function withAutoplay(url) {
+        return url.indexOf('?') >= 0 ? url + '&autoplay=1' : url + '?autoplay=1';
+    }
 
     // Queue support
     var queue = [];
@@ -115,9 +142,30 @@
         artistEl.textContent = artist || '';
         cover.src = imgSrc || '/assets/images/categories/category1.jpg';
         cover.alt = title;
-        audio.src = url || '';
-        audio.load();
-        audio.play().catch(function() {});
+
+        if (isDirectFile(url)) {
+            // Self-hosted file: the <audio> element owns playback and the bar
+            // keeps its seek + volume controls.
+            frameWrap.classList.add('d-none');
+            frame.removeAttribute('src');
+            progressEl.classList.remove('d-none');
+            volumeEl2.classList.remove('d-none');
+            playBtn.classList.remove('d-none');
+            audio.src = url;
+            audio.load();
+            audio.play().catch(function() {});
+            syncPlayIcon();
+        } else {
+            // Provider embed: hand it to the iframe. Seek/volume are not
+            // reachable from here, so they are hidden rather than left dead.
+            audio.pause();
+            audio.removeAttribute('src');
+            progressEl.classList.add('d-none');
+            volumeEl2.classList.add('d-none');
+            playBtn.classList.add('d-none');
+            frameWrap.classList.remove('d-none');
+            frame.src = withAutoplay(url);
+        }
         showBar();
     }
 
@@ -212,6 +260,9 @@
     // Close
     closeBtn.addEventListener('click', function () {
         audio.pause();
+        // Dropping the iframe src is what actually stops an embed - hiding the
+        // bar alone would leave the track playing behind the page.
+        frame.removeAttribute('src');
         hideBar();
     });
 })();

@@ -1,63 +1,23 @@
-@* A movie tile exactly as the template draws it: cover, and on hover a
-   navy-black panel sliding up with the title, the IMDb chip and the meta row.
-   The artwork falls back to the template's own poster set when an admin has
-   not uploaded a cover, so a tile always looks composed. *@
 @model FanHubPlus.Models.Entities.Content
 @{
     var cover = string.IsNullOrWhiteSpace(Model.ThumbnailUrl)
         ? $"/assets/images/movies/movie{(Model.ContentId % 24) + 1}.jpg"
         : Model.ThumbnailUrl;
     var year = Model.ReleaseDate?.ToString("yyyy") ?? Model.CreatedAt.ToString("yyyy");
-    // 1-5 stars in the catalogue, shown on the template's 10-point IMDb chip.
-    var avg = Model.Ratings.Count > 0 ? Model.Ratings.Average(r => r.Stars) : 0;
-    var score = avg > 0 ? (avg / 5.0 * 10.0).ToString("0.0") : "—";
+    var dest = ContentLinks.ControllerFor(Model.Type);
 }
-<div class="fhp-group text-center position-relative">
-    <a
-        asp-controller="Explore" asp-action="Details" asp-route-id="@Model.ContentId"
-        class="d-block overflow-hidden fhp-r-5"
-    >
-        <img
-            src="@cover"
-            class="fhp-r-5 fhp-transition fhp-dur300 fhp-ease fhp-group-hover-scale-110"
-            alt="@Model.Title poster"
-            loading="lazy"
-        >
+<article class="fhp-poster">
+    <a asp-controller="@dest" asp-action="Details" asp-route-id="@Model.ContentId">
+        <img src="@cover" alt="@Model.Title poster" loading="lazy" />
     </a>
-    <div class="fhp-bg-navy fhp-py-20 fhp-md-py-25 fhp-lg-py-30 position-absolute bottom-0 start-0 end-0 fhp-rb-5 fhp-transition fhp-dur300 fhp-ease opacity-0 invisible fhp-group-hover-opacity-100 fhp-group-hover-visible">
-        <h3 class="fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1 fhp-mb-14 fhp-md-mb-16">
-            <a
-                asp-controller="Explore" asp-action="Details" asp-route-id="@Model.ContentId"
-                class="fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary"
-            >
+    <div class="fhp-poster__body">
+        <h3>
+            <a asp-controller="@dest" asp-action="Details" asp-route-id="@Model.ContentId" class="text-white text-decoration-none">
                 @Model.Title
             </a>
         </h3>
-        <div class="d-inline-block position-relative fw-bold fhp-fs-13 fhp-md-fs-14 fhp-tracking-0-15em fhp-text-body-70 bg-black fhp-r-5 fhp-py-4 fhp-ltr-pr-[10px] fhp-rtl-pl-[10px] fhp-ltr-pl-[30px] fhp-rtl-pr-[30px]">
-            <i class="ri-star-fill fhp-text-ff962e position-absolute fhp-ltr-left-9px fhp-rtl-right-9px top-50 fhp-transform fhp-ty-n50"></i>
-            <span class="text-secondary">@score</span>/10 IMDb
-        </div>
-        <ul class="fhp-fs-13 fhp-md-fs-14 fw-bold fhp-text-body-70 d-flex align-items-center justify-content-center flex-wrap fhp-gap-11 fhp-mt-11 fhp-md-mt-14 text-uppercase fhp-tracking-0-1em">
-            <li>
-                @year
-            </li>
-            <li>
-                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
-            </li>
-            <li>
-                @Model.Type
-            </li>
-            <li>
-                <div class="fhp-w-1px fhp-bg-white-15 fhp-h-12"></div>
-            </li>
-            <li>
-                <a
-                    asp-controller="Explore" asp-action="Index" asp-route-categoryId="@Model.CategoryId"
-                    class="d-inline-block fhp-text-ae99fa fhp-transition fhp-dur300 fhp-ease fhp-hover-text-secondary"
-                >
-                    @(Model.Category?.Name ?? "Fandom")
-                </a>
-            </li>
-        </ul>
+        <p class="fhp-poster__meta mb-0">
+            @year · @Model.Type · @(Model.Category?.Name ?? "Fandom")
+        </p>
     </div>
-</div>
+</article>

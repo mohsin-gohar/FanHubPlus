@@ -651,3 +651,24 @@ body.modal-open {
     }
 }
 
+
+/* ---------- Music player bar: embedded tracks -------------------------
+   A YouTube/Vimeo link is a web page, not a media file, so those tracks
+   are played in an iframe pinned above the bar controls instead of the
+   native <audio> element. */
+#apBarFrameWrap {
+    background: #0e0e14;
+}
+
+#apBarFrame {
+    display: block;
+    width: 100%;
+    height: 220px;
+    border: 0;
+}
+
+@media (max-width: 575px) {
+    #apBarFrame {
+        height: 160px;
+    }
+}

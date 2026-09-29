@@ -1,210 +1,643 @@
 @model StreamingDetailViewModel
+@using FanHubPlus.Models.Enums
+@using FanHubPlus.Models.Entities
 @{
+    // Movies & TV Shows detail page - a 1:1 port of the template's
+    // "movie-tv-show-details" page: the page banner with its white arch, the
+    // About / Where-to-watch / Videos / Cast / Reviews column, the sticky poster
+    // sidebar with vote + watchlist + seen buttons, the metadata panel, the
+    // Related Movies row and the featured band. Every value comes from the DB.
     ViewData["Title"] = Model.Item.Title;
-    ViewData["fhpDark"] = true;
-    var trail = new List<BreadcrumbItem>
+
+    var item = Model.Item;
+    var year = item.ReleaseDate?.ToString("yyyy") ?? item.CreatedAt.ToString("yyyy");
+    var typeLabel = item.Type switch
     {
-        new("Movies & TV Shows", Url.Action("Index", "Streaming")),
-        new(Model.Item.Title)
+        ContentType.Movie       => "Movie",
+        ContentType.Series      => "Series",
+        ContentType.Documentary => "Documentary",
+        ContentType.Special     => "Special / OVA",
+        _                       => item.Type.ToString()
     };
-    var cover = string.IsNullOrWhiteSpace(Model.Item.ThumbnailUrl)
-        ? "/assets/images/categories/category3.jpg"
-        : Model.Item.ThumbnailUrl;
-    var typeLabel = Model.Item.Type switch
+
+    // The template pairs a tall poster (sidebar) with wide stills (cards). Both
+    // fall back to the artwork that ships with the theme when nothing is uploaded.
+    string CoverOf(Content c, bool wide = false)
     {
-        FanHubPlus.Models.Enums.ContentType.Movie       => "Movie",
-        FanHubPlus.Models.Enums.ContentType.Series      => "Series",
-        FanHubPlus.Models.Enums.ContentType.Documentary => "Documentary",
-        FanHubPlus.Models.Enums.ContentType.Special     => "Special / OVA",
-        _ => Model.Item.Type.ToString()
-    };
+        if (!string.IsNullOrWhiteSpace(c.ThumbnailUrl)) return c.ThumbnailUrl;
+        return wide
+            ? $"/assets/images/videos/video{(c.ContentId % 34) + 1}.jpg"
+            : $"/assets/images/releases/release{(c.ContentId % 6) + 1}.jpg";
+    }
+
+    // Provider label + icon for a "Where to watch" row.
+    string ProviderOf(string url)
+    {
+        if (MediaUrl.IsYouTube(url)) return "YouTube";
+        if (url.Contains("vimeo", StringComparison.OrdinalIgnoreCase)) return "Vimeo";
+        if (MediaUrl.IsAudioFile(url)) return "Soundtrack";
+        return MediaUrl.IsLocalFile(url) ? "FanHubPlus player" : "Official source";
+    }
+    string IconOf(string url)
+    {
+        if (MediaUrl.IsYouTube(url)) return "ri-youtube-fill";
+        if (url.Contains("vimeo", StringComparison.OrdinalIgnoreCase)) return "ri-vimeo-fill";
+        if (MediaUrl.IsAudioFile(url)) return "ri-music-2-line";
+        return MediaUrl.IsLocalFile(url) ? "ri-movie-2-line" : "ri-play-circle-line";
+    }
+
+    var cover = CoverOf(item);
+    var watch = Model.WatchOptions.ToList();
+    var cast = StreamingDetailViewModel.ParseCast(item.Cast);
+    var genres = (item.Genre ?? string.Empty)
+        .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    var runtime = StreamingDetailViewModel.FormatRuntime(item.RuntimeMinutes);
+    var trailer = Model.Trailer;
+    var trailerSrc = trailer is null ? null : MediaUrl.Normalize(trailer.EmbedUrl);
+
+    var paragraphs = (item.Description ?? string.Empty)
+        .Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+    if (paragraphs.Length == 0)
+        paragraphs = new[] { "No synopsis has been published for this title yet." };
+
+    // The featured band promotes the title that is open, with the next
+    // best-rated titles stacked beside it.
+    var featuredStack = Model.Featured.Where(f => f.ContentId != item.ContentId).Take(3).ToList();
 }
 
-<partial name="_PageBanner" model="trail" />
-
-<div class="fhp-py-60 fhp-md-py-80">
+@* ---------- Page banner: dark artwork, centred title, breadcrumb, white arch ---------- *@
+<section class="fhp-mvb fhp-pt-130 fhp-md-pt-140 fhp-lg-pt-155 fhp-xl-pt-195 fhp-xxl-pt-205
+                fhp-pb-60 fhp-md-pb-80 fhp-lg-pb-105 fhp-xl-pb-125 fhp-xxl-pb-140 fhp-rb-10"
+         style="background-image: url('/assets/images/bg-images/bg-image8.jpg');">
     <div class="container">
+        <h1 class="fhp-mvb__title">@item.Title</h1>
+        <ul class="fhp-mvb__crumbs">
+            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <li aria-hidden="true">/</li>
+            <li><a asp-controller="Streaming" asp-action="Index">Movies &amp; TV Shows</a></li>
+            <li aria-hidden="true">/</li>
+            <li class="fhp-mvb__current">@typeLabel</li>
+        </ul>
+    </div>
+    <div class="fhp-h-15 mx-auto fhp-maxw-535 fhp-xl-maxw-635 position-absolute bottom-0 start-0 end-0 bg-white fhp-rt-10 d-none d-lg-block"></div>
+    <div class="position-absolute top-0 bottom-0 start-0 end-0 fhp-z-n1 fhp-bg-black-60"></div>
+</section>
+@* ---------- Movie & TV show details ---------- *@
+<section class="fhp-mvd fhp-py-60 fhp-md-py-80 fhp-lg-py-100 fhp-xl-py-120 fhp-xxl-py-140">
+    <div class="container">
+        <div class="fhp-mvg">
 
-        <!-- Hero Detail Card -->
-        <div class="fhp-bg-18181f border fhp-border-white-10 rounded-5 overflow-hidden shadow-lg fhp-mb-40">
-            <div class="row g-0">
+            @* ======================= primary column ======================= *@
+            <div class="fhp-mvc">
 
-                <!-- Poster -->
-                <div class="col-sm-5 col-md-4 col-lg-3">
-                    <div class="position-relative fhp-minh-320 h-100 overflow-hidden">
-                        <img src="@cover" alt="@Model.Item.Title"
-                             class="w-100 h-100 fhp-object-cover" loading="eager" />
-                        <div class="position-absolute top-0 bottom-0 start-0 end-0 fhp-grad-r fhp-from-transparent fhp-to-18181f-60 d-none d-sm-block"></div>
-                    </div>
+                <h2 class="fhp-mvh2">About This @typeLabel</h2>
+                @foreach (var paragraph in paragraphs)
+                {
+                    <p>@paragraph</p>
+                }
+
+                <h3 class="fhp-mvh3">Where To Watch</h3>
+                <div class="table-responsive">
+                    <table class="fhp-mvt">
+                        <tbody>
+                        @if (watch.Count == 0)
+                        {
+                            <tr>
+                                <td><span class="fhp-mvt__provider"><i class="ri-forbid-2-line" aria-hidden="true"></i></span></td>
+                                <td>
+                                    <div class="fhp-mvt__hd"><i class="ri-play-circle-line" aria-hidden="true"></i></div>
+                                    <span class="fhp-mvt__note">No stream yet</span>
+                                </td>
+                                <td>
+                                    <span class="fhp-mvt__strong">Not available</span>
+                                    <span class="fhp-mvt__note">Check back soon</span>
+                                </td>
+                                <td><span class="fhp-mvt__muted">Coming soon</span></td>
+                            </tr>
+                        }
+                        @foreach (var media in watch)
+                        {
+                            var src = MediaUrl.Normalize(media.EmbedUrl);
+                            <tr>
+                                <td>
+                                    <span class="fhp-mvt__provider">
+                                        <i class="@IconOf(media.EmbedUrl)" aria-hidden="true"></i>
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="fhp-mvt__hd">
+                                        <i class="ri-creative-commons-line text-primary" aria-hidden="true"></i>
+                                        <i class="ri-hd-line fhp-text-ae99fa" aria-hidden="true"></i>
+                                    </div>
+                                    <span class="fhp-mvt__note">@runtime</span>
+                                </td>
+                                <td>
+                                    <span class="fhp-mvt__strong">@ProviderOf(media.EmbedUrl)</span>
+                                    <span class="fhp-mvt__note">@(media.Tag ?? $"Official {media.MediaType.ToString().ToLowerInvariant()}")</span>
+                                </td>
+                                <td>
+                                    <a class="secondary-btn" href="@src" data-fhp-video data-src="@src">
+                                        <span><i class="ri-play-fill" aria-hidden="true"></i> Watch Now</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(item.OfficialWebsiteUrl))
+                        {
+                            <tr>
+                                <td><span class="fhp-mvt__provider"><i class="ri-earth-line" aria-hidden="true"></i></span></td>
+                                <td>
+                                    <div class="fhp-mvt__hd"><i class="ri-external-link-line text-primary" aria-hidden="true"></i></div>
+                                    <span class="fhp-mvt__note">Official site</span>
+                                </td>
+                                <td>
+                                    <span class="fhp-mvt__strong">@(item.Category?.Name ?? "Fandom")</span>
+                                    <span class="fhp-mvt__note">Studio / distributor</span>
+                                </td>
+                                <td>
+                                    <a class="secondary-btn" href="@item.OfficialWebsiteUrl" target="_blank" rel="noopener">
+                                        <span><i class="ri-external-link-line" aria-hidden="true"></i> Visit</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
                 </div>
-
-                <!-- Info -->
-                <div class="col-sm-7 col-md-8 col-lg-9">
-                    <div class="fhp-p-12 fhp-md-p-40 h-100 d-flex flex-column justify-content-between">
-                        <div>
-                            <!-- Badges -->
-                            <div class="d-flex flex-wrap align-items-center gap-2 fhp-mb-12">
-                                <span class="fhp-px-12 py-1 fhp-bg-primary-20 text-primary border fhp-border-primary-30 rounded-pill fhp-fs-12 fw-bold text-uppercase">
-                                    <i class="ri-film-line me-1"></i> @typeLabel
-                                </span>
-                                <span class="fhp-px-12 py-1 fhp-bg-white-10 fhp-text-white-80 rounded-pill fhp-fs-12">
-                                    @Model.Item.Category.Name
-                                </span>
-                                @if (!string.IsNullOrWhiteSpace(Model.Item.Genre))
-                                {
-                                    foreach (var g in Model.Item.Genre.Split(',').Take(3))
-                                    {
-                                        <span class="px-2 fhp-py-2 fhp-bg-white-5 fhp-text-white-60 rounded fhp-fs-11">@g.Trim()</span>
-                                    }
-                                }
+                <h3 class="fhp-mvh3" id="videos">Videos: Trailers, Teasers, Clips</h3>
+                @if (watch.Count > 0)
+                {
+                    <div class="fhp-mvgrid2">
+                        @foreach (var media in watch.Take(4))
+                        {
+                            <div>
+                                <partial name="_MediaPlayer" model="new MediaPlayerViewModel
+                                        {
+                                            Url = media.EmbedUrl,
+                                            Poster = cover,
+                                            Title = $"{item.Title} - {media.Tag ?? media.MediaType.ToString()}"
+                                        }" />
                             </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="fhp-mvempty">
+                        <i class="ri-video-off-line" aria-hidden="true"></i>
+                        <p class="mb-0">No trailer or clip has been published for this title yet.</p>
+                    </div>
+                }
 
-                            <h1 class="fhp-fs-30 fs-1 fw-bolder text-white fhp-mb-12 lh-sm">@Model.Item.Title</h1>
-
-                            <!-- Stars + Meta -->
-                            <div class="d-flex flex-wrap align-items-center fhp-gap-12 fhp-mb-12 fhp-fs-14">
-                                <div class="d-flex align-items-center gap-1">
-                                    @for (int i = 1; i <= 5; i++)
-                                    {
-                                        <i class="@(i <= Math.Round(Model.AverageRating) ? "ri-star-fill text-warning" : "ri-star-line text-white/30")"></i>
-                                    }
-                                    <span class="fhp-text-white-70 ms-1">@Model.AverageRating / 5 (@Model.RatingCount ratings)</span>
+                <h3 class="fhp-mvh3">Cast</h3>
+                @if (cast.Count > 0)
+                {
+                    <div class="fhp-mvcast">
+                        @for (var i = 0; i < cast.Count; i++)
+                        {
+                            <div class="fhp-mvcast__card">
+                                <img src="/assets/images/users/user@(i % 8 + 1).jpg" alt="@cast[i].Name" loading="lazy" />
+                                <span class="fhp-mvcast__role">@cast[i].Role</span>
+                                <span class="fhp-mvcast__name">@cast[i].Name</span>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="fhp-mvempty">
+                        <i class="ri-user-star-line" aria-hidden="true"></i>
+                        <p class="mb-0">The cast list has not been published for this title yet.</p>
+                    </div>
+                }
+                <h3 class="fhp-mvh3" id="reviews">Reviews</h3>
+                @if (Model.Reviews.Count == 0)
+                {
+                    <div class="fhp-mvpanel fhp-mvpanel--quiet">
+                        <p class="mb-0">
+                            No written reviews yet - be the first fan to review <strong>@item.Title</strong>.
+                        </p>
+                    </div>
+                }
+                @foreach (var review in Model.Reviews)
+                {
+                    <article class="fhp-mvpanel">
+                        <div class="fhp-mvrev__head">
+                            <div class="fhp-mvrev__who">
+                                <img src="@review.AvatarUrl" alt="" loading="lazy" />
+                                <div>
+                                    <h4 class="fhp-mvrev__name">@review.Author</h4>
+                                    <span class="fhp-mvrev__date">@review.CreatedAt.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")</span>
                                 </div>
-                                <span class="fhp-text-white-60"><i class="ri-eye-line me-1"></i>@Model.Item.ViewCount.ToString("N0") views</span>
-                                @if (Model.Item.ReleaseDate.HasValue)
+                            </div>
+                            <div class="fhp-mvstars" aria-label="@review.Stars out of 5 stars">
+                                @for (var s = 1; s <= 5; s++)
                                 {
-                                    <span class="fhp-text-white-60"><i class="ri-calendar-line me-1"></i>@Model.Item.ReleaseDate.Value.Year</span>
+                                    <i class="@(s <= review.Stars ? "ri-star-fill" : "ri-star-line")" aria-hidden="true"></i>
                                 }
                             </div>
-
-                            <p class="fhp-text-white-70 fs-6 lh-lg fhp-mb-12">
-                                @(string.IsNullOrWhiteSpace(Model.Item.Description)
-                                    ? "No synopsis available for this title."
-                                    : Model.Item.Description)
-                            </p>
                         </div>
+                        <div class="fhp-mvhr" aria-hidden="true"></div>
+                        <p class="fhp-mvrev__text mb-0">@review.Text</p>
+                    </article>
+                }
 
-                        <!-- Actions -->
-                        <div class="d-flex flex-wrap fhp-gap-12 fhp-pt-12 border-top fhp-border-white-10">
-                            @if (Model.Trailer != null)
-                            {
-                                <button type="button"
-                                        class="primary-btn"
-                                        onclick="document.getElementById('trailerSection').scrollIntoView({behavior:'smooth'})">
-                                    <i class="ri-play-circle-line me-2"></i> Watch Trailer
-                                </button>
-                            }
-                            @if (!string.IsNullOrWhiteSpace(Model.Item.OfficialWebsiteUrl))
-                            {
-                                <a href="@Model.Item.OfficialWebsiteUrl" target="_blank" rel="noopener"
-                                   class="btn btn-outline-secondary text-white fhp-border-white-30 fhp-hover-bg-white-10 fhp-transition fhp-px-20 py-2 rounded-pill">
-                                    <i class="ri-external-link-line me-1"></i> Official Site
-                                </a>
-                            }
-                            @if (User.Identity?.IsAuthenticated == true)
-                            {
-                                <button type="button"
-                                        id="bookmarkBtn"
-                                        class="btn @(Model.IsBookmarked ? "btn-danger" : "btn-outline-secondary text-white border-white/30") rounded-full px-4 py-2 transition-all"
-                                        data-id="@Model.Item.ContentId"
-                                        data-type="Content">
-                                    <i class="@(Model.IsBookmarked ? "ri-heart-fill" : "ri-heart-line") me-1"></i>
-                                    @(Model.IsBookmarked ? "Saved" : "Save")
-                                </button>
-                            }
-                            <a asp-controller="Streaming" asp-action="Index"
-                               class="btn btn-link fhp-text-white-60 text-decoration-none">
-                                <i class="ri-arrow-left-line me-1"></i> Back
+                <h3 class="fhp-mvh3">Write a review</h3>
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <form class="fhp-mvpanel fhp-mvform" method="post" asp-action="Review" asp-route-contentId="@item.ContentId">
+                        @Html.AntiForgeryToken()
+                        <div class="fhp-mvform__row">
+                            <div class="fhp-mvrate" id="mvStars" data-value="@(Model.MyStars ?? 0)" role="group" aria-label="Your rating, 1 to 5 stars">
+                                @for (var s = 1; s <= 5; s++)
+                                {
+                                    <button type="button" data-star="@s" class="@(s <= (Model.MyStars ?? 0) ? "is-on" : "")"
+                                            aria-label="@s star@(s == 1 ? "" : "s")"><i class="ri-star-fill" aria-hidden="true"></i></button>
+                                }
+                            </div>
+                            <span class="fhp-mvform__hint">
+                                <span id="mvMyStars">@((Model.MyStars ?? 0) == 0 ? "Not rated yet" : $"{Model.MyStars} / 5")</span>
+                                · click a star to rate
+                            </span>
+                            <input type="hidden" name="stars" id="mvStarsValue" value="@(Model.MyStars ?? 5)" />
+                        </div>
+                        <textarea name="review" rows="4" maxlength="1000"
+                                  placeholder="Tell other fans what you thought of @item.Title…"></textarea>
+                        <div class="fhp-mvform__actions">
+                            <button type="submit" class="primary-btn">
+                                <span><i class="ri-send-plane-fill" aria-hidden="true"></i> Publish review</span>
+                            </button>
+                            <a class="secondary-btn" asp-controller="Bookmarks" asp-action="Index">
+                                <span><i class="ri-bookmark-line" aria-hidden="true"></i> My watchlist</span>
                             </a>
                         </div>
+                        <p class="fhp-mvform__note mb-0">
+                            <i class="ri-information-line" aria-hidden="true"></i>
+                            A review is a 1-5 star rating plus optional text. You can update your own review at any time.
+                        </p>
+                    </form>
+                }
+                else
+                {
+                    <div class="fhp-mvpanel fhp-mvpanel--quiet">
+                        <p>Sign in to rate <strong>@item.Title</strong> and post a review.</p>
+                        <a class="primary-btn"
+                           asp-controller="Account" asp-action="Login"
+                           asp-route-returnUrl="@Url.Action("Details", "Streaming", new { id = item.ContentId })">
+                            <span><i class="ri-login-box-line" aria-hidden="true"></i> Sign in</span>
+                        </a>
+                    </div>
+                }
+            </div>
+            @* ======================= sticky sidebar ======================= *@
+            <aside class="fhp-mvaside">
+                <div class="fhp-mvposter">
+                    <img src="@cover" alt="@item.Title poster" loading="eager" />
+                    @if (trailerSrc is not null)
+                    {
+                        <a class="fhp-mvposter__play" href="@trailerSrc" data-fhp-video data-src="@trailerSrc"
+                           aria-label="Play @item.Title">
+                            <i class="ri-play-fill" aria-hidden="true"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="fhp-mvposter__play" href="#videos" aria-label="Jump to the videos">
+                            <i class="ri-film-line" aria-hidden="true"></i>
+                        </a>
+                    }
+                </div>
+
+                <div class="fhp-mvacts">
+                    <button type="button" class="fhp-mvact" id="voteUpBtn" title="Rate this title 5 stars">
+                        <i class="ri-thumb-up-line" aria-hidden="true"></i>
+                        <span id="voteUpCount">@Model.UpVotes</span>
+                    </button>
+                    <button type="button" class="fhp-mvact" id="voteDownBtn" title="Rate this title 1 star">
+                        <i class="ri-thumb-down-line" aria-hidden="true"></i>
+                        <span id="voteDownCount">@Model.DownVotes</span>
+                    </button>
+                    <button type="button"
+                            class="fhp-mvact bookmark-btn @(Model.IsBookmarked ? "is-saved" : "")"
+                            data-type="Content" data-id="@item.ContentId"
+                            aria-pressed="@(Model.IsBookmarked ? "true" : "false")">
+                        <i class="@(Model.IsBookmarked ? "ri-bookmark-fill" : "ri-bookmark-line")" aria-hidden="true"></i>
+                        <span class="bookmark-btn__label">@(Model.IsBookmarked ? "Bookmarked" : "Watchlist")</span>
+                    </button>
+                    <button type="button" class="fhp-mvact @(Model.IsSeen ? "is-saved" : "")"
+                            id="seenBtn" data-seen="@(Model.IsSeen ? "true" : "false")">
+                        <i class="@(Model.IsSeen ? "ri-checkbox-circle-fill" : "ri-checkbox-circle-line")" aria-hidden="true"></i>
+                        <span id="seenLabel">Seen</span>
+                        <span class="fhp-mvact__count" id="seenCount">@Model.SeenCount</span>
+                    </button>
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <a class="primary-btn fhp-mvsoft fhp-mvacts__wide" asp-controller="Bookmarks" asp-action="Index">
+                            <span><i class="ri-bookmark-3-line" aria-hidden="true"></i> Open My Watchlist</span>
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="primary-btn fhp-mvsoft fhp-mvacts__wide"
+                           asp-controller="Account" asp-action="Login"
+                           asp-route-returnUrl="@Url.Action("Details", "Streaming", new { id = item.ContentId })">
+                            <span><i class="ri-refresh-line" aria-hidden="true"></i> Sign in to Sync Watchlist</span>
+                        </a>
+                    }
+                </div>
+                <div class="fhp-mvmeta">
+                    @if (!string.IsNullOrWhiteSpace(item.Director))
+                    {
+                        <div class="fhp-mvmeta__row">
+                            <span class="fhp-mvmeta__label">Director</span>
+                            <span class="fhp-mvmeta__value fhp-mvmeta__value--accent">@item.Director</span>
+                        </div>
+                    }
+                    <div class="fhp-mvmeta__row">
+                        <span class="fhp-mvmeta__label">Rating</span>
+                        <div class="fhp-mvmeta__inline">
+                            <span class="fhp-mvstars">
+                                @for (var s = 1; s <= 5; s++)
+                                {
+                                    <i class="@(s <= Math.Round(Model.AverageRating) ? "ri-star-fill" : "ri-star-line")" aria-hidden="true"></i>
+                                }
+                            </span>
+                            <span class="fhp-mvmeta__hint">
+                                <span id="mvAvg">@Model.AverageRating.ToString("0.0")</span> / 5 ·
+                                <span id="mvCount">@Model.RatingCount</span> rating@(Model.RatingCount == 1 ? "" : "s")
+                            </span>
+                        </div>
+                    </div>
+                    @if (genres.Length > 0)
+                    {
+                        <div class="fhp-mvmeta__row">
+                            <span class="fhp-mvmeta__label">Genres</span>
+                            <span class="fhp-mvmeta__value">@string.Join(", ", genres)</span>
+                        </div>
+                    }
+                    <div class="fhp-mvmeta__row">
+                        <span class="fhp-mvmeta__label">Runtime</span>
+                        <span class="fhp-mvmeta__value">@runtime</span>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(item.AgeRating))
+                    {
+                        <div class="fhp-mvmeta__row">
+                            <span class="fhp-mvmeta__label">Age Rating</span>
+                            <span class="fhp-mvmeta__value">@item.AgeRating</span>
+                        </div>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(item.ProductionCountry))
+                    {
+                        <div class="fhp-mvmeta__row">
+                            <span class="fhp-mvmeta__label">Production Country</span>
+                            <span class="fhp-mvmeta__value">@item.ProductionCountry</span>
+                        </div>
+                    }
+                    <div class="fhp-mvmeta__row">
+                        <span class="fhp-mvmeta__label">Release Date</span>
+                        <span class="fhp-mvmeta__value">@(item.ReleaseDate?.ToString("dd MMM yyyy") ?? year)</span>
+                    </div>
+                    <div class="fhp-mvmeta__row">
+                        <span class="fhp-mvmeta__label">Type</span>
+                        <span class="fhp-mvmeta__value">
+                            <a asp-controller="Streaming" asp-action="Index" asp-route-contentType="@item.Type">@typeLabel</a>
+                            ·
+                            <a asp-controller="Streaming" asp-action="Index" asp-route-categoryId="@item.CategoryId">@(item.Category?.Name ?? "Fandom")</a>
+                        </span>
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+
+        @* ---------- Related Movies ---------- *@
+        @if (Model.Related.Count > 0)
+        {
+            <div class="fhp-mvmore">
+                <div class="fhp-mvmore__head">
+                    <img src="/assets/images/icons/vector2.svg" alt="" aria-hidden="true" />
+                    <h2 class="fhp-mvh2 mb-0">Related Movies</h2>
+                </div>
+                <div class="fhp-mvrelated">
+                    @foreach (var card in Model.Related.Take(4))
+                    {
+                        var stats = Model.RelatedRatings.TryGetValue(card.ContentId, out var s) ? s : (Avg: 0d, Count: 0);
+                        <div class="fhp-mvrelated__card">
+                            <a class="fhp-mvrelated__thumb" asp-action="Details" asp-route-id="@card.ContentId">
+                                <img src="@CoverOf(card, wide: true)" alt="@card.Title" loading="lazy" />
+                            </a>
+                            <h3 class="fhp-mvrelated__title">
+                                <a asp-action="Details" asp-route-id="@card.ContentId">@card.Title</a>
+                            </h3>
+                            <div class="fhp-mvrelated__meta">
+                                <ul>
+                                    <li>@((card.ReleaseDate ?? card.CreatedAt).ToString("dd MMM"))</li>
+                                    <li><span class="fhp-mvrelated__sep" aria-hidden="true"></span></li>
+                                    <li>
+                                        <a asp-controller="Streaming" asp-action="Index" asp-route-categoryId="@card.CategoryId">
+                                            @(card.Category?.Name ?? "Fandom")
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="fhp-mvrelated__score" title="@stats.Count rating@(stats.Count == 1 ? "" : "s")">
+                                    <i class="ri-star-fill" aria-hidden="true"></i>
+                                    (<span>@stats.Count</span>)
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        }
+    </div>
+</section>
+
+@* ---------- Featured band: the title that is open, over the parallax artwork ---------- *@
+<div class="fhp-mvd fhp-pb-60 fhp-md-pb-80 fhp-lg-pb-100 fhp-xl-pb-120 fhp-xxl-pb-140">
+    <div class="container fhp-xxl-px-100 fhp-xl-maxw-1920">
+        <div class="fhp-mvband" style="background-image: url('/assets/images/bg-images/bg-image4.jpg');">
+            <div class="fhp-mvband__grid">
+                <div class="fhp-mvband__stack" data-cues="slideInUp" data-group="2">
+                    @foreach (var f in featuredStack)
+                    {
+                        <a class="fhp-mvband__thumb" asp-action="Details" asp-route-id="@f.ContentId">
+                            <img src="@CoverOf(f)" alt="@f.Title" loading="lazy" />
+                            <i class="ri-play-fill" aria-hidden="true"></i>
+                        </a>
+                    }
+                </div>
+                <div class="fhp-mvband__body">
+                    @if (trailerSrc is not null)
+                    {
+                        <a class="fhp-mvband__play" href="@trailerSrc" data-fhp-video data-src="@trailerSrc"
+                           aria-label="Play the trailer of @item.Title">
+                            <i class="ri-play-fill" aria-hidden="true"></i>
+                        </a>
+                    }
+                    <div class="fhp-mvband__inner">
+                        <h3 class="fhp-mvband__title">@item.Title</h3>
+                        <div class="fhp-mvband__rating">
+                            <span class="fhp-mvstars">
+                                @for (var s = 1; s <= 5; s++)
+                                {
+                                    <i class="@(s <= Math.Round(Model.AverageRating) ? "ri-star-fill" : "ri-star-line")" aria-hidden="true"></i>
+                                }
+                            </span>
+                            <span class="fhp-mvband__reviews">
+                                (<span>@Model.RatingCount</span> Reviews)
+                            </span>
+                        </div>
+                        @if (genres.Length > 0)
+                        {
+                            <div class="fhp-mvband__tags">
+                                @foreach (var genre in genres.Take(4))
+                                {
+                                    <a asp-controller="Streaming" asp-action="Index" asp-route-genre="@genre">@genre</a>
+                                }
+                            </div>
+                        }
+                        <ul class="fhp-mvband__facts">
+                            <li>@year</li>
+                            <li><span class="fhp-mvband__sep" aria-hidden="true"></span></li>
+                            <li>@runtime</li>
+                            <li><span class="fhp-mvband__sep" aria-hidden="true"></span></li>
+                            <li>
+                                <a asp-controller="Streaming" asp-action="Index" asp-route-categoryId="@item.CategoryId">
+                                    @(item.Category?.Name ?? "Fandom")
+                                </a>
+                            </li>
+                        </ul>
+                        @if (trailerSrc is not null)
+                        {
+                            <a class="primary-btn fhp-mvband__cta" href="@trailerSrc" data-fhp-video data-src="@trailerSrc">
+                                <span><i class="ri-play-fill" aria-hidden="true"></i> Start Watching</span>
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="primary-btn fhp-mvband__cta" href="#videos">
+                                <span><i class="ri-play-fill" aria-hidden="true"></i> Start Watching</span>
+                            </a>
+                        }
                     </div>
                 </div>
             </div>
         </div>
-
-        <!-- Trailer / Embed -->
-        @if (Model.Trailer != null && !string.IsNullOrWhiteSpace(Model.Trailer.EmbedUrl))
-        {
-            <div id="trailerSection" class="fhp-mb-40">
-                <h2 class="fhp-fs-24 fw-bold text-white fhp-mb-12">
-                    <i class="ri-play-circle-line me-2 text-primary"></i>Official Trailer
-                </h2>
-                @* Same as Gaming/Details: let _MediaPlayer choose the element. A raw
-                   <iframe> cannot play the self-hosted /assets/videos/*.mp4 files that
-                   most trailers in this database point at, so the trailer never played. *@
-                <div class="bg-black rounded-5 overflow-hidden border fhp-border-white-10 shadow-lg">
-                    <partial name="_MediaPlayer" model="new MediaPlayerViewModel
-                           {
-                               Url = Model.Trailer.EmbedUrl,
-                               Poster = cover,
-                               Title = Model.Item.Title
-                           }" />
-                </div>
-                <p class="fhp-text-white-40 fhp-fs-12 mt-2 text-center">
-                    <i class="ri-information-line me-1"></i>
-                    Trailers are embedded directly from official distributor channels (YouTube, Vimeo, etc.) and remain the property of their respective copyright holders.
-                </p>
-            </div>
-        }
-
-        <!-- Related Titles -->
-        @if (Model.Related.Count > 0)
-        {
-            <h2 class="fhp-fs-24 fw-bold text-white fhp-mb-12">You Might Also Like</h2>
-            <div class="row g-4">
-                @foreach (var r in Model.Related)
-                {
-                    var rc = string.IsNullOrWhiteSpace(r.ThumbnailUrl) ? "/assets/images/categories/category3.jpg" : r.ThumbnailUrl;
-                    <div class="col-6 col-sm-4 col-md-3 col-xl-2">
-                        <div class="fhp-group fhp-bg-18181f border fhp-border-white-10 rounded-4 overflow-hidden fhp-hover-border-primary-40 fhp-transition">
-                            <div class="position-relative fhp-aspect-2-3 overflow-hidden">
-                                <img src="@rc" alt="@r.Title"
-                                     class="w-100 h-100 fhp-object-cover fhp-group-hover-scale-105 fhp-transition-transform fhp-dur500"
-                                     loading="lazy" />
-                            </div>
-                            <div class="fhp-p-12">
-                                <h5 class="text-white fw-bold fhp-fs-12 text-truncate" title="@r.Title">
-                                    <a asp-controller="Streaming" asp-action="Details" asp-route-id="@r.ContentId"
-                                       class="fhp-hover-text-primary fhp-transition-colors">@r.Title</a>
-                                </h5>
-                                <span class="fhp-text-white-40 fhp-fs-10">@r.Category.Name</span>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        }
-
     </div>
 </div>
 
+<partial name="_JoinNow" />
 @section Scripts {
 <script>
 (function () {
-    var btn = document.getElementById('bookmarkBtn');
-    if (!btn) return;
-    btn.addEventListener('click', function () {
-        fetch('/Bookmarks/Toggle', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
-            },
-            body: JSON.stringify({ id: parseInt(btn.dataset.id), type: btn.dataset.type })
-        })
-        .then(function(r) { return r.json(); })
-        .then(function(d) {
-            if (d.bookmarked) {
-                btn.innerHTML = '<i class="ri-heart-fill me-1"></i> Saved';
-                btn.classList.remove('btn-outline-secondary','text-white','border-white/30');
-                btn.classList.add('btn-danger');
-            } else {
-                btn.innerHTML = '<i class="ri-heart-line me-1"></i> Save';
-                btn.classList.add('btn-outline-secondary','text-white','border-white/30');
-                btn.classList.remove('btn-danger');
-            }
+    'use strict';
+    var contentId = @item.ContentId;
+
+    function token() {
+        var el = document.querySelector('input[name="__RequestVerificationToken"]');
+        return el ? el.value : '';
+    }
+    function toast(msg) { if (window.fhpToast) fhpToast(msg); }
+
+    // ---------- star widget + thumbs: all of them post to /Streaming/Vote ----------
+    var widget = document.getElementById('mvStars');
+    var stars = widget ? Array.prototype.slice.call(widget.querySelectorAll('[data-star]')) : [];
+    var hiddenValue = document.getElementById('mvStarsValue');
+    var myStarsLabel = document.getElementById('mvMyStars');
+
+    function paintStars(n) {
+        stars.forEach(function (b, i) { b.classList.toggle('is-on', i < n); });
+    }
+
+    function apply(res) {
+        paintStars(res.myStars);
+        if (widget) widget.setAttribute('data-value', res.myStars);
+        if (hiddenValue) hiddenValue.value = res.myStars;
+        if (myStarsLabel) myStarsLabel.textContent = res.myStars + ' / 5';
+
+        var avg = document.getElementById('mvAvg');
+        var cnt = document.getElementById('mvCount');
+        var up = document.getElementById('voteUpCount');
+        var down = document.getElementById('voteDownCount');
+        if (avg) avg.textContent = Number(res.avg).toFixed(1);
+        if (cnt) cnt.textContent = res.count;
+        if (up) up.textContent = res.up;
+        if (down) down.textContent = res.down;
+    }
+
+    function vote(value) {
+        var fd = new FormData();
+        fd.append('contentId', contentId);
+        fd.append('stars', String(value));
+        fd.append('__RequestVerificationToken', token());
+        fetch('/Streaming/Vote', { method: 'POST', body: fd, credentials: 'same-origin' })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                if (res.auth === false) {
+                    window.location = '/Account/Login?returnUrl=' + encodeURIComponent(location.pathname);
+                    return;
+                }
+                if (!res.ok) { if (res.message) toast(res.message); return; }
+                apply(res);
+                if (res.message) toast(res.message);
+            })
+            .catch(function () { toast('Could not reach the server. Please try again.'); });
+    }
+
+    if (widget) {
+        stars.forEach(function (btn) {
+            var value = parseInt(btn.getAttribute('data-star'), 10);
+            btn.addEventListener('mouseenter', function () { paintStars(value); });
+            btn.addEventListener('click', function () { vote(value); });
         });
-    });
+        widget.addEventListener('mouseleave', function () {
+            paintStars(parseInt(widget.getAttribute('data-value') || '0', 10));
+        });
+    }
+
+    var upBtn = document.getElementById('voteUpBtn');
+    var downBtn = document.getElementById('voteDownBtn');
+    if (upBtn) upBtn.addEventListener('click', function () { vote(5); });
+    if (downBtn) downBtn.addEventListener('click', function () { vote(1); });
+
+    // ---------- "Seen" button (per-member watch history) ----------
+    var seenBtn = document.getElementById('seenBtn');
+    if (seenBtn) {
+        seenBtn.addEventListener('click', function () {
+            var fd = new FormData();
+            fd.append('contentId', contentId);
+            fd.append('__RequestVerificationToken', token());
+            seenBtn.disabled = true;
+            fetch('/Streaming/ToggleSeen', { method: 'POST', body: fd, credentials: 'same-origin' })
+                .then(function (r) { return r.json(); })
+                .then(function (res) {
+                    seenBtn.disabled = false;
+                    if (res.auth === false) {
+                        window.location = '/Account/Login?returnUrl=' + encodeURIComponent(location.pathname);
+                        return;
+                    }
+                    if (!res.ok) { if (res.message) toast(res.message); return; }
+                    seenBtn.classList.toggle('is-saved', res.seen);
+                    var icon = seenBtn.querySelector('i');
+                    var cnt = document.getElementById('seenCount');
+                    if (icon) icon.className = res.seen ? 'ri-checkbox-circle-fill' : 'ri-checkbox-circle-line';
+                    if (cnt) cnt.textContent = res.count;
+                    if (res.message) toast(res.message);
+                })
+                .catch(function () {
+                    seenBtn.disabled = false;
+                    toast('Could not reach the server. Please try again.');
+                });
+        });
+    }
 })();
 </script>
 }
+
+
+
+
+
+
+

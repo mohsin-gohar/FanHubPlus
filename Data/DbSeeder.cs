@@ -48,19 +48,27 @@ public partial class DbSeeder
             await EnsureConfiguredUserAsync("Database:SeedUserEmail", "Database:SeedUserPassword", "Demo Fan", "User");
         }
 
-        // ---------- 3) The 8 fandom categories ----------
-        if (!_db.Categories.Any())
+        // ---------- 3) Fandom categories ----------
+        var defaultCategories = new (string Name, string Description)[]
         {
-            _db.Categories.AddRange(
-                new Category { Name = "Anime",    Description = "Japanese animation - series, movies and OVAs." },
-                new Category { Name = "Gaming",   Description = "Video games, esports and game franchises." },
-                new Category { Name = "Movies",   Description = "Cinematic universes, franchises and blockbusters." },
-                new Category { Name = "TV Shows", Description = "Binge-worthy television series and dramas." },
-                new Category { Name = "K-Pop",    Description = "Korean pop groups, albums and comebacks." },
-                new Category { Name = "Comics",   Description = "Western comics, superheroes and graphic novels." },
-                new Category { Name = "Manga",    Description = "Japanese manga series and light novels." },
-                new Category { Name = "Cosplay",  Description = "Cosplay culture, costumes and conventions." }
-            );
+            ("Anime",    "Japanese animation - series, movies and OVAs."),
+            ("Gaming",   "Video games, esports and game franchises."),
+            ("Movies",   "Cinematic universes, franchises and blockbusters."),
+            ("TV Shows", "Binge-worthy television series and dramas."),
+            ("K-Pop",    "Korean pop groups, albums and comebacks."),
+            ("Comics",   "Western comics, superheroes and graphic novels."),
+            ("Manga",    "Japanese manga series and light novels."),
+            ("Cosplay",  "Cosplay culture, costumes and conventions."),
+            ("Music",    "Songs, albums and soundtracks you can play on-site.")
+        };
+        var existingCategoryNames = _db.Categories.Select(c => c.Name).ToList();
+        var missingCategories = defaultCategories
+            .Where(c => !existingCategoryNames.Contains(c.Name))
+            .Select(c => new Category { Name = c.Name, Description = c.Description })
+            .ToList();
+        if (missingCategories.Count > 0)
+        {
+            _db.Categories.AddRange(missingCategories);
             await _db.SaveChangesAsync();
         }
 
@@ -68,7 +76,12 @@ public partial class DbSeeder
         // Each block inside only inserts when its table is EMPTY, so admin
         // changes made during the demo are never overwritten on restart.
         if (_configuration.GetValue("Database:SeedDemoData", false))
+        {
             await SeedDemoDataAsync();
+            // The movie / TV show detail pages read their sidebar metadata and
+            // their Reviews block from the columns this fills in.
+            await SeedMovieDetailsAsync();
+        }
         else
             _logger.LogInformation("Demo catalogue seeding is disabled; reference data was left unchanged.");
     }

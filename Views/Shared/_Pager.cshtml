@@ -1,73 +1,50 @@
-@* Pagination in the template's own language: square mist buttons, the current
-   page filled with the accent colour, the arrows at both ends.
-   Model (anonymous): int Page, int TotalPages, Func<int,string> UrlFor
-   Example:
-     <partial name="_Pager" model="new {
-         Page = Model.Page, TotalPages = Model.TotalPages,
-         UrlFor = (Func<int, string>)(p => Model.PageUrl(p)) }" /> *@
 @model dynamic
 @{
     var page = (int)Model.Page;
     var total = (int)Model.TotalPages;
     var urlFor = (Func<int, string>)Model.UrlFor;
-
-    // Keep the row short on long result sets: a window around the current page.
     const int window = 2;
     var first = Math.Max(1, page - window);
     var last = Math.Min(total, page + window);
-    var button = "fw-bold fhp-w-40 fhp-md-w-45 fhp-lg-w-50 fhp-h-40 fhp-md-h-45 fhp-lg-h-50 fhp-r-5 fhp-flex fhp-items-center fhp-justify-center fhp-transition fhp-dur300 fhp-ease";
 }
 @if (total > 1)
 {
-    <nav class="text-center fhp-mt-40 fhp-md-mt-50 fhp-lg-mt-60 fhp-xl-mt-70">
-        <ul class="d-flex align-items-center flex-wrap justify-content-center fhp-gap-5 fhp-md-gap-10">
+    <nav class="mt-5" aria-label="Pagination">
+        <ul class="pagination justify-content-center flex-wrap">
             @if (page > 1)
             {
-                <li>
-                    <a href="@urlFor(page - 1)" class="@button fhp-fs-20 fhp-text-black fhp-bg-f3f3f3 fhp-hover-bg-primary fhp-hover-text-white" aria-label="Previous page">
-                        <i class="ri-arrow-left-line" aria-hidden="true"></i>
+                <li class="page-item">
+                    <a class="page-link" href="@urlFor(page - 1)" aria-label="Previous page">
+                        <i class="ri-arrow-left-line"></i>
                     </a>
                 </li>
             }
             @if (first > 1)
             {
-                <li>
-                    <a href="@urlFor(1)" class="@button fs-6 fhp-md-fs-18 fhp-text-black fhp-bg-f3f3f3 fhp-hover-bg-primary fhp-hover-text-white">1</a>
-                </li>
-                <li>
-                    <span class="fhp-text-black-50 fhp-px-5">…</span>
-                </li>
+                <li class="page-item"><a class="page-link" href="@urlFor(1)">1</a></li>
+                <li class="page-item disabled"><span class="page-link">…</span></li>
             }
             @for (var p = first; p <= last; p++)
             {
-                var label = $"{button} fhp-fs-16 fhp-md-fs-18";
                 if (p == page)
                 {
-                    <li>
-                        <span class="@label bg-primary text-white" aria-current="page">@p</span>
-                    </li>
+                    <li class="page-item active"><span class="page-link">@p</span></li>
                 }
                 else
                 {
-                    <li>
-                        <a href="@urlFor(p)" class="@label fhp-text-black fhp-bg-f3f3f3 fhp-hover-bg-primary fhp-hover-text-white">@p</a>
-                    </li>
+                    <li class="page-item"><a class="page-link" href="@urlFor(p)">@p</a></li>
                 }
             }
             @if (last < total)
             {
-                <li>
-                    <span class="fhp-text-black-50 fhp-px-5">…</span>
-                </li>
-                <li>
-                    <a href="@urlFor(total)" class="@button fs-6 fhp-md-fs-18 fhp-text-black fhp-bg-f3f3f3 fhp-hover-bg-primary fhp-hover-text-white">@total</a>
-                </li>
+                <li class="page-item disabled"><span class="page-link">…</span></li>
+                <li class="page-item"><a class="page-link" href="@urlFor(total)">@total</a></li>
             }
             @if (page < total)
             {
-                <li>
-                    <a href="@urlFor(page + 1)" class="@button fhp-fs-20 fhp-text-black fhp-bg-f3f3f3 fhp-hover-bg-primary fhp-hover-text-white" aria-label="Next page">
-                        <i class="ri-arrow-right-line" aria-hidden="true"></i>
+                <li class="page-item">
+                    <a class="page-link" href="@urlFor(page + 1)" aria-label="Next page">
+                        <i class="ri-arrow-right-line"></i>
                     </a>
                 </li>
             }

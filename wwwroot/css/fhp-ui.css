@@ -1,0 +1,195 @@
+/* FanHubPlus public UI — Bootstrap 5.3 helpers (no Tailwind). */
+html.dark-mode body,
+body {
+    background: #0f0f0b;
+    color: #e8e8e8;
+}
+
+.fhp-main {
+    padding-top: 4.5rem;
+    color: #d7d7d7;
+}
+
+.fhp-page-hero {
+    position: relative;
+    padding: 5.5rem 0 3rem;
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+}
+.fhp-page-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 15, 11, .55), rgba(15, 15, 11, .92));
+}
+.fhp-page-hero .container {
+    position: relative;
+    z-index: 1;
+}
+.fhp-page-hero h1 {
+    font-family: "Play", sans-serif;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #fff;
+}
+.fhp-breadcrumb {
+    justify-content: center;
+    --bs-breadcrumb-divider-color: rgba(255, 255, 255, .45);
+}
+.fhp-breadcrumb .breadcrumb-item,
+.fhp-breadcrumb a { color: rgba(255, 255, 255, .75); }
+.fhp-breadcrumb .breadcrumb-item.active { color: var(--bs-secondary, #ffea00); }
+
+.fhp-poster {
+    display: block;
+    overflow: hidden;
+    border-radius: .5rem;
+    background: #171717;
+    height: 100%;
+    border: 1px solid rgba(255, 255, 255, .08);
+    transition: transform .25s ease, border-color .25s ease;
+}
+.fhp-poster:hover {
+    transform: translateY(-4px);
+    border-color: rgba(244, 27, 59, .45);
+}
+.fhp-poster img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+}
+.fhp-poster__body { padding: .85rem .9rem 1rem; }
+.fhp-poster__body h3 {
+    font-size: 1rem;
+    margin: 0 0 .35rem;
+    color: #fff;
+}
+.fhp-poster__meta {
+    font-size: .75rem;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: rgba(255, 255, 255, .55);
+}
+
+.fhp-hub-card {
+    background: #18181f;
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 1rem;
+    overflow: hidden;
+    height: 100%;
+    transition: border-color .2s ease;
+}
+.fhp-hub-card:hover { border-color: rgba(244, 27, 59, .45); }
+.fhp-hub-card img.cover {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+}
+.fhp-hub-card img.wide {
+    aspect-ratio: 16 / 9;
+}
+.fhp-hub-card .card-body { padding: 1rem; }
+
+.fhp-hero-banner {
+    min-height: 70vh;
+    display: flex;
+    align-items: flex-end;
+    background-size: cover;
+    background-position: center;
+    border-radius: .75rem;
+    overflow: hidden;
+}
+.fhp-hero-banner .carousel-caption {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 3rem 1.5rem 2.5rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, .85));
+    text-align: left;
+}
+.fhp-hero-banner h1 {
+    font-family: "Play", sans-serif;
+    text-transform: uppercase;
+    font-weight: 800;
+    color: #fff;
+}
+
+.fhp-section { padding: 3.5rem 0; }
+.fhp-section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.75rem;
+}
+.fhp-section-head h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 1.6rem;
+}
+
+.fhp-media__player video,
+.fhp-media__player iframe,
+.fhp-media__player audio {
+    display: block;
+    width: 100%;
+}
+.fhp-media__player video,
+.fhp-media__player iframe {
+    aspect-ratio: 16 / 9;
+    min-height: 280px;
+    border: 0;
+    background: #000;
+}
+.fhp-media__player audio { margin: 1rem 0; }
+
+#audioPlayerBar {
+    z-index: 1080;
+    background: #0e0e14;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+    transform: translateY(100%);
+    transition: transform .4s ease;
+}
+#audioPlayerBar.is-open { transform: translateY(0); }
+
+.fhp-game-frame {
+    position: relative;
+    min-height: 520px;
+    background: #000;
+    border-radius: 1rem;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, .1);
+}
+.fhp-filter-bar .form-control,
+.fhp-filter-bar .form-select {
+    width: auto;
+    min-width: 12rem;
+    height: 2.75rem;
+}
+
+.pagination .page-link {
+    background: #f3f3f3;
+    color: #111;
+    border: 0;
+    margin: 0 .2rem;
+    border-radius: .4rem;
+    min-width: 2.5rem;
+    text-align: center;
+}
+.pagination .page-item.active .page-link {
+    background: var(--bs-primary, #f41b3b);
+    color: #fff;
+}
+
+.fhp-empty {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, .04);
+}
+
+footer.fhp-site-footer a { color: rgba(255, 255, 255, .75); }
+footer.fhp-site-footer a:hover { color: var(--bs-secondary, #ffea00); }

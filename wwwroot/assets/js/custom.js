@@ -2,11 +2,24 @@
 	"use strict";
 
 	// Preloader
+	// It used to be dismissed by adding Tailwind's `hidden` class, but
+	// Bootstrap has no `.hidden` rule and the markup carries `d-flex`
+	// (display:flex !important), so the black overlay never went away and
+	// sat on top of the whole site. Fade it out and take it out of the DOM
+	// instead, with a failsafe for when a slow asset holds up `load`.
 	const preloader = document.getElementById("preloader");
 	if (preloader) {
-		window.addEventListener("load", () => {
-			preloader.classList.add("hidden");
-		});
+		let dismissed = false;
+		const dismissPreloader = () => {
+			if (dismissed) return;
+			dismissed = true;
+			preloader.style.opacity = "0";
+			preloader.style.pointerEvents = "none";
+			setTimeout(() => preloader.remove(), 320);
+		};
+		window.addEventListener("load", dismissPreloader);
+		// Never let a stalled request leave a black screen over the site.
+		setTimeout(dismissPreloader, 3000);
 	}
 
 	// Navbar Sticky

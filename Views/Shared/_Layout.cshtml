@@ -19,10 +19,7 @@
     // page the plain fixed one. Inner pages also paint their own white bed
     // (bg-white text-[#666666]) while the home page keeps the dark bed.
     var isHome = controller == "home" && action == "index";
-    var darkBed = ViewData["fhpDark"] is true;
-    var headerClass = isHome
-        ? "fhp-py-15 fhp-lg-py-0 fhp-bg-585151-44 fhp-backdrop-blur fhp-mx-10 fhp-mt-10 fhp-rt-10 fixed top-0 left-0 right-0 fhp-z-4 fhp-transition fhp-dur300 fhp-ease"
-        : "fhp-py-15 fhp-lg-py-0 fhp-xl-py-10 fixed top-0 left-0 right-0 fhp-z-4 rounded-0 fhp-transition fhp-dur300 fhp-ease";
+    var headerClass = "navbar navbar-expand-lg navbar-dark fhp-nav fixed-top";
 
     string Mark(string name) => (controller == name || (name == "explore" && controller == "streaming")) ? " active" : "";
 
@@ -47,30 +44,13 @@
     <title>@(ViewData["Title"] != null ? ViewData["Title"] + " | " : "")FanHubPlus</title>
 
     <!-- Links Of CSS File -->
-    @* Bootstrap 5.3 is the base CSS framework. *@
+    @* Bootstrap 5.3 is the only CSS framework. *@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
-    @* FanHubPlus theme: maps the palette to Bootstrap CSS custom properties. *@
     <link rel="stylesheet" href="~/css/bootstrap-fhp-theme.css" asp-append-version="true" />
-    @* Core component sheet: variables, dark-mode overrides, and all .fhp-*
-       component rules for forms, panels, tabs, media, timeline, map, etc.
-       Loads before the utility sheet so the utility layer wins on shared
-       selectors. *@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    @* Utility layer #1: the .fhp-* pixel/alpha utility set (exact px values,
-       Bootstrap's rem scale cannot express them). *@
     <link rel="stylesheet" href="~/css/fhp-utilities.css" asp-append-version="true" />
-    @* Utility layer #2: the framework-style utility classes the template
-       markup is written in (flex/grid, spacing, alpha colours, breakpoint
-       variants). Static, checked-in build - the project no longer carries a
-       Tailwind dependency, config file or build step. Loaded after the
-       component sheet so the utility layer wins on shared selectors. *@
-    <link rel="stylesheet" href="~/css/fhp-compat.css" asp-append-version="true" />
-    @* Patch layer: repairs the handful of declarations the static utility build
-       emitted with raw scale numbers (opacity: 10, scale(105), the invalid
-       "transition-property: colors") and adds the .fhp-* utilities the markup has
-       always used that neither sheet defined. Must stay after both utility
-       layers so these declarations win. *@
     <link rel="stylesheet" href="~/css/fhp-fixes.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/fhp-ui.css" asp-append-version="true" />
 
     <link rel="stylesheet" href="~/assets/css/swiper-bundle.min.css" />
     <link rel="stylesheet" href="~/assets/css/flaticon_fanhubplus.css" />
@@ -632,7 +612,7 @@
     <!-- End Sidebar Modal -->
 
     <!-- Main content -->
-    <main class="flex-grow-1@(darkBed ? "" : " bg-white text-[#666666]")">
+    <main class="flex-grow-1 fhp-main">
         @if (TempData["StatusMessage"] != null || TempData["StatusError"] != null || TempData["PasswordError"] != null)
         {
             <div class="position-fixed fhp-top-90px fhp-md-top-100px start-0 end-0 fhp-z-5 fhp-px-15">
@@ -647,16 +627,16 @@
 
     <!-- Footer -->
     <footer
-        class="fhp-pt-60 fhp-md-pt-80 fhp-lg-pt-100 fhp-xl-pt-120 fhp-xxl-pt-140 fhp-bg-navy fhp-bg-cover fhp-bg-center fhp-bg-norepeat"
-        style="background-image: url(/assets/images/bg-images/bg-image3.jpg);"
+        class="fhp-site-footer fhp-pt-60 fhp-md-pt-80 fhp-lg-pt-100 fhp-bg-navy"
+        style="background-image: url(/assets/images/bg-images/bg-image3.jpg); background-size: cover; background-position: center;"
     >
         <div class="container">
-            <div class="d-grid fhp-gcol-2 fhp-sm-gcol-3 fhp-md-gcol-4 fhp-lg-gcol-5 fhp-gap-25">
-                <div>
+            <div class="row g-4">
+                <div class="col-6 col-md-4 col-lg">
                     <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
                         Explore
                     </h3>
-                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                    <ul class="list-unstyled fw-bold small">
                         <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
                             <a asp-controller="Explore" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 All Titles
@@ -684,11 +664,9 @@
                         </li>
                     </ul>
                 </div>
-                <div>
-                    <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
-                        Community
+                <div class="col-6 col-md-4 col-lg">
                     </h3>
-                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                    <ul class="list-unstyled fw-bold small">
                         <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
                             <a asp-controller="News" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 News &amp; Timeline
@@ -716,11 +694,9 @@
                         </li>
                     </ul>
                 </div>
-                <div>
-                    <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
-                        Company
+                <div class="col-6 col-md-4 col-lg">
                     </h3>
-                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                    <ul class="list-unstyled fw-bold small">
                         <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
                             <a asp-controller="Support" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 FAQ &amp; Support
@@ -748,11 +724,9 @@
                         </li>
                     </ul>
                 </div>
-                <div>
-                    <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
-                        Fandoms
+                <div class="col-6 col-md-4 col-lg">
                     </h3>
-                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                    <ul class="list-unstyled fw-bold small">
                         <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
                             <a asp-controller="Explore" asp-action="Index" asp-route-type="Movie" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Movies
@@ -769,8 +743,13 @@
                             </a>
                         </li>
                         <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
-                            <a asp-controller="Explore" asp-action="Index" asp-route-type="Game" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
+                            <a asp-controller="Gaming" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
                                 Gaming
+                            </a>
+                        </li>
+                        <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
+                            <a asp-controller="Music" asp-action="Index" class="fhp-transition fhp-ease fhp-dur300 fhp-hover-text-secondary">
+                                Music
                             </a>
                         </li>
                         <li class="fhp-mb-13 fhp-md-mb-15 fhp-last-mb-0">
@@ -780,11 +759,11 @@
                         </li>
                     </ul>
                 </div>
-                <div class="fhp-gspan-2 fhp-lg-col-span-1">
+                <div class="col-12 col-md-8 col-lg">
                     <h3 class="fhp-mb-20 fhp-md-mb-25 fhp-lg-mb-30 fs-6 fhp-md-fs-18 fhp-lg-fs-20 lh-1">
                         Address
                     </h3>
-                    <ul class="fhp-text-body-80 fw-bold fhp-fs-13 fhp-md-fs-14 fhp-lg-fs-15 fhp-ltr-md:border-l fhp-rtl-md:border-r fhp-md-border-white-10 fhp-ltr-md:pl-[20px] fhp-rtl-md:pr-[20px]">
+                    <ul class="list-unstyled fw-bold small">
                         <li class="fhp-mb-15 fhp-md-mb-17 fhp-last-mb-0">
                             <a href="mailto:support@fanhubplus.com" class="text-white fhp-fs-14 fhp-md-fs-15 fs-6">
                                 support@fanhubplus.com

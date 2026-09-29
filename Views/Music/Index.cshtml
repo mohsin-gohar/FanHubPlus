@@ -79,8 +79,12 @@
                                 <div class="position-absolute top-0 bottom-0 start-0 end-0 fhp-bg-black-40 opacity-0 fhp-group-hover-opacity-100 fhp-transition-opacity d-flex align-items-center justify-content-center fhp-gap-12">
                                     @if (audio != null)
                                     {
-                                        <button type="button" class="fhp-w-48 fhp-h-48 rounded-pill bg-primary text-white d-flex align-items-center justify-content-center fhp-fs-20 shadow-lg fhp-hover-scale-110 fhp-transition-transform"
-                                                onclick="playAudioTrack('@song.Title', '@(song.Artist ?? "Unknown Artist")', '@audio.EmbedUrl', '@cover')">
+                                        <button type="button" class="js-play-track fhp-w-48 fhp-h-48 rounded-pill bg-primary text-white d-flex align-items-center justify-content-center fhp-fs-20 shadow-lg fhp-hover-scale-110 fhp-transition-transform"
+                                                data-title="@song.Title"
+                                                data-artist="@(song.Artist ?? "Unknown Artist")"
+                                                data-url="@MediaUrl.Normalize(audio.EmbedUrl)"
+                                                data-cover="@cover"
+                                                aria-label="Play @song.Title">
                                             <i class="ri-play-fill"></i>
                                         </button>
                                     }

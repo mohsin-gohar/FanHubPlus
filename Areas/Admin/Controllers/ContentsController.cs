@@ -72,6 +72,11 @@ public class ContentsController : Controller
             ReleaseDate = model.ReleaseDate,
             PopularityScore = model.PopularityScore,
             ThumbnailUrl = model.ThumbnailUrl,
+            Director = model.Director,
+            RuntimeMinutes = model.RuntimeMinutes,
+            AgeRating = model.AgeRating,
+            ProductionCountry = model.ProductionCountry,
+            Cast = model.Cast,
             CreatedAt = DateTime.UtcNow
         };
 
@@ -112,6 +117,11 @@ public class ContentsController : Controller
             ReleaseDate = entity.ReleaseDate,
             PopularityScore = entity.PopularityScore,
             ThumbnailUrl = entity.ThumbnailUrl,
+            Director = entity.Director,
+            RuntimeMinutes = entity.RuntimeMinutes,
+            AgeRating = entity.AgeRating,
+            ProductionCountry = entity.ProductionCountry,
+            Cast = entity.Cast,
             Tags = string.Join(", ", entity.ContentTags.Select(ct => ct.Tag.Name))
         };
 
@@ -134,6 +144,11 @@ public class ContentsController : Controller
         entity.Description = model.Description;
         entity.ReleaseDate = model.ReleaseDate;
         entity.PopularityScore = model.PopularityScore;
+        entity.Director = model.Director;
+        entity.RuntimeMinutes = model.RuntimeMinutes;
+        entity.AgeRating = model.AgeRating;
+        entity.ProductionCountry = model.ProductionCountry;
+        entity.Cast = model.Cast;
 
         if (model.ThumbnailFile is { Length: > 0 })
         {

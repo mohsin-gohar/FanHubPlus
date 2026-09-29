@@ -13,6 +13,9 @@ public class Rating
     [Range(1, 5)]
     public int Stars { get; set; }                       // 1..5
 
+    [StringLength(1000)]
+    public string? Review { get; set; }                  // optional written review shown in the Reviews block
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     // Navigation properties

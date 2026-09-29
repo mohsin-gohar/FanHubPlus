@@ -13,14 +13,17 @@ public class HomeController : Controller
     private readonly IStatsService _stats;
     private readonly IContentService _content;
     private readonly IRepository<FanHubPlus.Models.Entities.Category> _categories;
+    private readonly IRepository<FanHubPlus.Models.Entities.Content> _contents;
 
     public HomeController(IStatsService stats,
                           IContentService content,
-                          IRepository<FanHubPlus.Models.Entities.Category> categories)
+                          IRepository<FanHubPlus.Models.Entities.Category> categories,
+                          IRepository<FanHubPlus.Models.Entities.Content> contents)
     {
         _stats = stats;
         _content = content;
         _categories = categories;
+        _contents = contents;
     }
 
     // Landing page: hero counters + trending content + latest news + upcoming events + merch
@@ -50,6 +53,29 @@ public class HomeController : Controller
         var articles = await _content.GetLatestArticlesAsync(3);
         var events = await _content.GetUpcomingEventsAsync(3);
         var merch = await _content.GetFeaturedMerchAsync(4);
+        var featuredMovies = await _contents.Query().AsNoTracking()
+            .Include(c => c.Category)
+            .Where(c => c.Type == FanHubPlus.Models.Enums.ContentType.Movie
+                     || c.Type == FanHubPlus.Models.Enums.ContentType.Series
+                     || c.Type == FanHubPlus.Models.Enums.ContentType.Documentary)
+            .OrderByDescending(c => c.PopularityScore)
+            .Take(8)
+            .ToListAsync();
+        var featuredMusic = await _contents.Query().AsNoTracking()
+            .Include(c => c.Category)
+            .Include(c => c.MediaItems)
+            .Where(c => c.Type == FanHubPlus.Models.Enums.ContentType.Song
+                     || c.Type == FanHubPlus.Models.Enums.ContentType.Album)
+            .OrderByDescending(c => c.PopularityScore)
+            .Take(8)
+            .ToListAsync();
+        var featuredGames = await _contents.Query().AsNoTracking()
+            .Include(c => c.Category)
+            .Where(c => c.Type == FanHubPlus.Models.Enums.ContentType.Game
+                     || c.Type == FanHubPlus.Models.Enums.ContentType.PlayableGame)
+            .OrderByDescending(c => c.PopularityScore)
+            .Take(8)
+            .ToListAsync();
 
         var (contents, members, upcoming) = totals;
 
@@ -61,6 +87,9 @@ public class HomeController : Controller
             LatestArticles = articles,
             UpcomingEvents = events,
             FeaturedMerch = merch,
+            FeaturedMovies = featuredMovies,
+            FeaturedMusic = featuredMusic,
+            FeaturedGames = featuredGames,
             TotalContents = contents,
             TotalMembers = members,
             TotalEvents = upcoming

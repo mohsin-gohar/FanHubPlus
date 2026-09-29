@@ -121,7 +121,60 @@ public partial class DbSeeder
                         Genre = "Arcade, Retro", PopularityScore = 910, ViewCount = 14500,
                         ReleaseDate = new DateTime(1980, 5, 22), PlayableGameUrl = "https://freepacman.org/",
                         OfficialWebsiteUrl = "https://freepacman.org/",
-                        Description = "Guide Pac-Man through the maze, eat dots, and avoid Blinky, Pinky, Inky, and Clyde!" }
+                        Description = "Guide Pac-Man through the maze, eat dots, and avoid Blinky, Pinky, Inky, and Clyde!" },
+                new() { CategoryId = cat["Movies"], Title = "Big Buck Bunny", Type = ContentType.Movie,
+                        Genre = "Animation, Comedy", PopularityScore = 875, ViewCount = 6400,
+                        ThumbnailUrl = "/assets/images/movies/movie1.jpg",
+                        ReleaseDate = new DateTime(2008, 4, 10),
+                        Description = "Open movie from the Blender Foundation. Watch the full short film here on FanHubPlus." },
+                new() { CategoryId = cat["Movies"], Title = "Sintel", Type = ContentType.Movie,
+                        Genre = "Animation, Fantasy", PopularityScore = 865, ViewCount = 5100,
+                        ThumbnailUrl = "/assets/images/movies/movie2.jpg",
+                        ReleaseDate = new DateTime(2010, 9, 27),
+                        Description = "Blender Foundation's open fantasy short. Stream the complete film in the Movies hub." },
+                new() { CategoryId = cat["Movies"], Title = "Tears of Steel", Type = ContentType.Movie,
+                        Genre = "Sci-Fi, Live Action", PopularityScore = 850, ViewCount = 4300,
+                        ThumbnailUrl = "/assets/images/movies/movie3.jpg",
+                        ReleaseDate = new DateTime(2012, 9, 26),
+                        Description = "Open live-action / CGI short from the Blender Institute. Play it in the browser." },
+                new() { CategoryId = cat["Movies"], Title = "Elephants Dream", Type = ContentType.Movie,
+                        Genre = "Animation, Experimental", PopularityScore = 820, ViewCount = 3900,
+                        ThumbnailUrl = "/assets/images/movies/movie4.jpg",
+                        ReleaseDate = new DateTime(2006, 3, 24),
+                        Description = "The first open movie from the Orange Open Movie Project. Full video on-site." },
+                new() { CategoryId = cat.GetValueOrDefault("Music", cat["K-Pop"]), Title = "SoundHelix Session 1", Type = ContentType.Song,
+                        Genre = "Electronic, Royalty-free", Artist = "SoundHelix", AlbumName = "Studio Samples",
+                        PopularityScore = 780, ViewCount = 2100, ReleaseDate = new DateTime(2010, 1, 1),
+                        ThumbnailUrl = "/assets/images/categories/category1.jpg",
+                        Description = "Royalty-free instrumental you can play instantly from the Music hub." },
+                new() { CategoryId = cat.GetValueOrDefault("Music", cat["K-Pop"]), Title = "SoundHelix Session 2", Type = ContentType.Song,
+                        Genre = "Electronic, Royalty-free", Artist = "SoundHelix", AlbumName = "Studio Samples",
+                        PopularityScore = 770, ViewCount = 1800, ReleaseDate = new DateTime(2010, 1, 1),
+                        ThumbnailUrl = "/assets/images/categories/category5.jpg",
+                        Description = "A second royalty-free instrumental for in-browser listening." },
+                new() { CategoryId = cat.GetValueOrDefault("Music", cat["K-Pop"]), Title = "Moonlight Sonata", Type = ContentType.Song,
+                        Genre = "Classical, Piano", Artist = "Ludwig van Beethoven", AlbumName = "Public Domain Classics",
+                        PopularityScore = 800, ViewCount = 3200, ReleaseDate = new DateTime(1801, 1, 1),
+                        ThumbnailUrl = "/assets/images/categories/category6.jpg",
+                        Description = "Public-domain piano recording. Listen on-site without leaving FanHubPlus." },
+                new() { CategoryId = cat["Gaming"], Title = "Hextris", Type = ContentType.PlayableGame,
+                        Genre = "Puzzle, Arcade", PopularityScore = 890, ViewCount = 9800,
+                        ReleaseDate = new DateTime(2014, 1, 1), PlayableGameUrl = "https://hextris.io/",
+                        OfficialWebsiteUrl = "https://hextris.io/",
+                        ThumbnailUrl = "/assets/images/categories/category2.jpg",
+                        Description = "Open-source hexagon puzzle. Play it instantly in your browser." },
+                new() { CategoryId = cat["Gaming"], Title = "Clumsy Bird", Type = ContentType.PlayableGame,
+                        Genre = "Arcade, Casual", PopularityScore = 840, ViewCount = 7600,
+                        ReleaseDate = new DateTime(2014, 1, 1), PlayableGameUrl = "https://ellisonleao.github.io/clumsy-bird/",
+                        OfficialWebsiteUrl = "https://ellisonleao.github.io/clumsy-bird/",
+                        ThumbnailUrl = "/assets/images/categories/category4.jpg",
+                        Description = "Open-source Flappy Bird-style game. Tap to fly, play in the browser." },
+                new() { CategoryId = cat["Gaming"], Title = "Astray", Type = ContentType.PlayableGame,
+                        Genre = "Puzzle, Maze", PopularityScore = 830, ViewCount = 5400,
+                        ReleaseDate = new DateTime(2015, 1, 1), PlayableGameUrl = "https://wwwtyro.github.io/Astray/",
+                        OfficialWebsiteUrl = "https://wwwtyro.github.io/Astray/",
+                        ThumbnailUrl = "/assets/images/categories/category7.jpg",
+                        Description = "WebGL maze explorer. WASD to move, play full-screen on FanHubPlus." }
         };
         if (!_db.Contents.Any())
         {
@@ -179,27 +232,41 @@ public partial class DbSeeder
             await _db.SaveChangesAsync();
         }
 
-        var audioEmbeds = new (string Title, string Url, string Tag)[]
+        var mediaEmbeds = new (string Title, MediaType Type, string Url, string Tag)[]
         {
-            ("Unravel (Tokyo Ghoul OP)", "https://www.youtube.com/embed/7aMOurgDB-U", "Official Theme"),
-            ("Dynamite",                  "https://www.youtube.com/embed/gdZLi9oWNZg", "Official Video"),
-            ("Gurenge (Demon Slayer OP)", "https://www.youtube.com/embed/CwkzK-F0Hs0", "Official Track"),
+            ("Unravel (Tokyo Ghoul OP)", MediaType.Audio, "https://www.youtube.com/embed/7aMOurgDB-U", "Official Theme"),
+            ("Dynamite", MediaType.Audio, "https://www.youtube.com/embed/gdZLi9oWNZg", "Official Video"),
+            ("Gurenge (Demon Slayer OP)", MediaType.Audio, "https://www.youtube.com/embed/CwkzK-F0Hs0", "Official Track"),
+            ("Elden Ring Main Theme", MediaType.Audio, "https://www.youtube.com/embed/E3Huy2cdih0", "Official Theme"),
+            ("Attack on Titan", MediaType.Trailer, "https://www.youtube.com/embed/MGRm4IzK1SQ", "Official Trailer"),
+            ("Elden Ring", MediaType.Trailer, "https://www.youtube.com/embed/E3Huy2cdih0", "Launch Trailer"),
+            ("Dune: Part Two", MediaType.Trailer, "https://www.youtube.com/embed/Way9Dexny3w", "Official Trailer"),
+            ("Avengers: Endgame", MediaType.Trailer, "https://www.youtube.com/embed/TcMBFSGVi1c", "Official Trailer"),
+            ("Stranger Things", MediaType.Trailer, "https://www.youtube.com/embed/b9EkMcBpZfg", "Official Trailer"),
+            ("Spirited Away", MediaType.Trailer, "https://www.youtube.com/embed/ByXuk9QqQkk", "Official Trailer"),
+            ("Big Buck Bunny", MediaType.Video, "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", "Full Film"),
+            ("Sintel", MediaType.Video, "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4", "Full Film"),
+            ("Tears of Steel", MediaType.Video, "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4", "Full Film"),
+            ("Elephants Dream", MediaType.Video, "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4", "Full Film"),
+            ("SoundHelix Session 1", MediaType.Audio, "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3", "Full Track"),
+            ("SoundHelix Session 2", MediaType.Audio, "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3", "Full Track"),
+            ("Moonlight Sonata", MediaType.Audio, "https://upload.wikimedia.org/wikipedia/commons/4/47/Beethoven_Moonlight_1st_movement.ogg", "Public Domain"),
         };
         var embeddedUrls = _db.MediaItems.Select(m => m.EmbedUrl).ToList();
-        var audioToAdd = audioEmbeds.Where(a => !embeddedUrls.Contains(a.Url)).ToList();
-        if (audioToAdd.Count > 0)
+        var mediaToAdd = mediaEmbeds.Where(a => !embeddedUrls.Contains(a.Url)).ToList();
+        if (mediaToAdd.Count > 0)
         {
-            var audioTitles = audioToAdd.Select(a => a.Title).ToList();
-            var audioIds = _db.Contents
-                .Where(c => audioTitles.Contains(c.Title))
+            var mediaTitles = mediaToAdd.Select(a => a.Title).ToList();
+            var mediaIds = _db.Contents
+                .Where(c => mediaTitles.Contains(c.Title))
                 .ToDictionary(c => c.Title, c => c.ContentId);
-            foreach (var (title, url, tag) in audioToAdd)
+            foreach (var (title, type, url, tag) in mediaToAdd)
             {
-                if (audioIds.TryGetValue(title, out var id))
+                if (mediaIds.TryGetValue(title, out var id))
                     _db.MediaItems.Add(new MediaItem
                     {
                         ContentId = id,
-                        MediaType = MediaType.Audio,
+                        MediaType = type,
                         EmbedUrl = url,
                         Tag = tag,
                     });

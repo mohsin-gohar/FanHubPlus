@@ -16,11 +16,33 @@ public static class MediaUrl
     private static readonly string[] LocalExtensions =
         { ".mp4", ".webm", ".ogv", ".ogg", ".m4v", ".mov" };
 
-    /// <summary>A media row that can actually be played (video or trailer, with a URL).</summary>
+    private static readonly string[] AudioExtensions =
+        { ".mp3", ".ogg", ".wav", ".m4a", ".aac", ".flac" };
+
+    /// <summary>A media row that can actually be played (video, trailer, or audio).</summary>
     public static bool IsPlayable(MediaItem? media)
         => media is not null
-           && (media.MediaType == MediaType.Video || media.MediaType == MediaType.Trailer)
+           && (media.MediaType == MediaType.Video
+               || media.MediaType == MediaType.Trailer
+               || media.MediaType == MediaType.Audio)
            && !string.IsNullOrWhiteSpace(media.EmbedUrl);
+
+    public static bool IsAudioFile(string? url)
+    {
+        if (string.IsNullOrWhiteSpace(url)) return false;
+        var value = url.Trim();
+        if (Uri.TryCreate(value, UriKind.Absolute, out var uri))
+            return AudioExtensions.Contains(Path.GetExtension(uri.AbsolutePath), StringComparer.OrdinalIgnoreCase);
+        return AudioExtensions.Contains(Path.GetExtension(value), StringComparer.OrdinalIgnoreCase);
+    }
+
+    public static bool IsYouTube(string? url)
+    {
+        if (!Uri.TryCreate((url ?? string.Empty).Trim(), UriKind.Absolute, out var uri)) return false;
+        return uri.Host.EndsWith("youtube.com", StringComparison.OrdinalIgnoreCase)
+            || uri.Host.EndsWith("youtu.be", StringComparison.OrdinalIgnoreCase)
+            || uri.Host.EndsWith("youtube-nocookie.com", StringComparison.OrdinalIgnoreCase);
+    }
 
     /// <summary>The row shown in the big player: an explicit trailer wins over a generic video.</summary>
     public static MediaItem? Primary(IEnumerable<MediaItem>? media)

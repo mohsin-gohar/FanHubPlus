@@ -39,6 +39,26 @@ public class ContentFormViewModel
     [Display(Name = "Tags (comma separated)")]
     public string Tags { get; set; } = string.Empty;
 
+    // ---- Movie & TV show detail-page metadata (renders in the sidebar) ----
+    [StringLength(200)]
+    public string? Director { get; set; }
+
+    [Display(Name = "Runtime (minutes)")]
+    [Range(1, 1200)]
+    public int? RuntimeMinutes { get; set; }
+
+    [StringLength(20)]
+    [Display(Name = "Age rating")]
+    public string? AgeRating { get; set; }               // PG, PG-13, TV-MA...
+
+    [StringLength(100)]
+    [Display(Name = "Production country")]
+    public string? ProductionCountry { get; set; }
+
+    [StringLength(1000)]
+    [Display(Name = "Cast (Name:Role, ...)")]
+    public string? Cast { get; set; }                    // "Ana Cruz:Lila, Ben Osei:Marcus"
+
     public List<Category> Categories { get; set; } = new();
 }
 

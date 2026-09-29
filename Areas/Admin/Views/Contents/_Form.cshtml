@@ -87,6 +87,28 @@
                         <input asp-for="Tags" class="form-control" placeholder="ninja, space, romance" />
                         <div class="form-text">Comma separated — existing tags are reused, removed ones deleted.</div>
                     </div>
+                    <div class="col-md-4">
+                        <label asp-for="Director" class="form-label"></label>
+                        <input asp-for="Director" class="form-control" placeholder="Rian Johnson" />
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="RuntimeMinutes" class="form-label"></label>
+                        <input asp-for="RuntimeMinutes" class="form-control" type="number" min="1" max="1200" placeholder="145" />
+                        <div class="form-text">Shown as 2h : 25M on the detail page.</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label asp-for="AgeRating" class="form-label"></label>
+                        <input asp-for="AgeRating" class="form-control" placeholder="PG-13" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="ProductionCountry" class="form-label"></label>
+                        <input asp-for="ProductionCountry" class="form-control" placeholder="United States" />
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="Cast" class="form-label"></label>
+                        <input asp-for="Cast" class="form-control" placeholder="Ana Cruz:Lila, Ben Osei:Marcus" />
+                        <div class="form-text">Comma separated — each entry is Name:Role; the role defaults to Actor.</div>
+                    </div>
                     <div class="col-md-6">
                         <label asp-for="ThumbnailFile" class="form-label"></label>
                         <input asp-for="ThumbnailFile" class="form-control" accept="image/*" />

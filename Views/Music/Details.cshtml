@@ -32,8 +32,11 @@
                     @if (Model.MainAudio != null)
                     {
                         <div class="fhp-mb-12">
-                            <button type="button" class="primary-btn fhp-me-12"
-                                    onclick="playAudioTrack('@Model.Song.Title', '@(Model.Song.Artist ?? "Soundtrack")', '@Model.MainAudio.EmbedUrl', '@cover')">
+                            <button type="button" class="primary-btn fhp-me-12 js-play-track"
+                                    data-title="@Model.Song.Title"
+                                    data-artist="@(Model.Song.Artist ?? "Soundtrack")"
+                                    data-url="@MediaUrl.Normalize(Model.MainAudio.EmbedUrl)"
+                                    data-cover="@cover">
                                 <i class="ri-play-fill me-2"></i> Listen Now
                             </button>
                         </div>

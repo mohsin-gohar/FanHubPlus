@@ -43,6 +43,21 @@ public class Content
     [StringLength(500)]
     public string? PlayableGameUrl { get; set; }         // Legal HTML5 browser game embed link
 
+    // ---- Movie & TV show detail page metadata (the template's detail sidebar) ----
+    [StringLength(200)]
+    public string? Director { get; set; }                // "Rian Johnson" (also showrunner for series)
+
+    public int? RuntimeMinutes { get; set; }             // 145 -> rendered as "2h : 25M"
+
+    [StringLength(20)]
+    public string? AgeRating { get; set; }               // "PG", "PG-13", "TV-MA", "16+"
+
+    [StringLength(100)]
+    public string? ProductionCountry { get; set; }        // "United States", "Japan"
+
+    [StringLength(1000)]
+    public string? Cast { get; set; }                    // "Name:Role, Name:Role" (rendered as cast cards)
+
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     // Navigation properties
