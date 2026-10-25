@@ -184,6 +184,21 @@ app.Use(async (ctx, next) =>
     ctx.Response.Headers["X-Frame-Options"] = "SAMEORIGIN";
     ctx.Response.Headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
     ctx.Response.Headers["Permissions-Policy"] = "geolocation=(), microphone=(), camera=()";
+
+    // Content-Security-Policy: allow self, YouTube embeds, Bootstrap CDN, inline styles/scripts needed by template
+    var csp = "default-src 'self'; " +
+              "script-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com https://code.jquery.com https://cdnjs.cloudflare.com; " +
+              "style-src 'self' 'unsafe-inline' https://stackpath.bootstrapcdn.com https://fonts.googleapis.com; " +
+              "img-src 'self' data: https: blob:; " +
+              "font-src 'self' https://fonts.gstatic.com https://fonts.googleapis.com; " +
+              "connect-src 'self'; " +
+              "frame-src 'self' https://www.youtube.com https://player.vimeo.com; " +
+              "media-src 'self' https: blob:; " +
+              "object-src 'none'; " +
+              "base-uri 'self'; " +
+              "form-action 'self';";
+    ctx.Response.Headers["Content-Security-Policy"] = csp;
+
     await next();
 });
 

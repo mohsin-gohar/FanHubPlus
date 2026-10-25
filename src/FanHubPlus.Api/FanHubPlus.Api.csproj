@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>FanHubPlus.Api</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FanHubPlus.Application\FanHubPlus.Application.csproj" />
+    <ProjectReference Include="..\FanHubPlus.Infrastructure\FanHubPlus.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

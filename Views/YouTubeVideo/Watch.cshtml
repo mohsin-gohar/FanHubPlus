@@ -1,0 +1,88 @@
+@using FanHubPlus.Controllers
+@model YouTubeVideoWatchViewModel
+@{
+    ViewData["Title"] = Model.Video.Title;
+    ViewData["fhpDark"] = true;
+    var trail = new List<BreadcrumbItem>
+    {
+        new("YouTube Videos", Url.Action("Index", "YouTubeVideo")),
+        new(Model.Video.Title)
+    };
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<div class="fhp-py-60 fhp-md-py-80">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="fhp-bg-18181f border fhp-border-white-10 rounded-5 overflow-hidden shadow-lg fhp-mb-32">
+                    <div class="position-relative fhp-aspect-16-9 fhp-md-aspect-4-3 fhp-bg-black">
+                        <iframe src="@Model.Video.EmbedUrl"
+                                title="@Model.Video.Title"
+                                class="w-100 h-100 border-0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                                loading="lazy">
+                        </iframe>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between fhp-mb-12 flex-wrap fhp-gap-12">
+                    <div>
+                        <span class="d-inline-block fhp-px-12 py-1 fhp-bg-success-20 text-success border fhp-border-success-30 rounded-pill fhp-fs-12 fw-bold text-uppercase mb-2">
+                            <i class="ri-play-circle-line me-1"></i> @Model.Video.Category
+                        </span>
+                        <h1 class="fhp-fs-24 fs-2 fw-bolder text-white">@Model.Video.Title</h1>
+                    </div>
+                </div>
+
+                <div class="d-flex align-items-center fhp-gap-12 fhp-fs-14 fhp-text-white-60 fhp-mb-24">
+                    <span><i class="ri-eye-line me-1"></i> @Model.Video.Views views</span>
+                    <span><i class="ri-user-line me-1"></i> @Model.Video.UploadedBy</span>
+                    <span><i class="ri-time-line me-1"></i> @Model.Video.Duration</span>
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Video.Description))
+                {
+                    <div class="fhp-bg-white-5 border fhp-border-white-10 rounded-4 fhp-p-12 fhp-mb-24">
+                        <h5 class="text-white fw-bold fhp-fs-14 mb-3">Description</h5>
+                        <p class="fhp-text-white-70 fs-6 lh-lg mb-0">@Model.Video.Description</p>
+                    </div>
+                }
+
+                <h2 class="fhp-fs-20 fw-bold text-white fhp-mb-16">Related Videos</h2>
+                <div class="row g-3">
+                    @foreach (var related in Model.RelatedVideos)
+                    {
+                        <div class="col-6">
+                            <div class="fhp-bg-18181f border fhp-border-white-10 rounded-4 overflow-hidden fhp-group fhp-hover-border-success-50 fhp-transition">
+                                <div class="position-relative fhp-aspect-16-9 overflow-hidden fhp-bg-black-40 flex-shrink-0">
+                                    <a asp-action="Watch" asp-route-videoId="@related.VideoId" class="d-block w-100 h-100">
+                                        <img src="@related.ThumbnailUrl"
+                                             alt="@related.Title"
+                                             class="w-100 h-100 fhp-object-cover fhp-group-hover-scale-105 fhp-transition-transform fhp-dur500"
+                                             loading="lazy" />
+                                        <span class="position-absolute bottom-2 start-2 fhp-fs-11 fw-bold text-white bg-black/60 px-2 py-1 rounded">
+                                            @related.Duration
+                                        </span>
+                                    </a>
+                                </div>
+                                <div class="fhp-p-10">
+                                    <h6 class="text-white fw-bold fhp-fs-13 text-truncate mb-1" title="@related.Title">
+                                        <a asp-action="Watch" asp-route-videoId="@related.VideoId"
+                                           class="fhp-hover-text-success fhp-transition-colors text-decoration-none">@related.Title</a>
+                                    </h6>
+                                    <div class="d-flex align-items-center fhp-gap-6 fhp-fs-11 fhp-text-white-50 mt-2">
+                                        <i class="ri-user-line"></i>
+                                        <span class="text-truncate" style="max-width: 120px;" title="@related.UploadedBy">@related.UploadedBy</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

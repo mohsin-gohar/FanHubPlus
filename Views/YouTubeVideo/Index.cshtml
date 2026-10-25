@@ -1,0 +1,96 @@
+@using FanHubPlus.Controllers
+@model YouTubeVideoGalleryViewModel
+@{
+    ViewData["Title"] = "YouTube Videos & Music";
+    var trail = new List<BreadcrumbItem> { new("YouTube Videos") };
+}
+
+<partial name="_PageBanner" model="trail" />
+
+<div class="fhp-py-60 fhp-md-py-80">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between flex-wrap fhp-gap-12 fhp-mb-32">
+            <div>
+                <h1 class="fhp-fs-30 fs-1 fw-bolder text-white fhp-mb-4">YouTube Videos &amp; Music</h1>
+                <p class="fhp-text-white-60 fs-6">Watch popular YouTube videos and songs right here on FanHubPlus.</p>
+            </div>
+        </div>
+
+        <form method="get" asp-action="Index" class="fhp-mb-40">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-4">
+                    <input type="search" name="search" value="@Model.Search"
+                           class="form-control form-input fhp-h-48"
+                           placeholder="Search videos, songs, artists..." />
+                </div>
+                <div class="col-md-3">
+                    <select name="category" class="form-select fhp-h-48" onchange="this.form.submit()">
+                        <option value="">All Categories</option>
+                        @foreach (var cat in Model.Categories)
+                        {
+                            <option value="@cat" selected="@(Model.SelectedCategory == cat ? "selected" : null)">@cat</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-2 d-grid">
+                    <button class="primary-btn w-100" type="submit">Search</button>
+                </div>
+                <div class="col-md-3 d-flex align-items-center">
+                    <span class="fhp-text-white-60 fhp-fs-14"><strong>@Model.TotalItems</strong> videos found</span>
+                </div>
+            </div>
+        </form>
+
+        @if (Model.Videos.Count == 0)
+        {
+            <div class="text-center fhp-py-64 fhp-bg-white-5 rounded-5 border fhp-border-white-10">
+                <i class="ri-video-line fhp-fs-60 fhp-text-white-30 fhp-mb-12 d-block"></i>
+                <h3 class="fhp-fs-20 fw-bold text-white mb-2">No Videos Found</h3>
+                <p class="fhp-text-white-60 fhp-mb-12">Try clearing filters or search terms.</p>
+                <a asp-action="Index" class="primary-btn">Browse All Videos</a>
+            </div>
+        }
+        else
+        {
+            <div class="row g-4">
+                @foreach (var video in Model.Videos)
+                {
+                    <div class="col-6 col-md-4 col-lg-3 col-xl-2">
+                        <div class="fhp-bg-18181f border fhp-border-white-10 rounded-4 overflow-hidden fhp-group fhp-hover-border-success-50 fhp-transition fhp-dur300 h-100 d-flex flex-column">
+                            <div class="position-relative fhp-aspect-16-9 overflow-hidden fhp-bg-black-40 flex-shrink-0">
+                                <a asp-action="Watch" asp-route-videoId="@video.VideoId" class="d-block w-100 h-100">
+                                    <img src="@video.ThumbnailUrl"
+                                         alt="@video.Title"
+                                         class="w-100 h-100 fhp-object-cover fhp-group-hover-scale-105 fhp-transition-transform fhp-dur500"
+                                         loading="lazy" />
+                                    <div class="position-absolute bottom-0 start-0 end-0 p-3 bg-gradient-to-top from-black/80 to-transparent">
+                                        <span class="position-absolute bottom-2 start-2 fhp-fs-11 fw-bold text-white bg-black/60 px-2 py-1 rounded">
+                                            @video.Duration
+                                        </span>
+                                        <div class="position-absolute top-2 end-2 fhp-fs-12 fw-bold text-white bg-black/60 px-2 py-1 rounded">
+                                            @video.Views
+                                        </div>
+                                    </div>
+                                    <div class="position-absolute top-0 bottom-0 start-0 end-0 bg-black/0 fhp-group-hover:bg-black/30 fhp-transition-opacity fhp-dur300"></div>
+                                </a>
+                            </div>
+                            <div class="fhp-p-12 d-flex flex-column flex-grow-1">
+                                <span class="fhp-fs-11 fw-bold text-success text-uppercase fhp-ls-wider d-block mb-1">
+                                    @video.Category
+                                </span>
+                                <h5 class="text-white fw-bold fhp-fs-13 text-truncate mb-2" title="@video.Title">
+                                    <a asp-action="Watch" asp-route-videoId="@video.VideoId"
+                                       class="fhp-hover-text-success fhp-transition-colors text-decoration-none">@video.Title</a>
+                                </h5>
+                                <div class="mt-auto d-flex align-items-center fhp-gap-8 fhp-fs-12 fhp-text-white-50">
+                                    <i class="ri-user-line fhp-fs-10"></i>
+                                    <span class="text-truncate" style="max-width: 100px;" title="@video.UploadedBy">@video.UploadedBy</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

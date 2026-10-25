@@ -69,13 +69,6 @@ public class HomeController : Controller
             .OrderByDescending(c => c.PopularityScore)
             .Take(8)
             .ToListAsync();
-        var featuredGames = await _contents.Query().AsNoTracking()
-            .Include(c => c.Category)
-            .Where(c => c.Type == FanHubPlus.Models.Enums.ContentType.Game
-                     || c.Type == FanHubPlus.Models.Enums.ContentType.PlayableGame)
-            .OrderByDescending(c => c.PopularityScore)
-            .Take(8)
-            .ToListAsync();
 
         var (contents, members, upcoming) = totals;
 
@@ -89,7 +82,6 @@ public class HomeController : Controller
             FeaturedMerch = merch,
             FeaturedMovies = featuredMovies,
             FeaturedMusic = featuredMusic,
-            FeaturedGames = featuredGames,
             TotalContents = contents,
             TotalMembers = members,
             TotalEvents = upcoming

@@ -300,7 +300,7 @@ public class AccountController : Controller
     private void SavePreferenceCookie(bool darkMode, int fontSize)
     {
         Response.Cookies.Append("fhp_pref", $"{(darkMode ? 1 : 0)}|{fontSize}",
-            new CookieOptions { HttpOnly = false, Expires = DateTimeOffset.UtcNow.AddYears(1) });
+            new CookieOptions { HttpOnly = true, Secure = true, SameSite = SameSiteMode.Lax, Expires = DateTimeOffset.UtcNow.AddYears(1) });
     }
 }
 

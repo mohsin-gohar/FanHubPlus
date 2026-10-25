@@ -27,7 +27,6 @@ public class HomeViewModel
 
     public List<Content> FeaturedMovies { get; set; } = new();
     public List<Content> FeaturedMusic { get; set; } = new();
-    public List<Content> FeaturedGames { get; set; } = new();
 
     // Hero counters
     public int TotalContents { get; set; }

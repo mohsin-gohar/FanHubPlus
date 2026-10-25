@@ -21,7 +21,7 @@
     var isHome = controller == "home" && action == "index";
     var headerClass = "navbar navbar-expand-lg navbar-dark fhp-nav fixed-top";
 
-    string Mark(string name) => (controller == name || (name == "explore" && controller == "streaming")) ? " active" : "";
+    string Mark(string name) => (controller == name || (name == "explore" && controller == "streaming") || (name == "youtubevideo" && controller == "youtubevideo")) ? " active" : "";
 
     // ---- header class strings ----------------------------------------
     // They are declared here instead of inline because Razor will not
@@ -311,19 +311,19 @@
 
                     <li class="nav-item">
                         <a
-                            class="@NavPlain@Mark("gaming")"
-                            asp-controller="Gaming" asp-action="Index"
+                            class="@NavPlain@Mark("music")"
+                            asp-controller="Music" asp-action="Index"
                         >
-                            Gaming
+                            Music
                         </a>
                     </li>
 
                     <li class="nav-item">
                         <a
-                            class="@NavPlain@Mark("music")"
-                            asp-controller="Music" asp-action="Index"
+                            class="@NavPlain@Mark("youtubevideo")"
+                            asp-controller="YouTubeVideo" asp-action="Index"
                         >
-                            Music
+                            YouTube Videos
                         </a>
                     </li>
                 </ul>
